@@ -1,0 +1,224 @@
+﻿@model List<Saptra.Web.Data.mNotificaciones>
+<style>
+
+
+    /*Notificaciones*/
+
+    .notifi__title {
+        padding: 5px;
+        border-bottom: 1px solid #f2f2f2;
+        cursor: default;
+    }
+
+    .notifi__item {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: flex;
+        padding: 19px 22px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid #f2f2f2;
+        -webkit-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+    }
+
+        .notifi__item .img-cir {
+            position: relative;
+            margin-right: 15px;
+        }
+
+    .img-40 {
+        height: 40px;
+        width: 40px;
+    }
+
+    .img-cir {
+        -webkit-border-radius: 100%;
+        -moz-border-radius: 100%;
+        border-radius: 100%;
+        overflow: hidden;
+    }
+
+    .bg-c1 {
+        background: #00ad5f;
+    }
+
+    .bg-c2 {
+        background: #42B2FA;
+    }
+
+    .bg-c3 {
+        background: #ff8300;
+    }
+
+    .notifi__item .contentt {
+        width: -webkit-calc(100% - 55px);
+        width: -moz-calc(100% - 55px);
+        width: calc(100% - 55px);
+        text-align: left;
+        font-size: 12px;
+    }
+
+    .contentt {
+        margin-left: 0px;
+        padding: 1px 0;
+        padding-left: 12px;
+    }
+
+    .notifi__item .contentt .date {
+        font-size: 10px;
+        color: #999;
+    }
+
+    .notifi__item .img-cir i {
+        font-size: 22px;
+        color: #fff;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        -moz-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        -o-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+
+    .noti__item i {
+        font-size: 30px;
+        color: #a9b3c9;
+        -webkit-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+        vertical-align: middle;
+    }
+
+    .notifi__item .contentt p {
+        color: #555;
+        line-height: 1;
+        padding-top: 5px;
+        margin-bottom: 2px;
+    }
+
+    p {
+        margin: 0;
+    }
+
+    p {
+        margin-top: 0;
+        margin-bottom: 1rem;
+    }
+
+    .notifi__title p {
+        line-height: -webkit-calc(29/14);
+        line-height: -moz-calc(29/14);
+        line-height: calc(29/14);
+        font-size: 14px;
+        color: #808080;
+    }
+
+    .notifi__item:hover {
+        background: #f7f7f7;
+    }
+
+    .notifi__footer a {
+        display: block;
+        text-transform: capitalize;
+        text-align: center;
+        font-size: 14px;
+        color: #4272d7;
+        padding: 24px 0;
+    }
+
+        .notifi__footer a:hover {
+            color: #3868cd;
+            text-decoration: none;
+        }
+
+    .notifi__item {
+        cursor: pointer;
+    }
+
+    /* SCROLL BARS */
+    ::-webkit-scrollbar {
+        height: 5px;
+        width: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background-color: #eaeaea;
+        border-left: 1px solid #ccc;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: #ccc;
+    }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #aaa;
+        }
+</style>
+@{ int count = 0; }
+    <div class="row">
+
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="notifi__title">
+                <p id="cNotificaciones"></p>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="width:342px; max-height:250px; overflow:auto;">
+            @foreach (var notificaciones in Model)
+            {
+                <div class="notifi__item" style="width:320px;" id="divNotifica_@notificaciones.NotificacionId" data-idnotificacion="@notificaciones.NotificacionId" data-idplan="@notificaciones.PlanSemanalId">
+                    @if (notificaciones.cTipoNotificaciones.TipoNotificacionId == 1)
+                    {
+                        <div class="bg-c3 img-cir img-40">
+                            <i class="fa fa-search"></i>
+                        </div>
+                        <div class="contentt">
+                            <p>Validar plan de <strong>@notificaciones.mPlanSemanal.mUsuarios.NombresUsuario  @notificaciones.mPlanSemanal.mUsuarios.ApellidosUsuario</strong></p>
+                            <span class="date">@notificaciones.FechaCreacion</span>
+                        </div>
+                    }
+                    else if (notificaciones.cTipoNotificaciones.TipoNotificacionId == 2)
+                    {
+                        <div class="bg-c1 img-cir img-40">
+                            <i class="fa fa-check "></i>
+                        </div>
+                        <div class="contentt">
+                            <p>Aprobar plan de <strong>@notificaciones.mPlanSemanal.mUsuarios.NombresUsuario  @notificaciones.mPlanSemanal.mUsuarios.ApellidosUsuario</strong></p>
+                            <span class="date">@notificaciones.FechaCreacion</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="bg-c2 img-cir img-40">
+                            <i class="fa fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="contentt">
+                            <p>Revisar plan periodo: <strong>@notificaciones.mPlanSemanal.cPeriodos.DecripcionPeriodo</strong></p>
+                            <span class="date">@notificaciones.FechaCreacion</span>
+                        </div>
+                    }
+                </div>
+                count++;
+            }
+            <input type="hidden" id="cantNotificaciones" value="@count" />
+        </div>
+        @*<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="notifi__footer">
+                <a href="#">Todas las Notificaciones</a>
+            </div>
+        </div>*@
+
+
+
+
+
+
+
+
+    </div>

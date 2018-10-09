@@ -1,0 +1,35 @@
+{
+  "name": "CMI Track web",
+  "version": "1.0.0",
+  "homepage": "",
+  "authors": [
+    "David Galvan"
+  ],
+  "description": "Application for CMI Track",
+  "keywords": [
+    "bootstrap",
+    "theme"
+  ],
+  "license": "Apache",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "pages",
+    "index.html",
+    "/js"
+  ],
+  "main": [],
+  "dependencies": {
+    "bootstrap": "~3.3.6",
+    "font-awesome": "~4.2.0",
+    "holderjs": "~2.4.1",
+    "metisMenu": "~1.1.3",
+    "bootstrap-social": "~4.8.0",
+    "flot.tooltip": "~0.8.4",
+    "eonasdan-bootstrap-datetimepicker": "~4.17.37",
+    "moment": "~2.11.2"
+  }
+}

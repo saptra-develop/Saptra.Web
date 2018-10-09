@@ -1,0 +1,252 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="~/favicon.ico">
+    <title>@ViewBag.Title - SAPTRA</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    @{ string scope = System.Configuration.ConfigurationManager.AppSettings["CCService"]; }
+</head>
+<style>
+        .quantity {
+            position: absolute;
+            display: inline-block;
+            top: -15px;
+            right: 1px;
+            height: 15px;
+            width: 15px;
+            /*line-height: 15px;*/
+            text-align: center;
+            background: #ef5350;
+            color: #fff;
+            -webkit-border-radius: 30px;
+            -moz-border-radius: 30px;
+            border-radius: 30px;
+            font-size: 12px;
+
+        }
+        .notify {
+            position: relative;
+            top: -22px;
+            right: -9px;
+        }
+
+            .notify .heartbit {
+                position: absolute;
+                top: -20px;
+                right: -4px;
+                height: 25px;
+                width: 25px;
+                z-index: 10;
+                border: 5px solid #ef5350;
+                border-radius: 70px;
+                -moz-animation: heartbit 1s ease-out;
+                -moz-animation-iteration-count: infinite;
+                -o-animation: heartbit 1s ease-out;
+                -o-animation-iteration-count: infinite;
+                -webkit-animation: heartbit 1s ease-out;
+                -webkit-animation-iteration-count: infinite;
+                animation-iteration-count: infinite;
+            }
+       
+
+</style>
+<body>
+    <div id="wrapper" style="background-color:#ffffff;">
+        <!-- Navigation for full screen -->
+        <nav class="navbar navbar-default navbar-static-top" id="navBarMainTop" role="navigation" style="background-color:#ffffff; margin-bottom: 0; position: fixed; z-index: 100; width: 100%; ">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" onclick="FCH.menuPrincipal();">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand accionMenu" href="#" onclick="FCH.menuPrincipal();"><span class="fa fa-bars"></span>&nbsp;</a>
+
+                @Html.ActionLink("Saptra", "Inicio", "Principal", new { area = "" }, new { @class = "navbar-brand logo-brand hidden-xs" })
+                <h4 class="hidden-lg"><span class="text-primary">SAPTRA</span></h4>
+                @{
+                    if (scope == "DEBUG")
+                    {
+                        <a style="font-size:1.5em; color:#d9534f; font-weight:bold; text-decoration:none;     margin-top: 10px;" class="hidden-xs">PRUEBAS</a>
+                    }
+                }
+            </div>
+            <!-- /.navbar-header -->
+            <div id="navbar-collapse" class="navbar-collapse collapse navbar-right" aria-haspopup="true" aria-expanded="true">
+                <ul id="navtoplinks" class="nav navbar-top-links navbar-right">
+                    <li class="dropdown hidden-xs">
+                        <a class="dropdown-toggle ahrefDropdownNotificacionesOnNavBar" data-toggle="dropdown" href="#" style="padding:10px 15px;">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x" style="color:#106AAD"></i>
+                                <i class="fa fa-bell-o fa-stack-1x fa-inverse"></i>
+                            </span>
+                            
+                            <div class="notify" id="divNotifi" style="display:none;">
+                                <span class="heartbit"></span>
+                                @*</span> <span class="point"></span>*@
+                                <span class="quantity" id="cantidadNotificaciones">...</span>
+                            </div>
+                        </a>
+
+                        <div class="dropdown-menu dropdown-user" id="menuNotificaciones" style="width:330px;padding:0">
+                            <span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span>  Cargando
+                        </div>
+                    </li>
+
+
+                    <!-- /.dropdown -->
+                    <li class="dropdown hidden-xs">
+                        <a class="dropdown-toggle ahrefDropdownMenuOnNavBar" data-toggle="dropdown" href="#" style="padding:10px 15px;">
+                            <img src="~/Content/images/avatar.jpg" id="UserAvatarLayout" class="img-circle img-responsive" style="width: 37px; height: 37px; display: none;" /> &nbsp; <span id="userName">Cargando</span><i class="fa fa-caret-down"></i>
+
+                        </a>
+
+                        <div class="dropdown-menu dropdown-user" id="menuUsuario" style="width:300px;padding:0">
+                            <span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span>  Cargando
+                        </div>
+                        <!-- /.dropdown-user -->
+                    </li>
+
+                    <li>
+                        <div class="hidden-lg">
+                            <button onclick="window.location.href = contextPath + 'Autentificacion/LogOut'" class="btn btn-xs btn-danger "><i class="fa fa-power-off  fa-fw"></i> Salir </button>
+                        </div>
+
+                    </li>
+                    <!-- /.dropdown -->
+                </ul>
+                <!-- /.navbar-top-links -->
+            </div>
+
+
+            <div id="divSideBar" style="background-color:#ffffff;">
+                <div class="navbar-default sidebar" role="navigation" style="background-color:#ffffff;">
+                    <div class="sidebar-nav">
+                        <div class="CargandoInfo">
+                            <div class="mensageCargando"> Cargando </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <div id="page-wrapper" style="background-color:rgb(255, 255, 255);">
+            <div class="row">
+                <br />
+                <br />
+                <div class="col-lg-1"></div>
+                <div class="col-lg-10">
+
+                    <div class="clientAlert" tabindex="0"></div>
+                </div>
+                <div class="col-lg-1"></div>
+            </div>
+            <br />
+            @RenderBody()
+            <br />
+            <br />
+        </div>
+
+        <!-- Footer -->
+        <footer class="page-footer navbar-fixed-bottom" style="background-color:#E6E6E6; position: fixed; z-index: 100; width: 100%; ">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-2 ">
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-2x" style="color:#00ACED"></i>
+                            <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                        </span>
+                        <a href="https://twitter.com/soyinaeba" target="_blank" style="text-decoration:none; color:#98B7D2;"> Twitter</a>
+                    </div>
+                    <div class="col-sm-2">
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-2x" style="color:#395BA3"></i>
+                            <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                        </span>
+                        <a href="https://www.facebook.com/soyinaeba/" target="_blank" style="text-decoration:none; color:#98B7D2;"> Facebook</a>
+                    </div>
+                    <div class="col-sm-2">
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-2x" style="color:#ED1B24"></i>
+                            <i class="fa fa-youtube fa-stack-1x fa-inverse"></i>
+                        </span>
+                        <a href="https://www.youtube.com/channel/UCY2hK2O9lDw8JMn_MwIL4oA" target="_blank" style="text-decoration:none; color:#98B7D2;"> Youtube</a>
+                    </div>
+                    <div class="col-sm-3">
+                        <span style="color:#919191">
+                            Bulevar Delta 201, Sexto Piso, col. San José de Santa Julia
+                            C. P. 37530, León, Gto
+                        </span>
+                    </div>
+                    <div class="col-sm-3">
+                        <span style="color:#919191">
+                            Teléfono: 01 800 746 2322
+                            León: (477) 148 12 60
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <!-- Copyright -->
+            <div class="footer-copyright text-center " style="background-color:#8E8E90;">
+                © 2018 Copyright:
+                <a href="http://www.inaeba.guanajuato.gob.mx/inaeba/index.php" target="_blank" style="text-decoration:none; color:#E6E6E6;"> inaeba.guanajuato.gob.mx</a>
+            </div>
+            <!-- Copyright -->
+        </footer>
+    </div>
+
+    <div class="modal fade bs-example-modal-lg" id="actualiza-PerfilUsuario"
+         tabindex="-1" role="dialog"
+         aria-labelledby="nuevoUsuarioLabel">
+    </div>
+
+    <div class="modal fade bs-example-modal-lg" id="actualiza-password"
+         tabindex="-1" role="dialog"
+         aria-labelledby="nuevoUsuarioLabel">
+    </div>
+
+    <div class="modal fade bs-example-modal-lg" id="layoutDefaultModal"
+         tabindex="-1" role="dialog"
+         aria-labelledby="layoutDefaultModalLabel">
+    </div>
+
+    @{
+        var routeValues = this.ViewContext.RouteData.Values;
+        var lang = routeValues["lang"] as string;
+    }
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/sispro")
+
+    @Html.IncludeVersionedJs(Url.Content("~/Scripts/_Saptra.js"))
+    @Html.IncludeVersionedJs(Url.Content("~/Scripts/_Globals.js"))
+    <script type="text/javascript">
+        $(function () {
+            //Asigna el conteto de la aplicacion
+            system_lang = '';
+            contextPath = '@Url.Content("~")';
+            routeUrlImages = '@Request.Url.Scheme://@Request.Url.Authority@Url.Content("~/Content/images")';
+            FCH.inicial('@lang');
+            FCH.menuPrincipal();
+        });
+
+        //function verificaVacio() {
+        //    $('.collapseMarca').each(function (index, value) {
+        //        if ($.trim($("#" + $(this).attr('id')).html()) == '')
+        //            $($("#accordionMarca_" + $(this).attr('id').slice(-2))).hide();
+        //    });
+        //}
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+
+</html>

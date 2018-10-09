@@ -1,0 +1,116 @@
+﻿@model Saptra.Web.Models.Login
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<!--[if lt IE 7 ]> <html class="ie ie6 no-js" lang="en"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie ie7 no-js" lang="en"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie ie8 no-js" lang="en"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie ie9 no-js" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="~/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Administracion de proyectos para CMI">
+    <meta name="author" content="Sysba">
+    <title>Sispro </title>
+
+    @Styles.Render("~/Content/cssLogon")
+
+</head>
+<body style="background-image: url('/Content/images/back2.jpg'); background-size:cover;">
+
+    <div class="container" id="page">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <img src="/Content/images/logo_360.png" style="margin-top:20%; width:100%" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="login-panel panel panel-default">
+
+                    <!--[if lt IE 10]>
+                        <div class='alert alert-danger'>
+                                <button type='button' class='close' data-dismiss='alert'>x</button>
+                                El explorador no soporta HTML 5. Puede que la aplicacion no funcione correctametne. Utilice un navegador mas reciente.</div>
+                        <![endif]-->
+
+                    <div class="panel-heading">
+                        <h3 class="panel-title">User </h3>
+                    </div>
+
+                    <div class="panel-body">
+                        <div id="div-forms">
+                            @using (Html.BeginForm("Login", "Autentificacion", new { ReturnUrl = ViewBag.ReturnUrl },
+                            FormMethod.Post, new { id = "frmLogin", @role = "form" }))
+                            {
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.NombreUsuario, new { @class = "form-control", autofocus = "true", placeholder = Resources.Autentificacion.userName })
+                                </div>
+                                <div class="form-group">
+                                    @Html.PasswordFor(m => m.Contrasena, new { @class = "form-control", placeholder = Resources.Autentificacion.password })
+                                </div>
+                                <div>
+                                    @if (ViewBag.error != string.Empty)
+                                    {
+                                        <div class="alert alert-warning alert-dismissible" role="alert" id="lblAlert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <strong>Message!</strong> @ViewBag.error
+                                        </div>
+                                    }
+                                    @if (ViewBag.successChangePassword != string.Empty)
+                                    {
+                                        <div div class="alert alert-success alert-dismissible" role="alert" id="lblSucess">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <strong>Message!</strong> @ViewBag.successChangePassword
+                                        </div>
+                                    }
+                                </div>
+                                <div class="lbl-message">
+                                </div>
+                                <button type="submit" class="btn  btn-xl btn-primary btn-block">Login</button>
+                                <button class="btn btn-link" style="padding: 5px 10px 0px 0px" type="button" id="btn-olvido-password">Olvidaste Contraseña</button>
+
+                            }
+
+                            @using (Html.BeginForm("EnviarEmail", "Autentificacion", FormMethod.Post, new { id = "frmEnviarEmail", @role = "form", @style = "display:none;", onsubmit = "return false" }))
+                            {
+                                <p class="text-info">Reset password</p>
+
+                                <div class="form-group">
+                                    <input id="email" name="Email" class="form-control" type="email" placeholder="Correo" required>
+                                </div>
+                                <div class="lbl-message">
+                                </div>
+                                <button type="button" id="btn-enviar-email" class="btn  btn-xl btn-primary btn-block">Enviar</button>
+                                <button class="btn btn-link" style="padding: 5px 10px 0px 0px" type="button" id="btn-regresa-login">Login</button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br /><br /><br /><br /><br /><br /><br /><br />
+    </div>
+
+    <img align="right" src="@Url.Content("~/Content/images/grupocharly.png")" />
+
+    @Scripts.Render("~/bundles/Logon")
+
+    <script type="text/javascript">
+        $(function () {
+            localStorage.clear();
+            $('#NombreUsuario').focus();
+        });
+    </script>
+    @Html.IncludeVersionedJs(Url.Content("~/Scripts/_Saptra.js"))
+    @Html.IncludeVersionedJs(Url.Content("~/Scripts/Autentificacion.js"))
+</body>
+</html>
+

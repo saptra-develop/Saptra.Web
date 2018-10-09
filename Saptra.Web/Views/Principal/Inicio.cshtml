@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "Inicio";
+}
+
+<div class="row">
+    <img src="~/Content/images/Logo_SAPTRA.jpg" class="img-responsive center-block" />
+</div>
+
+
+
+
+
+
+@section Scripts{
+    <script type="text/javascript">
+            var Inicio = {
+                CargarLocalStorage: function () {
+                    if (localStorage.idUser === undefined || localStorage.idUser === '') {
+                        FCH.ReiniciaLocalStorage('@ViewBag.IdUsuario', '@ViewBag.UserName');
+                        FCH.AsignarAvatarLocalStorage('@ViewBag.UserAvatar');
+                    }
+                }
+            };
+    </script>
+}

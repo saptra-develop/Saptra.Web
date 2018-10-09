@@ -1,0 +1,85 @@
+﻿@model Saptra.Web.Data.dDetallePlanSemanal
+
+<div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">@ViewBag.Titulo</h4>
+        </div>
+        <div class="modal-body">
+            <div class="clientAlertDlg"></div>
+            @using (Html.BeginForm("Nuevo", "PlanSemanal", FormMethod.Post, new { id = "NuevoDetallePlanForm", name = "NuevoDetallePlanForm", @class = "form-horizontal", onsubmit = "return false" }))
+            {
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">Actividad</div>
+                        <div class="col-sm-8">
+                            <select class="form-control" id="selTipoActividad"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">Descripción</div>
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(model => model.DescripcionActividad, new { @class = "form-control", maxlength = 100, required = "required" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">Fecha</div>
+                        <div class="col-sm-8">
+                            <div class='input-group date' id='dtpfechaCompromiso'>
+                                @Html.TextBoxFor(model => model.FechaActividad, new { @class = "form-control", maxlength = 10, required = "required" })
+                                <span class="input-group-addon">
+                                    <span class="fa fa-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">Hora</div>
+                        <div class="col-sm-8">
+                            @Html.DropDownListFor(model => model.HoraActividad,
+                                                                                        new SelectList(new[]{
+                                                                                                        new SelectListItem{ Text="08:00", Value="08:00"},
+                                                                                                        new SelectListItem{ Text="09:00", Value="09:00"},
+                                                                                                        new SelectListItem{ Text="10:00", Value="10:00"},
+                                                                                                        new SelectListItem{ Text="11:00", Value="11:00"},
+                                                                                                        new SelectListItem{ Text="12:00", Value="12:00"},
+                                                                                                        new SelectListItem{ Text="13:00", Value="13:00"},
+                                                                                                        new SelectListItem{ Text="14:00", Value="14:00"},
+                                                                                                        new SelectListItem{ Text="15:00", Value="15:00"},
+                                                                                                        new SelectListItem{ Text="16:00", Value="16:00"},
+                                                                                                        new SelectListItem{ Text="17:00", Value="17:00"},
+                                                                                                        new SelectListItem{ Text="18:00", Value="18:00"},
+                                                                                                        new SelectListItem{ Text="19:00", Value="19:00"},
+                                                                                                        new SelectListItem{ Text="20:00", Value="20:00"}},
+                                                                                "Value", "Text"), new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">Cantidad CheckIn</div>
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(model => model.CantidadCheckIn, new { @class = "form-control", maxlength = 100, required = "required" })
+                        </div>
+                    </div>
+                </div>
+
+                @Html.HiddenFor(model => model.PlanSemanalId)
+                @Html.HiddenFor(model => model.UsuarioCreacionId)
+                @Html.HiddenFor(model => model.TipoActividadId)
+            }
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Global.btnCancel</button>
+            <button type="button" class="btn btn-primary btn-GuardaDetalleNuevo">@Resources.Global.btnSave</button>
+        </div>
+    </div><!-- /.modal-content -->
+</div>

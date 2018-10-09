@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>CKEditor Sample</title>
+		<script src="../ckeditor.js"></script>
+        <script src="js/sample.js"></script>
+	</head>
+	<body>
+        <div id="editor1" contenteditable="true">
+            <h1>Inline Editing in Action!</h1>
+            <p>The "div" element that contains this text is now editable.
+        </div>
+        <script>
+            CKEDITOR.disableAutoInline = true;
+            CKEDITOR.inline('editor1');
+        </script>
+	</body>
+</html>

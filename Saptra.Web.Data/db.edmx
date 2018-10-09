@@ -1,0 +1,2534 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Inaeba_GeorreferenciaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="cCoordinacionesRegion">
+          <Key>
+            <PropertyRef Name="CoordinacionRegionId" />
+          </Key>
+          <Property Name="CoordinacionRegionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioCreacionId" Type="int" Nullable="false" />
+          <Property Name="DescripcionCoordinacionRegion" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="EstatusId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="cCoordinacionesZona">
+          <Key>
+            <PropertyRef Name="CoordinacionZonaId" />
+          </Key>
+          <Property Name="CoordinacionZonaId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioCreacionId" Type="int" Nullable="false" />
+          <Property Name="DescripcionCoordinacionZona" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="EstatusId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="cEstatus">
+          <Key>
+            <PropertyRef Name="EstatusId" />
+          </Key>
+          <Property Name="EstatusId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioCreacionId" Type="int" Nullable="false" />
+          <Property Name="TipoEstatusId" Type="int" Nullable="false" />
+          <Property Name="NombreEstatus" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="cPeriodos">
+          <Key>
+            <PropertyRef Name="PeriodoId" />
+          </Key>
+          <Property Name="PeriodoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioCreacionId" Type="int" Nullable="false" />
+          <Property Name="EstatusId" Type="int" Nullable="false" />
+          <Property Name="FechaInicio" Type="date" Nullable="false" />
+          <Property Name="FechaFin" Type="date" Nullable="false" />
+          <Property Name="DecripcionPeriodo" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="cTipoActividades">
+          <Key>
+            <PropertyRef Name="TipoActividadId" />
+          </Key>
+          <Property Name="TipoActividadId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioCreacionId" Type="int" Nullable="false" />
+          <Property Name="EstatusId" Type="int" Nullable="false" />
+          <Property Name="NombreActividad" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="DescripcionActividad" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="RequiereCheckIn" Type="bit" Nullable="false" />
+          <Property Name="ActividadEspecial" Type="bit" />
+          <Property Name="Mensaje" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="cTipoEstatus">
+          <Key>
+            <PropertyRef Name="TipoEstatusId" />
+          </Key>
+          <Property Name="TipoEstatusId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioCreacionId" Type="int" Nullable="false" />
+          <Property Name="nombreTipoEstatus" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="cTipoFiguras">
+          <Key>
+            <PropertyRef Name="TipoFiguraId" />
+          </Key>
+          <Property Name="TipoFiguraId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioCreacionId" Type="int" Nullable="false" />
+          <Property Name="EstatusId" Type="int" Nullable="false" />
+          <Property Name="DescripcionTipoFigura" Type="varchar" MaxLength="150" Nullable="false" />
+        </EntityType>
+        <EntityType Name="cTipoNotificaciones">
+          <Key>
+            <PropertyRef Name="TipoNotificacionId" />
+          </Key>
+          <Property Name="TipoNotificacionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioCreacionId" Type="int" Nullable="false" />
+          <Property Name="DescripcionNotificacion" Type="varchar" MaxLength="150" Nullable="false" />
+        </EntityType>
+        <EntityType Name="cTiposUsuario">
+          <Key>
+            <PropertyRef Name="TipoUsuarioId" />
+          </Key>
+          <Property Name="TipoUsuarioId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioCreacionId" Type="int" Nullable="false" />
+          <Property Name="DescripcionTipo" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="EstatusId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="mLecturaCertificados">
+          <Key>
+            <PropertyRef Name="LecturaCertificadoId" />
+          </Key>
+          <Property Name="LecturaCertificadoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioCreacionId" Type="int" Nullable="false" />
+          <Property Name="FolioCertificado" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="EstatusId" Type="int" Nullable="false" />
+          <Property Name="CheckInId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="mCoordinacionZonaUsuario">
+          <Key>
+            <PropertyRef Name="CordinacionZonaUsuarioId" />
+          </Key>
+          <Property Name="CordinacionZonaUsuarioId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioCreacionId" Type="int" Nullable="false" />
+          <Property Name="CoordinacionZonaId" Type="int" Nullable="false" />
+          <Property Name="UsuarioId" Type="int" Nullable="false" />
+          <Property Name="JefeCoordinacionZona" Type="bit" />
+        </EntityType>
+        <EntityType Name="mEducandosCaptados">
+          <Key>
+            <PropertyRef Name="EducandoCaptadoId" />
+          </Key>
+          <Property Name="EducandoCaptadoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioCreacionId" Type="int" Nullable="false" />
+          <Property Name="ApellidoPaterno" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ApellidoMaterno" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Nombres" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="FechaNacimiento" Type="date" Nullable="false" />
+          <Property Name="EntidadNacimientoId" Type="int" Nullable="false" />
+          <Property Name="Calle" Type="varchar" MaxLength="100" />
+          <Property Name="Numero" Type="varchar" MaxLength="100" />
+          <Property Name="ColoniaLocalidad" Type="varchar" MaxLength="100" />
+          <Property Name="DependenciaAliado" Type="varchar" MaxLength="100" />
+          <Property Name="NivelEducativoId" Type="int" Nullable="false" />
+          <Property Name="TipoExamenId" Type="int" />
+          <Property Name="CurpEducando" Type="varchar" MaxLength="18" />
+          <Property Name="DetallePlanId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="dDetallePlanSemanal">
+          <Key>
+            <PropertyRef Name="DetallePlanId" />
+          </Key>
+          <Property Name="DetallePlanId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PlanSemanalId" Type="int" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioCreacionId" Type="int" Nullable="false" />
+          <Property Name="EstatusId" Type="int" Nullable="false" />
+          <Property Name="TipoActividadId" Type="int" Nullable="false" />
+          <Property Name="FechaActividad" Type="datetime" Nullable="false" />
+          <Property Name="HoraActividad" Type="time" Precision="7" Nullable="false" />
+          <Property Name="CantidadCheckIn" Type="int" Nullable="false" />
+          <Property Name="DescripcionActividad" Type="varchar" MaxLength="255" />
+          <Property Name="ComentariosNoValidacion" Type="varchar" MaxLength="255" />
+          <Property Name="ComentariosRechazo" Type="varchar" MaxLength="255" />
+          <Property Name="ActividadRechazada" Type="bit" />
+        </EntityType>
+        <EntityType Name="mCheckIn">
+          <Key>
+            <PropertyRef Name="CheckInId" />
+          </Key>
+          <Property Name="CheckInId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioCreacionId" Type="int" Nullable="false" />
+          <Property Name="Coordenadas" Type="varchar" MaxLength="1024" Nullable="false" />
+          <Property Name="DetallePlanId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="mPlanSemanal">
+          <Key>
+            <PropertyRef Name="PlanSemanalId" />
+          </Key>
+          <Property Name="PlanSemanalId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioCreacionId" Type="int" Nullable="false" />
+          <Property Name="EstatusId" Type="int" Nullable="false" />
+          <Property Name="DescripcionPlaneacion" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="PeriodoId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="dModulos">
+          <Key>
+            <PropertyRef Name="ModuloId" />
+          </Key>
+          <Property Name="ModuloId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" />
+          <Property Name="EstatusId" Type="int" />
+          <Property Name="NombreModulo" Type="varchar" MaxLength="50" />
+          <Property Name="UrlModulo" Type="varchar" MaxLength="200" />
+          <Property Name="IconModulo" Type="varchar" MaxLength="50" />
+          <Property Name="OrdenModulo" Type="int" />
+          <Property Name="MenuGrupoId" Type="int" />
+        </EntityType>
+        <EntityType Name="mBitacora">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ExecuteDate" Type="datetime" />
+          <Property Name="Ip" Type="varchar" MaxLength="50" />
+          <Property Name="Username" Type="varchar" MaxLength="50" />
+          <Property Name="Reqtype" Type="varchar" MaxLength="50" />
+          <Property Name="Reqdata" Type="varchar" MaxLength="1024" />
+          <Property Name="Controller" Type="varchar" MaxLength="50" />
+          <Property Name="Action" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="mMenuGrupo">
+          <Key>
+            <PropertyRef Name="MenuGrupoId" />
+          </Key>
+          <Property Name="MenuGrupoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" />
+          <Property Name="EstatusId" Type="int" />
+          <Property Name="NombreMenuGrupo" Type="varchar" MaxLength="50" />
+          <Property Name="IconGrupo" Type="varchar" MaxLength="50" />
+          <Property Name="OrdenGrupo" Type="int" />
+        </EntityType>
+        <EntityType Name="mPermisos">
+          <Key>
+            <PropertyRef Name="ModuloId" />
+            <PropertyRef Name="RolId" />
+          </Key>
+          <Property Name="ModuloId" Type="int" Nullable="false" />
+          <Property Name="RolId" Type="int" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" />
+          <Property Name="EstatusId" Type="int" />
+          <Property Name="LecturaPermiso" Type="bit" />
+          <Property Name="EscrituraPermiso" Type="bit" />
+          <Property Name="EdicionPermiso" Type="bit" />
+          <Property Name="ClonadoPermiso" Type="bit" />
+          <Property Name="BorradoPermiso" Type="bit" />
+        </EntityType>
+        <EntityType Name="mRoles">
+          <Key>
+            <PropertyRef Name="RolId" />
+          </Key>
+          <Property Name="RolId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" />
+          <Property Name="EstatusId" Type="int" />
+          <Property Name="NombreRol" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="mNotificaciones">
+          <Key>
+            <PropertyRef Name="NotificacionId" />
+          </Key>
+          <Property Name="NotificacionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EstatusId" Type="int" Nullable="false" />
+          <Property Name="TipoNotificacionId" Type="int" Nullable="false" />
+          <Property Name="PlanSemanalId" Type="int" Nullable="false" />
+          <Property Name="UsuarioId" Type="int" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" />
+        </EntityType>
+        <EntityType Name="mUsuarios">
+          <Key>
+            <PropertyRef Name="UsuarioId" />
+          </Key>
+          <Property Name="UsuarioId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" />
+          <Property Name="EstatusId" Type="int" />
+          <Property Name="LoginUsuario" Type="varchar" MaxLength="100" />
+          <Property Name="PasswordUsuario" Type="varchar" MaxLength="100" />
+          <Property Name="NombresUsuario" Type="varchar" MaxLength="100" />
+          <Property Name="ApellidosUsuario" Type="varchar" MaxLength="100" />
+          <Property Name="RolId" Type="int" Nullable="false" />
+          <Property Name="ImagenUsuario" Type="varchar" MaxLength="1024" />
+          <Property Name="EmailUsuario" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="mSolicitudesVehiculo">
+          <Key>
+            <PropertyRef Name="SolicitudVehiculoId" />
+          </Key>
+          <Property Name="SolicitudVehiculoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioCreacionId" Type="int" Nullable="false" />
+          <Property Name="VehiculoId" Type="int" Nullable="false" />
+          <Property Name="FechaUso" Type="datetime" Nullable="false" />
+          <Property Name="SolicitudSipaeId" Type="int" />
+        </EntityType>
+        <Association Name="FK_cCoordinacionesRegion_cEstatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="1" />
+          <End Role="cCoordinacionesRegion" Type="Self.cCoordinacionesRegion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="cCoordinacionesRegion">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cCoordinacionesRegion_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="cCoordinacionesRegion" Type="Self.cCoordinacionesRegion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="cCoordinacionesRegion">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cCoordinacionesZona_cEstatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="1" />
+          <End Role="cCoordinacionesZona" Type="Self.cCoordinacionesZona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="cCoordinacionesZona">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cCoordinacionesZona_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="cCoordinacionesZona" Type="Self.cCoordinacionesZona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="cCoordinacionesZona">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cEstatus_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="cEstatus">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cPeriodos_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="cPeriodos" Type="Self.cPeriodos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="cPeriodos">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cTipoActividades_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="cTipoActividades" Type="Self.cTipoActividades" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="cTipoActividades">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cTipoEstatus_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="cTipoEstatus" Type="Self.cTipoEstatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="cTipoEstatus">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cTipoFiguras_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="cTipoFiguras" Type="Self.cTipoFiguras" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="cTipoFiguras">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cTipoNotificaciones_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="cTipoNotificaciones" Type="Self.cTipoNotificaciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="cTipoNotificaciones">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cTiposUsuario_cEstatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="1" />
+          <End Role="cTiposUsuario" Type="Self.cTiposUsuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="cTiposUsuario">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cTiposUsuario_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="cTiposUsuario" Type="Self.cTiposUsuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="cTiposUsuario">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dDetallePlanSemanal_mPlanSemanal">
+          <End Role="mPlanSemanal" Type="Self.mPlanSemanal" Multiplicity="1" />
+          <End Role="dDetallePlanSemanal" Type="Self.dDetallePlanSemanal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mPlanSemanal">
+              <PropertyRef Name="PlanSemanalId" />
+            </Principal>
+            <Dependent Role="dDetallePlanSemanal">
+              <PropertyRef Name="PlanSemanalId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dDetallePlanSemanal_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="dDetallePlanSemanal" Type="Self.dDetallePlanSemanal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="dDetallePlanSemanal">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetallePlanSemanal_Estatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="1" />
+          <End Role="dDetallePlanSemanal" Type="Self.dDetallePlanSemanal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="dDetallePlanSemanal">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetallePlanSemanal_TipoActividades">
+          <End Role="cTipoActividades" Type="Self.cTipoActividades" Multiplicity="1" />
+          <End Role="dDetallePlanSemanal" Type="Self.dDetallePlanSemanal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cTipoActividades">
+              <PropertyRef Name="TipoActividadId" />
+            </Principal>
+            <Dependent Role="dDetallePlanSemanal">
+              <PropertyRef Name="TipoActividadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dModulos_cEstatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="0..1" />
+          <End Role="dModulos" Type="Self.dModulos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="dModulos">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dModulos_mMenuGrupo">
+          <End Role="mMenuGrupo" Type="Self.mMenuGrupo" Multiplicity="0..1" />
+          <End Role="dModulos" Type="Self.dModulos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mMenuGrupo">
+              <PropertyRef Name="MenuGrupoId" />
+            </Principal>
+            <Dependent Role="dModulos">
+              <PropertyRef Name="MenuGrupoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Estatus_TipoEstatus">
+          <End Role="cTipoEstatus" Type="Self.cTipoEstatus" Multiplicity="1" />
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cTipoEstatus">
+              <PropertyRef Name="TipoEstatusId" />
+            </Principal>
+            <Dependent Role="cEstatus">
+              <PropertyRef Name="TipoEstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mCheckIn_dDetallePlanSemanal">
+          <End Role="dDetallePlanSemanal" Type="Self.dDetallePlanSemanal" Multiplicity="1" />
+          <End Role="mCheckIn" Type="Self.mCheckIn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dDetallePlanSemanal">
+              <PropertyRef Name="DetallePlanId" />
+            </Principal>
+            <Dependent Role="mCheckIn">
+              <PropertyRef Name="DetallePlanId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mCheckIn_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="mCheckIn" Type="Self.mCheckIn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="mCheckIn">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mCoordinacionZonaUsuario_cCoordinacionesZona">
+          <End Role="cCoordinacionesZona" Type="Self.cCoordinacionesZona" Multiplicity="1" />
+          <End Role="mCoordinacionZonaUsuario" Type="Self.mCoordinacionZonaUsuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cCoordinacionesZona">
+              <PropertyRef Name="CoordinacionZonaId" />
+            </Principal>
+            <Dependent Role="mCoordinacionZonaUsuario">
+              <PropertyRef Name="CoordinacionZonaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mCoordinacionZonaUsuario_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="mCoordinacionZonaUsuario" Type="Self.mCoordinacionZonaUsuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="mCoordinacionZonaUsuario">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mCoordinacionZonaUsuario_mUsuarios1">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="mCoordinacionZonaUsuario" Type="Self.mCoordinacionZonaUsuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="mCoordinacionZonaUsuario">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mEducandosCaptados_dDetallePlanSemanal">
+          <End Role="dDetallePlanSemanal" Type="Self.dDetallePlanSemanal" Multiplicity="1" />
+          <End Role="mEducandosCaptados" Type="Self.mEducandosCaptados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dDetallePlanSemanal">
+              <PropertyRef Name="DetallePlanId" />
+            </Principal>
+            <Dependent Role="mEducandosCaptados">
+              <PropertyRef Name="DetallePlanId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mEducandosCaptados_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="mEducandosCaptados" Type="Self.mEducandosCaptados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="mEducandosCaptados">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mLecturaCertificados_cEstatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="1" />
+          <End Role="mLecturaCertificados" Type="Self.mLecturaCertificados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="mLecturaCertificados">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mLecturaCertificados_mCheckIn">
+          <End Role="mCheckIn" Type="Self.mCheckIn" Multiplicity="1" />
+          <End Role="mLecturaCertificados" Type="Self.mLecturaCertificados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mCheckIn">
+              <PropertyRef Name="CheckInId" />
+            </Principal>
+            <Dependent Role="mLecturaCertificados">
+              <PropertyRef Name="CheckInId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mLecturaCertificados_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="mLecturaCertificados" Type="Self.mLecturaCertificados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="mLecturaCertificados">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mMenuGrupo_Estatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="0..1" />
+          <End Role="mMenuGrupo" Type="Self.mMenuGrupo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="mMenuGrupo">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mNotificaciones_cEstatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="1" />
+          <End Role="mNotificaciones" Type="Self.mNotificaciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="mNotificaciones">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mNotificaciones_cTipoNotificaciones">
+          <End Role="cTipoNotificaciones" Type="Self.cTipoNotificaciones" Multiplicity="1" />
+          <End Role="mNotificaciones" Type="Self.mNotificaciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cTipoNotificaciones">
+              <PropertyRef Name="TipoNotificacionId" />
+            </Principal>
+            <Dependent Role="mNotificaciones">
+              <PropertyRef Name="TipoNotificacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mNotificaciones_mPlanSemanal">
+          <End Role="mPlanSemanal" Type="Self.mPlanSemanal" Multiplicity="1" />
+          <End Role="mNotificaciones" Type="Self.mNotificaciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mPlanSemanal">
+              <PropertyRef Name="PlanSemanalId" />
+            </Principal>
+            <Dependent Role="mNotificaciones">
+              <PropertyRef Name="PlanSemanalId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mNotificaciones_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="mNotificaciones" Type="Self.mNotificaciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="mNotificaciones">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mPermisos_cEstatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="0..1" />
+          <End Role="mPermisos" Type="Self.mPermisos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="mPermisos">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mPermisos_dModulo">
+          <End Role="dModulos" Type="Self.dModulos" Multiplicity="1" />
+          <End Role="mPermisos" Type="Self.mPermisos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dModulos">
+              <PropertyRef Name="ModuloId" />
+            </Principal>
+            <Dependent Role="mPermisos">
+              <PropertyRef Name="ModuloId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mPermisos_mRol">
+          <End Role="mRoles" Type="Self.mRoles" Multiplicity="1" />
+          <End Role="mPermisos" Type="Self.mPermisos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mRoles">
+              <PropertyRef Name="RolId" />
+            </Principal>
+            <Dependent Role="mPermisos">
+              <PropertyRef Name="RolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mPlanSemanal_cPeriodos">
+          <End Role="cPeriodos" Type="Self.cPeriodos" Multiplicity="1" />
+          <End Role="mPlanSemanal" Type="Self.mPlanSemanal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cPeriodos">
+              <PropertyRef Name="PeriodoId" />
+            </Principal>
+            <Dependent Role="mPlanSemanal">
+              <PropertyRef Name="PeriodoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mPlanSemanal_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="mPlanSemanal" Type="Self.mPlanSemanal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="mPlanSemanal">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mSolicitudesVehiculo_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="mSolicitudesVehiculo" Type="Self.mSolicitudesVehiculo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="mSolicitudesVehiculo">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mUsuarios_cEstatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="0..1" />
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="mUsuarios">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Periodos_Estatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="1" />
+          <End Role="cPeriodos" Type="Self.cPeriodos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="cPeriodos">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PlanSemanal_Estatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="1" />
+          <End Role="mPlanSemanal" Type="Self.mPlanSemanal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="mPlanSemanal">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Roles_Estatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="0..1" />
+          <End Role="mRoles" Type="Self.mRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="mRoles">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TipoActividades_Estatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="1" />
+          <End Role="cTipoActividades" Type="Self.cTipoActividades" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="cTipoActividades">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TipoFiguras_Estatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="1" />
+          <End Role="cTipoFiguras" Type="Self.cTipoFiguras" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="cTipoFiguras">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuarios_Rolesl">
+          <End Role="mRoles" Type="Self.mRoles" Multiplicity="1" />
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mRoles">
+              <PropertyRef Name="RolId" />
+            </Principal>
+            <Dependent Role="mUsuarios">
+              <PropertyRef Name="RolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Inaeba_GeorreferenciaModelStoreContainer">
+          <EntitySet Name="cCoordinacionesRegion" EntityType="Self.cCoordinacionesRegion" Schema="CATALOGO" store:Type="Tables" />
+          <EntitySet Name="cCoordinacionesZona" EntityType="Self.cCoordinacionesZona" Schema="CATALOGO" store:Type="Tables" />
+          <EntitySet Name="cEstatus" EntityType="Self.cEstatus" Schema="CATALOGO" store:Type="Tables" />
+          <EntitySet Name="cPeriodos" EntityType="Self.cPeriodos" Schema="CATALOGO" store:Type="Tables" />
+          <EntitySet Name="cTipoActividades" EntityType="Self.cTipoActividades" Schema="CATALOGO" store:Type="Tables" />
+          <EntitySet Name="cTipoEstatus" EntityType="Self.cTipoEstatus" Schema="CATALOGO" store:Type="Tables" />
+          <EntitySet Name="cTipoFiguras" EntityType="Self.cTipoFiguras" Schema="CATALOGO" store:Type="Tables" />
+          <EntitySet Name="cTipoNotificaciones" EntityType="Self.cTipoNotificaciones" Schema="CATALOGO" store:Type="Tables" />
+          <EntitySet Name="cTiposUsuario" EntityType="Self.cTiposUsuario" Schema="CATALOGO" store:Type="Tables" />
+          <EntitySet Name="mLecturaCertificados" EntityType="Self.mLecturaCertificados" Schema="CERTIFICADOS" store:Type="Tables" />
+          <EntitySet Name="mCoordinacionZonaUsuario" EntityType="Self.mCoordinacionZonaUsuario" Schema="COORDINACIONZONA" store:Type="Tables" />
+          <EntitySet Name="mEducandosCaptados" EntityType="Self.mEducandosCaptados" Schema="EDUCANDOS" store:Type="Tables" />
+          <EntitySet Name="dDetallePlanSemanal" EntityType="Self.dDetallePlanSemanal" Schema="PLANSEMANAL" store:Type="Tables" />
+          <EntitySet Name="mCheckIn" EntityType="Self.mCheckIn" Schema="PLANSEMANAL" store:Type="Tables" />
+          <EntitySet Name="mPlanSemanal" EntityType="Self.mPlanSemanal" Schema="PLANSEMANAL" store:Type="Tables" />
+          <EntitySet Name="dModulos" EntityType="Self.dModulos" Schema="SEGURIDAD" store:Type="Tables" />
+          <EntitySet Name="mBitacora" EntityType="Self.mBitacora" Schema="SEGURIDAD" store:Type="Tables" />
+          <EntitySet Name="mMenuGrupo" EntityType="Self.mMenuGrupo" Schema="SEGURIDAD" store:Type="Tables" />
+          <EntitySet Name="mPermisos" EntityType="Self.mPermisos" Schema="SEGURIDAD" store:Type="Tables" />
+          <EntitySet Name="mRoles" EntityType="Self.mRoles" Schema="SEGURIDAD" store:Type="Tables" />
+          <EntitySet Name="mNotificaciones" EntityType="Self.mNotificaciones" Schema="USUARIOS" store:Type="Tables" />
+          <EntitySet Name="mUsuarios" EntityType="Self.mUsuarios" Schema="USUARIOS" store:Type="Tables" />
+          <EntitySet Name="mSolicitudesVehiculo" EntityType="Self.mSolicitudesVehiculo" Schema="VEHICULOS" store:Type="Tables" />
+          <AssociationSet Name="FK_cCoordinacionesRegion_cEstatus" Association="Self.FK_cCoordinacionesRegion_cEstatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="cCoordinacionesRegion" EntitySet="cCoordinacionesRegion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cCoordinacionesRegion_mUsuarios" Association="Self.FK_cCoordinacionesRegion_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="cCoordinacionesRegion" EntitySet="cCoordinacionesRegion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cCoordinacionesZona_cEstatus" Association="Self.FK_cCoordinacionesZona_cEstatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="cCoordinacionesZona" EntitySet="cCoordinacionesZona" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cCoordinacionesZona_mUsuarios" Association="Self.FK_cCoordinacionesZona_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="cCoordinacionesZona" EntitySet="cCoordinacionesZona" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cEstatus_mUsuarios" Association="Self.FK_cEstatus_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="cEstatus" EntitySet="cEstatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cPeriodos_mUsuarios" Association="Self.FK_cPeriodos_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="cPeriodos" EntitySet="cPeriodos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cTipoActividades_mUsuarios" Association="Self.FK_cTipoActividades_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="cTipoActividades" EntitySet="cTipoActividades" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cTipoEstatus_mUsuarios" Association="Self.FK_cTipoEstatus_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="cTipoEstatus" EntitySet="cTipoEstatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cTipoFiguras_mUsuarios" Association="Self.FK_cTipoFiguras_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="cTipoFiguras" EntitySet="cTipoFiguras" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cTipoNotificaciones_mUsuarios" Association="Self.FK_cTipoNotificaciones_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="cTipoNotificaciones" EntitySet="cTipoNotificaciones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cTiposUsuario_cEstatus" Association="Self.FK_cTiposUsuario_cEstatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="cTiposUsuario" EntitySet="cTiposUsuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cTiposUsuario_mUsuarios" Association="Self.FK_cTiposUsuario_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="cTiposUsuario" EntitySet="cTiposUsuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dDetallePlanSemanal_mPlanSemanal" Association="Self.FK_dDetallePlanSemanal_mPlanSemanal">
+            <End Role="mPlanSemanal" EntitySet="mPlanSemanal" />
+            <End Role="dDetallePlanSemanal" EntitySet="dDetallePlanSemanal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dDetallePlanSemanal_mUsuarios" Association="Self.FK_dDetallePlanSemanal_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="dDetallePlanSemanal" EntitySet="dDetallePlanSemanal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetallePlanSemanal_Estatus" Association="Self.FK_DetallePlanSemanal_Estatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="dDetallePlanSemanal" EntitySet="dDetallePlanSemanal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetallePlanSemanal_TipoActividades" Association="Self.FK_DetallePlanSemanal_TipoActividades">
+            <End Role="cTipoActividades" EntitySet="cTipoActividades" />
+            <End Role="dDetallePlanSemanal" EntitySet="dDetallePlanSemanal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dModulos_cEstatus" Association="Self.FK_dModulos_cEstatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="dModulos" EntitySet="dModulos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dModulos_mMenuGrupo" Association="Self.FK_dModulos_mMenuGrupo">
+            <End Role="mMenuGrupo" EntitySet="mMenuGrupo" />
+            <End Role="dModulos" EntitySet="dModulos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Estatus_TipoEstatus" Association="Self.FK_Estatus_TipoEstatus">
+            <End Role="cTipoEstatus" EntitySet="cTipoEstatus" />
+            <End Role="cEstatus" EntitySet="cEstatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mCheckIn_dDetallePlanSemanal" Association="Self.FK_mCheckIn_dDetallePlanSemanal">
+            <End Role="dDetallePlanSemanal" EntitySet="dDetallePlanSemanal" />
+            <End Role="mCheckIn" EntitySet="mCheckIn" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mCheckIn_mUsuarios" Association="Self.FK_mCheckIn_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="mCheckIn" EntitySet="mCheckIn" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mCoordinacionZonaUsuario_cCoordinacionesZona" Association="Self.FK_mCoordinacionZonaUsuario_cCoordinacionesZona">
+            <End Role="cCoordinacionesZona" EntitySet="cCoordinacionesZona" />
+            <End Role="mCoordinacionZonaUsuario" EntitySet="mCoordinacionZonaUsuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mCoordinacionZonaUsuario_mUsuarios" Association="Self.FK_mCoordinacionZonaUsuario_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="mCoordinacionZonaUsuario" EntitySet="mCoordinacionZonaUsuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mCoordinacionZonaUsuario_mUsuarios1" Association="Self.FK_mCoordinacionZonaUsuario_mUsuarios1">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="mCoordinacionZonaUsuario" EntitySet="mCoordinacionZonaUsuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mEducandosCaptados_dDetallePlanSemanal" Association="Self.FK_mEducandosCaptados_dDetallePlanSemanal">
+            <End Role="dDetallePlanSemanal" EntitySet="dDetallePlanSemanal" />
+            <End Role="mEducandosCaptados" EntitySet="mEducandosCaptados" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mEducandosCaptados_mUsuarios" Association="Self.FK_mEducandosCaptados_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="mEducandosCaptados" EntitySet="mEducandosCaptados" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mLecturaCertificados_cEstatus" Association="Self.FK_mLecturaCertificados_cEstatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="mLecturaCertificados" EntitySet="mLecturaCertificados" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mLecturaCertificados_mCheckIn" Association="Self.FK_mLecturaCertificados_mCheckIn">
+            <End Role="mCheckIn" EntitySet="mCheckIn" />
+            <End Role="mLecturaCertificados" EntitySet="mLecturaCertificados" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mLecturaCertificados_mUsuarios" Association="Self.FK_mLecturaCertificados_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="mLecturaCertificados" EntitySet="mLecturaCertificados" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mMenuGrupo_Estatus" Association="Self.FK_mMenuGrupo_Estatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="mMenuGrupo" EntitySet="mMenuGrupo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mNotificaciones_cEstatus" Association="Self.FK_mNotificaciones_cEstatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="mNotificaciones" EntitySet="mNotificaciones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mNotificaciones_cTipoNotificaciones" Association="Self.FK_mNotificaciones_cTipoNotificaciones">
+            <End Role="cTipoNotificaciones" EntitySet="cTipoNotificaciones" />
+            <End Role="mNotificaciones" EntitySet="mNotificaciones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mNotificaciones_mPlanSemanal" Association="Self.FK_mNotificaciones_mPlanSemanal">
+            <End Role="mPlanSemanal" EntitySet="mPlanSemanal" />
+            <End Role="mNotificaciones" EntitySet="mNotificaciones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mNotificaciones_mUsuarios" Association="Self.FK_mNotificaciones_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="mNotificaciones" EntitySet="mNotificaciones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mPermisos_cEstatus" Association="Self.FK_mPermisos_cEstatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="mPermisos" EntitySet="mPermisos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mPermisos_dModulo" Association="Self.FK_mPermisos_dModulo">
+            <End Role="dModulos" EntitySet="dModulos" />
+            <End Role="mPermisos" EntitySet="mPermisos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mPermisos_mRol" Association="Self.FK_mPermisos_mRol">
+            <End Role="mRoles" EntitySet="mRoles" />
+            <End Role="mPermisos" EntitySet="mPermisos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mPlanSemanal_cPeriodos" Association="Self.FK_mPlanSemanal_cPeriodos">
+            <End Role="cPeriodos" EntitySet="cPeriodos" />
+            <End Role="mPlanSemanal" EntitySet="mPlanSemanal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mPlanSemanal_mUsuarios" Association="Self.FK_mPlanSemanal_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="mPlanSemanal" EntitySet="mPlanSemanal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mSolicitudesVehiculo_mUsuarios" Association="Self.FK_mSolicitudesVehiculo_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="mSolicitudesVehiculo" EntitySet="mSolicitudesVehiculo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mUsuarios_cEstatus" Association="Self.FK_mUsuarios_cEstatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Periodos_Estatus" Association="Self.FK_Periodos_Estatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="cPeriodos" EntitySet="cPeriodos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PlanSemanal_Estatus" Association="Self.FK_PlanSemanal_Estatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="mPlanSemanal" EntitySet="mPlanSemanal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Roles_Estatus" Association="Self.FK_Roles_Estatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="mRoles" EntitySet="mRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TipoActividades_Estatus" Association="Self.FK_TipoActividades_Estatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="cTipoActividades" EntitySet="cTipoActividades" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TipoFiguras_Estatus" Association="Self.FK_TipoFiguras_Estatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="cTipoFiguras" EntitySet="cTipoFiguras" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuarios_Rolesl" Association="Self.FK_Usuarios_Rolesl">
+            <End Role="mRoles" EntitySet="mRoles" />
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Inaeba_GeorreferenciaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="cCoordinacionesRegion">
+          <Key>
+            <PropertyRef Name="CoordinacionRegionId" />
+          </Key>
+          <Property Name="CoordinacionRegionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioCreacionId" Type="Int32" Nullable="false" />
+          <Property Name="DescripcionCoordinacionRegion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EstatusId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="cEstatus" Relationship="Self.FK_cCoordinacionesRegion_cEstatus" FromRole="cCoordinacionesRegion" ToRole="cEstatus" />
+          <NavigationProperty Name="mUsuarios" Relationship="Self.FK_cCoordinacionesRegion_mUsuarios" FromRole="cCoordinacionesRegion" ToRole="mUsuarios" />
+        </EntityType>
+        <EntityType Name="cCoordinacionesZona">
+          <Key>
+            <PropertyRef Name="CoordinacionZonaId" />
+          </Key>
+          <Property Name="CoordinacionZonaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioCreacionId" Type="Int32" Nullable="false" />
+          <Property Name="DescripcionCoordinacionZona" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EstatusId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="cEstatus" Relationship="Self.FK_cCoordinacionesZona_cEstatus" FromRole="cCoordinacionesZona" ToRole="cEstatus" />
+          <NavigationProperty Name="mUsuarios" Relationship="Self.FK_cCoordinacionesZona_mUsuarios" FromRole="cCoordinacionesZona" ToRole="mUsuarios" />
+          <NavigationProperty Name="mCoordinacionZonaUsuario" Relationship="Self.FK_mCoordinacionZonaUsuario_cCoordinacionesZona" FromRole="cCoordinacionesZona" ToRole="mCoordinacionZonaUsuario" />
+        </EntityType>
+        <EntityType Name="cEstatus">
+          <Key>
+            <PropertyRef Name="EstatusId" />
+          </Key>
+          <Property Name="EstatusId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioCreacionId" Type="Int32" Nullable="false" />
+          <Property Name="TipoEstatusId" Type="Int32" Nullable="false" />
+          <Property Name="NombreEstatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="cCoordinacionesRegion" Relationship="Self.FK_cCoordinacionesRegion_cEstatus" FromRole="cEstatus" ToRole="cCoordinacionesRegion" />
+          <NavigationProperty Name="cCoordinacionesZona" Relationship="Self.FK_cCoordinacionesZona_cEstatus" FromRole="cEstatus" ToRole="cCoordinacionesZona" />
+          <NavigationProperty Name="mUsuarios" Relationship="Self.FK_cEstatus_mUsuarios" FromRole="cEstatus" ToRole="mUsuarios" />
+          <NavigationProperty Name="cTiposUsuario" Relationship="Self.FK_cTiposUsuario_cEstatus" FromRole="cEstatus" ToRole="cTiposUsuario" />
+          <NavigationProperty Name="dDetallePlanSemanal" Relationship="Self.FK_DetallePlanSemanal_Estatus" FromRole="cEstatus" ToRole="dDetallePlanSemanal" />
+          <NavigationProperty Name="dModulos" Relationship="Self.FK_dModulos_cEstatus" FromRole="cEstatus" ToRole="dModulos" />
+          <NavigationProperty Name="cTipoEstatus" Relationship="Self.FK_Estatus_TipoEstatus" FromRole="cEstatus" ToRole="cTipoEstatus" />
+          <NavigationProperty Name="mLecturaCertificados" Relationship="Self.FK_mLecturaCertificados_cEstatus" FromRole="cEstatus" ToRole="mLecturaCertificados" />
+          <NavigationProperty Name="mMenuGrupo" Relationship="Self.FK_mMenuGrupo_Estatus" FromRole="cEstatus" ToRole="mMenuGrupo" />
+          <NavigationProperty Name="mNotificaciones" Relationship="Self.FK_mNotificaciones_cEstatus" FromRole="cEstatus" ToRole="mNotificaciones" />
+          <NavigationProperty Name="mPermisos" Relationship="Self.FK_mPermisos_cEstatus" FromRole="cEstatus" ToRole="mPermisos" />
+          <NavigationProperty Name="mUsuarios1" Relationship="Self.FK_mUsuarios_cEstatus" FromRole="cEstatus" ToRole="mUsuarios" />
+          <NavigationProperty Name="cPeriodos" Relationship="Self.FK_Periodos_Estatus" FromRole="cEstatus" ToRole="cPeriodos" />
+          <NavigationProperty Name="mPlanSemanal" Relationship="Self.FK_PlanSemanal_Estatus" FromRole="cEstatus" ToRole="mPlanSemanal" />
+          <NavigationProperty Name="mRoles" Relationship="Self.FK_Roles_Estatus" FromRole="cEstatus" ToRole="mRoles" />
+          <NavigationProperty Name="cTipoActividades" Relationship="Self.FK_TipoActividades_Estatus" FromRole="cEstatus" ToRole="cTipoActividades" />
+          <NavigationProperty Name="cTipoFiguras" Relationship="Self.FK_TipoFiguras_Estatus" FromRole="cEstatus" ToRole="cTipoFiguras" />
+        </EntityType>
+        <EntityType Name="cPeriodos">
+          <Key>
+            <PropertyRef Name="PeriodoId" />
+          </Key>
+          <Property Name="PeriodoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioCreacionId" Type="Int32" Nullable="false" />
+          <Property Name="EstatusId" Type="Int32" Nullable="false" />
+          <Property Name="FechaInicio" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="FechaFin" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DecripcionPeriodo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="cEstatus" Relationship="Self.FK_Periodos_Estatus" FromRole="cPeriodos" ToRole="cEstatus" />
+          <NavigationProperty Name="mUsuarios" Relationship="Self.FK_cPeriodos_mUsuarios" FromRole="cPeriodos" ToRole="mUsuarios" />
+          <NavigationProperty Name="mPlanSemanal" Relationship="Self.FK_mPlanSemanal_cPeriodos" FromRole="cPeriodos" ToRole="mPlanSemanal" />
+        </EntityType>
+        <EntityType Name="cTipoActividades">
+          <Key>
+            <PropertyRef Name="TipoActividadId" />
+          </Key>
+          <Property Name="TipoActividadId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioCreacionId" Type="Int32" Nullable="false" />
+          <Property Name="EstatusId" Type="Int32" Nullable="false" />
+          <Property Name="NombreActividad" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DescripcionActividad" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RequiereCheckIn" Type="Boolean" Nullable="false" />
+          <Property Name="ActividadEspecial" Type="Boolean" />
+          <Property Name="Mensaje" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="cEstatus" Relationship="Self.FK_TipoActividades_Estatus" FromRole="cTipoActividades" ToRole="cEstatus" />
+          <NavigationProperty Name="mUsuarios" Relationship="Self.FK_cTipoActividades_mUsuarios" FromRole="cTipoActividades" ToRole="mUsuarios" />
+          <NavigationProperty Name="dDetallePlanSemanal" Relationship="Self.FK_DetallePlanSemanal_TipoActividades" FromRole="cTipoActividades" ToRole="dDetallePlanSemanal" />
+        </EntityType>
+        <EntityType Name="cTipoEstatus">
+          <Key>
+            <PropertyRef Name="TipoEstatusId" />
+          </Key>
+          <Property Name="TipoEstatusId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioCreacionId" Type="Int32" Nullable="false" />
+          <Property Name="nombreTipoEstatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="cEstatus" Relationship="Self.FK_Estatus_TipoEstatus" FromRole="cTipoEstatus" ToRole="cEstatus" />
+          <NavigationProperty Name="mUsuarios" Relationship="Self.FK_cTipoEstatus_mUsuarios" FromRole="cTipoEstatus" ToRole="mUsuarios" />
+        </EntityType>
+        <EntityType Name="cTipoFiguras">
+          <Key>
+            <PropertyRef Name="TipoFiguraId" />
+          </Key>
+          <Property Name="TipoFiguraId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioCreacionId" Type="Int32" Nullable="false" />
+          <Property Name="EstatusId" Type="Int32" Nullable="false" />
+          <Property Name="DescripcionTipoFigura" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="cEstatus" Relationship="Self.FK_TipoFiguras_Estatus" FromRole="cTipoFiguras" ToRole="cEstatus" />
+          <NavigationProperty Name="mUsuarios" Relationship="Self.FK_cTipoFiguras_mUsuarios" FromRole="cTipoFiguras" ToRole="mUsuarios" />
+        </EntityType>
+        <EntityType Name="cTipoNotificaciones">
+          <Key>
+            <PropertyRef Name="TipoNotificacionId" />
+          </Key>
+          <Property Name="TipoNotificacionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioCreacionId" Type="Int32" Nullable="false" />
+          <Property Name="DescripcionNotificacion" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="mUsuarios" Relationship="Self.FK_cTipoNotificaciones_mUsuarios" FromRole="cTipoNotificaciones" ToRole="mUsuarios" />
+          <NavigationProperty Name="mNotificaciones" Relationship="Self.FK_mNotificaciones_cTipoNotificaciones" FromRole="cTipoNotificaciones" ToRole="mNotificaciones" />
+        </EntityType>
+        <EntityType Name="cTiposUsuario">
+          <Key>
+            <PropertyRef Name="TipoUsuarioId" />
+          </Key>
+          <Property Name="TipoUsuarioId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioCreacionId" Type="Int32" Nullable="false" />
+          <Property Name="DescripcionTipo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EstatusId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="cEstatus" Relationship="Self.FK_cTiposUsuario_cEstatus" FromRole="cTiposUsuario" ToRole="cEstatus" />
+          <NavigationProperty Name="mUsuarios" Relationship="Self.FK_cTiposUsuario_mUsuarios" FromRole="cTiposUsuario" ToRole="mUsuarios" />
+        </EntityType>
+        <EntityType Name="mLecturaCertificados">
+          <Key>
+            <PropertyRef Name="LecturaCertificadoId" />
+          </Key>
+          <Property Name="LecturaCertificadoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioCreacionId" Type="Int32" Nullable="false" />
+          <Property Name="FolioCertificado" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EstatusId" Type="Int32" Nullable="false" />
+          <Property Name="CheckInId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="cEstatus" Relationship="Self.FK_mLecturaCertificados_cEstatus" FromRole="mLecturaCertificados" ToRole="cEstatus" />
+          <NavigationProperty Name="mCheckIn" Relationship="Self.FK_mLecturaCertificados_mCheckIn" FromRole="mLecturaCertificados" ToRole="mCheckIn" />
+          <NavigationProperty Name="mUsuarios" Relationship="Self.FK_mLecturaCertificados_mUsuarios" FromRole="mLecturaCertificados" ToRole="mUsuarios" />
+        </EntityType>
+        <EntityType Name="mCoordinacionZonaUsuario">
+          <Key>
+            <PropertyRef Name="CordinacionZonaUsuarioId" />
+          </Key>
+          <Property Name="CordinacionZonaUsuarioId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioCreacionId" Type="Int32" Nullable="false" />
+          <Property Name="CoordinacionZonaId" Type="Int32" Nullable="false" />
+          <Property Name="UsuarioId" Type="Int32" Nullable="false" />
+          <Property Name="JefeCoordinacionZona" Type="Boolean" />
+          <NavigationProperty Name="cCoordinacionesZona" Relationship="Self.FK_mCoordinacionZonaUsuario_cCoordinacionesZona" FromRole="mCoordinacionZonaUsuario" ToRole="cCoordinacionesZona" />
+          <NavigationProperty Name="mUsuarios" Relationship="Self.FK_mCoordinacionZonaUsuario_mUsuarios" FromRole="mCoordinacionZonaUsuario" ToRole="mUsuarios" />
+          <NavigationProperty Name="mUsuarios1" Relationship="Self.FK_mCoordinacionZonaUsuario_mUsuarios1" FromRole="mCoordinacionZonaUsuario" ToRole="mUsuarios" />
+        </EntityType>
+        <EntityType Name="mEducandosCaptados">
+          <Key>
+            <PropertyRef Name="EducandoCaptadoId" />
+          </Key>
+          <Property Name="EducandoCaptadoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioCreacionId" Type="Int32" Nullable="false" />
+          <Property Name="ApellidoPaterno" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ApellidoMaterno" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nombres" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FechaNacimiento" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EntidadNacimientoId" Type="Int32" Nullable="false" />
+          <Property Name="Calle" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Numero" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ColoniaLocalidad" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DependenciaAliado" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="NivelEducativoId" Type="Int32" Nullable="false" />
+          <Property Name="TipoExamenId" Type="Int32" />
+          <Property Name="CurpEducando" Type="String" MaxLength="18" FixedLength="false" Unicode="false" />
+          <Property Name="DetallePlanId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="dDetallePlanSemanal" Relationship="Self.FK_mEducandosCaptados_dDetallePlanSemanal" FromRole="mEducandosCaptados" ToRole="dDetallePlanSemanal" />
+          <NavigationProperty Name="mUsuarios" Relationship="Self.FK_mEducandosCaptados_mUsuarios" FromRole="mEducandosCaptados" ToRole="mUsuarios" />
+        </EntityType>
+        <EntityType Name="dDetallePlanSemanal">
+          <Key>
+            <PropertyRef Name="DetallePlanId" />
+          </Key>
+          <Property Name="DetallePlanId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PlanSemanalId" Type="Int32" Nullable="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioCreacionId" Type="Int32" Nullable="false" />
+          <Property Name="EstatusId" Type="Int32" Nullable="false" />
+          <Property Name="TipoActividadId" Type="Int32" Nullable="false" />
+          <Property Name="FechaActividad" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="HoraActividad" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="CantidadCheckIn" Type="Int32" Nullable="false" />
+          <Property Name="DescripcionActividad" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ComentariosNoValidacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ComentariosRechazo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ActividadRechazada" Type="Boolean" />
+          <NavigationProperty Name="cEstatus" Relationship="Self.FK_DetallePlanSemanal_Estatus" FromRole="dDetallePlanSemanal" ToRole="cEstatus" />
+          <NavigationProperty Name="cTipoActividades" Relationship="Self.FK_DetallePlanSemanal_TipoActividades" FromRole="dDetallePlanSemanal" ToRole="cTipoActividades" />
+          <NavigationProperty Name="mEducandosCaptados" Relationship="Self.FK_mEducandosCaptados_dDetallePlanSemanal" FromRole="dDetallePlanSemanal" ToRole="mEducandosCaptados" />
+          <NavigationProperty Name="mPlanSemanal" Relationship="Self.FK_dDetallePlanSemanal_mPlanSemanal" FromRole="dDetallePlanSemanal" ToRole="mPlanSemanal" />
+          <NavigationProperty Name="mUsuarios" Relationship="Self.FK_dDetallePlanSemanal_mUsuarios" FromRole="dDetallePlanSemanal" ToRole="mUsuarios" />
+          <NavigationProperty Name="mCheckIn" Relationship="Self.FK_mCheckIn_dDetallePlanSemanal" FromRole="dDetallePlanSemanal" ToRole="mCheckIn" />
+        </EntityType>
+        <EntityType Name="mCheckIn">
+          <Key>
+            <PropertyRef Name="CheckInId" />
+          </Key>
+          <Property Name="CheckInId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioCreacionId" Type="Int32" Nullable="false" />
+          <Property Name="Coordenadas" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DetallePlanId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="mLecturaCertificados" Relationship="Self.FK_mLecturaCertificados_mCheckIn" FromRole="mCheckIn" ToRole="mLecturaCertificados" />
+          <NavigationProperty Name="dDetallePlanSemanal" Relationship="Self.FK_mCheckIn_dDetallePlanSemanal" FromRole="mCheckIn" ToRole="dDetallePlanSemanal" />
+          <NavigationProperty Name="mUsuarios" Relationship="Self.FK_mCheckIn_mUsuarios" FromRole="mCheckIn" ToRole="mUsuarios" />
+        </EntityType>
+        <EntityType Name="mPlanSemanal">
+          <Key>
+            <PropertyRef Name="PlanSemanalId" />
+          </Key>
+          <Property Name="PlanSemanalId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioCreacionId" Type="Int32" Nullable="false" />
+          <Property Name="EstatusId" Type="Int32" Nullable="false" />
+          <Property Name="DescripcionPlaneacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PeriodoId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="cEstatus" Relationship="Self.FK_PlanSemanal_Estatus" FromRole="mPlanSemanal" ToRole="cEstatus" />
+          <NavigationProperty Name="cPeriodos" Relationship="Self.FK_mPlanSemanal_cPeriodos" FromRole="mPlanSemanal" ToRole="cPeriodos" />
+          <NavigationProperty Name="dDetallePlanSemanal" Relationship="Self.FK_dDetallePlanSemanal_mPlanSemanal" FromRole="mPlanSemanal" ToRole="dDetallePlanSemanal" />
+          <NavigationProperty Name="mNotificaciones" Relationship="Self.FK_mNotificaciones_mPlanSemanal" FromRole="mPlanSemanal" ToRole="mNotificaciones" />
+          <NavigationProperty Name="mUsuarios" Relationship="Self.FK_mPlanSemanal_mUsuarios" FromRole="mPlanSemanal" ToRole="mUsuarios" />
+        </EntityType>
+        <EntityType Name="dModulos">
+          <Key>
+            <PropertyRef Name="ModuloId" />
+          </Key>
+          <Property Name="ModuloId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaCreacion" Type="DateTime" Precision="3" />
+          <Property Name="EstatusId" Type="Int32" />
+          <Property Name="NombreModulo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UrlModulo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="IconModulo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="OrdenModulo" Type="Int32" />
+          <Property Name="MenuGrupoId" Type="Int32" />
+          <NavigationProperty Name="cEstatus" Relationship="Self.FK_dModulos_cEstatus" FromRole="dModulos" ToRole="cEstatus" />
+          <NavigationProperty Name="mMenuGrupo" Relationship="Self.FK_dModulos_mMenuGrupo" FromRole="dModulos" ToRole="mMenuGrupo" />
+          <NavigationProperty Name="mPermisos" Relationship="Self.FK_mPermisos_dModulo" FromRole="dModulos" ToRole="mPermisos" />
+        </EntityType>
+        <EntityType Name="mBitacora">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ExecuteDate" Type="DateTime" Precision="3" />
+          <Property Name="Ip" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Reqtype" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Reqdata" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+          <Property Name="Controller" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Action" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="mMenuGrupo">
+          <Key>
+            <PropertyRef Name="MenuGrupoId" />
+          </Key>
+          <Property Name="MenuGrupoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaCreacion" Type="DateTime" Precision="3" />
+          <Property Name="EstatusId" Type="Int32" />
+          <Property Name="NombreMenuGrupo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IconGrupo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="OrdenGrupo" Type="Int32" />
+          <NavigationProperty Name="cEstatus" Relationship="Self.FK_mMenuGrupo_Estatus" FromRole="mMenuGrupo" ToRole="cEstatus" />
+          <NavigationProperty Name="dModulos" Relationship="Self.FK_dModulos_mMenuGrupo" FromRole="mMenuGrupo" ToRole="dModulos" />
+        </EntityType>
+        <EntityType Name="mPermisos">
+          <Key>
+            <PropertyRef Name="ModuloId" />
+            <PropertyRef Name="RolId" />
+          </Key>
+          <Property Name="ModuloId" Type="Int32" Nullable="false" />
+          <Property Name="RolId" Type="Int32" Nullable="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Precision="3" />
+          <Property Name="EstatusId" Type="Int32" />
+          <Property Name="LecturaPermiso" Type="Boolean" />
+          <Property Name="EscrituraPermiso" Type="Boolean" />
+          <Property Name="EdicionPermiso" Type="Boolean" />
+          <Property Name="ClonadoPermiso" Type="Boolean" />
+          <Property Name="BorradoPermiso" Type="Boolean" />
+          <NavigationProperty Name="cEstatus" Relationship="Self.FK_mPermisos_cEstatus" FromRole="mPermisos" ToRole="cEstatus" />
+          <NavigationProperty Name="dModulos" Relationship="Self.FK_mPermisos_dModulo" FromRole="mPermisos" ToRole="dModulos" />
+          <NavigationProperty Name="mRoles" Relationship="Self.FK_mPermisos_mRol" FromRole="mPermisos" ToRole="mRoles" />
+        </EntityType>
+        <EntityType Name="mRoles">
+          <Key>
+            <PropertyRef Name="RolId" />
+          </Key>
+          <Property Name="RolId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaCreacion" Type="DateTime" Precision="3" />
+          <Property Name="EstatusId" Type="Int32" />
+          <Property Name="NombreRol" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="cEstatus" Relationship="Self.FK_Roles_Estatus" FromRole="mRoles" ToRole="cEstatus" />
+          <NavigationProperty Name="mPermisos" Relationship="Self.FK_mPermisos_mRol" FromRole="mRoles" ToRole="mPermisos" />
+          <NavigationProperty Name="mUsuarios" Relationship="Self.FK_Usuarios_Rolesl" FromRole="mRoles" ToRole="mUsuarios" />
+        </EntityType>
+        <EntityType Name="mNotificaciones">
+          <Key>
+            <PropertyRef Name="NotificacionId" />
+          </Key>
+          <Property Name="NotificacionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EstatusId" Type="Int32" Nullable="false" />
+          <Property Name="TipoNotificacionId" Type="Int32" Nullable="false" />
+          <Property Name="PlanSemanalId" Type="Int32" Nullable="false" />
+          <Property Name="UsuarioId" Type="Int32" Nullable="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="cEstatus" Relationship="Self.FK_mNotificaciones_cEstatus" FromRole="mNotificaciones" ToRole="cEstatus" />
+          <NavigationProperty Name="cTipoNotificaciones" Relationship="Self.FK_mNotificaciones_cTipoNotificaciones" FromRole="mNotificaciones" ToRole="cTipoNotificaciones" />
+          <NavigationProperty Name="mPlanSemanal" Relationship="Self.FK_mNotificaciones_mPlanSemanal" FromRole="mNotificaciones" ToRole="mPlanSemanal" />
+          <NavigationProperty Name="mUsuarios" Relationship="Self.FK_mNotificaciones_mUsuarios" FromRole="mNotificaciones" ToRole="mUsuarios" />
+        </EntityType>
+        <EntityType Name="mUsuarios">
+          <Key>
+            <PropertyRef Name="UsuarioId" />
+          </Key>
+          <Property Name="UsuarioId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaCreacion" Type="DateTime" Precision="3" />
+          <Property Name="EstatusId" Type="Int32" />
+          <Property Name="LoginUsuario" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PasswordUsuario" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="NombresUsuario" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ApellidosUsuario" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="RolId" Type="Int32" Nullable="false" />
+          <Property Name="ImagenUsuario" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+          <Property Name="EmailUsuario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="cCoordinacionesRegion" Relationship="Self.FK_cCoordinacionesRegion_mUsuarios" FromRole="mUsuarios" ToRole="cCoordinacionesRegion" />
+          <NavigationProperty Name="cCoordinacionesZona" Relationship="Self.FK_cCoordinacionesZona_mUsuarios" FromRole="mUsuarios" ToRole="cCoordinacionesZona" />
+          <NavigationProperty Name="cEstatus" Relationship="Self.FK_cEstatus_mUsuarios" FromRole="mUsuarios" ToRole="cEstatus" />
+          <NavigationProperty Name="cEstatus1" Relationship="Self.FK_mUsuarios_cEstatus" FromRole="mUsuarios" ToRole="cEstatus" />
+          <NavigationProperty Name="cPeriodos" Relationship="Self.FK_cPeriodos_mUsuarios" FromRole="mUsuarios" ToRole="cPeriodos" />
+          <NavigationProperty Name="cTipoActividades" Relationship="Self.FK_cTipoActividades_mUsuarios" FromRole="mUsuarios" ToRole="cTipoActividades" />
+          <NavigationProperty Name="cTipoEstatus" Relationship="Self.FK_cTipoEstatus_mUsuarios" FromRole="mUsuarios" ToRole="cTipoEstatus" />
+          <NavigationProperty Name="cTipoFiguras" Relationship="Self.FK_cTipoFiguras_mUsuarios" FromRole="mUsuarios" ToRole="cTipoFiguras" />
+          <NavigationProperty Name="cTipoNotificaciones" Relationship="Self.FK_cTipoNotificaciones_mUsuarios" FromRole="mUsuarios" ToRole="cTipoNotificaciones" />
+          <NavigationProperty Name="cTiposUsuario" Relationship="Self.FK_cTiposUsuario_mUsuarios" FromRole="mUsuarios" ToRole="cTiposUsuario" />
+          <NavigationProperty Name="mLecturaCertificados" Relationship="Self.FK_mLecturaCertificados_mUsuarios" FromRole="mUsuarios" ToRole="mLecturaCertificados" />
+          <NavigationProperty Name="mCoordinacionZonaUsuario" Relationship="Self.FK_mCoordinacionZonaUsuario_mUsuarios" FromRole="mUsuarios" ToRole="mCoordinacionZonaUsuario" />
+          <NavigationProperty Name="mCoordinacionZonaUsuario1" Relationship="Self.FK_mCoordinacionZonaUsuario_mUsuarios1" FromRole="mUsuarios" ToRole="mCoordinacionZonaUsuario" />
+          <NavigationProperty Name="mEducandosCaptados" Relationship="Self.FK_mEducandosCaptados_mUsuarios" FromRole="mUsuarios" ToRole="mEducandosCaptados" />
+          <NavigationProperty Name="dDetallePlanSemanal" Relationship="Self.FK_dDetallePlanSemanal_mUsuarios" FromRole="mUsuarios" ToRole="dDetallePlanSemanal" />
+          <NavigationProperty Name="mCheckIn" Relationship="Self.FK_mCheckIn_mUsuarios" FromRole="mUsuarios" ToRole="mCheckIn" />
+          <NavigationProperty Name="mPlanSemanal" Relationship="Self.FK_mPlanSemanal_mUsuarios" FromRole="mUsuarios" ToRole="mPlanSemanal" />
+          <NavigationProperty Name="mRoles" Relationship="Self.FK_Usuarios_Rolesl" FromRole="mUsuarios" ToRole="mRoles" />
+          <NavigationProperty Name="mNotificaciones" Relationship="Self.FK_mNotificaciones_mUsuarios" FromRole="mUsuarios" ToRole="mNotificaciones" />
+          <NavigationProperty Name="mSolicitudesVehiculo" Relationship="Self.FK_mSolicitudesVehiculo_mUsuarios" FromRole="mUsuarios" ToRole="mSolicitudesVehiculo" />
+        </EntityType>
+        <EntityType Name="mSolicitudesVehiculo">
+          <Key>
+            <PropertyRef Name="SolicitudVehiculoId" />
+          </Key>
+          <Property Name="SolicitudVehiculoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioCreacionId" Type="Int32" Nullable="false" />
+          <Property Name="VehiculoId" Type="Int32" Nullable="false" />
+          <Property Name="FechaUso" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SolicitudSipaeId" Type="Int32" />
+          <NavigationProperty Name="mUsuarios" Relationship="Self.FK_mSolicitudesVehiculo_mUsuarios" FromRole="mSolicitudesVehiculo" ToRole="mUsuarios" />
+        </EntityType>
+        <Association Name="FK_cCoordinacionesRegion_cEstatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="1" />
+          <End Role="cCoordinacionesRegion" Type="Self.cCoordinacionesRegion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="cCoordinacionesRegion">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cCoordinacionesRegion_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="cCoordinacionesRegion" Type="Self.cCoordinacionesRegion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="cCoordinacionesRegion">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cCoordinacionesZona_cEstatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="1" />
+          <End Role="cCoordinacionesZona" Type="Self.cCoordinacionesZona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="cCoordinacionesZona">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cCoordinacionesZona_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="cCoordinacionesZona" Type="Self.cCoordinacionesZona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="cCoordinacionesZona">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mCoordinacionZonaUsuario_cCoordinacionesZona">
+          <End Role="cCoordinacionesZona" Type="Self.cCoordinacionesZona" Multiplicity="1" />
+          <End Role="mCoordinacionZonaUsuario" Type="Self.mCoordinacionZonaUsuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cCoordinacionesZona">
+              <PropertyRef Name="CoordinacionZonaId" />
+            </Principal>
+            <Dependent Role="mCoordinacionZonaUsuario">
+              <PropertyRef Name="CoordinacionZonaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cEstatus_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="cEstatus">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cTiposUsuario_cEstatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="1" />
+          <End Role="cTiposUsuario" Type="Self.cTiposUsuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="cTiposUsuario">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetallePlanSemanal_Estatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="1" />
+          <End Role="dDetallePlanSemanal" Type="Self.dDetallePlanSemanal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="dDetallePlanSemanal">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dModulos_cEstatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="0..1" />
+          <End Role="dModulos" Type="Self.dModulos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="dModulos">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Estatus_TipoEstatus">
+          <End Role="cTipoEstatus" Type="Self.cTipoEstatus" Multiplicity="1" />
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cTipoEstatus">
+              <PropertyRef Name="TipoEstatusId" />
+            </Principal>
+            <Dependent Role="cEstatus">
+              <PropertyRef Name="TipoEstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mLecturaCertificados_cEstatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="1" />
+          <End Role="mLecturaCertificados" Type="Self.mLecturaCertificados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="mLecturaCertificados">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mMenuGrupo_Estatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="0..1" />
+          <End Role="mMenuGrupo" Type="Self.mMenuGrupo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="mMenuGrupo">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mNotificaciones_cEstatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="1" />
+          <End Role="mNotificaciones" Type="Self.mNotificaciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="mNotificaciones">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mPermisos_cEstatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="0..1" />
+          <End Role="mPermisos" Type="Self.mPermisos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="mPermisos">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mUsuarios_cEstatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="0..1" />
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="mUsuarios">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Periodos_Estatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="1" />
+          <End Role="cPeriodos" Type="Self.cPeriodos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="cPeriodos">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PlanSemanal_Estatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="1" />
+          <End Role="mPlanSemanal" Type="Self.mPlanSemanal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="mPlanSemanal">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Roles_Estatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="0..1" />
+          <End Role="mRoles" Type="Self.mRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="mRoles">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TipoActividades_Estatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="1" />
+          <End Role="cTipoActividades" Type="Self.cTipoActividades" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="cTipoActividades">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TipoFiguras_Estatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="1" />
+          <End Role="cTipoFiguras" Type="Self.cTipoFiguras" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="cTipoFiguras">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cPeriodos_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="cPeriodos" Type="Self.cPeriodos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="cPeriodos">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mPlanSemanal_cPeriodos">
+          <End Role="cPeriodos" Type="Self.cPeriodos" Multiplicity="1" />
+          <End Role="mPlanSemanal" Type="Self.mPlanSemanal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cPeriodos">
+              <PropertyRef Name="PeriodoId" />
+            </Principal>
+            <Dependent Role="mPlanSemanal">
+              <PropertyRef Name="PeriodoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cTipoActividades_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="cTipoActividades" Type="Self.cTipoActividades" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="cTipoActividades">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetallePlanSemanal_TipoActividades">
+          <End Role="cTipoActividades" Type="Self.cTipoActividades" Multiplicity="1" />
+          <End Role="dDetallePlanSemanal" Type="Self.dDetallePlanSemanal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cTipoActividades">
+              <PropertyRef Name="TipoActividadId" />
+            </Principal>
+            <Dependent Role="dDetallePlanSemanal">
+              <PropertyRef Name="TipoActividadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cTipoEstatus_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="cTipoEstatus" Type="Self.cTipoEstatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="cTipoEstatus">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cTipoFiguras_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="cTipoFiguras" Type="Self.cTipoFiguras" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="cTipoFiguras">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cTipoNotificaciones_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="cTipoNotificaciones" Type="Self.cTipoNotificaciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="cTipoNotificaciones">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mNotificaciones_cTipoNotificaciones">
+          <End Role="cTipoNotificaciones" Type="Self.cTipoNotificaciones" Multiplicity="1" />
+          <End Role="mNotificaciones" Type="Self.mNotificaciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cTipoNotificaciones">
+              <PropertyRef Name="TipoNotificacionId" />
+            </Principal>
+            <Dependent Role="mNotificaciones">
+              <PropertyRef Name="TipoNotificacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cTiposUsuario_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="cTiposUsuario" Type="Self.cTiposUsuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="cTiposUsuario">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mLecturaCertificados_mCheckIn">
+          <End Role="mCheckIn" Type="Self.mCheckIn" Multiplicity="1" />
+          <End Role="mLecturaCertificados" Type="Self.mLecturaCertificados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mCheckIn">
+              <PropertyRef Name="CheckInId" />
+            </Principal>
+            <Dependent Role="mLecturaCertificados">
+              <PropertyRef Name="CheckInId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mLecturaCertificados_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="mLecturaCertificados" Type="Self.mLecturaCertificados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="mLecturaCertificados">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mCoordinacionZonaUsuario_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="mCoordinacionZonaUsuario" Type="Self.mCoordinacionZonaUsuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="mCoordinacionZonaUsuario">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mCoordinacionZonaUsuario_mUsuarios1">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="mCoordinacionZonaUsuario" Type="Self.mCoordinacionZonaUsuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="mCoordinacionZonaUsuario">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mEducandosCaptados_dDetallePlanSemanal">
+          <End Role="dDetallePlanSemanal" Type="Self.dDetallePlanSemanal" Multiplicity="1" />
+          <End Role="mEducandosCaptados" Type="Self.mEducandosCaptados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dDetallePlanSemanal">
+              <PropertyRef Name="DetallePlanId" />
+            </Principal>
+            <Dependent Role="mEducandosCaptados">
+              <PropertyRef Name="DetallePlanId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mEducandosCaptados_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="mEducandosCaptados" Type="Self.mEducandosCaptados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="mEducandosCaptados">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dDetallePlanSemanal_mPlanSemanal">
+          <End Role="mPlanSemanal" Type="Self.mPlanSemanal" Multiplicity="1" />
+          <End Role="dDetallePlanSemanal" Type="Self.dDetallePlanSemanal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mPlanSemanal">
+              <PropertyRef Name="PlanSemanalId" />
+            </Principal>
+            <Dependent Role="dDetallePlanSemanal">
+              <PropertyRef Name="PlanSemanalId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dDetallePlanSemanal_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="dDetallePlanSemanal" Type="Self.dDetallePlanSemanal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="dDetallePlanSemanal">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mCheckIn_dDetallePlanSemanal">
+          <End Role="dDetallePlanSemanal" Type="Self.dDetallePlanSemanal" Multiplicity="1" />
+          <End Role="mCheckIn" Type="Self.mCheckIn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dDetallePlanSemanal">
+              <PropertyRef Name="DetallePlanId" />
+            </Principal>
+            <Dependent Role="mCheckIn">
+              <PropertyRef Name="DetallePlanId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mCheckIn_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="mCheckIn" Type="Self.mCheckIn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="mCheckIn">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mNotificaciones_mPlanSemanal">
+          <End Role="mPlanSemanal" Type="Self.mPlanSemanal" Multiplicity="1" />
+          <End Role="mNotificaciones" Type="Self.mNotificaciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mPlanSemanal">
+              <PropertyRef Name="PlanSemanalId" />
+            </Principal>
+            <Dependent Role="mNotificaciones">
+              <PropertyRef Name="PlanSemanalId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mPlanSemanal_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="mPlanSemanal" Type="Self.mPlanSemanal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="mPlanSemanal">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dModulos_mMenuGrupo">
+          <End Role="mMenuGrupo" Type="Self.mMenuGrupo" Multiplicity="0..1" />
+          <End Role="dModulos" Type="Self.dModulos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mMenuGrupo">
+              <PropertyRef Name="MenuGrupoId" />
+            </Principal>
+            <Dependent Role="dModulos">
+              <PropertyRef Name="MenuGrupoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mPermisos_dModulo">
+          <End Role="dModulos" Type="Self.dModulos" Multiplicity="1" />
+          <End Role="mPermisos" Type="Self.mPermisos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dModulos">
+              <PropertyRef Name="ModuloId" />
+            </Principal>
+            <Dependent Role="mPermisos">
+              <PropertyRef Name="ModuloId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mPermisos_mRol">
+          <End Role="mRoles" Type="Self.mRoles" Multiplicity="1" />
+          <End Role="mPermisos" Type="Self.mPermisos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mRoles">
+              <PropertyRef Name="RolId" />
+            </Principal>
+            <Dependent Role="mPermisos">
+              <PropertyRef Name="RolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuarios_Rolesl">
+          <End Role="mRoles" Type="Self.mRoles" Multiplicity="1" />
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mRoles">
+              <PropertyRef Name="RolId" />
+            </Principal>
+            <Dependent Role="mUsuarios">
+              <PropertyRef Name="RolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mNotificaciones_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="mNotificaciones" Type="Self.mNotificaciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="mNotificaciones">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mSolicitudesVehiculo_mUsuarios">
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="1" />
+          <End Role="mSolicitudesVehiculo" Type="Self.mSolicitudesVehiculo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="mSolicitudesVehiculo">
+              <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="cCoordinacionesRegion" EntityType="Self.cCoordinacionesRegion" />
+          <EntitySet Name="cCoordinacionesZona" EntityType="Self.cCoordinacionesZona" />
+          <EntitySet Name="cEstatus" EntityType="Self.cEstatus" />
+          <EntitySet Name="cPeriodos" EntityType="Self.cPeriodos" />
+          <EntitySet Name="cTipoActividades" EntityType="Self.cTipoActividades" />
+          <EntitySet Name="cTipoEstatus" EntityType="Self.cTipoEstatus" />
+          <EntitySet Name="cTipoFiguras" EntityType="Self.cTipoFiguras" />
+          <EntitySet Name="cTipoNotificaciones" EntityType="Self.cTipoNotificaciones" />
+          <EntitySet Name="cTiposUsuario" EntityType="Self.cTiposUsuario" />
+          <EntitySet Name="mLecturaCertificados" EntityType="Self.mLecturaCertificados" />
+          <EntitySet Name="mCoordinacionZonaUsuario" EntityType="Self.mCoordinacionZonaUsuario" />
+          <EntitySet Name="mEducandosCaptados" EntityType="Self.mEducandosCaptados" />
+          <EntitySet Name="dDetallePlanSemanal" EntityType="Self.dDetallePlanSemanal" />
+          <EntitySet Name="mCheckIn" EntityType="Self.mCheckIn" />
+          <EntitySet Name="mPlanSemanal" EntityType="Self.mPlanSemanal" />
+          <EntitySet Name="dModulos" EntityType="Self.dModulos" />
+          <EntitySet Name="mBitacora" EntityType="Self.mBitacora" />
+          <EntitySet Name="mMenuGrupo" EntityType="Self.mMenuGrupo" />
+          <EntitySet Name="mPermisos" EntityType="Self.mPermisos" />
+          <EntitySet Name="mRoles" EntityType="Self.mRoles" />
+          <EntitySet Name="mNotificaciones" EntityType="Self.mNotificaciones" />
+          <EntitySet Name="mUsuarios" EntityType="Self.mUsuarios" />
+          <EntitySet Name="mSolicitudesVehiculo" EntityType="Self.mSolicitudesVehiculo" />
+          <AssociationSet Name="FK_cCoordinacionesRegion_cEstatus" Association="Self.FK_cCoordinacionesRegion_cEstatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="cCoordinacionesRegion" EntitySet="cCoordinacionesRegion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cCoordinacionesRegion_mUsuarios" Association="Self.FK_cCoordinacionesRegion_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="cCoordinacionesRegion" EntitySet="cCoordinacionesRegion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cCoordinacionesZona_cEstatus" Association="Self.FK_cCoordinacionesZona_cEstatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="cCoordinacionesZona" EntitySet="cCoordinacionesZona" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cCoordinacionesZona_mUsuarios" Association="Self.FK_cCoordinacionesZona_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="cCoordinacionesZona" EntitySet="cCoordinacionesZona" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mCoordinacionZonaUsuario_cCoordinacionesZona" Association="Self.FK_mCoordinacionZonaUsuario_cCoordinacionesZona">
+            <End Role="cCoordinacionesZona" EntitySet="cCoordinacionesZona" />
+            <End Role="mCoordinacionZonaUsuario" EntitySet="mCoordinacionZonaUsuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cEstatus_mUsuarios" Association="Self.FK_cEstatus_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="cEstatus" EntitySet="cEstatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cTiposUsuario_cEstatus" Association="Self.FK_cTiposUsuario_cEstatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="cTiposUsuario" EntitySet="cTiposUsuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetallePlanSemanal_Estatus" Association="Self.FK_DetallePlanSemanal_Estatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="dDetallePlanSemanal" EntitySet="dDetallePlanSemanal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dModulos_cEstatus" Association="Self.FK_dModulos_cEstatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="dModulos" EntitySet="dModulos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Estatus_TipoEstatus" Association="Self.FK_Estatus_TipoEstatus">
+            <End Role="cTipoEstatus" EntitySet="cTipoEstatus" />
+            <End Role="cEstatus" EntitySet="cEstatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mLecturaCertificados_cEstatus" Association="Self.FK_mLecturaCertificados_cEstatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="mLecturaCertificados" EntitySet="mLecturaCertificados" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mMenuGrupo_Estatus" Association="Self.FK_mMenuGrupo_Estatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="mMenuGrupo" EntitySet="mMenuGrupo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mNotificaciones_cEstatus" Association="Self.FK_mNotificaciones_cEstatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="mNotificaciones" EntitySet="mNotificaciones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mPermisos_cEstatus" Association="Self.FK_mPermisos_cEstatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="mPermisos" EntitySet="mPermisos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mUsuarios_cEstatus" Association="Self.FK_mUsuarios_cEstatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Periodos_Estatus" Association="Self.FK_Periodos_Estatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="cPeriodos" EntitySet="cPeriodos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PlanSemanal_Estatus" Association="Self.FK_PlanSemanal_Estatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="mPlanSemanal" EntitySet="mPlanSemanal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Roles_Estatus" Association="Self.FK_Roles_Estatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="mRoles" EntitySet="mRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TipoActividades_Estatus" Association="Self.FK_TipoActividades_Estatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="cTipoActividades" EntitySet="cTipoActividades" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TipoFiguras_Estatus" Association="Self.FK_TipoFiguras_Estatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="cTipoFiguras" EntitySet="cTipoFiguras" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cPeriodos_mUsuarios" Association="Self.FK_cPeriodos_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="cPeriodos" EntitySet="cPeriodos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mPlanSemanal_cPeriodos" Association="Self.FK_mPlanSemanal_cPeriodos">
+            <End Role="cPeriodos" EntitySet="cPeriodos" />
+            <End Role="mPlanSemanal" EntitySet="mPlanSemanal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cTipoActividades_mUsuarios" Association="Self.FK_cTipoActividades_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="cTipoActividades" EntitySet="cTipoActividades" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetallePlanSemanal_TipoActividades" Association="Self.FK_DetallePlanSemanal_TipoActividades">
+            <End Role="cTipoActividades" EntitySet="cTipoActividades" />
+            <End Role="dDetallePlanSemanal" EntitySet="dDetallePlanSemanal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cTipoEstatus_mUsuarios" Association="Self.FK_cTipoEstatus_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="cTipoEstatus" EntitySet="cTipoEstatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cTipoFiguras_mUsuarios" Association="Self.FK_cTipoFiguras_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="cTipoFiguras" EntitySet="cTipoFiguras" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cTipoNotificaciones_mUsuarios" Association="Self.FK_cTipoNotificaciones_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="cTipoNotificaciones" EntitySet="cTipoNotificaciones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mNotificaciones_cTipoNotificaciones" Association="Self.FK_mNotificaciones_cTipoNotificaciones">
+            <End Role="cTipoNotificaciones" EntitySet="cTipoNotificaciones" />
+            <End Role="mNotificaciones" EntitySet="mNotificaciones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cTiposUsuario_mUsuarios" Association="Self.FK_cTiposUsuario_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="cTiposUsuario" EntitySet="cTiposUsuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mLecturaCertificados_mCheckIn" Association="Self.FK_mLecturaCertificados_mCheckIn">
+            <End Role="mCheckIn" EntitySet="mCheckIn" />
+            <End Role="mLecturaCertificados" EntitySet="mLecturaCertificados" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mLecturaCertificados_mUsuarios" Association="Self.FK_mLecturaCertificados_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="mLecturaCertificados" EntitySet="mLecturaCertificados" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mCoordinacionZonaUsuario_mUsuarios" Association="Self.FK_mCoordinacionZonaUsuario_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="mCoordinacionZonaUsuario" EntitySet="mCoordinacionZonaUsuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mCoordinacionZonaUsuario_mUsuarios1" Association="Self.FK_mCoordinacionZonaUsuario_mUsuarios1">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="mCoordinacionZonaUsuario" EntitySet="mCoordinacionZonaUsuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mEducandosCaptados_dDetallePlanSemanal" Association="Self.FK_mEducandosCaptados_dDetallePlanSemanal">
+            <End Role="dDetallePlanSemanal" EntitySet="dDetallePlanSemanal" />
+            <End Role="mEducandosCaptados" EntitySet="mEducandosCaptados" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mEducandosCaptados_mUsuarios" Association="Self.FK_mEducandosCaptados_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="mEducandosCaptados" EntitySet="mEducandosCaptados" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dDetallePlanSemanal_mPlanSemanal" Association="Self.FK_dDetallePlanSemanal_mPlanSemanal">
+            <End Role="mPlanSemanal" EntitySet="mPlanSemanal" />
+            <End Role="dDetallePlanSemanal" EntitySet="dDetallePlanSemanal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dDetallePlanSemanal_mUsuarios" Association="Self.FK_dDetallePlanSemanal_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="dDetallePlanSemanal" EntitySet="dDetallePlanSemanal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mCheckIn_dDetallePlanSemanal" Association="Self.FK_mCheckIn_dDetallePlanSemanal">
+            <End Role="dDetallePlanSemanal" EntitySet="dDetallePlanSemanal" />
+            <End Role="mCheckIn" EntitySet="mCheckIn" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mCheckIn_mUsuarios" Association="Self.FK_mCheckIn_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="mCheckIn" EntitySet="mCheckIn" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mNotificaciones_mPlanSemanal" Association="Self.FK_mNotificaciones_mPlanSemanal">
+            <End Role="mPlanSemanal" EntitySet="mPlanSemanal" />
+            <End Role="mNotificaciones" EntitySet="mNotificaciones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mPlanSemanal_mUsuarios" Association="Self.FK_mPlanSemanal_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="mPlanSemanal" EntitySet="mPlanSemanal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dModulos_mMenuGrupo" Association="Self.FK_dModulos_mMenuGrupo">
+            <End Role="mMenuGrupo" EntitySet="mMenuGrupo" />
+            <End Role="dModulos" EntitySet="dModulos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mPermisos_dModulo" Association="Self.FK_mPermisos_dModulo">
+            <End Role="dModulos" EntitySet="dModulos" />
+            <End Role="mPermisos" EntitySet="mPermisos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mPermisos_mRol" Association="Self.FK_mPermisos_mRol">
+            <End Role="mRoles" EntitySet="mRoles" />
+            <End Role="mPermisos" EntitySet="mPermisos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuarios_Rolesl" Association="Self.FK_Usuarios_Rolesl">
+            <End Role="mRoles" EntitySet="mRoles" />
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mNotificaciones_mUsuarios" Association="Self.FK_mNotificaciones_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="mNotificaciones" EntitySet="mNotificaciones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mSolicitudesVehiculo_mUsuarios" Association="Self.FK_mSolicitudesVehiculo_mUsuarios">
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+            <End Role="mSolicitudesVehiculo" EntitySet="mSolicitudesVehiculo" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Inaeba_GeorreferenciaModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="cCoordinacionesRegion">
+            <EntityTypeMapping TypeName="Inaeba_GeorreferenciaModel.cCoordinacionesRegion">
+              <MappingFragment StoreEntitySet="cCoordinacionesRegion">
+                <ScalarProperty Name="CoordinacionRegionId" ColumnName="CoordinacionRegionId" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioCreacionId" ColumnName="UsuarioCreacionId" />
+                <ScalarProperty Name="DescripcionCoordinacionRegion" ColumnName="DescripcionCoordinacionRegion" />
+                <ScalarProperty Name="EstatusId" ColumnName="EstatusId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cCoordinacionesZona">
+            <EntityTypeMapping TypeName="Inaeba_GeorreferenciaModel.cCoordinacionesZona">
+              <MappingFragment StoreEntitySet="cCoordinacionesZona">
+                <ScalarProperty Name="CoordinacionZonaId" ColumnName="CoordinacionZonaId" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioCreacionId" ColumnName="UsuarioCreacionId" />
+                <ScalarProperty Name="DescripcionCoordinacionZona" ColumnName="DescripcionCoordinacionZona" />
+                <ScalarProperty Name="EstatusId" ColumnName="EstatusId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cEstatus">
+            <EntityTypeMapping TypeName="Inaeba_GeorreferenciaModel.cEstatus">
+              <MappingFragment StoreEntitySet="cEstatus">
+                <ScalarProperty Name="EstatusId" ColumnName="EstatusId" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioCreacionId" ColumnName="UsuarioCreacionId" />
+                <ScalarProperty Name="TipoEstatusId" ColumnName="TipoEstatusId" />
+                <ScalarProperty Name="NombreEstatus" ColumnName="NombreEstatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cPeriodos">
+            <EntityTypeMapping TypeName="Inaeba_GeorreferenciaModel.cPeriodos">
+              <MappingFragment StoreEntitySet="cPeriodos">
+                <ScalarProperty Name="PeriodoId" ColumnName="PeriodoId" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioCreacionId" ColumnName="UsuarioCreacionId" />
+                <ScalarProperty Name="EstatusId" ColumnName="EstatusId" />
+                <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
+                <ScalarProperty Name="FechaFin" ColumnName="FechaFin" />
+                <ScalarProperty Name="DecripcionPeriodo" ColumnName="DecripcionPeriodo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cTipoActividades">
+            <EntityTypeMapping TypeName="Inaeba_GeorreferenciaModel.cTipoActividades">
+              <MappingFragment StoreEntitySet="cTipoActividades">
+                <ScalarProperty Name="TipoActividadId" ColumnName="TipoActividadId" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioCreacionId" ColumnName="UsuarioCreacionId" />
+                <ScalarProperty Name="EstatusId" ColumnName="EstatusId" />
+                <ScalarProperty Name="NombreActividad" ColumnName="NombreActividad" />
+                <ScalarProperty Name="DescripcionActividad" ColumnName="DescripcionActividad" />
+                <ScalarProperty Name="RequiereCheckIn" ColumnName="RequiereCheckIn" />
+                <ScalarProperty Name="ActividadEspecial" ColumnName="ActividadEspecial" />
+                <ScalarProperty Name="Mensaje" ColumnName="Mensaje" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cTipoEstatus">
+            <EntityTypeMapping TypeName="Inaeba_GeorreferenciaModel.cTipoEstatus">
+              <MappingFragment StoreEntitySet="cTipoEstatus">
+                <ScalarProperty Name="TipoEstatusId" ColumnName="TipoEstatusId" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioCreacionId" ColumnName="UsuarioCreacionId" />
+                <ScalarProperty Name="nombreTipoEstatus" ColumnName="nombreTipoEstatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cTipoFiguras">
+            <EntityTypeMapping TypeName="Inaeba_GeorreferenciaModel.cTipoFiguras">
+              <MappingFragment StoreEntitySet="cTipoFiguras">
+                <ScalarProperty Name="TipoFiguraId" ColumnName="TipoFiguraId" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioCreacionId" ColumnName="UsuarioCreacionId" />
+                <ScalarProperty Name="EstatusId" ColumnName="EstatusId" />
+                <ScalarProperty Name="DescripcionTipoFigura" ColumnName="DescripcionTipoFigura" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cTipoNotificaciones">
+            <EntityTypeMapping TypeName="Inaeba_GeorreferenciaModel.cTipoNotificaciones">
+              <MappingFragment StoreEntitySet="cTipoNotificaciones">
+                <ScalarProperty Name="TipoNotificacionId" ColumnName="TipoNotificacionId" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioCreacionId" ColumnName="UsuarioCreacionId" />
+                <ScalarProperty Name="DescripcionNotificacion" ColumnName="DescripcionNotificacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cTiposUsuario">
+            <EntityTypeMapping TypeName="Inaeba_GeorreferenciaModel.cTiposUsuario">
+              <MappingFragment StoreEntitySet="cTiposUsuario">
+                <ScalarProperty Name="TipoUsuarioId" ColumnName="TipoUsuarioId" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioCreacionId" ColumnName="UsuarioCreacionId" />
+                <ScalarProperty Name="DescripcionTipo" ColumnName="DescripcionTipo" />
+                <ScalarProperty Name="EstatusId" ColumnName="EstatusId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mLecturaCertificados">
+            <EntityTypeMapping TypeName="Inaeba_GeorreferenciaModel.mLecturaCertificados">
+              <MappingFragment StoreEntitySet="mLecturaCertificados">
+                <ScalarProperty Name="LecturaCertificadoId" ColumnName="LecturaCertificadoId" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioCreacionId" ColumnName="UsuarioCreacionId" />
+                <ScalarProperty Name="FolioCertificado" ColumnName="FolioCertificado" />
+                <ScalarProperty Name="EstatusId" ColumnName="EstatusId" />
+                <ScalarProperty Name="CheckInId" ColumnName="CheckInId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mCoordinacionZonaUsuario">
+            <EntityTypeMapping TypeName="Inaeba_GeorreferenciaModel.mCoordinacionZonaUsuario">
+              <MappingFragment StoreEntitySet="mCoordinacionZonaUsuario">
+                <ScalarProperty Name="CordinacionZonaUsuarioId" ColumnName="CordinacionZonaUsuarioId" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioCreacionId" ColumnName="UsuarioCreacionId" />
+                <ScalarProperty Name="CoordinacionZonaId" ColumnName="CoordinacionZonaId" />
+                <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
+                <ScalarProperty Name="JefeCoordinacionZona" ColumnName="JefeCoordinacionZona" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mEducandosCaptados">
+            <EntityTypeMapping TypeName="Inaeba_GeorreferenciaModel.mEducandosCaptados">
+              <MappingFragment StoreEntitySet="mEducandosCaptados">
+                <ScalarProperty Name="EducandoCaptadoId" ColumnName="EducandoCaptadoId" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioCreacionId" ColumnName="UsuarioCreacionId" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="Nombres" ColumnName="Nombres" />
+                <ScalarProperty Name="FechaNacimiento" ColumnName="FechaNacimiento" />
+                <ScalarProperty Name="EntidadNacimientoId" ColumnName="EntidadNacimientoId" />
+                <ScalarProperty Name="Calle" ColumnName="Calle" />
+                <ScalarProperty Name="Numero" ColumnName="Numero" />
+                <ScalarProperty Name="ColoniaLocalidad" ColumnName="ColoniaLocalidad" />
+                <ScalarProperty Name="DependenciaAliado" ColumnName="DependenciaAliado" />
+                <ScalarProperty Name="NivelEducativoId" ColumnName="NivelEducativoId" />
+                <ScalarProperty Name="TipoExamenId" ColumnName="TipoExamenId" />
+                <ScalarProperty Name="CurpEducando" ColumnName="CurpEducando" />
+                <ScalarProperty Name="DetallePlanId" ColumnName="DetallePlanId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dDetallePlanSemanal">
+            <EntityTypeMapping TypeName="Inaeba_GeorreferenciaModel.dDetallePlanSemanal">
+              <MappingFragment StoreEntitySet="dDetallePlanSemanal">
+                <ScalarProperty Name="DetallePlanId" ColumnName="DetallePlanId" />
+                <ScalarProperty Name="PlanSemanalId" ColumnName="PlanSemanalId" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioCreacionId" ColumnName="UsuarioCreacionId" />
+                <ScalarProperty Name="EstatusId" ColumnName="EstatusId" />
+                <ScalarProperty Name="TipoActividadId" ColumnName="TipoActividadId" />
+                <ScalarProperty Name="FechaActividad" ColumnName="FechaActividad" />
+                <ScalarProperty Name="HoraActividad" ColumnName="HoraActividad" />
+                <ScalarProperty Name="CantidadCheckIn" ColumnName="CantidadCheckIn" />
+                <ScalarProperty Name="DescripcionActividad" ColumnName="DescripcionActividad" />
+                <ScalarProperty Name="ComentariosNoValidacion" ColumnName="ComentariosNoValidacion" />
+                <ScalarProperty Name="ComentariosRechazo" ColumnName="ComentariosRechazo" />
+                <ScalarProperty Name="ActividadRechazada" ColumnName="ActividadRechazada" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mCheckIn">
+            <EntityTypeMapping TypeName="Inaeba_GeorreferenciaModel.mCheckIn">
+              <MappingFragment StoreEntitySet="mCheckIn">
+                <ScalarProperty Name="CheckInId" ColumnName="CheckInId" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioCreacionId" ColumnName="UsuarioCreacionId" />
+                <ScalarProperty Name="Coordenadas" ColumnName="Coordenadas" />
+                <ScalarProperty Name="DetallePlanId" ColumnName="DetallePlanId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mPlanSemanal">
+            <EntityTypeMapping TypeName="Inaeba_GeorreferenciaModel.mPlanSemanal">
+              <MappingFragment StoreEntitySet="mPlanSemanal">
+                <ScalarProperty Name="PlanSemanalId" ColumnName="PlanSemanalId" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioCreacionId" ColumnName="UsuarioCreacionId" />
+                <ScalarProperty Name="EstatusId" ColumnName="EstatusId" />
+                <ScalarProperty Name="DescripcionPlaneacion" ColumnName="DescripcionPlaneacion" />
+                <ScalarProperty Name="PeriodoId" ColumnName="PeriodoId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dModulos">
+            <EntityTypeMapping TypeName="Inaeba_GeorreferenciaModel.dModulos">
+              <MappingFragment StoreEntitySet="dModulos">
+                <ScalarProperty Name="ModuloId" ColumnName="ModuloId" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="EstatusId" ColumnName="EstatusId" />
+                <ScalarProperty Name="NombreModulo" ColumnName="NombreModulo" />
+                <ScalarProperty Name="UrlModulo" ColumnName="UrlModulo" />
+                <ScalarProperty Name="IconModulo" ColumnName="IconModulo" />
+                <ScalarProperty Name="OrdenModulo" ColumnName="OrdenModulo" />
+                <ScalarProperty Name="MenuGrupoId" ColumnName="MenuGrupoId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mBitacora">
+            <EntityTypeMapping TypeName="Inaeba_GeorreferenciaModel.mBitacora">
+              <MappingFragment StoreEntitySet="mBitacora">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ExecuteDate" ColumnName="ExecuteDate" />
+                <ScalarProperty Name="Ip" ColumnName="Ip" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Reqtype" ColumnName="Reqtype" />
+                <ScalarProperty Name="Reqdata" ColumnName="Reqdata" />
+                <ScalarProperty Name="Controller" ColumnName="Controller" />
+                <ScalarProperty Name="Action" ColumnName="Action" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mMenuGrupo">
+            <EntityTypeMapping TypeName="Inaeba_GeorreferenciaModel.mMenuGrupo">
+              <MappingFragment StoreEntitySet="mMenuGrupo">
+                <ScalarProperty Name="MenuGrupoId" ColumnName="MenuGrupoId" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="EstatusId" ColumnName="EstatusId" />
+                <ScalarProperty Name="NombreMenuGrupo" ColumnName="NombreMenuGrupo" />
+                <ScalarProperty Name="IconGrupo" ColumnName="IconGrupo" />
+                <ScalarProperty Name="OrdenGrupo" ColumnName="OrdenGrupo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mPermisos">
+            <EntityTypeMapping TypeName="Inaeba_GeorreferenciaModel.mPermisos">
+              <MappingFragment StoreEntitySet="mPermisos">
+                <ScalarProperty Name="ModuloId" ColumnName="ModuloId" />
+                <ScalarProperty Name="RolId" ColumnName="RolId" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="EstatusId" ColumnName="EstatusId" />
+                <ScalarProperty Name="LecturaPermiso" ColumnName="LecturaPermiso" />
+                <ScalarProperty Name="EscrituraPermiso" ColumnName="EscrituraPermiso" />
+                <ScalarProperty Name="EdicionPermiso" ColumnName="EdicionPermiso" />
+                <ScalarProperty Name="ClonadoPermiso" ColumnName="ClonadoPermiso" />
+                <ScalarProperty Name="BorradoPermiso" ColumnName="BorradoPermiso" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mRoles">
+            <EntityTypeMapping TypeName="Inaeba_GeorreferenciaModel.mRoles">
+              <MappingFragment StoreEntitySet="mRoles">
+                <ScalarProperty Name="RolId" ColumnName="RolId" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="EstatusId" ColumnName="EstatusId" />
+                <ScalarProperty Name="NombreRol" ColumnName="NombreRol" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mNotificaciones">
+            <EntityTypeMapping TypeName="Inaeba_GeorreferenciaModel.mNotificaciones">
+              <MappingFragment StoreEntitySet="mNotificaciones">
+                <ScalarProperty Name="NotificacionId" ColumnName="NotificacionId" />
+                <ScalarProperty Name="EstatusId" ColumnName="EstatusId" />
+                <ScalarProperty Name="TipoNotificacionId" ColumnName="TipoNotificacionId" />
+                <ScalarProperty Name="PlanSemanalId" ColumnName="PlanSemanalId" />
+                <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mUsuarios">
+            <EntityTypeMapping TypeName="Inaeba_GeorreferenciaModel.mUsuarios">
+              <MappingFragment StoreEntitySet="mUsuarios">
+                <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="EstatusId" ColumnName="EstatusId" />
+                <ScalarProperty Name="LoginUsuario" ColumnName="LoginUsuario" />
+                <ScalarProperty Name="PasswordUsuario" ColumnName="PasswordUsuario" />
+                <ScalarProperty Name="NombresUsuario" ColumnName="NombresUsuario" />
+                <ScalarProperty Name="ApellidosUsuario" ColumnName="ApellidosUsuario" />
+                <ScalarProperty Name="RolId" ColumnName="RolId" />
+                <ScalarProperty Name="ImagenUsuario" ColumnName="ImagenUsuario" />
+                <ScalarProperty Name="EmailUsuario" ColumnName="EmailUsuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mSolicitudesVehiculo">
+            <EntityTypeMapping TypeName="Inaeba_GeorreferenciaModel.mSolicitudesVehiculo">
+              <MappingFragment StoreEntitySet="mSolicitudesVehiculo">
+                <ScalarProperty Name="SolicitudVehiculoId" ColumnName="SolicitudVehiculoId" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioCreacionId" ColumnName="UsuarioCreacionId" />
+                <ScalarProperty Name="VehiculoId" ColumnName="VehiculoId" />
+                <ScalarProperty Name="FechaUso" ColumnName="FechaUso" />
+                <ScalarProperty Name="SolicitudSipaeId" ColumnName="SolicitudSipaeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

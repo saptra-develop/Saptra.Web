@@ -1,0 +1,93 @@
+﻿@{
+    ViewBag.Title = "Plan Semanal";
+}
+
+<style>
+    }
+
+    .file-preview {
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        padding: 5px;
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    .center-block {
+        display: block;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .kv-avatar .file-input {
+        display: table-cell;
+        max-width: 220px;
+    }
+
+    .kv-avatar .file-preview-frame, .kv-avatar .file-preview-frame:hover {
+        margin: 0;
+        padding: 0;
+        border: none;
+        box-shadow: none;
+        text-align: center;
+    }
+</style>
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <h4 class="page-header">
+            Captura Plan Semanal
+            <button class="btn btn-xs btn-outline btn-primary pull-right btnNuevo" ><i class="fa fa-file-o fa-lg fa-fw"></i> Nuevo Plan</button>
+            <button class="btn btn-xs btn-outline btn-success pull-right btnNuevo"><i class="fa fa-check-circle-o  fa-lg fa-fw"></i> Enviar a validación</button>
+        </h4>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="well well-sm" style="background-color: #fff; border-color:#337AB7;">
+    <div class="row">
+        <div class="col-lg-3">
+            <select id="idPeriodo" class="form-control" placeholder="Periodo">
+                <option value="0">SELECCIONAR PERIODO</option>
+            </select>
+        </div>
+        <div class="col-lg-3">
+            <input type="text" id="fechaInicio" class="form-control" placeholder="Mes">
+        </div>
+        <div class="col-lg-3">
+            <input type="text" id="fechaFin" class="form-control" placeholder="Año">
+        </div>
+        <div class="col-lg-3">
+            <a href="javascript:;" class="btn btn-primary" id="btnFilter"><i class="fa fa-filter"></i> Filtrar</a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Plan Semanal</h3>
+            </div>
+            <div class="panel-body">
+                <div id="bbGrid-clear">
+                    <div id="cargandoInfo">@Resources.Global.menuLoading</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bs-example-modal-lg" id="nuevo-PlanDetalle"
+     tabindex="-1" role="dialog"
+     aria-labelledby="nuevoPlanDetalleLabel">
+</div>
+
+<div class="modal fade bs-example-modal-lg" id="actualiza-Usuario"
+     tabindex="-1" role="dialog"
+     aria-labelledby="nuevoUsuarioLabel">
+</div>
+
+
+@section Scripts {
+    @Html.IncludeVersionedJs(Url.Content("~/Scripts/PlanSemanal.js"))
+}

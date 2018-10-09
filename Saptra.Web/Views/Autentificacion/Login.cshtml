@@ -1,0 +1,147 @@
+﻿@model Saptra.Web.Models.Login
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<!--[if lt IE 7 ]> <html class="ie ie6 no-js" lang="en"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie ie7 no-js" lang="en"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie ie8 no-js" lang="en"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie ie9 no-js" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="~/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Administracion de proyectos para CMI">
+    <meta name="author" content="Sysba">
+    <title>SAPTRA </title>
+
+    @Styles.Render("~/Content/cssLogon")
+
+</head>
+<body style="background-color: #F9FAFB; ">
+    <div class="container-fluid">
+        <div class="limiter">
+            <div class="row hidden-xs">
+                <div class="col-sm-2" align="left">
+                    <img src="~/Content/images/gto_logo.png" class="img-responsive" />
+                </div>
+                <div class="col-sm-8" style="text-align:center; color:#004A80;">
+                    <br />
+                    <h3>Sistema de Administración de</h3>
+                    <h1>Plan de Trabajo y Registro de Asistencias</h1>
+                </div>
+                <div class="col-sm-2" align="right">
+                    <img src="~/Content/images/logo_inaeba.png" class="img-responsive" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 container-login100">
+                    <div class="wrap-login100" style="box-shadow: 4px 3px 19px -4px rgba(0,0,0,0.75);">
+
+                        @using (Html.BeginForm("Login", "Autentificacion", new { ReturnUrl = ViewBag.ReturnUrl },
+                        FormMethod.Post, new { id = "frmLogin", @role = "form", @class = "login100-form validate-form p-b-33 p-t-5" }))
+                        {
+                            <span class="login100-form-logo">
+                                <img src="/Content/images/Logo_SAPTRA.jpg" style="width:100%">
+                            </span>
+                            <div class="wrap-input100 validate-input" data-validate="Ingresar usuario">
+                                @Html.TextBoxFor(m => m.NombreUsuario, new { @class = "input100", autofocus = "true", placeholder = Resources.Autentificacion.userName })
+                                <span class="focus-input100" data-placeholder="&#xe82a;"></span>
+                            </div>
+
+                            <div class="wrap-input100 validate-input" data-validate="Ingresar contraseña">
+                                @Html.PasswordFor(m => m.Contrasena, new { @class = "input100", placeholder = Resources.Autentificacion.password })
+                                <span class="focus-input100" data-placeholder="&#xe80f;"></span>
+                            </div>
+                            <div>
+                                @if (ViewBag.error != string.Empty)
+                                {
+                                    <div class="alert alert-warning alert-dismissible" role="alert" id="lblAlert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <strong>Message!</strong> @ViewBag.error
+                                    </div>
+                                }
+                                @if (ViewBag.successChangePassword != string.Empty)
+                                {
+                                    <div div class="alert alert-success alert-dismissible" role="alert" id="lblSucess">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <strong>Message!</strong> @ViewBag.successChangePassword
+                                    </div>
+                                }
+                            </div>
+                            <div class="container-login100-form-btn m-t-32">
+                                <button type="submit" class="login100-form-btn">Iniciar sesión</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <br />
+        <!-- Footer -->
+        <footer class="page-footer hidden-xs" style="background-color:#E6E6E6; ">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-2 ">
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-2x" style="color:#00ACED"></i>
+                            <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                        </span>
+                        <a href="https://twitter.com/soyinaeba" target="_blank" style="text-decoration:none; color:#98B7D2;"> Twitter</a>
+                    </div>
+                    <div class="col-sm-2">
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-2x" style="color:#395BA3"></i>
+                            <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                        </span>
+                        <a href="https://www.facebook.com/soyinaeba/" target="_blank" style="text-decoration:none; color:#98B7D2;"> Facebook</a>
+                    </div>
+                    <div class="col-sm-2">
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-2x" style="color:#ED1B24"></i>
+                            <i class="fa fa-youtube fa-stack-1x fa-inverse"></i>
+                        </span>
+                        <a href="https://www.youtube.com/channel/UCY2hK2O9lDw8JMn_MwIL4oA" target="_blank" style="text-decoration:none; color:#98B7D2;"> Youtube</a>
+                    </div>
+                    <div class="col-sm-3">
+                        <span style="color:#919191">
+                            Bulevar Delta 201, Sexto Piso, col. San José de Santa Julia
+                            C. P. 37530, León, Gto
+                        </span>
+                    </div>
+                    <div class="col-sm-3">
+                        <span style="color:#919191">
+                            Teléfono: 01 800 746 2322
+                            León: (477) 148 12 60
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <!-- Copyright -->
+            <div class="footer-copyright text-center " style="background-color:#8E8E90;">
+                © 2018 Copyright:
+                <a href="http://www.inaeba.guanajuato.gob.mx/inaeba/index.php" target="_blank" style="text-decoration:none; color:#E6E6E6;"> inaeba.guanajuato.gob.mx</a>
+            </div>
+            <!-- Copyright -->
+        </footer>
+    </div>
+
+        @Scripts.Render("~/bundles/Logon")
+
+        <script type="text/javascript">
+            $(function () {
+                localStorage.clear();
+                $('#NombreUsuario').focus();
+            });
+        </script>
+        @Html.IncludeVersionedJs(Url.Content("~/Scripts/_Saptra.js"))
+        @Html.IncludeVersionedJs(Url.Content("~/Scripts/Autentificacion.js"))
+</body>
+</html>
+

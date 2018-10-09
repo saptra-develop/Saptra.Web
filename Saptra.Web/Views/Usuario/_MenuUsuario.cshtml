@@ -1,0 +1,139 @@
+﻿@model Saptra.Web.Data.mUsuarios
+<style>
+    .content {
+        margin-left: 65px;
+        padding: 11px 0;
+        padding-left: 12px;
+    }
+    .info {
+        padding: 25px;
+        border-top: 1px solid #f5f5f5;
+        border-bottom: 1px solid #f2f2f2;
+    }
+     .info .image {
+        float: left;
+        height: 65px;
+        width: 65px;
+        overflow: hidden;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+    }
+    .info .content {
+        margin-left: 65px;
+        padding: 11px 0;
+        padding-left: 12px;
+    }
+   .info .content .name {
+        line-height: -webkit-calc(20/16);
+        line-height: -moz-calc(20/16);
+        line-height: calc(20/16);
+    }
+
+    .account-dropdown__body {
+        padding: 12px 0;
+    }
+    .account-dropdown__item a {
+        display: block;
+        color: #333;
+        padding: 15px 25px;
+        font-size: 14px;
+
+    }
+
+        .account-dropdown__item a:hover {
+            background: #2F8CE1;
+            color: #fff;
+            text-decoration: none;
+        }
+    a {
+        display: inline-block;
+
+    }
+        a:hover, a {
+            -webkit-transition: all 0.3s ease;
+            -o-transition: all 0.3s ease;
+            -moz-transition: all 0.3s ease;
+            transition: all 0.3s ease;
+
+        }
+
+        a:hover, a:focus, a:active {
+            text-decoration: none;
+            outline: none;
+        }
+
+        a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+   
+
+    .account-dropdown__footer {
+        border-top: 1px solid #f2f2f2;
+    }
+
+        .account-dropdown__footer a:hover {
+            background: #2F8CE1;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .account-dropdown__footer a {
+            display: block;
+            color: #333;
+            padding: 15px 25px;
+            font-size: 14px;
+        }
+</style>
+<div class="row">
+
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class=" info clearfix">
+            <div class="image">
+                <img src="@Model.ImagenUsuario" class="img-responsive" width="65" height="65" />
+            </div>
+            <div class="content">
+                <h5 class="name">
+                    @Model.NombresUsuario @Model.ApellidosUsuario
+                </h5>
+                <span class="email">@Model.EmailUsuario</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="account-dropdown__body">
+            <div class="account-dropdown__item" id="btn-actualizaUsuario">
+                <a href="#">
+                    &nbsp; &nbsp;<i class="fa fa-user fa-lg "></i>&nbsp; &nbsp; Perfil
+                </a>
+            </div>
+            <div class="account-dropdown__item" id="btn-cambiarPassword">
+                <a href="#">
+                    &nbsp; &nbsp;<i class="fa fa-key fa-lg"></i>&nbsp; &nbsp;Actualizar contraseña
+                </a>
+            </div>
+            <div class="account-dropdown__item" id="acercade">
+                <a href="#">
+                    &nbsp; &nbsp;<i class="fa fa-info-circle  fa-lg"></i>&nbsp; &nbsp;Acerca de
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="account-dropdown__footer">
+            <a href="#" onclick="window.location.href = contextPath + 'Autentificacion/LogOut'">
+                &nbsp; &nbsp;<i class="fa fa-power-off fa-lg"></i>&nbsp; &nbsp;Salir
+            </a>
+        </div>
+    </div>
+
+
+
+
+
+
+
+       
+    </div>

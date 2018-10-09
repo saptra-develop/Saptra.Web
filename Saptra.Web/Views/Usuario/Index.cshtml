@@ -1,0 +1,68 @@
+﻿@{
+    ViewBag.Title = @Resources.Usuarios.title;
+}
+
+<style>
+    }
+
+    .file-preview {
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        padding: 5px;
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    .center-block {
+        display: block;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .kv-avatar .file-input {
+        display: table-cell;
+        max-width: 220px;
+    }
+
+    .kv-avatar .file-preview-frame, .kv-avatar .file-preview-frame:hover {
+        margin: 0;
+        padding: 0;
+        border: none;
+        box-shadow: none;
+        text-align: center;
+    }
+</style>
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <h4 class="page-header">
+            @Resources.Usuarios.title
+            <button class="btn btn-xs btn-outline btn-primary pull-right btnNuevo" style="display: none;"><i class="fa fa-file-o fa-lg fa-fw"></i> @Resources.Global.btnNew</button>
+        </h4>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div id="bbGrid-clear" class="col-lg-12">
+            <div id="cargandoInfo">@Resources.Global.menuLoading</div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bs-example-modal-lg" id="nuevo-Usuario"
+     tabindex="-1" role="dialog"
+     aria-labelledby="nuevoUsuarioLabel">
+</div>
+
+<div class="modal fade bs-example-modal-lg" id="actualiza-Usuario"
+     tabindex="-1" role="dialog"
+     aria-labelledby="nuevoUsuarioLabel">
+</div>
+
+
+@section Scripts {
+    @Html.IncludeVersionedJs(Url.Content("~/Scripts/Usuario.js"))
+}

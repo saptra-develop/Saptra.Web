@@ -1,0 +1,132 @@
+﻿@model Saptra.Web.Data.mUsuarios
+
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">@Resources.Usuarios.titleNew</h4>
+        </div>
+        <div class="modal-body">
+            <div class="clientAlertDlg"></div>
+            @using (Html.BeginForm("Nuevo", "Usuario", FormMethod.Post, new { id = "NuevoUsuarioForm", name = "NuevoUsuarioForm", @class = "form-horizontal", onsubmit = "return false" }))
+            {
+                <div class="form-group">
+                    <div class="col-sm-12" align="center">
+                        <img src="/Content/images/avatar.jpg" alt="Ingresa una foto" class="img-responsive img-circle" style="width:120px; height:120px;" id="imgUpl">
+                        <br />
+                        <div class="input-group col-sm-3">
+                            <span class="input-group-btn">
+                                <span class="btn btn-primary btn-file">
+                                    Imagen&hellip; <input type="file" id="imgUsu" name="imgUsu">
+                                </span>
+                            </span>
+                            <input type="text" class="form-control" readonly>
+                        </div>
+                        @*<div class="btn btn-primary btn-file"><i class="glyphicon glyphicon-folder-open"></i> &nbsp;  Agregar imagen <input id="imagenUsuario" name="imagenUsuario" type="file"></div>*@
+                    </div>
+                </div>
+                <div class="form-group">
+
+                    <div class="col-sm-2"><label class="control-label">@Resources.Usuarios.lblNameUser</label></div>
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(model => model.nombresUsuario, new { @class = "form-control", maxlength = 100, required = "required" })
+                        @Html.TextBoxFor(model => model.imagenUsuario, new { @class = "form-control", maxlength = 100, required = "required", style = "display: none;" })
+                    </div>
+                    <div class="col-sm-2"><label class="control-label">@Resources.Usuarios.lblApellido</label></div>
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(model => model.apellidosUsuario, new { @class = "form-control", maxlength = 100, required = "required" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-2"><label class="control-label">@Resources.Usuarios.lblLogin</label></div>
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(model => model.loginUsuario, new { @class = "form-control", maxlength = 100, required = "required" })
+                    </div>
+
+                    <div class="col-sm-2"><label class="control-label">@Resources.Usuarios.lblPassword</label></div>
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(model => model.passwordUsuario, new { @class = "form-control", maxlength = 100, required = "required", type = "password" })
+                    </div>
+                </div>
+                <div class="form-group">
+
+                    <div class="col-sm-2"><label class="control-label">@Resources.Usuarios.lblTelefono</label></div>
+
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(model => model.telefonoUsuario, new { @class = "form-control", maxlength = 10, required = "required" })
+                    </div>
+
+
+                    <div class="col-sm-2"><label class="control-label">@Resources.Usuarios.lblCelular</label></div>
+
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(model => model.celularUsuario, new { @class = "form-control", maxlength = 10, required = "required" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-2"><label class="control-label">@Resources.Usuarios.lblEmail</label></div>
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(model => model.emailUsuario, new { @class = "form-control", maxlength = 100, required = "required" })
+                    </div>
+                    <div class="col-sm-2"><label class="control-label">@Resources.Usuarios.lblDepartamento</label></div>
+
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(model => model.departamentoUsuario, new { @class = "form-control", maxlength = 100, required = "required" })
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    @*<div class="col-sm-2"><label class="control-label">@Resources.Usuarios.lblJefe</label></div>*@
+                    @*<div class="col-sm-4">*@
+                        @*<select id="idJefeUsuario" name="idJefeUsuario" class="form-control" required="required"><option>@Resources.Global.menuLoading</option></select>*@
+                    @*</div>*@
+
+                    <div class="col-sm-2"><label class="control-label">@Resources.Usuarios.lblLenguaje</label></div>
+
+                    <div class="col-sm-4">
+
+                        @Html.DropDownListFor(model => model.lenguajeUsuario,
+                                                                                        new SelectList(new[]{
+                                                                                                        new SelectListItem{ Text="ESPAÑOL", Value="es"},
+                                                                                                        new SelectListItem{ Text="INGLES", Value="en"}},
+                                                                                "Value", "Text"), new { @class = "form-control" })
+
+                    </div>
+
+                    <div class="col-sm-2"><label class="control-label">@Resources.Usuarios.lblRol</label></div>
+                    <div class="col-sm-4">
+                        <select id="idRol" name="idRol" class="form-control" required="required"><option>@Resources.Global.menuLoading</option></select>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    
+                    <div class="col-sm-2"><label class="control-label">@Resources.Proyecto.lblStatus</label></div>
+                    <div class="col-sm-4">
+                        @Html.DropDownListFor(model => model.idEstatus,
+                                                                                        new SelectList(new[]{
+                                                                                                        new SelectListItem{ Text="ACTIVO", Value="1"},
+                                                                                                        new SelectListItem{ Text="INACTIVO", Value="2"}},
+                                                                                "Value", "Text"), new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-2"><label class="control-label" id="infoViewAll">Realese Matrix</label></div>
+                    <div class="col-sm-4">
+                        <input type="checkbox" id="chkReleasedMatrix" name="chkReleasedMatrix">
+                    </div>
+                </div>
+                <input type="hidden" id="Rol" value="@Model.idRol" />
+                @*<input type="hidden" id="JefeUsuario" value="@Model.idJefeUsuario" />*@
+                <input type="hidden" id="imagenUsuario" value="@Model.imagenUsuario" />
+
+                @Html.HiddenFor(model => model.liberaMatriz)
+
+
+            }
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Global.btnCancel</button>
+            <button type="button" class="btn btn-primary btn-GuardaNuevo">@Resources.Global.btnSave</button>
+        </div>
+    </div><!-- /.modal-content -->
+</div>
