@@ -4,8 +4,7 @@
 <div class="row">
     <div class="col-lg-12">
         <h4 class="page-header">
-            Captura Plan Semanal
-            <button class="btn btn-xs btn-outline btn-primary pull-right btnNuevo" ><i class="fa fa-file-o fa-lg fa-fw"></i> Nuevo Plan</button>
+            Aprobar Plan Semanal
         </h4>
     </div>
     <!-- /.col-lg-12 -->
@@ -13,10 +12,15 @@
 <div class="well well-sm" style="background-color: #fff; border-color:#337AB7;">
     <div class="row">
         <div class="col-lg-3">
-            <select id="selPeriodos" class="form-control">
-            </select>
+            <select id="selPeriodos" class="js-example-basic-multiple js-states form-control" multiple="multiple"></select>
         </div>
-        <div class="col-lg-3">
+        <div class="col-lg-4">
+            <select id="selTipoFigura" class="js-example-basic-multiple js-states form-control" multiple="multiple"></select>
+        </div>
+        <div class="col-lg-4">
+            <select id="selNombreFigura" class="js-example-basic-multiple js-states form-control" multiple="multiple"></select>
+        </div>
+        <div class="col-lg-1">
             <a href="javascript:;" class="btn btn-primary" id="btnFilter"><i class="fa fa-filter"></i> Filtrar</a>
         </div>
     </div>
@@ -58,5 +62,5 @@
 
 
 @section Scripts {
-    @Html.IncludeVersionedJs(Url.Content("~/Scripts/PlanSemanal.js"))
+    @Html.IncludeVersionedJs(Url.Content("~/Scripts/PlanSemanalAprobacion.js"))
 }

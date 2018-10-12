@@ -8,13 +8,13 @@
         </div>
         <div class="modal-body">
             <div class="clientAlertDlg"></div>
-            @using (Html.BeginForm("Nuevo", "PlanSemanal", FormMethod.Post, new { id = "NuevoDetallePlanForm", name = "NuevoDetallePlanForm", @class = "form-horizontal", onsubmit = "return false" }))
+            @using (Html.BeginForm("Actualiza", "PlanSemanal", FormMethod.Post, new { id = "ActualizaDetallePlanForm", name = "ActualizaDetallePlanForm", @class = "form-horizontal", onsubmit = "return false" }))
             {
                 <div class="form-group">
                     <div class="col-sm-12">
                         <div class="col-sm-4">Actividad</div>
                         <div class="col-sm-8">
-                            <select class="form-control" id="selTipoActividad"></select>
+                            <input class="form-control  valid" readonly value="@Model.cTipoActividades.NombreActividad">
                         </div>
                     </div>
                 </div>
@@ -31,8 +31,7 @@
                         <div class="col-sm-4">Fecha</div>
                         <div class="col-sm-8">
                             <div class='input-group date' id='dtpfechaCompromiso'>
-                                <input type="text" id="fechaAct" class="form-control" required />
-                                @*@Html.TextBoxFor(model => model.FechaActividad, new { @class = "form-control", maxlength = 10, required = "required" })*@
+                                @Html.TextBoxFor(model => model.FechaActividad, new { @class = "form-control", maxlength = 10, required = "required" })
                                 <span class="input-group-addon">
                                     <span class="fa fa-calendar"></span>
                                 </span>
@@ -63,7 +62,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group" id="divCheckIn" style="display:none;">
+                <div class="form-group">
                     <div class="col-sm-12">
                         <div class="col-sm-4">Cantidad CheckIn</div>
                         <div class="col-sm-8">
@@ -72,16 +71,16 @@
                     </div>
                 </div>
 
-                @Html.HiddenFor(model => model.PlanSemanalId)
+                @Html.HiddenFor(model => model.DetallePlanId)
                 @Html.HiddenFor(model => model.UsuarioCreacionId)
                 @Html.HiddenFor(model => model.TipoActividadId)
-                @Html.HiddenFor(model => model.FechaActividad)
+                @Html.HiddenFor(model => model.cTipoActividades.NombreActividad)
             }
         </div>
 
         <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Global.btnCancel</button>
-            <button type="button" class="btn btn-primary btn-GuardaDetalleNuevo">@Resources.Global.btnSave</button>
+            <button type="button" class="btn btn-primary btn-ActualizaDetalle">@Resources.Global.btnSave</button>
         </div>
     </div><!-- /.modal-content -->
 </div>

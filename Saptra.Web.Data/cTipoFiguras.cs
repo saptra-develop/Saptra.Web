@@ -14,6 +14,12 @@ namespace Saptra.Web.Data
     
     public partial class cTipoFiguras
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public cTipoFiguras()
+        {
+            this.mUsuarios1 = new HashSet<mUsuarios>();
+        }
+    
         public int TipoFiguraId { get; set; }
         public System.DateTime FechaCreacion { get; set; }
         public int UsuarioCreacionId { get; set; }
@@ -22,5 +28,7 @@ namespace Saptra.Web.Data
     
         public virtual cEstatus cEstatus { get; set; }
         public virtual mUsuarios mUsuarios { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<mUsuarios> mUsuarios1 { get; set; }
     }
 }

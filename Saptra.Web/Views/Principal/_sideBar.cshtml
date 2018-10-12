@@ -1,6 +1,6 @@
 ﻿@model List<Saptra.Web.Models.MenuGrupo>
 
-<div class="navbar-default sidebar" role="navigation" style="background-color:#fff;">
+<div class="navbar-default sidebar" role="navigation" style="background-color:#E6E6E6;">
     <div class="sidebar-nav navbar-collapse collapse">
         <ul class="nav side-menu">
             @if (Model.Count > 0)
@@ -9,7 +9,7 @@
                 {
                     <li>
                         <a href="#"><i class="fa @grupo.iconGrupo fa-fw"></i> @Resources.Global.ResourceManager.GetString(grupo.nombreGrupo) <span class="fa arrow"></span> </a>
-                        <ul class="nav nav-second-level" style="max-height:300px; overflow:auto;">
+                        <ul class="nav nav-second-level" style="max-height:300px; overflow:auto;background-color:#fff;">
 
                             @foreach (var item in grupo.lstPermisos)
                             {

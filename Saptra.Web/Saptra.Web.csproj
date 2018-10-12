@@ -1427,6 +1427,9 @@
     <Content Include="Scripts\lib\underscore\underscore-min.js" />
     <Content Include="Scripts\lib\underscore\underscore.js" />
     <None Include="Scripts\lib\_references.js" />
+    <Content Include="Scripts\PlanSemanalAprobacion.js" />
+    <Content Include="Scripts\PlanSemanalValidacion.js" />
+    <Content Include="Scripts\PlanSemanalConsulta.js" />
     <Content Include="Scripts\PlanSemanal.js" />
     <Content Include="Scripts\Usuario.js" />
     <Content Include="Scripts\_Saptra.js" />
@@ -1460,6 +1463,11 @@
     <Content Include="Views\Usuario\_MenuUsuario.cshtml" />
     <Content Include="Views\Usuario\_Nuevo.cshtml" />
     <Content Include="Views\Notificaciones\_MenuNotificaciones.cshtml" />
+    <Content Include="Views\PlanSemanal\_Nuevo.cshtml" />
+    <Content Include="Views\PlanSemanal\_ActualizaDetalle.cshtml" />
+    <Content Include="Views\PlanSemanalConsulta\Index.cshtml" />
+    <Content Include="Views\PlanSemanalSeguimiento\ValidacionPlan.cshtml" />
+    <Content Include="Views\PlanSemanalSeguimiento\AprobacionPlan.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

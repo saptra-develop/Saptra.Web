@@ -47,6 +47,7 @@ namespace Saptra.Web.Data
         public int RolId { get; set; }
         public string ImagenUsuario { get; set; }
         public string EmailUsuario { get; set; }
+        public Nullable<int> TipoFiguraId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cCoordinacionesRegion> cCoordinacionesRegion { get; set; }
@@ -63,6 +64,7 @@ namespace Saptra.Web.Data
         public virtual ICollection<cTipoEstatus> cTipoEstatus { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cTipoFiguras> cTipoFiguras { get; set; }
+        public virtual cTipoFiguras cTipoFiguras1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cTipoNotificaciones> cTipoNotificaciones { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

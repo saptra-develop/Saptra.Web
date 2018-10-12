@@ -114,9 +114,9 @@
     border-bottom: 1px solid #e7e7e7;
 }
 
-.sidebar ul li a.active {
-    background-color: #fff;
-}
+    .sidebar ul li a.active {
+        background-color: #E6E6E6;
+    }
 
 .sidebar .arrow {
     float: right;

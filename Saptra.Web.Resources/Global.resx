@@ -196,7 +196,7 @@
     <value>English</value>
   </data>
   <data name="menuLoading" xml:space="preserve">
-    <value>Loading...</value>
+    <value>Cargando...</value>
   </data>
   <data name="menuOrdenesCompra" xml:space="preserve">
     <value>Ordenes de Compra</value>

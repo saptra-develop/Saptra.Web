@@ -267,6 +267,7 @@
           <Property Name="RolId" Type="int" Nullable="false" />
           <Property Name="ImagenUsuario" Type="varchar" MaxLength="1024" />
           <Property Name="EmailUsuario" Type="varchar" MaxLength="50" />
+          <Property Name="TipoFiguraId" Type="int" />
         </EntityType>
         <EntityType Name="mSolicitudesVehiculo">
           <Key>
@@ -843,6 +844,64 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Usuarios_TipoFiguras">
+          <End Role="cTipoFiguras" Type="Self.cTipoFiguras" Multiplicity="0..1" />
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cTipoFiguras">
+              <PropertyRef Name="TipoFiguraId" />
+            </Principal>
+            <Dependent Role="mUsuarios">
+              <PropertyRef Name="TipoFiguraId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="Split" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="strString" Type="varchar(max)" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="Value" Type="bigint" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="udf_DetalleCapturado" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
+          <Parameter Name="p_PlanSemanalId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="udf_PlanSemanalList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="p_UsuarioId" Type="int" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="PlnSemanalId" Type="int" />
+                <Property Name="DescripcionPlan" Type="varchar" MaxLength="255" />
+                <Property Name="PeriodoId" Type="int" />
+                <Property Name="Periodo" Type="varchar" MaxLength="50" />
+                <Property Name="Usuario" Type="varchar" MaxLength="255" />
+                <Property Name="TieneDetalle" Type="int" />
+                <Property Name="EstatusId" Type="int" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="udf_PlanSemanalValidarList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="p_UsuarioId" Type="int" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="PlnSemanalId" Type="int" />
+                <Property Name="TipoFigura" Type="varchar" MaxLength="100" />
+                <Property Name="DescripcionPlan" Type="varchar" MaxLength="255" />
+                <Property Name="PeriodoId" Type="int" />
+                <Property Name="Periodo" Type="varchar" MaxLength="50" />
+                <Property Name="Usuario" Type="varchar" MaxLength="255" />
+                <Property Name="TieneDetalle" Type="int" />
+                <Property Name="EstatusId" Type="int" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
         <EntityContainer Name="Inaeba_GeorreferenciaModelStoreContainer">
           <EntitySet Name="cCoordinacionesRegion" EntityType="Self.cCoordinacionesRegion" Schema="CATALOGO" store:Type="Tables" />
           <EntitySet Name="cCoordinacionesZona" EntityType="Self.cCoordinacionesZona" Schema="CATALOGO" store:Type="Tables" />
@@ -1055,12 +1114,38 @@
             <End Role="mRoles" EntitySet="mRoles" />
             <End Role="mUsuarios" EntitySet="mUsuarios" />
           </AssociationSet>
+          <AssociationSet Name="FK_Usuarios_TipoFiguras" Association="Self.FK_Usuarios_TipoFiguras">
+            <End Role="cTipoFiguras" EntitySet="cTipoFiguras" />
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+          </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Inaeba_GeorreferenciaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <ComplexType Name="Split_Result">
+          <Property Name="Value" Type="Int64" />
+        </ComplexType>
+        <ComplexType Name="udf_PlanSemanalList_Result">
+          <Property Name="PlnSemanalId" Type="Int32" />
+          <Property Name="DescripcionPlan" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="PeriodoId" Type="Int32" />
+          <Property Name="Periodo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Usuario" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TieneDetalle" Type="Int32" />
+          <Property Name="EstatusId" Type="Int32" />
+        </ComplexType>
+        <ComplexType Name="udf_PlanSemanalValidarList_Result">
+          <Property Name="PlnSemanalId" Type="Int32" />
+          <Property Name="TipoFigura" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DescripcionPlan" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="PeriodoId" Type="Int32" />
+          <Property Name="Periodo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Usuario" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TieneDetalle" Type="Int32" />
+          <Property Name="EstatusId" Type="Int32" />
+        </ComplexType>
         <EntityType Name="cCoordinacionesRegion">
           <Key>
             <PropertyRef Name="CoordinacionRegionId" />
@@ -1167,6 +1252,7 @@
           <Property Name="DescripcionTipoFigura" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="cEstatus" Relationship="Self.FK_TipoFiguras_Estatus" FromRole="cTipoFiguras" ToRole="cEstatus" />
           <NavigationProperty Name="mUsuarios" Relationship="Self.FK_cTipoFiguras_mUsuarios" FromRole="cTipoFiguras" ToRole="mUsuarios" />
+          <NavigationProperty Name="mUsuarios1" Relationship="Self.FK_Usuarios_TipoFiguras" FromRole="cTipoFiguras" ToRole="mUsuarios" />
         </EntityType>
         <EntityType Name="cTipoNotificaciones">
           <Key>
@@ -1396,6 +1482,7 @@
           <Property Name="RolId" Type="Int32" Nullable="false" />
           <Property Name="ImagenUsuario" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
           <Property Name="EmailUsuario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TipoFiguraId" Type="Int32" />
           <NavigationProperty Name="cCoordinacionesRegion" Relationship="Self.FK_cCoordinacionesRegion_mUsuarios" FromRole="mUsuarios" ToRole="cCoordinacionesRegion" />
           <NavigationProperty Name="cCoordinacionesZona" Relationship="Self.FK_cCoordinacionesZona_mUsuarios" FromRole="mUsuarios" ToRole="cCoordinacionesZona" />
           <NavigationProperty Name="cEstatus" Relationship="Self.FK_cEstatus_mUsuarios" FromRole="mUsuarios" ToRole="cEstatus" />
@@ -1404,6 +1491,7 @@
           <NavigationProperty Name="cTipoActividades" Relationship="Self.FK_cTipoActividades_mUsuarios" FromRole="mUsuarios" ToRole="cTipoActividades" />
           <NavigationProperty Name="cTipoEstatus" Relationship="Self.FK_cTipoEstatus_mUsuarios" FromRole="mUsuarios" ToRole="cTipoEstatus" />
           <NavigationProperty Name="cTipoFiguras" Relationship="Self.FK_cTipoFiguras_mUsuarios" FromRole="mUsuarios" ToRole="cTipoFiguras" />
+          <NavigationProperty Name="cTipoFiguras1" Relationship="Self.FK_Usuarios_TipoFiguras" FromRole="mUsuarios" ToRole="cTipoFiguras" />
           <NavigationProperty Name="cTipoNotificaciones" Relationship="Self.FK_cTipoNotificaciones_mUsuarios" FromRole="mUsuarios" ToRole="cTipoNotificaciones" />
           <NavigationProperty Name="cTiposUsuario" Relationship="Self.FK_cTiposUsuario_mUsuarios" FromRole="mUsuarios" ToRole="cTiposUsuario" />
           <NavigationProperty Name="mLecturaCertificados" Relationship="Self.FK_mLecturaCertificados_mUsuarios" FromRole="mUsuarios" ToRole="mLecturaCertificados" />
@@ -1738,6 +1826,18 @@
             </Principal>
             <Dependent Role="cTipoFiguras">
               <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuarios_TipoFiguras">
+          <End Role="cTipoFiguras" Type="Self.cTipoFiguras" Multiplicity="0..1" />
+          <End Role="mUsuarios" Type="Self.mUsuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cTipoFiguras">
+              <PropertyRef Name="TipoFiguraId" />
+            </Principal>
+            <Dependent Role="mUsuarios">
+              <PropertyRef Name="TipoFiguraId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2121,6 +2221,10 @@
             <End Role="mUsuarios" EntitySet="mUsuarios" />
             <End Role="cTipoFiguras" EntitySet="cTipoFiguras" />
           </AssociationSet>
+          <AssociationSet Name="FK_Usuarios_TipoFiguras" Association="Self.FK_Usuarios_TipoFiguras">
+            <End Role="cTipoFiguras" EntitySet="cTipoFiguras" />
+            <End Role="mUsuarios" EntitySet="mUsuarios" />
+          </AssociationSet>
           <AssociationSet Name="FK_cTipoNotificaciones_mUsuarios" Association="Self.FK_cTipoNotificaciones_mUsuarios">
             <End Role="mUsuarios" EntitySet="mUsuarios" />
             <End Role="cTipoNotificaciones" EntitySet="cTipoNotificaciones" />
@@ -2205,6 +2309,15 @@
             <End Role="mUsuarios" EntitySet="mUsuarios" />
             <End Role="mSolicitudesVehiculo" EntitySet="mSolicitudesVehiculo" />
           </AssociationSet>
+          <FunctionImport Name="Split" IsComposable="true" ReturnType="Collection(Inaeba_GeorreferenciaModel.Split_Result)">
+            <Parameter Name="strString" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="udf_PlanSemanalList" IsComposable="true" ReturnType="Collection(Inaeba_GeorreferenciaModel.udf_PlanSemanalList_Result)">
+            <Parameter Name="p_UsuarioId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="udf_PlanSemanalValidarList" IsComposable="true" ReturnType="Collection(Inaeba_GeorreferenciaModel.udf_PlanSemanalValidarList_Result)">
+            <Parameter Name="p_UsuarioId" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
@@ -2493,6 +2606,7 @@
                 <ScalarProperty Name="RolId" ColumnName="RolId" />
                 <ScalarProperty Name="ImagenUsuario" ColumnName="ImagenUsuario" />
                 <ScalarProperty Name="EmailUsuario" ColumnName="EmailUsuario" />
+                <ScalarProperty Name="TipoFiguraId" ColumnName="TipoFiguraId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2508,6 +2622,40 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionName="Inaeba_GeorreferenciaModel.Store.Split" FunctionImportName="Split">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Inaeba_GeorreferenciaModel.Split_Result">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionName="Inaeba_GeorreferenciaModel.Store.udf_PlanSemanalList" FunctionImportName="udf_PlanSemanalList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Inaeba_GeorreferenciaModel.udf_PlanSemanalList_Result">
+                <ScalarProperty Name="PlnSemanalId" ColumnName="PlnSemanalId" />
+                <ScalarProperty Name="DescripcionPlan" ColumnName="DescripcionPlan" />
+                <ScalarProperty Name="PeriodoId" ColumnName="PeriodoId" />
+                <ScalarProperty Name="Periodo" ColumnName="Periodo" />
+                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+                <ScalarProperty Name="TieneDetalle" ColumnName="TieneDetalle" />
+                <ScalarProperty Name="EstatusId" ColumnName="EstatusId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionName="Inaeba_GeorreferenciaModel.Store.udf_PlanSemanalValidarList" FunctionImportName="udf_PlanSemanalValidarList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Inaeba_GeorreferenciaModel.udf_PlanSemanalValidarList_Result">
+                <ScalarProperty Name="PlnSemanalId" ColumnName="PlnSemanalId" />
+                <ScalarProperty Name="TipoFigura" ColumnName="TipoFigura" />
+                <ScalarProperty Name="DescripcionPlan" ColumnName="DescripcionPlan" />
+                <ScalarProperty Name="PeriodoId" ColumnName="PeriodoId" />
+                <ScalarProperty Name="Periodo" ColumnName="Periodo" />
+                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+                <ScalarProperty Name="TieneDetalle" ColumnName="TieneDetalle" />
+                <ScalarProperty Name="EstatusId" ColumnName="EstatusId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

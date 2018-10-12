@@ -309,6 +309,31 @@ namespace Sispro.Web.Controllers
             return existe;
         }
 
+        [HttpGet]
+        public JsonResult CargarNombresFigura(int? id, int? idEstatus)
+        {
+            try
+            {
+                var result = (from cat in db.mUsuarios
+                              where cat.EstatusId == (idEstatus == null ? cat.EstatusId : idEstatus)
+                              && cat.RolId == 2
+                              select new
+                              {
+                                  id = cat.UsuarioId,
+                                  nombre = cat.NombresUsuario + " " + cat.ApellidosUsuario,
+                              })
+                              .OrderBy(cat => cat.id)
+                              .ToList();
+
+                return (Json(result, JsonRequestBehavior.AllowGet));
+
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

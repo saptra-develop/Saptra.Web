@@ -295,7 +295,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Loading....
+        ///   Busca una cadena traducida similar a Cargando....
         /// </summary>
         public static string menuLoading {
             get {

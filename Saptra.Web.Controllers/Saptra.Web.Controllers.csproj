@@ -59,6 +59,10 @@
     <Compile Include="AutentificacionController.cs" />
     <Compile Include="Filtros\AutorizarLogin.cs" />
     <Compile Include="Filtros\LogAttribute.cs" />
+    <Compile Include="TiposFiguraController.cs" />
+    <Compile Include="PeriodosController.cs" />
+    <Compile Include="PlanSemanalSeguimientoController.cs" />
+    <Compile Include="PlanSemanalConsultaController.cs" />
     <Compile Include="TipoActividadesController.cs" />
     <Compile Include="NotificacionesController.cs" />
     <Compile Include="PlanSemanalController.cs" />

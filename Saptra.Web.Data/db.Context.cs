@@ -12,6 +12,8 @@ namespace Saptra.Web.Data
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class Inaeba_SaptraEntities : DbContext
     {
@@ -48,5 +50,35 @@ namespace Saptra.Web.Data
         public virtual DbSet<mNotificaciones> mNotificaciones { get; set; }
         public virtual DbSet<mUsuarios> mUsuarios { get; set; }
         public virtual DbSet<mSolicitudesVehiculo> mSolicitudesVehiculo { get; set; }
+    
+        [DbFunction("Entities", "Split")]
+        public virtual IQueryable<Split_Result> Split(string strString)
+        {
+            var strStringParameter = strString != null ?
+                new ObjectParameter("strString", strString) :
+                new ObjectParameter("strString", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Split_Result>("[Entities].[Split](@strString)", strStringParameter);
+        }
+    
+        [DbFunction("Entities", "udf_PlanSemanalList")]
+        public virtual IQueryable<udf_PlanSemanalList_Result> udf_PlanSemanalList(Nullable<int> p_UsuarioId)
+        {
+            var p_UsuarioIdParameter = p_UsuarioId.HasValue ?
+                new ObjectParameter("p_UsuarioId", p_UsuarioId) :
+                new ObjectParameter("p_UsuarioId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_PlanSemanalList_Result>("[Entities].[udf_PlanSemanalList](@p_UsuarioId)", p_UsuarioIdParameter);
+        }
+    
+        [DbFunction("Entities", "udf_PlanSemanalValidarList")]
+        public virtual IQueryable<udf_PlanSemanalValidarList_Result> udf_PlanSemanalValidarList(Nullable<int> p_UsuarioId)
+        {
+            var p_UsuarioIdParameter = p_UsuarioId.HasValue ?
+                new ObjectParameter("p_UsuarioId", p_UsuarioId) :
+                new ObjectParameter("p_UsuarioId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_PlanSemanalValidarList_Result>("[Entities].[udf_PlanSemanalValidarList](@p_UsuarioId)", p_UsuarioIdParameter);
+        }
     }
 }

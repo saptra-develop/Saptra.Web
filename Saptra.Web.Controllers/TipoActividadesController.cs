@@ -31,8 +31,6 @@ namespace Sispro.Web.Controllers
         {
             try
             {
-                var listaActvidades = new List<cTipoActividades>();
-
                 var result = (from cat in db.cTipoActividades
                               where cat.EstatusId == (idEstatus == null ? cat.EstatusId : idEstatus)
                               select new
