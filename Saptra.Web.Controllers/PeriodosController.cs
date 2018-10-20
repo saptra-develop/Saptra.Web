@@ -13,6 +13,8 @@ using System.Web.Mvc;
 using System.IO;
 using System.Configuration;
 using Newtonsoft.Json;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 
 using Saptra.Web.Data;
@@ -25,6 +27,11 @@ namespace Sispro.Web.Controllers
     {
         private Inaeba_SaptraEntities db = new Inaeba_SaptraEntities();
 
+        public ActionResult Periodos()
+        {
+            return View();
+        }
+
         [HttpGet]
         public JsonResult CargarPeriodos(int? id, int? idEstatus)
         {
@@ -33,15 +40,20 @@ namespace Sispro.Web.Controllers
                 DateTime fecha = Convert.ToDateTime(DateTime.Now.ToShortDateString());
                 var result = (from cat in db.cPeriodos
                               where cat.EstatusId == (idEstatus == null ? cat.EstatusId : idEstatus)
-                              select new
-                              {
-                                  id = cat.PeriodoId,
-                                  nombre = cat.DecripcionPeriodo,
-                              })
-                              .OrderBy(cat => cat.id)
+                              select cat)
+                              .OrderBy(cat => cat.FechaInicio)
                               .ToList();
 
-                return (Json(result, JsonRequestBehavior.AllowGet));
+                var lstPeriodos = result.Select(cat => new
+                {
+                    id = cat.PeriodoId,
+                    nombre = cat.DecripcionPeriodo,
+                    fechaInicio = cat.FechaInicio.ToString("MM/dd/yyyy"),
+                    fechaFin = cat.FechaFin.ToString("MM/dd/yyyy"),
+                    estatus = cat.cEstatus.NombreEstatus
+                });
+
+                return (Json(lstPeriodos, JsonRequestBehavior.AllowGet));
 
             }
             catch (Exception exp)
@@ -73,6 +85,106 @@ namespace Sispro.Web.Controllers
             catch (Exception exp)
             {
                 return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        [HttpGet]
+        public ActionResult Nuevo()
+        {
+            var objPeriodos = new cPeriodos();
+            ViewBag.Titulo = "Nuevo Periodo";
+            return PartialView("_Nuevo", objPeriodos);
+        }
+
+        [HttpPost]
+        public JsonResult Nuevo(cPeriodos pobjModelo)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    string diaInicio = pobjModelo.FechaInicio.ToString("dd");
+                    string diaFin = pobjModelo.FechaFin.ToString("dd");
+                    string mesInicio = pobjModelo.FechaInicio.ToString("MMM", new CultureInfo("es-ES"));
+                    string mesFin = pobjModelo.FechaFin.ToString("MMM", new CultureInfo("es-ES"));
+                    string anio = pobjModelo.FechaFin.ToString("yyyy");
+
+                    pobjModelo.FechaCreacion = DateTime.Now;
+                    pobjModelo.EstatusId = pobjModelo.EstatusId;
+                    pobjModelo.DecripcionPeriodo = diaInicio + " " + mesInicio + " - " + diaFin + " " + mesFin + " " + anio;
+                    db.cPeriodos.Add(pobjModelo);
+                    db.SaveChanges();
+
+                    return Json(new { Success = true, id = pobjModelo.PeriodoId, Message = "guardado correctamente " });
+                }
+                catch (Exception exp)
+                {
+                    return Json(new { Success = false, Message = exp.Message });
+                }
+            }
+
+            return Json(new { Success = false, Message = "Informacion incompleta" });
+        }
+
+        [HttpGet]
+        public ActionResult Actualizar(int id)
+        {
+            var objPeriodo = db.cPeriodos.Find(id);
+            ViewBag.Titulo = "Actualizar Periodo";
+            return PartialView("_Actualizar", objPeriodo);
+        }
+
+        [HttpPost]
+        public JsonResult Actualizar(cPeriodos pobjModelo)
+        {
+            try
+            {
+                string diaInicio = pobjModelo.FechaInicio.ToString("dd");
+                string diaFin = pobjModelo.FechaFin.ToString("dd");
+                string mesInicio = pobjModelo.FechaInicio.ToString("MMM", new CultureInfo("es-ES"));
+                string mesFin = pobjModelo.FechaFin.ToString("MMM", new CultureInfo("es-ES"));
+                string anio = pobjModelo.FechaFin.ToString("yyyy");
+
+                var result = (from ps in db.cPeriodos
+                              where ps.PeriodoId == pobjModelo.PeriodoId
+                              select ps).ToList();
+
+                //Actualiza
+                var dbTemp = result.First();
+                dbTemp.FechaInicio = pobjModelo.FechaInicio;
+                dbTemp.FechaFin = pobjModelo.FechaFin;
+                dbTemp.DecripcionPeriodo = diaInicio + " " + mesInicio + " - " + diaFin + " " + mesFin + " " + anio;
+                dbTemp.EstatusId = pobjModelo.EstatusId;
+                db.SaveChanges();
+
+
+                return Json(new { Success = true, id = pobjModelo.PeriodoId, Message = "actualizada correctamente " });
+
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult Borrar(int id)
+        {
+            try
+            {
+                var result = (from usu in db.cPeriodos
+                              where usu.PeriodoId == (id)
+                              select usu).FirstOrDefault();
+
+                result.EstatusId = 6;
+                db.SaveChanges();
+
+                return Json(new { Success = true, Message = "Se borro correctamente el periodo " });
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message });
             }
         }
 

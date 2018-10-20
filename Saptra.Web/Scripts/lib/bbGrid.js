@@ -610,7 +610,7 @@
                             <li><a href="javascript:;" class="accrowDetalle"><i class="fa fa-list-alt"></i>  Item</a></li>\
                             <li class="divider"></li>\
                             <%} if (isClone === true) {%>\
-                                    <li><a href="javascript:;" class="accrowClonar"><i class="fa fa-copy"></i>  Copiae</a></li>\
+                                    <li><a href="javascript:;" class="accrowClonar"><i class="fa fa-copy"></i>  Copiar</a></li>\
                                     <li class="divider"></li>\
                             <%} if (isSeguridad === true) {%>\
                                     <li><a href="javascript:;" class="accrowSeguridad"><i class="fa fa-lock"></i>  Seguridad</a></li>\

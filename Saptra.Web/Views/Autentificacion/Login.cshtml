@@ -40,50 +40,83 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-12 container-login100">
-                    <div class="wrap-login100" style="box-shadow: 4px 3px 19px -4px rgba(0,0,0,0.75);">
+                <div id="div-forms">
+                    <div class="col-sm-12 container-login100">
+                        <div class="wrap-login100" style="box-shadow: 4px 3px 19px -4px rgba(0,0,0,0.75);">
 
-                        @using (Html.BeginForm("Login", "Autentificacion", new { ReturnUrl = ViewBag.ReturnUrl },
-                        FormMethod.Post, new { id = "frmLogin", @role = "form", @class = "login100-form validate-form p-b-33 p-t-5" }))
-                        {
-                            <span class="login100-form-logo">
-                                <img src="/Content/images/Logo_SAPTRA.jpg" style="width:100%">
-                            </span>
-                            <div class="wrap-input100 validate-input" data-validate="Ingresar usuario">
-                                @Html.TextBoxFor(m => m.NombreUsuario, new { @class = "input100", autofocus = "true", placeholder = Resources.Autentificacion.userName })
-                                <span class="focus-input100" data-placeholder="&#xe82a;"></span>
-                            </div>
+                            @using (Html.BeginForm("Login", "Autentificacion", new { ReturnUrl = ViewBag.ReturnUrl },
+                            FormMethod.Post, new { id = "frmLogin", @role = "form", @class = "login100-form validate-form p-b-33 p-t-5" }))
+                            {
+                                <span class="login100-form-logo">
+                                    <img src="/Content/images/Logo_SAPTRA.jpg" style="width:100%">
+                                </span>
+                                <div class="wrap-input100 validate-input" data-validate="Ingresar usuario">
+                                    @Html.TextBoxFor(m => m.NombreUsuario, new { @class = "input100", autofocus = "true", placeholder = Resources.Autentificacion.userName })
+                                    <span class="focus-input100" data-placeholder="&#xe82a;"></span>
+                                </div>
 
-                            <div class="wrap-input100 validate-input" data-validate="Ingresar contraseña">
-                                @Html.PasswordFor(m => m.Contrasena, new { @class = "input100", placeholder = Resources.Autentificacion.password })
-                                <span class="focus-input100" data-placeholder="&#xe80f;"></span>
-                            </div>
-                            <div>
-                                @if (ViewBag.error != string.Empty)
-                                {
-                                    <div class="alert alert-warning alert-dismissible" role="alert" id="lblAlert">
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <strong>Message!</strong> @ViewBag.error
-                                    </div>
-                                }
-                                @if (ViewBag.successChangePassword != string.Empty)
-                                {
-                                    <div div class="alert alert-success alert-dismissible" role="alert" id="lblSucess">
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <strong>Message!</strong> @ViewBag.successChangePassword
-                                    </div>
-                                }
-                            </div>
-                            <div class="container-login100-form-btn m-t-32">
-                                <button type="submit" class="login100-form-btn">Iniciar sesión</button>
-                            </div>
-                        }
+                                <div class="wrap-input100 validate-input" data-validate="Ingresar contraseña">
+                                    @Html.PasswordFor(m => m.Contrasena, new { @class = "input100", placeholder = Resources.Autentificacion.password })
+                                    <span class="focus-input100" data-placeholder="&#xe80f;"></span>
+                                </div>
+                                <div>
+                                    @if (ViewBag.error != string.Empty)
+                                    {
+                                        <div class="alert alert-warning alert-dismissible" role="alert" id="lblAlert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <strong>Mensaje!</strong> @ViewBag.error
+                                        </div>
+                                    }
+                                    @if (ViewBag.successChangePassword != string.Empty)
+                                    {
+                                        <div div class="alert alert-success alert-dismissible" role="alert" id="lblSucess">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <strong>Mensaje!</strong> @ViewBag.successChangePassword
+                                        </div>
+                                    }
+                                </div>
+                                <div class="lbl-message">
+                                </div>
+                                <div class="container-login100-form-btn m-t-32">
+                                    <button type="submit" class="login100-form-btn">Iniciar sesión</button>
+                                </div>
+                                <div style="text-align:center">
+                                    <button class="btn btn-link" style="padding: 5px 10px 0px 0px" type="button" id="btn-olvido-password">¿Has olvidado tu contraseña?</button>
+                                </div>
+                            }
+                            @using (Html.BeginForm("EnviarEmail", "Autentificacion", FormMethod.Post, new { id = "frmEnviarEmail", @role = "form", @style = "display:none;", onsubmit = "return false", @class = "login100-form validate-form p-b-33 p-t-5" }))
+                            {
+                                <span class="login100-form-logo">
+                                    <img src="/Content/images/Logo_SAPTRA.jpg" style="width:100%">
+                                </span>
+                                <p class="text-info">
+                                    Si ha olvidado su contraseña, puede restablecerla aquí.
+                                </p>
+
+                                <div class="wrap-input100 " data-validate="Correo">
+                                    @Html.TextBoxFor(m => m.Email, new { @class = "input100", autofocus = "true", placeholder = "Correo" })
+                                    <span class="focus-input100" data-placeholder="&#xe818;"></span>
+                                </div>
+
+                                <div class="lbl-message">
+                                </div>
+                                <div class="container-login100-form-btn m-t-32">
+
+                                    <button type="button" id="btn-enviar-email" class="login100-form-btn">Enviar correo</button>
+                                </div>
+                                <div style="text-align:center">
+                                    <button class="btn btn-link" style="padding: 5px 10px 0px 0px" type="button" id="btn-regresa-login">Login</button>
+                                </div>
+                                <br />
+                                <br />
+
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
 
         </div>
-        <br />
         <!-- Footer -->
         <footer class="page-footer hidden-xs" style="background-color:#E6E6E6; ">
             <div class="container-fluid">

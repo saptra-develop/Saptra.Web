@@ -1,8 +1,8 @@
 ﻿/* global CHR, contextPath, bootbox, Backbone, bbGrid */
 
-//js de catalogo de proyectos.
-//David Jasso y Juan Lopepe
-//07/Septiembre/2016
+//js de catalogo de Usuarios.
+//David Jasso
+//10/Octubre/2018
 
 var Usuario = {
     accClonar: false,
@@ -22,8 +22,8 @@ var Usuario = {
     Eventos: function () {
         var that = this;
         $('.btnNuevo').click(that.Nuevo);
-        $(document).on("click", '.btn-GuardaNuevo', that.onSubirArchivo);
-        $(document).on("click", '.btn-ActualizarUsuario', that.onSubirArchivo);
+        $(document).on("click", '.btn-GuardaNuevo', that.onGuardar);
+        $(document).on("click", '.btn-ActualizarUsuario', that.onActualizar);
         //$(document).on("click", '.btn-Avatar', that.onAvatar());
 
         //Eventos de los botones de Acciones del grid
@@ -51,10 +51,10 @@ var Usuario = {
 
 
     },
-    onGuardar: function (e) {
-        var btn = e;
+    onGuardar: function () {
+        var btn = this;
 
-        FCH.botonMensaje(true, btn, 'Save');
+        FCH.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#NuevoUsuarioForm #liberaMatriz').val($('#NuevoUsuarioForm #chkReleasedMatrix').prop("checked") ? 1 : 0);
             //$("#imagenUsuario").val('Hola');
@@ -64,29 +64,29 @@ var Usuario = {
                 function (data) {
                     if (data.Success === true) {
                         Usuario.colUsuarios.add(Usuario.serializaUsuario(data.id, '#NuevoUsuarioForm'));
-                        FCH.DespliegaInformacion(jsglb[system_lang].Usuario_succcess_save + data.id);
+                        FCH.DespliegaInformacion("El Usuario fue guardado con el Id: " + data.id);
                         $('#nuevo-Usuario').modal('hide');
                         if (Usuario.colUsuarios.length === 1) {
                             Usuario.CargaGrid();
                         }
                     } else {
-                        FCH.botonMensaje(false, btn, 'Save');
+                        FCH.botonMensaje(false, btn, 'Guardar');
                         FCH.DespliegaErrorDialogo(data.Message);
                         
                     }
                 }).fail(function () {
-                    FCH.DespliegaErrorDialogo(jsglb[system_lang].error_saving_info);
+                    FCH.DespliegaErrorDialogo("Error al guardar la información.");
 
-                }).always(function () { FCH.botonMensaje(false, btn, 'Save'); });
+                }).always(function () { FCH.botonMensaje(false, btn, 'Guardar'); });
 
         } else {
-            FCH.botonMensaje(false, btn, 'Save');
+            FCH.botonMensaje(false, btn, 'Guardar');
         }
     },
-    onActualizar: function (e) {
-        var btn = e;
+    onActualizar: function () {
+        var btn = this;
 
-        FCH.botonMensaje(true, btn, 'Save');
+        FCH.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#ActualizaUsuarioForm #liberaMatriz').val($('#ActualizaUsuarioForm #chkReleasedMatrix').prop("checked") ? 1 : 0);
             //Se hace el post para guardar la informacion
@@ -96,15 +96,15 @@ var Usuario = {
                     if (data.Success === true) {
                         $('#actualiza-Usuario').modal('hide');
                         Usuario.colUsuarios.add(Usuario.serializaUsuario(data.id, '#ActualizaUsuarioForm'), { merge: true });
-                        FCH.DespliegaInformacion(jsglb[system_lang].Usuario_success_update + data.id);
+                        FCH.DespliegaInformacion("El Usuario fue Actualizado. Id: " + data.id);
                     } else {
                         FCH.DespliegaErrorDialogo(data.Message);
                     }
                 }).fail(function () {
-                    FCH.DespliegaErrorDialogo(jsglb[system_lang].error_updating_info);
-                }).always(function () { FCH.botonMensaje(false, btn, 'Save'); });
+                    FCH.DespliegaErrorDialogo("Error al actualizar la información");
+                }).always(function () { FCH.botonMensaje(false, btn, 'Guardar'); });
         } else {
-            FCH.botonMensaje(false, btn, 'Save');
+            FCH.botonMensaje(false, btn, 'Guardar');
         }
     },
     onSubirArchivo: function () {
@@ -114,7 +114,7 @@ var Usuario = {
             files;
 
         if ($("form").valid()) {
-            FCH.botonMensaje(true, btn, 'Save');
+            FCH.botonMensaje(true, btn, 'Guardar');
             files = document.getElementById(filesName).files;
             if (files.length > 0) {
                 if (window.FormData !== undefined) {
@@ -155,7 +155,7 @@ var Usuario = {
                         }
                     });
                 } else {
-                    FCH.DespliegaErrorDialogo(jsglb[system_lang].browser_not_supported);
+                    FCH.DespliegaErrorDialogo("Este explorador no soportado por la aplicacion favor de utilizar una version mas reciente. Chrome");
                     FCH.botonMensaje(false, btn, 'Guardar');
                 }
             } else {
@@ -216,19 +216,39 @@ var Usuario = {
     Borrar: function (id) {
         FCH.CierraMensajes();
 
-        bootbox.confirm(jsglb[system_lang].global_confirm_delete, function (result) {
-            if (result) {
-                var url = contextPath + "Usuario/Borrar"; // El url del controlador
-                $.post(url, { id: id }, function (data) {
-                    if (data.Success === true) {
-                        Usuario.colUsuarios.remove(id);
-                        FCH.DespliegaInformacion(data.Message + "  id:" + id);
-                    } else {
-                        FCH.DespliegaError(data.Message);
-                    }
-                }).fail(function () { FCH.DespliegaError(jsglb[system_lang].Usuario_could_not_delete_user); });
-            }
+        //bootbox.confirm("¿Está seguro que desea borrar este registro?", function (result) {
+            
+        //    if (result) {
+        //        var url = contextPath + "Usuario/Borrar"; // El url del controlador
+        //        $.post(url, { id: id }, function (data) {
+        //            if (data.Success === true) {
+        //                Usuario.colUsuarios.remove(id);
+        //                FCH.DespliegaInformacion(data.Message + "  id:" + id);
+        //            } else {
+        //                FCH.DespliegaError(data.Message);
+        //            }
+        //        }).fail(function () { FCH.DespliegaError("No se pudo eliminar el Usuario",); });
+        //    }
+        //});
+        bootbox.setDefaults({
+            locale: "es"
         });
+        bootbox.confirm({
+            message: "¿Está seguro que desea borrar este registro?",
+         
+            callback: function (result) {
+                if (result) {
+                    var url = contextPath + "Usuario/Borrar"; // El url del controlador
+                    $.post(url, { id: id }, function (data) {
+                        if (data.Success === true) {
+                            Usuario.colUsuarios.remove(id);
+                            FCH.DespliegaInformacion(data.Message + "  id:" + id);
+                        } else {
+                            FCH.DespliegaError(data.Message);
+                        }
+                    }).fail(function () { FCH.DespliegaError("No se pudo eliminar el Usuario"); });
+                } }
+        })
     },
     Clonar: function (id) {
         FCH.CierraMensajes();
@@ -255,23 +275,23 @@ var Usuario = {
                 Usuario.colRoles = data;
                 Usuario.CargaListaRoles(form);
             }).fail(function () {
-                FCH.DespliegaErrorDialogo(jsglb[system_lang].Seguridad_could_not_load_info_Roles);
+                FCH.DespliegaErrorDialogo("No se pudo cargar la informacion de los roles ");
             });
         } else {
             Usuario.CargaListaRoles(form);
         }
     },
     CargaListaRoles: function (form) {
-        var select = $(form + ' #idRol').empty();
+        var select = $(form + ' #RolId').empty();
 
         select.append('<option value="0">ELIJA UN ROL...</option>');
         $.each(Usuario.colRoles, function (i, item) {
             select.append('<option value="' + item.id + '">' + item.nombre + '</option>');
         });
 
-        $(form + " #idRol").select2({ allowClear: true });
+        $(form + " #RolId").select2({ allowClear: true });
         if (form !== undefined)
-            $(form + ' #idRol').val($(form + ' #Rol').val()).change();
+            $(form + ' #RolId').val($(form + ' #Rol').val()).change();
 
 
     },
@@ -283,7 +303,7 @@ var Usuario = {
                 Usuario.colUsuariosJefe = data.datos;
                 Usuario.CargaListaUsuarios(form);
             }).fail(function () {
-                FCH.DespliegaErrorDialogo(jsglb[system_lang].Proyecto_could_not_load_info_usuarios);
+                FCH.DespliegaErrorDialogo("No se pudo cargar la informacion de los usuarios");
             });
         } else {
             Usuario.CargaListaUsuarios(form);
@@ -336,13 +356,9 @@ var Usuario = {
     },
     serializaUsuario: function (id, form) {
         return ({
-            'nombreCompleto': $(form + ' #nombresUsuario').val().toUpperCase() + ' ' + $(form + ' #apellidosUsuario').val().toUpperCase(),
-            'email': $(form + ' #emailUsuario').val(),
-            'telefono': $(form + ' #telefonoUsuario').val(),
-            'celular': $(form + ' #celularUsuario').val(),
-            'departamento': $(form + ' #departamentoUsuario').val().toUpperCase(),
-            'nombreRol': $(form + ' #idRol option:selected').text().toUpperCase(),
-            'lang': $(form + ' #lenguajeUsuario option:selected').val(),
+            'nombreCompleto': $(form + ' #NombresUsuario').val().toUpperCase() + ' ' + $(form + ' #ApellidosUsuario').val().toUpperCase(),
+            'email': $(form + ' #EmailUsuario').val(),
+            'nombreRol': $(form + ' #RolId option:selected').text().toUpperCase(),
             'id': id
         });
     },
@@ -366,24 +382,20 @@ var Usuario = {
                     borrar: Usuario.accBorrar,
                     collection: Usuario.colUsuarios,
                     colModel: [//{ title: 'Id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
-                               { title: 'User', name: 'nombreCompleto', filter: true, filterType: 'input', index: true },
-                                { title: 'Email', name: 'email', filter: true, filterType: 'input', index: true },
-                                { title: 'Phone number', name: 'telefono', filter: true, filterType: 'input', index: true },
-                                { title: 'Cel number', name: 'celular', filter: true, filterType: 'input', index: true },
-                                { title: 'Department', name: 'departamento', filter: true, filterType: 'input', index: true },
-                                { title: 'Role', name: 'nombreRol', filter: true, filterType: 'input', index: true },
-                                { title: 'Language', name: 'lang', filter: true, filterType: 'input', index: true }]
+                               { title: 'Usuario', name: 'nombreCompleto', filter: true, filterType: 'input', index: true },
+                                { title: 'Correo', name: 'email', filter: true, filterType: 'input', index: true },
+                                { title: 'Rol', name: 'nombreRol', filter: true, filterType: 'input', index: true }]
 
                 });
                 $('#cargandoInfo').hide();
             } else {
-                FCH.DespliegaInformacion(jsglb[system_lang].Usuario_Recond_not_found);
+                FCH.DespliegaInformacion("No se encontraron Usuarios registrados");
                 $('#bbGrid-clear')[0].innerHTML = "";
             }
 
             //getJSON fail
         }).fail(function (e) {
-            FCH.DespliegaError(jsglb[system_lang].Proyecto_could_not_load_info_usuarios);
+            FCH.DespliegaError("No se pudo cargar la informacion de los usuarios");
         });
     }
 };

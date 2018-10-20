@@ -146,6 +146,7 @@
     <Content Include="Content\images\avatar.jpg" />
     <Content Include="Content\images\back2.jpg" />
     <Content Include="Content\images\gto_logo.png" />
+    <Content Include="Content\images\logo-soy-inaeba.png" />
     <Content Include="Content\images\logo_inaeba.png" />
     <Content Include="Content\images\Logo_SAPTRA.jpg" />
     <Content Include="Content\images\Logo_SAPTRA_min.jpg" />
@@ -1427,10 +1428,15 @@
     <Content Include="Scripts\lib\underscore\underscore-min.js" />
     <Content Include="Scripts\lib\underscore\underscore.js" />
     <None Include="Scripts\lib\_references.js" />
+    <Content Include="Scripts\Incidencias.js" />
     <Content Include="Scripts\PlanSemanalAprobacion.js" />
     <Content Include="Scripts\PlanSemanalValidacion.js" />
     <Content Include="Scripts\PlanSemanalConsulta.js" />
     <Content Include="Scripts\PlanSemanal.js" />
+    <Content Include="Scripts\Seguridad.js" />
+    <Content Include="Scripts\TiposActividades.js" />
+    <Content Include="Scripts\Periodos.js" />
+    <Content Include="Scripts\TiposFigura.js" />
     <Content Include="Scripts\Usuario.js" />
     <Content Include="Scripts\_Saptra.js" />
     <Content Include="Web.config">
@@ -1468,6 +1474,22 @@
     <Content Include="Views\PlanSemanalConsulta\Index.cshtml" />
     <Content Include="Views\PlanSemanalSeguimiento\ValidacionPlan.cshtml" />
     <Content Include="Views\PlanSemanalSeguimiento\AprobacionPlan.cshtml" />
+    <Content Include="Views\Rol\Index.cshtml" />
+    <Content Include="Views\Rol\_ActualizaRol.cshtml" />
+    <Content Include="Views\Rol\_Modulos.cshtml" />
+    <Content Include="Views\Rol\_NuevoRol.cshtml" />
+    <Content Include="Views\Incidencias\Index.cshtml" />
+    <Content Include="Views\Autentificacion\ResetPassword.cshtml" />
+    <Content Include="Views\Indicadores\Index.cshtml" />
+    <Content Include="Views\TiposFigura\_Actualizar.cshtml" />
+    <Content Include="Views\TiposFigura\_Nuevo.cshtml" />
+    <Content Include="Views\TipoActividades\_Actualizar.cshtml" />
+    <Content Include="Views\TipoActividades\_Nuevo.cshtml" />
+    <Content Include="Views\TipoActividades\Actividades.cshtml" />
+    <Content Include="Views\TiposFigura\Figuras.cshtml" />
+    <Content Include="Views\Periodos\_Actualizar.cshtml" />
+    <Content Include="Views\Periodos\_Nuevo.cshtml" />
+    <Content Include="Views\Periodos\Periodos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -25,6 +25,12 @@ namespace Sispro.Web.Controllers
     {
         private Inaeba_SaptraEntities db = new Inaeba_SaptraEntities();
 
+
+        public ActionResult Figuras()
+        {
+            return View();
+        }
+
         [HttpGet]
         public JsonResult CargarTiposFigura(int? id, int? idEstatus)
         {
@@ -36,6 +42,7 @@ namespace Sispro.Web.Controllers
                               {
                                   id = cat.TipoFiguraId,
                                   nombre = cat.DescripcionTipoFigura,
+                                  estatus = cat.cEstatus.NombreEstatus
                               })
                               .OrderBy(cat => cat.id)
                               .ToList();
@@ -50,30 +57,90 @@ namespace Sispro.Web.Controllers
         }
 
         [HttpGet]
-        public JsonResult CargarPeriodoActual(int? id, int? idEstatus)
+        public ActionResult Nuevo()
+        {
+            var objTiposFigura = new cTipoFiguras();
+            ViewBag.Titulo = "Nuevo tipo figura";
+            return PartialView("_Nuevo", objTiposFigura);
+        }
+
+        [HttpPost]
+        public JsonResult Nuevo(cTipoFiguras pobjModelo)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    pobjModelo.FechaCreacion = DateTime.Now;
+                    pobjModelo.EstatusId = pobjModelo.EstatusId;
+                    db.cTipoFiguras.Add(pobjModelo);
+                    db.SaveChanges();
+
+                    return Json(new { Success = true, id = pobjModelo.TipoFiguraId, Message = "guardado correctamente " });
+                }
+                catch (Exception exp)
+                {
+                    return Json(new { Success = false, Message = exp.Message });
+                }
+            }
+
+            return Json(new { Success = false, Message = "Informacion incompleta" });
+        }
+
+        [HttpGet]
+        public ActionResult Actualizar(int id)
+        {
+            var objTipoFigura = db.cTipoFiguras.Find(id);
+            ViewBag.Titulo = "Actualizar tipo figura";
+            return PartialView("_Actualizar", objTipoFigura);
+        }
+
+        [HttpPost]
+        public JsonResult Actualizar(cTipoFiguras pobjModelo)
         {
             try
             {
-                DateTime fecha = Convert.ToDateTime(DateTime.Now.ToShortDateString());
-                var result = (from cat in db.cPeriodos
-                              where cat.EstatusId == (idEstatus == null ? cat.EstatusId : idEstatus)
-                              && (fecha >= cat.FechaInicio && fecha <= cat.FechaFin)
-                              select new
-                              {
-                                  id = cat.PeriodoId,
-                                  nombre = cat.DecripcionPeriodo,
-                              })
-                              .OrderBy(cat => cat.id)
-                              .ToList();
+                var result = (from ps in db.cTipoFiguras
+                              where ps.TipoFiguraId == pobjModelo.TipoFiguraId
+                              select ps).ToList();
 
-                return (Json(result, JsonRequestBehavior.AllowGet));
+                //Actualiza
+                var dbTemp = result.First();
+                dbTemp.DescripcionTipoFigura = pobjModelo.DescripcionTipoFigura;
+                dbTemp.EstatusId = pobjModelo.EstatusId;
+                db.SaveChanges();
+
+
+                return Json(new { Success = true, id = pobjModelo.TipoFiguraId, Message = "actualizada correctamente " });
 
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = false, Message = exp.Message });
             }
         }
+
+        [HttpPost]
+        public JsonResult Borrar(int id)
+        {
+            try
+            {
+                var result = (from usu in db.cTipoFiguras
+                              where usu.TipoFiguraId == (id)
+                              select usu).FirstOrDefault();
+
+                result.EstatusId = 6;
+                db.SaveChanges();
+
+                return Json(new { Success = true, Message = "Se borro correctamente el tipo figura " });
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message });
+            }
+        }
+
+     
 
         protected override void Dispose(bool disposing)
         {

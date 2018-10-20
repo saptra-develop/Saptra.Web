@@ -16,6 +16,7 @@ var PlanSemanal = {
     colTiposFigura: [],
     colPeriodos: [],
     colNombreFigura: [],
+    comentarios : [],
     Inicial: function () {
         $.ajaxSetup({ cache: false });
         this.CargaPeriodos();
@@ -26,13 +27,139 @@ var PlanSemanal = {
     Eventos: function () {
         var that = this;
         $('#btnFilter').click(that.CargaGrid);
+
+        $(document).on('click', '.btnValidar', function () {
+            PlanSemanal.ValidarPlan($(this).data("idplan"));
+        });
+        $(document).on('click', '.btnFeedback', function () {
+            PlanSemanal.FeedbackPlan($(this).data("idplan"));
+        });
+
+        $(document).on('change', '.checkComents', function () { 
+
+            if ($('#checkComents_' + $(this).data("iddetalleplan")).prop('checked')) {
+                $('#idComentariosCZ_' + $(this).data("iddetalleplan")).prop("disabled", false);
+            }
+            else {
+                $('#idComentariosCZ_' + $(this).data("iddetalleplan")).prop("disabled", true);
+            }
+        });
+        $(document).on('change', '.idComentariosCZ', function () {
+            PlanSemanal.comentarios = PlanSemanal.createJSON();
+        });
+
+        $(document).on("change", '#selPeriodos', that.onCambiarPeriodos);
+        $(document).on("change", '#selTipoFigura', that.onCambiarTiposFigura);
+        $(document).on("change", '#selNombreFigura', that.onCambiarNombresFigura);
+    },
+    onCambiarPeriodos: function (ev) {
+        var linea;
+        var values = ev.val;
+        for (var i = 0; i < values.length; i++) {
+            if (typeof linea !== 'undefined') {
+                linea += ",";
+                linea += values[i];
+            }
+            else {
+                linea = values[i];
+            }
+        }
+        $('#selecPeriodos').val(linea);
+    },
+    onCambiarTiposFigura: function (ev) {
+        var linea;
+        var values = ev.val;
+        for (var i = 0; i < values.length; i++) {
+            if (typeof linea !== 'undefined') {
+                linea += ",";
+                linea += values[i];
+            }
+            else {
+                linea = values[i];
+            }
+        }
+        $('#selecTipoFigura').val(linea);
+    },
+    onCambiarNombresFigura: function (ev) {
+        var linea;
+        var values = ev.val;
+        for (var i = 0; i < values.length; i++) {
+            if (typeof linea !== 'undefined') {
+                linea += ",";
+                linea += values[i];
+            }
+            else {
+                linea = values[i];
+            }
+        }
+        $('#selecNombreFigura').val(linea);
+    },
+    createJSON: function () {
+        jsonObj = [];
+        $.each($('.idComentariosCZ'), function (i, item) {
+
+            if ($('#checkComents_' + $(item).data("iddetalleplan")).prop('checked')) {
+                var id = $(item).data("iddetalleplan");
+                var coment = $(item).val();
+
+                elem = { id: id, comentario: coment };
+
+                jsonObj.push(elem);
+            }
+        });
+
+        return JSON.stringify(jsonObj);
+    },
+    ValidarPlan: function (idPlan) {
+        var btn = $('#btnValidar_' + idPlan),
+            btnName = $('#btnValidar_' + idPlan).text();
+        FCH.botonMensaje(true, btn, btnName);
+
+        $.post(contextPath + "PlanSemanalSeguimiento/ValidarPlan?idPlan=" + idPlan + "&idUsuario=" + localStorage.idUser,
+            function (data) {
+                if (data.Success === true) {
+                    FCH.DespliegaNotificacion('success', 'Plan ', data.Message, 'glyphicon-ok', 3000);
+                    FCH.botonMensaje(false, btn, "<i class='fa fa-check-circle'></i> Validado");
+                    $("#btnValidar_" + idPlan).prop("disabled", true);
+                    $("#btnFeedback_" + idPlan).prop("disabled", true);
+                } else {
+                    FCH.DespliegaError(data.Message);
+                    FCH.botonMensaje(false, btn, "<i class='fa fa-check-circle'></i> Validar");
+                }
+            }).fail(function () {
+                FCH.DespliegaError("Error al guardar la informacion");
+            }).always(function () { });
+
+    },
+    FeedbackPlan: function (idPlan) {
+        var objetoJson = PlanSemanal.comentarios;
+        var btn = $('#btnFeedback_' + idPlan),
+            btnName = $('#btnFeedback_' + idPlan).text();
+        FCH.botonMensaje(true, btn, btnName);
+        $.ajax({
+            url: contextPath + "PlanSemanalSeguimiento/FeedbackPlan?idPlan=" + idPlan + "&idUsuario=" + localStorage.idUser,
+            type: 'post',
+            data: objetoJson,
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                if (data.Success === true) {
+                    FCH.DespliegaNotificacion('success', 'Plan ', data.Message, 'glyphicon-ok', 3000);
+                    FCH.botonMensaje(false, btn, "<i class='fa fa-check-circle'></i> Feedback");
+                    $("#btnFeedback_" + idPlan).prop("disabled", true);
+                    $("#btnValidar_" + idPlan).prop("disabled", true);
+                } else {
+                    FCH.DespliegaError(data.Message);
+                    FCH.botonMensaje(false, btn, "<i class='fa fa-check-circle'></i> Feedback");
+                }
+            }
+        });
     },
     CargaGrid: function () {
         $('#bbGrid-clear')[0].innerHTML = "";
 
         $('#cargandoInfo').show();
         $('#bbGrid-clear')[0].innerHTML = "<span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span> Cargando Información...";
-        var url = contextPath + "PlanSemanalSeguimiento/CargarPlanes?idUsu=" + localStorage.idUser + "&idPeriodo=" + $('#selPeriodos').val(); // El url del controlador
+        var url = contextPath + "PlanSemanalSeguimiento/CargarPlanes?idUsu=" + localStorage.idUser + "&Periodos=" + $('#selecPeriodos').val() + "&TiposFigura=" + $('#selecTipoFigura').val() + "&NombresFigura=" + $('#selecNombreFigura').val(); // El url del controlador
         $.getJSON(url, function (data) {
             if (data.Success === false) { FCH.DespliegaError(data.Message); return; }
             $('#bbGrid-clear')[0].innerHTML = "";
@@ -67,7 +194,7 @@ var PlanSemanal = {
 
             //getJSON fail
         }).fail(function (e) {
-            FCH.DespliegaError(jsglb[system_lang].Proyecto_could_not_load_info_usuarios);
+            FCH.DespliegaError("No se pudo cargar la informacion de los planes");
         });
     },
     CargaGridDetallesPackingList: function (id, $container) {
@@ -84,7 +211,7 @@ var PlanSemanal = {
                 collection: PlanSemanal.colPlanDetalle,
                 colModel: [//{ title: 'id', name: 'id', index: true },
                             { title: 'Actividad', name: 'actividad',  index: true },
-                            { title: 'Descipción', name: 'descripcion', index: true },
+                            { title: 'Descripción', name: 'descripcion', index: true },
                             { title: 'Fecha', name: 'fecha',  index: true },
                             { title: 'Hora', name: 'hora',  index: true },
                             { title: 'Check In', name: 'checkin',  index: true },

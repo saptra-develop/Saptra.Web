@@ -121,13 +121,13 @@
     <value>Apellido</value>
   </data>
   <data name="lblCambiarPassword" xml:space="preserve">
-    <value>Cambiar password</value>
+    <value>Cambiar contraseña</value>
   </data>
   <data name="lblEditarPerfil" xml:space="preserve">
     <value>Editar perfil</value>
   </data>
   <data name="lblEmail" xml:space="preserve">
-    <value>Email</value>
+    <value>Correo</value>
   </data>
   <data name="lblLogin" xml:space="preserve">
     <value>Login</value>
@@ -139,7 +139,7 @@
     <value>Contraseña</value>
   </data>
   <data name="lblPasswordActual" xml:space="preserve">
-    <value>Actual contraseña</value>
+    <value>Contraseña actual</value>
   </data>
   <data name="lblPasswordConfirmar" xml:space="preserve">
     <value>Confirmar contraseña</value>

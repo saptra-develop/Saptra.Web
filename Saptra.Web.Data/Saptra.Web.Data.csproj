@@ -118,6 +118,9 @@
     <Compile Include="mCheckIn.cs">
       <DependentUpon>db.tt</DependentUpon>
     </Compile>
+    <Compile Include="mCoordinacionRegionZonaUsuario.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
     <Compile Include="mCoordinacionZonaUsuario.cs">
       <DependentUpon>db.tt</DependentUpon>
     </Compile>
@@ -139,6 +142,9 @@
     <Compile Include="mPlanSemanal.cs">
       <DependentUpon>db.tt</DependentUpon>
     </Compile>
+    <Compile Include="mResetPassword.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
     <Compile Include="mRoles.cs">
       <DependentUpon>db.tt</DependentUpon>
     </Compile>
@@ -151,6 +157,30 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeguridadData.cs" />
     <Compile Include="Split_Result.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_helpdiagrams_Result.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysdiagrams.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udf_IncumplimientoActividadesPeriodoList_Result.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udf_IncumplimientoActividadesPeriodoRegionList_Result.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udf_ModulosSeguridadxRol_Result.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udf_PlanSemanalAprobarList_Result.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udf_PlanSemanalIncidenciasList_Result.cs">
       <DependentUpon>db.tt</DependentUpon>
     </Compile>
     <Compile Include="udf_PlanSemanalList_Result.cs">

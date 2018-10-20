@@ -33,14 +33,42 @@ namespace Sispro.Web.Controllers
 
         public PartialViewResult CargaNotificaciones(int? idUsuario)
         {
-            var lstNotificaciones = (from n in db.mNotificaciones
-                                where n.EstatusId == 3 
-                                && n.UsuarioId == idUsuario
-                                select n)
-                            .OrderByDescending(not => not.NotificacionId)
-                            .ToList();
+            var coordinacion = (from cor in db.mCoordinacionZonaUsuario
+                                where cor.UsuarioId == idUsuario
+                                select cor).FirstOrDefault();
 
-            return PartialView("_MenuNotificaciones", lstNotificaciones);
+            var lstNotificaciones = new List<mNotificaciones>();
+
+            if (coordinacion != null)
+            {
+                if (coordinacion.JefeCoordinacionZona == true)
+                {
+                    lstNotificaciones = (from n in db.mNotificaciones
+                                         where n.EstatusId == 3
+                                         && n.CoordinacionZonaUsuarioId == coordinacion.CoordinacionZonaId
+                                         && n.TipoNotificacionId != 3
+                                         select n)
+                               .OrderByDescending(not => not.NotificacionId)
+                               .ToList();
+                }
+                else
+                {
+                    lstNotificaciones = (from n in db.mNotificaciones
+                                         where n.EstatusId == 3
+                                         && n.CoordinacionZonaUsuarioId == coordinacion.CoordinacionZonaId
+                                         && n.UsuarioId == idUsuario
+                                         && n.TipoNotificacionId == 3
+                                         select n)
+                             .OrderByDescending(not => not.NotificacionId)
+                             .ToList();
+                }
+
+                return PartialView("_MenuNotificaciones", lstNotificaciones);
+            }
+            else
+            {
+                return PartialView("_MenuNotificaciones", lstNotificaciones);
+            }
         }
 
         protected override void Dispose(bool disposing)

@@ -232,6 +232,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Incidencias.
+        /// </summary>
+        public static string menuGrupoIncidencias {
+            get {
+                return ResourceManager.GetString("menuGrupoIncidencias", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Indicadores.
         /// </summary>
         public static string menuGrupoIndicadores {
@@ -273,6 +282,15 @@ namespace Resources {
         public static string menuGrupoSeguridad {
             get {
                 return ResourceManager.GetString("menuGrupoSeguridad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Reporte Incidencias.
+        /// </summary>
+        public static string menuIncidencias {
+            get {
+                return ResourceManager.GetString("menuIncidencias", resourceCulture);
             }
         }
         

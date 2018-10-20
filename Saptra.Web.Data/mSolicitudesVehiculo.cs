@@ -20,7 +20,10 @@ namespace Saptra.Web.Data
         public int VehiculoId { get; set; }
         public System.DateTime FechaUso { get; set; }
         public Nullable<int> SolicitudSipaeId { get; set; }
+        public int DetallePlanId { get; set; }
+        public string PlacaVehiculo { get; set; }
     
+        public virtual dDetallePlanSemanal dDetallePlanSemanal { get; set; }
         public virtual mUsuarios mUsuarios { get; set; }
     }
 }

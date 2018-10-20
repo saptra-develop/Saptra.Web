@@ -37,7 +37,9 @@ namespace Saptra.Web.Data
         public virtual DbSet<cTipoNotificaciones> cTipoNotificaciones { get; set; }
         public virtual DbSet<cTiposUsuario> cTiposUsuario { get; set; }
         public virtual DbSet<mLecturaCertificados> mLecturaCertificados { get; set; }
+        public virtual DbSet<mCoordinacionRegionZonaUsuario> mCoordinacionRegionZonaUsuario { get; set; }
         public virtual DbSet<mCoordinacionZonaUsuario> mCoordinacionZonaUsuario { get; set; }
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<mEducandosCaptados> mEducandosCaptados { get; set; }
         public virtual DbSet<dDetallePlanSemanal> dDetallePlanSemanal { get; set; }
         public virtual DbSet<mCheckIn> mCheckIn { get; set; }
@@ -48,6 +50,7 @@ namespace Saptra.Web.Data
         public virtual DbSet<mPermisos> mPermisos { get; set; }
         public virtual DbSet<mRoles> mRoles { get; set; }
         public virtual DbSet<mNotificaciones> mNotificaciones { get; set; }
+        public virtual DbSet<mResetPassword> mResetPassword { get; set; }
         public virtual DbSet<mUsuarios> mUsuarios { get; set; }
         public virtual DbSet<mSolicitudesVehiculo> mSolicitudesVehiculo { get; set; }
     
@@ -61,6 +64,96 @@ namespace Saptra.Web.Data
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Split_Result>("[Entities].[Split](@strString)", strStringParameter);
         }
     
+        [DbFunction("Entities", "udf_IncumplimientoActividadesPeriodoList")]
+        public virtual IQueryable<udf_IncumplimientoActividadesPeriodoList_Result> udf_IncumplimientoActividadesPeriodoList(Nullable<int> p_idPeriodo)
+        {
+            var p_idPeriodoParameter = p_idPeriodo.HasValue ?
+                new ObjectParameter("p_idPeriodo", p_idPeriodo) :
+                new ObjectParameter("p_idPeriodo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_IncumplimientoActividadesPeriodoList_Result>("[Entities].[udf_IncumplimientoActividadesPeriodoList](@p_idPeriodo)", p_idPeriodoParameter);
+        }
+    
+        [DbFunction("Entities", "udf_IncumplimientoActividadesPeriodoRegionList")]
+        public virtual IQueryable<udf_IncumplimientoActividadesPeriodoRegionList_Result> udf_IncumplimientoActividadesPeriodoRegionList(Nullable<int> p_idPeriodo, string p_Region, string p_Zona, string p_TipoActividad)
+        {
+            var p_idPeriodoParameter = p_idPeriodo.HasValue ?
+                new ObjectParameter("p_idPeriodo", p_idPeriodo) :
+                new ObjectParameter("p_idPeriodo", typeof(int));
+    
+            var p_RegionParameter = p_Region != null ?
+                new ObjectParameter("p_Region", p_Region) :
+                new ObjectParameter("p_Region", typeof(string));
+    
+            var p_ZonaParameter = p_Zona != null ?
+                new ObjectParameter("p_Zona", p_Zona) :
+                new ObjectParameter("p_Zona", typeof(string));
+    
+            var p_TipoActividadParameter = p_TipoActividad != null ?
+                new ObjectParameter("p_TipoActividad", p_TipoActividad) :
+                new ObjectParameter("p_TipoActividad", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_IncumplimientoActividadesPeriodoRegionList_Result>("[Entities].[udf_IncumplimientoActividadesPeriodoRegionList](@p_idPeriodo, @p_Region, @p_Zona, @p_TipoActividad)", p_idPeriodoParameter, p_RegionParameter, p_ZonaParameter, p_TipoActividadParameter);
+        }
+    
+        [DbFunction("Entities", "udf_ModulosSeguridadxRol")]
+        public virtual IQueryable<udf_ModulosSeguridadxRol_Result> udf_ModulosSeguridadxRol(Nullable<int> rol)
+        {
+            var rolParameter = rol.HasValue ?
+                new ObjectParameter("Rol", rol) :
+                new ObjectParameter("Rol", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_ModulosSeguridadxRol_Result>("[Entities].[udf_ModulosSeguridadxRol](@Rol)", rolParameter);
+        }
+    
+        [DbFunction("Entities", "udf_PlanSemanalAprobarList")]
+        public virtual IQueryable<udf_PlanSemanalAprobarList_Result> udf_PlanSemanalAprobarList(Nullable<int> p_UsuarioId, string p_Periodos, string p_TiposFigura, string p_NombresFigura)
+        {
+            var p_UsuarioIdParameter = p_UsuarioId.HasValue ?
+                new ObjectParameter("p_UsuarioId", p_UsuarioId) :
+                new ObjectParameter("p_UsuarioId", typeof(int));
+    
+            var p_PeriodosParameter = p_Periodos != null ?
+                new ObjectParameter("p_Periodos", p_Periodos) :
+                new ObjectParameter("p_Periodos", typeof(string));
+    
+            var p_TiposFiguraParameter = p_TiposFigura != null ?
+                new ObjectParameter("p_TiposFigura", p_TiposFigura) :
+                new ObjectParameter("p_TiposFigura", typeof(string));
+    
+            var p_NombresFiguraParameter = p_NombresFigura != null ?
+                new ObjectParameter("p_NombresFigura", p_NombresFigura) :
+                new ObjectParameter("p_NombresFigura", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_PlanSemanalAprobarList_Result>("[Entities].[udf_PlanSemanalAprobarList](@p_UsuarioId, @p_Periodos, @p_TiposFigura, @p_NombresFigura)", p_UsuarioIdParameter, p_PeriodosParameter, p_TiposFiguraParameter, p_NombresFiguraParameter);
+        }
+    
+        [DbFunction("Entities", "udf_PlanSemanalIncidenciasList")]
+        public virtual IQueryable<udf_PlanSemanalIncidenciasList_Result> udf_PlanSemanalIncidenciasList(Nullable<int> p_UsuarioId, string p_Periodos, string p_TiposFigura, string p_NombresFigura, string p_TipoActvidades)
+        {
+            var p_UsuarioIdParameter = p_UsuarioId.HasValue ?
+                new ObjectParameter("p_UsuarioId", p_UsuarioId) :
+                new ObjectParameter("p_UsuarioId", typeof(int));
+    
+            var p_PeriodosParameter = p_Periodos != null ?
+                new ObjectParameter("p_Periodos", p_Periodos) :
+                new ObjectParameter("p_Periodos", typeof(string));
+    
+            var p_TiposFiguraParameter = p_TiposFigura != null ?
+                new ObjectParameter("p_TiposFigura", p_TiposFigura) :
+                new ObjectParameter("p_TiposFigura", typeof(string));
+    
+            var p_NombresFiguraParameter = p_NombresFigura != null ?
+                new ObjectParameter("p_NombresFigura", p_NombresFigura) :
+                new ObjectParameter("p_NombresFigura", typeof(string));
+    
+            var p_TipoActvidadesParameter = p_TipoActvidades != null ?
+                new ObjectParameter("p_TipoActvidades", p_TipoActvidades) :
+                new ObjectParameter("p_TipoActvidades", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_PlanSemanalIncidenciasList_Result>("[Entities].[udf_PlanSemanalIncidenciasList](@p_UsuarioId, @p_Periodos, @p_TiposFigura, @p_NombresFigura, @p_TipoActvidades)", p_UsuarioIdParameter, p_PeriodosParameter, p_TiposFiguraParameter, p_NombresFiguraParameter, p_TipoActvidadesParameter);
+        }
+    
         [DbFunction("Entities", "udf_PlanSemanalList")]
         public virtual IQueryable<udf_PlanSemanalList_Result> udf_PlanSemanalList(Nullable<int> p_UsuarioId)
         {
@@ -72,13 +165,128 @@ namespace Saptra.Web.Data
         }
     
         [DbFunction("Entities", "udf_PlanSemanalValidarList")]
-        public virtual IQueryable<udf_PlanSemanalValidarList_Result> udf_PlanSemanalValidarList(Nullable<int> p_UsuarioId)
+        public virtual IQueryable<udf_PlanSemanalValidarList_Result> udf_PlanSemanalValidarList(Nullable<int> p_UsuarioId, string p_Periodos, string p_TiposFigura, string p_NombresFigura)
         {
             var p_UsuarioIdParameter = p_UsuarioId.HasValue ?
                 new ObjectParameter("p_UsuarioId", p_UsuarioId) :
                 new ObjectParameter("p_UsuarioId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_PlanSemanalValidarList_Result>("[Entities].[udf_PlanSemanalValidarList](@p_UsuarioId)", p_UsuarioIdParameter);
+            var p_PeriodosParameter = p_Periodos != null ?
+                new ObjectParameter("p_Periodos", p_Periodos) :
+                new ObjectParameter("p_Periodos", typeof(string));
+    
+            var p_TiposFiguraParameter = p_TiposFigura != null ?
+                new ObjectParameter("p_TiposFigura", p_TiposFigura) :
+                new ObjectParameter("p_TiposFigura", typeof(string));
+    
+            var p_NombresFiguraParameter = p_NombresFigura != null ?
+                new ObjectParameter("p_NombresFigura", p_NombresFigura) :
+                new ObjectParameter("p_NombresFigura", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_PlanSemanalValidarList_Result>("[Entities].[udf_PlanSemanalValidarList](@p_UsuarioId, @p_Periodos, @p_TiposFigura, @p_NombresFigura)", p_UsuarioIdParameter, p_PeriodosParameter, p_TiposFiguraParameter, p_NombresFiguraParameter);
+        }
+    
+        public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var versionParameter = version.HasValue ?
+                new ObjectParameter("version", version) :
+                new ObjectParameter("version", typeof(int));
+    
+            var definitionParameter = definition != null ?
+                new ObjectParameter("definition", definition) :
+                new ObjectParameter("definition", typeof(byte[]));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_alterdiagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
+        }
+    
+        public virtual int sp_creatediagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var versionParameter = version.HasValue ?
+                new ObjectParameter("version", version) :
+                new ObjectParameter("version", typeof(int));
+    
+            var definitionParameter = definition != null ?
+                new ObjectParameter("definition", definition) :
+                new ObjectParameter("definition", typeof(byte[]));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_creatediagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
+        }
+    
+        public virtual int sp_dropdiagram(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_dropdiagram", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual ObjectResult<sp_helpdiagramdefinition_Result> sp_helpdiagramdefinition(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_helpdiagramdefinition_Result>("sp_helpdiagramdefinition", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual ObjectResult<sp_helpdiagrams_Result> sp_helpdiagrams(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_helpdiagrams_Result>("sp_helpdiagrams", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual int sp_renamediagram(string diagramname, Nullable<int> owner_id, string new_diagramname)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var new_diagramnameParameter = new_diagramname != null ?
+                new ObjectParameter("new_diagramname", new_diagramname) :
+                new ObjectParameter("new_diagramname", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_renamediagram", diagramnameParameter, owner_idParameter, new_diagramnameParameter);
+        }
+    
+        public virtual int sp_upgraddiagrams()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_upgraddiagrams");
         }
     }
 }

@@ -159,7 +159,7 @@ namespace Sispro.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult EnviarPlan(int idPlan)
+        public JsonResult EnviarPlan(int idPlan, int idUsuario)
         {
             try
             {
@@ -172,6 +172,36 @@ namespace Sispro.Web.Controllers
                 dbTemp.EstatusId = 10;
                 db.SaveChanges();
 
+                //Revisa coordinador de zona al que pertenece
+                var coordinador = (from co in db.mCoordinacionZonaUsuario
+                                   where co.UsuarioId == idUsuario
+                                   select co).FirstOrDefault();
+
+                //Genera notificacion de validacion
+                mNotificaciones objNotificaciones = new mNotificaciones();
+
+                objNotificaciones.EstatusId = 3;
+                objNotificaciones.TipoNotificacionId = 1;
+                objNotificaciones.PlanSemanalId = idPlan;
+                objNotificaciones.UsuarioId = idUsuario;
+                objNotificaciones.CoordinacionZonaUsuarioId = coordinador.CoordinacionZonaId;
+                objNotificaciones.FechaCreacion = DateTime.Now;
+                db.mNotificaciones.Add(objNotificaciones);
+                db.SaveChanges();
+
+                //Actualiza a estatus Inactiva para la notificacion de con comentarios
+                var notificacion = (from n in db.mNotificaciones
+                                    where n.PlanSemanalId == idPlan
+                                    && n.TipoNotificacionId == 3
+                                    && n.EstatusId == 3
+                                    select n).ToList();
+
+                if (notificacion.Count() > 0)
+                {
+                    var dbTempNot = notificacion.First();
+                    dbTempNot.EstatusId = 4;
+                    db.SaveChanges();
+                }
 
                 return Json(new { Success = true, idPlan = idPlan, Message = "enviado correctamente para revisión " });
                 

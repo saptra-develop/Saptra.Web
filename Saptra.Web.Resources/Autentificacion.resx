@@ -118,28 +118,28 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="btnLogin" xml:space="preserve">
-    <value>Login</value>
+    <value>Acceso</value>
   </data>
   <data name="lblCambiarMiContraseña" xml:space="preserve">
-    <value>Change my password</value>
+    <value>Cambiar mi contraseña</value>
   </data>
   <data name="lblEnviar" xml:space="preserve">
-    <value>Send email</value>
+    <value>Enviar correo</value>
   </data>
   <data name="lblMailNoReset" xml:space="preserve">
-    <value>If you didn't request this, please ignore this email. Your password won't change until you access the link above and create a new one.</value>
+    <value>Si no ha solicitado esto, ignore este correo electrónico. Su contraseña no cambiará hasta que acceda al enlace anterior y cree uno nuevo.</value>
   </data>
   <data name="lblMailReset" xml:space="preserve">
-    <value>Someone has requested a link to change your password. You can do this through the button below.</value>
+    <value>Alguien ha solicitado un enlace para cambiar su contraseña. Puede hacerlo a través del botón de abajo.</value>
   </data>
   <data name="lblResetearPass" xml:space="preserve">
-    <value>If you have forgotten your password you can reset it here.</value>
+    <value>Si ha olvidado su contraseña, puede restablecerla aquí.</value>
   </data>
   <data name="msg1" xml:space="preserve">
-    <value>User information do not found</value>
+    <value>Información del usuario no encontrada</value>
   </data>
   <data name="msg2" xml:space="preserve">
-    <value>User and Password are incorrect </value>
+    <value>Usuario o contraseña es incorrecto</value>
   </data>
   <data name="msgLigaNoActiva" xml:space="preserve">
     <value>La liga no se encuentra activa</value>
@@ -148,7 +148,7 @@
     <value>La liga no existe</value>
   </data>
   <data name="msgPasswordNoCoincide" xml:space="preserve">
-    <value>Password confirmation doesn't match Password</value>
+    <value>La confirmación de la contraseña no coincide con la contraseña</value>
   </data>
   <data name="msgTiempoExpiro" xml:space="preserve">
     <value>El tiempo de la liga es de 3 horas, ha expirado</value>
@@ -160,7 +160,7 @@
     <value>Contraseña</value>
   </data>
   <data name="titleUser" xml:space="preserve">
-    <value>User</value>
+    <value>Usuario</value>
   </data>
   <data name="userName" xml:space="preserve">
     <value>Usuario</value>

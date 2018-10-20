@@ -4,34 +4,39 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="4290d03068394e89a4dcb48784a7850e" Name="Diagram1">
-        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.cCoordinacionesRegion" Width="1.5" PointX="8.25" PointY="28.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.cCoordinacionesZona" Width="1.5" PointX="11.25" PointY="28.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.cEstatus" Width="1.5" PointX="10.5" PointY="32.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.cPeriodos" Width="1.5" PointX="12.75" PointY="32.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.cTipoActividades" Width="1.5" PointX="15.75" PointY="30.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.cTipoEstatus" Width="1.5" PointX="8.25" PointY="38.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.cTipoFiguras" Width="1.5" PointX="15.75" PointY="34.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.cTipoNotificaciones" Width="1.5" PointX="8.25" PointY="41.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.cTiposUsuario" Width="1.5" PointX="15.75" PointY="27" IsExpanded="true" />
-        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.mLecturaCertificados" Width="1.5" PointX="25.5" PointY="30.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.mCoordinacionZonaUsuario" Width="1.5" PointX="13.5" PointY="28.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.mEducandosCaptados" Width="1.5" PointX="20.25" PointY="28.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.dDetallePlanSemanal" Width="1.5" PointX="18" PointY="29.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.mCheckIn" Width="1.5" PointX="23.25" PointY="29.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.mPlanSemanal" Width="1.5" PointX="18" PointY="35.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.dModulos" Width="1.5" PointX="15" PointY="44.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.mBitacora" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.mMenuGrupo" Width="1.5" PointX="12.75" PointY="57.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.mPermisos" Width="1.5" PointX="3" PointY="28.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.mRoles" Width="1.5" PointX="0.75" PointY="28.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.mNotificaciones" Width="1.5" PointX="12.75" PointY="36.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.mUsuarios" Width="1.5" PointX="6" PointY="26.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.mSolicitudesVehiculo" Width="1.5" PointX="8.25" PointY="44.125" IsExpanded="true" />
+      <Diagram DiagramId="a8c6e2247221438b81d55da92e3e4bd4" Name="Diagram1">
+        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.cCoordinacionesRegion" Width="1.5" PointX="8.25" PointY="29" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.cCoordinacionesZona" Width="1.5" PointX="11.25" PointY="28.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.cEstatus" Width="1.5" PointX="10.5" PointY="33.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.cPeriodos" Width="1.5" PointX="12.75" PointY="33" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.cTipoActividades" Width="1.5" PointX="15.75" PointY="32.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.cTipoEstatus" Width="1.5" PointX="8.25" PointY="39" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.cTipoFiguras" Width="1.5" PointX="12.75" PointY="37.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.cTipoNotificaciones" Width="1.5" PointX="8.25" PointY="42" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.cTiposUsuario" Width="1.5" PointX="12.75" PointY="25.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.mLecturaCertificados" Width="1.5" PointX="26.5" PointY="31.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.mCoordinacionRegionZonaUsuario" Width="1.5" PointX="13.5" PointY="29" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.mCoordinacionZonaUsuario" Width="1.5" PointX="16.5" PointY="28.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.mEducandosCaptados" Width="1.5" PointX="21.25" PointY="28.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.dDetallePlanSemanal" Width="1.5" PointX="19" PointY="30" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.mCheckIn" Width="1.5" PointX="24.25" PointY="29.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.mPlanSemanal" Width="1.5" PointX="19" PointY="25.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.dModulos" Width="1.5" PointX="15" PointY="45.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.mBitacora" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.mMenuGrupo" Width="1.5" PointX="12.75" PointY="58.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.mPermisos" Width="1.5" PointX="3" PointY="28.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.mRoles" Width="1.5" PointX="0.75" PointY="29" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.mNotificaciones" Width="1.5" PointX="18.75" PointY="35.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.mResetPassword" Width="1.5" PointX="8.25" PointY="44.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.mUsuarios" Width="1.5" PointX="6" PointY="26.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorreferenciaModel.mSolicitudesVehiculo" Width="1.5" PointX="24.25" PointY="33.25" IsExpanded="true" />
         <AssociationConnector Association="Inaeba_GeorreferenciaModel.FK_cCoordinacionesRegion_cEstatus" ManuallyRouted="false" />
         <AssociationConnector Association="Inaeba_GeorreferenciaModel.FK_cCoordinacionesRegion_mUsuarios" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorreferenciaModel.FK_mCoordinacionRegionZonaUsuario_cCoordinacionesRegion" ManuallyRouted="false" />
         <AssociationConnector Association="Inaeba_GeorreferenciaModel.FK_cCoordinacionesZona_cEstatus" ManuallyRouted="false" />
         <AssociationConnector Association="Inaeba_GeorreferenciaModel.FK_cCoordinacionesZona_mUsuarios" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorreferenciaModel.FK_mCoordinacionRegionZonaUsuario_cCoordinacionesZona" ManuallyRouted="false" />
         <AssociationConnector Association="Inaeba_GeorreferenciaModel.FK_mCoordinacionZonaUsuario_cCoordinacionesZona" ManuallyRouted="false" />
         <AssociationConnector Association="Inaeba_GeorreferenciaModel.FK_cEstatus_mUsuarios" ManuallyRouted="false" />
         <AssociationConnector Association="Inaeba_GeorreferenciaModel.FK_cTiposUsuario_cEstatus" ManuallyRouted="false" />
@@ -60,13 +65,16 @@
         <AssociationConnector Association="Inaeba_GeorreferenciaModel.FK_cTiposUsuario_mUsuarios" ManuallyRouted="false" />
         <AssociationConnector Association="Inaeba_GeorreferenciaModel.FK_mLecturaCertificados_mCheckIn" ManuallyRouted="false" />
         <AssociationConnector Association="Inaeba_GeorreferenciaModel.FK_mLecturaCertificados_mUsuarios" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorreferenciaModel.FK_mCoordinacionRegionZonaUsuario_mUsuarios" ManuallyRouted="false" />
         <AssociationConnector Association="Inaeba_GeorreferenciaModel.FK_mCoordinacionZonaUsuario_mUsuarios" ManuallyRouted="false" />
         <AssociationConnector Association="Inaeba_GeorreferenciaModel.FK_mCoordinacionZonaUsuario_mUsuarios1" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorreferenciaModel.FK_mNotificaciones_mCoordinacionZonaUsuario" ManuallyRouted="false" />
         <AssociationConnector Association="Inaeba_GeorreferenciaModel.FK_mEducandosCaptados_dDetallePlanSemanal" ManuallyRouted="false" />
         <AssociationConnector Association="Inaeba_GeorreferenciaModel.FK_mEducandosCaptados_mUsuarios" ManuallyRouted="false" />
         <AssociationConnector Association="Inaeba_GeorreferenciaModel.FK_dDetallePlanSemanal_mPlanSemanal" ManuallyRouted="false" />
         <AssociationConnector Association="Inaeba_GeorreferenciaModel.FK_dDetallePlanSemanal_mUsuarios" ManuallyRouted="false" />
         <AssociationConnector Association="Inaeba_GeorreferenciaModel.FK_mCheckIn_dDetallePlanSemanal" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorreferenciaModel.FK_mSolicitudesVehiculo_dDetallePlanSemanal" ManuallyRouted="false" />
         <AssociationConnector Association="Inaeba_GeorreferenciaModel.FK_mCheckIn_mUsuarios" ManuallyRouted="false" />
         <AssociationConnector Association="Inaeba_GeorreferenciaModel.FK_mNotificaciones_mPlanSemanal" ManuallyRouted="false" />
         <AssociationConnector Association="Inaeba_GeorreferenciaModel.FK_mPlanSemanal_mUsuarios" ManuallyRouted="false" />
@@ -75,6 +83,7 @@
         <AssociationConnector Association="Inaeba_GeorreferenciaModel.FK_mPermisos_mRol" ManuallyRouted="false" />
         <AssociationConnector Association="Inaeba_GeorreferenciaModel.FK_Usuarios_Rolesl" ManuallyRouted="false" />
         <AssociationConnector Association="Inaeba_GeorreferenciaModel.FK_mNotificaciones_mUsuarios" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorreferenciaModel.FK_mResetPassword_mUsuarios" ManuallyRouted="false" />
         <AssociationConnector Association="Inaeba_GeorreferenciaModel.FK_mSolicitudesVehiculo_mUsuarios" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>

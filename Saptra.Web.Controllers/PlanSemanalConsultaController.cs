@@ -35,7 +35,9 @@ namespace Sispro.Web.Controllers
         {
             try
             {
-                List<udf_PlanSemanalList_Result> result = (from u in db.udf_PlanSemanalList(idUsu) select u).Where(x => (idPeriodo == 0 ? 1 == 1 : x.PeriodoId == idPeriodo) && x.EstatusId == 2) .ToList();
+                int[] estatus = { 2, 9 };
+           
+                List<udf_PlanSemanalList_Result> result = (from u in db.udf_PlanSemanalList(idUsu) select u).Where(x => (idPeriodo == 0 ? 1 == 1 : x.PeriodoId == idPeriodo) && estatus.Contains(x.EstatusId.Value)) .ToList();
 
                 var lstPlanSemanal = result.Select(C => new
                 {

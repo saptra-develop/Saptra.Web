@@ -13,11 +13,11 @@
       
     },
     EnviarEmail: function () {
-        var btn = $('#btn-enviar-email');
-        var btnName = $('#btn-enviar-email').text();
+        //var btn = $('#btn-enviar-email');
+        //var btnName = $('#btn-enviar-email').text();
         $("#lbl-message").html("");
         if ($("#frmEnviarEmail").valid()) {
-            CHR.botonMensaje(true, btn, btnName);
+            //CHR.botonMensaje(true, btn, btnName);
                 $.post("/Autentificacion/EnviarEmail",
                     $("#frmEnviarEmail *").serialize(),
                     function (data) {
@@ -25,18 +25,18 @@
                             Autentificacion.MostrarFormLogin();
                             $(".lbl-message").html('<div div class="alert alert-success alert-dismissible" role="alert">' +
                                                     '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                                                    '<strong>Message!</strong> ' + data.Message + '</div>');
+                                                    '<strong>Mensaje!</strong> ' + data.Message + '</div>');
                         } else {
                             $(".lbl-message").html('<div div class="alert alert-warning alert-dismissible" role="alert">' +
                                                     '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                                                    '<strong>Message!</strong> ' + data.Message + '</div>');
+                                                    '<strong>Mensaje!</strong> ' + data.Message + '</div>');
                         }
                     }).fail(function () {
                         $(".lbl-message").html('<div div class="alert alert-warning alert-dismissible" role="alert">' +
                                                 '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                                                '<strong>Message!</strong> ' + data.Message + '</div>');
+                                                '<strong>Mensaje!</strong> ' + data.Message + '</div>');
                     }).always(function () {
-                        CHR.botonMensaje(false, btn, btnName);
+                        //CHR.botonMensaje(false, btn, btnName);
                     });
             }
     },
@@ -56,7 +56,7 @@
         $('#lblSucess').hide();
         $('#frmLogin').fadeToggle(Autentificacion.Time, function () {
             $('#div-forms').animate(Autentificacion.Time, function () {
-                $('#frmEnviarEmail').fadeToggle(Autentificacion.Time);
+                $('#frmEnviarEmail').show();
                 $('#email').val('');
                 $('#email').focus();
             });

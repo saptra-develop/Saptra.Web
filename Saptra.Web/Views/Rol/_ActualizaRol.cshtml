@@ -1,0 +1,44 @@
+﻿@model Saptra.Web.Data.mRoles
+
+<div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Actualizar Role</h4>
+        </div>
+        <div class="modal-body">
+            <div class="clientAlertDlg"></div>
+            @using (Html.BeginForm("Actualiza", "Rol", FormMethod.Post, new { id = "ActualizaRolForm", name = "ActualizaRolForm", @class = "form-horizontal", onsubmit = "return false" }))
+            {
+
+                <div class="form-group">
+                    <div class="col-sm-3"><label class="control-label">Nombre Rol</label></div>
+                    <div class="col-sm-8">
+                        @Html.TextBoxFor(model => model.NombreRol, new { @class = "form-control", maxlength = 20 })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-3"><label class="control-label">Estatus</label></div>
+                    <div class="col-sm-8">
+                        @Html.DropDownListFor(model => model.EstatusId,
+                            new SelectList(new[]{
+                                new SelectListItem{ Text="ACTIVO", Value="5"},
+                                new SelectListItem{ Text="INACTIVO", Value="6"}},
+                            "Value", "Text"), new { @class = "form-control", required = "required" })
+                    </div>
+                </div>
+
+                @Html.HiddenFor(model => model.RolId)
+            }
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary btn-ActualizarRol">Guardar</button>
+        </div>
+    </div><!-- /.modal-content -->
+</div>
+
+
+
+

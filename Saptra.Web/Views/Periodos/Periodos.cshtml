@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Periodos";
+}
+<div class="row">
+    <div class="col-lg-12">
+        <h4 class="page-header">
+            Periodos
+            <button class="btn btn-xs btn-outline btn-primary pull-right btnNuevo"><i class="fa fa-file-o fa-lg fa-fw"></i> Nuevo</button>
+        </h4>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div id="bbGrid-clear">
+            <div id="cargandoInfo">
+                <div class='alert alert-warning'>
+                    <button type='button' class='close' data-dismiss='alert'>x</button>
+                    Cargando...
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade bs-example-modal-lg" id="nuevo-Periodo"
+     tabindex="-1" role="dialog"
+     aria-labelledby="nuevoPeriodoLabel">
+</div>
+
+<div class="modal fade bs-example-modal-lg" id="actualiza-Periodo"
+     tabindex="-1" role="dialog"
+     aria-labelledby="nuevoPeriodoLabel">
+</div>
+
+
+@section Scripts {
+    @Html.IncludeVersionedJs(Url.Content("~/Scripts/Periodos.js"))
+}

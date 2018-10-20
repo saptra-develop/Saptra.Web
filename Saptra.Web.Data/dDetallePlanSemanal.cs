@@ -19,6 +19,7 @@ namespace Saptra.Web.Data
         {
             this.mEducandosCaptados = new HashSet<mEducandosCaptados>();
             this.mCheckIn = new HashSet<mCheckIn>();
+            this.mSolicitudesVehiculo = new HashSet<mSolicitudesVehiculo>();
         }
     
         public int DetallePlanId { get; set; }
@@ -43,5 +44,7 @@ namespace Saptra.Web.Data
         public virtual mUsuarios mUsuarios { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<mCheckIn> mCheckIn { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<mSolicitudesVehiculo> mSolicitudesVehiculo { get; set; }
     }
 }

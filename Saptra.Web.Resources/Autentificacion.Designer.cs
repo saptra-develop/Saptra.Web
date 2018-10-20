@@ -61,7 +61,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Login.
+        ///   Busca una cadena traducida similar a Acceso.
         /// </summary>
         public static string btnLogin {
             get {
@@ -70,7 +70,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Change my password.
+        ///   Busca una cadena traducida similar a Cambiar mi contraseña.
         /// </summary>
         public static string lblCambiarMiContraseña {
             get {
@@ -79,7 +79,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Send email.
+        ///   Busca una cadena traducida similar a Enviar correo.
         /// </summary>
         public static string lblEnviar {
             get {
@@ -88,7 +88,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a If you didn&apos;t request this, please ignore this email. Your password won&apos;t change until you access the link above and create a new one..
+        ///   Busca una cadena traducida similar a Si no ha solicitado esto, ignore este correo electrónico. Su contraseña no cambiará hasta que acceda al enlace anterior y cree uno nuevo..
         /// </summary>
         public static string lblMailNoReset {
             get {
@@ -97,7 +97,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Someone has requested a link to change your password. You can do this through the button below..
+        ///   Busca una cadena traducida similar a Alguien ha solicitado un enlace para cambiar su contraseña. Puede hacerlo a través del botón de abajo..
         /// </summary>
         public static string lblMailReset {
             get {
@@ -106,7 +106,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a If you have forgotten your password you can reset it here..
+        ///   Busca una cadena traducida similar a Si ha olvidado su contraseña, puede restablecerla aquí..
         /// </summary>
         public static string lblResetearPass {
             get {
@@ -115,7 +115,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a User information do not found.
+        ///   Busca una cadena traducida similar a Información del usuario no encontrada.
         /// </summary>
         public static string msg1 {
             get {
@@ -124,7 +124,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a User and Password are incorrect .
+        ///   Busca una cadena traducida similar a Usuario o contraseña es incorrecto.
         /// </summary>
         public static string msg2 {
             get {
@@ -151,7 +151,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Password confirmation doesn&apos;t match Password.
+        ///   Busca una cadena traducida similar a La confirmación de la contraseña no coincide con la contraseña.
         /// </summary>
         public static string msgPasswordNoCoincide {
             get {
@@ -187,7 +187,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a User.
+        ///   Busca una cadena traducida similar a Usuario.
         /// </summary>
         public static string titleUser {
             get {

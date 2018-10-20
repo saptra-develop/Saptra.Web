@@ -14,6 +14,12 @@ namespace Saptra.Web.Data
     
     public partial class mCoordinacionZonaUsuario
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public mCoordinacionZonaUsuario()
+        {
+            this.mNotificaciones = new HashSet<mNotificaciones>();
+        }
+    
         public int CordinacionZonaUsuarioId { get; set; }
         public System.DateTime FechaCreacion { get; set; }
         public int UsuarioCreacionId { get; set; }
@@ -24,5 +30,7 @@ namespace Saptra.Web.Data
         public virtual cCoordinacionesZona cCoordinacionesZona { get; set; }
         public virtual mUsuarios mUsuarios { get; set; }
         public virtual mUsuarios mUsuarios1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<mNotificaciones> mNotificaciones { get; set; }
     }
 }

@@ -19,10 +19,12 @@ namespace Saptra.Web.Data
         public int TipoNotificacionId { get; set; }
         public int PlanSemanalId { get; set; }
         public int UsuarioId { get; set; }
+        public Nullable<int> CoordinacionZonaUsuarioId { get; set; }
         public Nullable<System.DateTime> FechaCreacion { get; set; }
     
         public virtual cEstatus cEstatus { get; set; }
         public virtual cTipoNotificaciones cTipoNotificaciones { get; set; }
+        public virtual mCoordinacionZonaUsuario mCoordinacionZonaUsuario { get; set; }
         public virtual mPlanSemanal mPlanSemanal { get; set; }
         public virtual mUsuarios mUsuarios { get; set; }
     }

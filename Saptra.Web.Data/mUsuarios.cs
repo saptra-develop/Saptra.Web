@@ -27,6 +27,7 @@ namespace Saptra.Web.Data
             this.cTipoNotificaciones = new HashSet<cTipoNotificaciones>();
             this.cTiposUsuario = new HashSet<cTiposUsuario>();
             this.mLecturaCertificados = new HashSet<mLecturaCertificados>();
+            this.mCoordinacionRegionZonaUsuario = new HashSet<mCoordinacionRegionZonaUsuario>();
             this.mCoordinacionZonaUsuario = new HashSet<mCoordinacionZonaUsuario>();
             this.mCoordinacionZonaUsuario1 = new HashSet<mCoordinacionZonaUsuario>();
             this.mEducandosCaptados = new HashSet<mEducandosCaptados>();
@@ -34,6 +35,7 @@ namespace Saptra.Web.Data
             this.mCheckIn = new HashSet<mCheckIn>();
             this.mPlanSemanal = new HashSet<mPlanSemanal>();
             this.mNotificaciones = new HashSet<mNotificaciones>();
+            this.mResetPassword = new HashSet<mResetPassword>();
             this.mSolicitudesVehiculo = new HashSet<mSolicitudesVehiculo>();
         }
     
@@ -72,6 +74,8 @@ namespace Saptra.Web.Data
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<mLecturaCertificados> mLecturaCertificados { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<mCoordinacionRegionZonaUsuario> mCoordinacionRegionZonaUsuario { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<mCoordinacionZonaUsuario> mCoordinacionZonaUsuario { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<mCoordinacionZonaUsuario> mCoordinacionZonaUsuario1 { get; set; }
@@ -86,6 +90,8 @@ namespace Saptra.Web.Data
         public virtual mRoles mRoles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<mNotificaciones> mNotificaciones { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<mResetPassword> mResetPassword { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<mSolicitudesVehiculo> mSolicitudesVehiculo { get; set; }
     }

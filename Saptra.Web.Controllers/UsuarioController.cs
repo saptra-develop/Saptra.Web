@@ -18,7 +18,7 @@ using Newtonsoft.Json;
 using Saptra.Web.Data;
 using Saptra.Web.Models;
 
-namespace Sispro.Web.Controllers
+namespace Saptra.Web.Controllers
 {
     public class UsuarioController : Controller
     {
@@ -43,7 +43,7 @@ namespace Sispro.Web.Controllers
             try
             {
                 var result = (from cat in db.mUsuarios
-                              where cat.EstatusId == (idEstatus == null ? cat.EstatusId : idEstatus)
+                              where cat.EstatusId == 5
                                   && cat.UsuarioId == (idUsu == null ? cat.UsuarioId : idUsu)
                               select new
                               {
@@ -55,7 +55,8 @@ namespace Sispro.Web.Controllers
                                   nombreCompleto = cat.NombresUsuario.ToUpper() + " " + cat.ApellidosUsuario.ToUpper(),
                                   cat.RolId,
                                   nombreRol = cat.mRoles.NombreRol.ToUpper(),
-                                  imagen = cat.ImagenUsuario == null ? "/Content/images/avatar.jpg" : cat.ImagenUsuario
+                                  imagen = cat.ImagenUsuario == null ? "/Content/images/avatar.jpg" : cat.ImagenUsuario,
+                                  email = cat.EmailUsuario
                               }).ToList();
 
 
@@ -215,13 +216,13 @@ namespace Sispro.Web.Controllers
                         if (dbUsu.EmailUsuario != pobjModelo.EmailUsuario)
                         {
                             if (correoExistente(pobjModelo.EmailUsuario))
-                                return Json(new { Success = false, Message = "The user's email is already in use" });                          
+                                return Json(new { Success = false, Message = "El correo electrónico del usuario ya está en uso" });                          
                         }
 
                         if (dbUsu.LoginUsuario != pobjModelo.LoginUsuario)
                         {
                             if (loginExistente(pobjModelo.LoginUsuario))
-                                return Json(new { Success = false, Message = "The user's login is already in use" });
+                                return Json(new { Success = false, Message = "El login del usuario ya está en uso." });
                         }
 
                         dbUsu.NombresUsuario = pobjModelo.NombresUsuario;
@@ -235,7 +236,7 @@ namespace Sispro.Web.Controllers
                             dbUsu.ImagenUsuario = pobjModelo.ImagenUsuario;
                         }
                         
-                        dbUsu.cEstatus1 = pobjModelo.cEstatus1;
+                        dbUsu.EstatusId = pobjModelo.EstatusId;
 
 
                         db.SaveChanges();
@@ -271,8 +272,11 @@ namespace Sispro.Web.Controllers
         {
             try
             {
-                var usu = db.mUsuarios.Where(t => t.UsuarioId == id);
-                db.mUsuarios.RemoveRange(usu);
+                var result = (from usu in db.mUsuarios
+                              where usu.UsuarioId == (id)
+                              select usu).FirstOrDefault();
+
+                result.EstatusId = 6;
                 db.SaveChanges();
 
                 return Json(new { Success = true, Message = "Se borro correctamente el usuario " });

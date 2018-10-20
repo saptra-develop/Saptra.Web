@@ -70,7 +70,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Cambiar password.
+        ///   Busca una cadena traducida similar a Cambiar contraseña.
         /// </summary>
         public static string lblCambiarPassword {
             get {
@@ -88,7 +88,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Email.
+        ///   Busca una cadena traducida similar a Correo.
         /// </summary>
         public static string lblEmail {
             get {
@@ -124,7 +124,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Actual contraseña.
+        ///   Busca una cadena traducida similar a Contraseña actual.
         /// </summary>
         public static string lblPasswordActual {
             get {

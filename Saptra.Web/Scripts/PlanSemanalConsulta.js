@@ -61,7 +61,7 @@ var PlanSemanal = {
 
             //getJSON fail
         }).fail(function (e) {
-            FCH.DespliegaError(jsglb[system_lang].Proyecto_could_not_load_info_usuarios);
+            FCH.DespliegaError("No se pudo cargar la informacion de los planes");
         });
     },
     CargaGridDetallesPackingList: function (id, $container) {
@@ -78,7 +78,7 @@ var PlanSemanal = {
                 collection: PlanSemanal.colPlanDetalle,
                 colModel: [//{ title: 'id', name: 'id', index: true },
                             { title: 'Actividad', name: 'actividad',  index: true },
-                            { title: 'Descipción', name: 'descripcion', index: true },
+                            { title: 'Descripción', name: 'descripcion', index: true },
                             { title: 'Fecha', name: 'fecha',  index: true },
                             { title: 'Hora', name: 'hora',  index: true },
                             { title: 'Check In', name: 'checkin',  index: true },

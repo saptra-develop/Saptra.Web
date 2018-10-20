@@ -582,7 +582,7 @@ var FCH = {
                         }
                     });
                 } else {
-                    FCH.DespliegaErrorDialogo(jsglb[system_lang].browser_not_supported);
+                    FCH.DespliegaErrorDialogo("Este explorador no soportado por la aplicacion favor de utilizar una version mas reciente. Chrome");
                     FCH.botonMensaje(false, btn, btnName);
                 }
             } else {
@@ -607,7 +607,7 @@ var FCH = {
                     FCH.DespliegaErrorDialogo(data.Message);
                 }
             }).fail(function () {
-                FCH.DespliegaErrorDialogo(jsglb[system_lang].error_updating_info);
+                FCH.DespliegaErrorDialogo("Error al actualizar la información");
             }).always(function () { });
     },
     onActualizarPassword: function () {
@@ -620,12 +620,12 @@ var FCH = {
                 function (data) {
                     if (data.Success === true) {
                         $('#actualiza-password').modal('hide');
-                        FCH.DespliegaInformacion(jsglb[system_lang].Usuario_success_update + data.id);
+                        FCH.DespliegaInformacion("El Usuario fue Actualizado. Id: " + data.id);
                     } else {
                         FCH.DespliegaErrorDialogo(data.Message);
                     }
                 }).fail(function () {
-                    FCH.DespliegaErrorDialogo(jsglb[system_lang].error_updating_info);
+                    FCH.DespliegaErrorDialogo("Error al actualizar la información");
                 }).always(function () { FCH.botonMensaje(false, btn, 'Guardar'); });
         } else {
             FCH.botonMensaje(false, btn, 'Guardar');

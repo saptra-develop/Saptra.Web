@@ -236,6 +236,7 @@ iframe {
   position: relative;
   border-bottom: 1px solid #e6e6e6;
   padding: 10px 0;
+
 }
 
 .input100 {
@@ -255,56 +256,54 @@ iframe {
   transition: all 0.4s;
 }
 
-/*---------------------------------------------*/ 
+/*---------------------------------------------*/
 .focus-input100 {
-  position: absolute;
-  display: block;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  pointer-events: none;
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+
 }
 
-.focus-input100::before {
-  content: "";
-  display: block;
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  width: 0;
-  height: 1px;
+    .focus-input100::before {
+        content: "";
+        display: block;
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 0;
+        height: 1px;
 
-  -webkit-transition: all 0.4s;
-  -o-transition: all 0.4s;
-  -moz-transition: all 0.4s;
-  transition: all 0.4s;
+        -webkit-transition: all 0.4s;
+        -o-transition: all 0.4s;
+        -moz-transition: all 0.4s;
+        transition: all 0.4s;
+        background: #033CAD;
+        background: -webkit-linear-gradient(left, #5042FA, #033CAD, #3071F2);
+        background: -o-linear-gradient(left, #5042FA, #033CAD, #3071F2);
+        background: -moz-linear-gradient(left, #5042FA, #033CAD, #3071F2);
+        background: linear-gradient(left, #5042FA, #033CAD, #3071F2);
+    }
 
-  background: #033CAD;
-  background: -webkit-linear-gradient(left, #5042FA, #033CAD, #3071F2);
-  background: -o-linear-gradient(left, #5042FA, #033CAD, #3071F2);
-  background: -moz-linear-gradient(left, #5042FA, #033CAD, #3071F2);
-  background: linear-gradient(left, #5042FA, #033CAD, #3071F2);
-}
-
-.focus-input100::after {
-  font-family: Linearicons-Free;
-  font-size: 18px;
-  color: #999999;
-
-  content: attr(data-placeholder);
-  display: block;
-  width: 100%;
-  position: absolute;
-  top: 40px;
-  left: 35px;
+    .focus-input100::after {
+        font-family: Linearicons-Free;
+        font-size: 18px;
+        color: #999999;
  
-
-  -webkit-transition: all 0.4s;
-  -o-transition: all 0.4s;
-  -moz-transition: all 0.4s;
-  transition: all 0.4s;
-}
+        content: attr(data-placeholder);
+        display: block;
+        width: 100%;
+        position: absolute;
+        top: 40px;
+        left: 35px;
+        -webkit-transition: all 0.4s;
+        -o-transition: all 0.4s;
+        -moz-transition: all 0.4s;
+        transition: all 0.4s;
+    }
 
 .input100:focus {
   padding-left: 60px;
