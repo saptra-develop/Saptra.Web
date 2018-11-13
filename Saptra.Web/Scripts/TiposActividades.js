@@ -11,10 +11,15 @@ var TipoActividad = {
     activeForm: '',
     gridTipoActividad: {},
     colTipoActividad: {},
+    sm: 0,
     Inicial: function () {
         $.ajaxSetup({ cache: false });
         this.CargaGrid();
         this.Eventos();
+        if (window.innerWidth < 768) {
+            // Extra Small Device
+            TipoActividad.sm = 1;  
+        } 
     },
     Eventos: function () {
         var that = this;
@@ -32,55 +37,63 @@ var TipoActividad = {
     },
     onGuardar: function () {
         var btn = this;
+        if ($('#NuevoTipoActividadForm #NombreActividad').val() !== "") {
+            FCH.botonMensaje(true, btn, 'Guardar');
+            if ($("form").valid()) {
+                $('#UsuarioCreacionId').val(localStorage.idUser);
+                $('#NuevoTipoActividadForm #RequiereCheckIn').val($('#NuevoTipoActividadForm #chkRequiereCheckIn').prop("checked") ? true : false);
+                //Se hace el post para guardar la informacion
+                $.post(contextPath + "TipoActividades/Nuevo",
+                    $("#NuevoTipoActividadForm *").serialize(),
+                    function (data) {
+                        if (data.Success === true) {
+                            FCH.DespliegaInformacion("La actividad fue guardada con el Id: " + data.id);
+                            $('#nuevo-Actividad').modal('hide');
+                            TipoActividad.CargaGrid();
+                        } else {
+                            FCH.botonMensaje(false, btn, 'Guardar');
+                            FCH.DespliegaErrorDialogo(data.Message);
 
-        FCH.botonMensaje(true, btn, 'Guardar');
-        if ($("form").valid()) {
-            $('#UsuarioCreacionId').val(localStorage.idUser);
-            $('#NuevoTipoActividadForm #RequiereCheckIn').val($('#NuevoTipoActividadForm #chkRequiereCheckIn').prop("checked") ? true : false);
-            //Se hace el post para guardar la informacion
-            $.post(contextPath + "TipoActividades/Nuevo",
-                $("#NuevoTipoActividadForm *").serialize(),
-                function (data) {
-                    if (data.Success === true) {
-                        FCH.DespliegaInformacion("La actividad fue guardada con el Id: " + data.id);
-                        $('#nuevo-Actividad').modal('hide');
-                        TipoActividad.CargaGrid();
-                    } else {
-                        FCH.botonMensaje(false, btn, 'Guardar');
-                        FCH.DespliegaErrorDialogo(data.Message);
-                        
-                    }
-                }).fail(function () {
-                    FCH.DespliegaErrorDialogo("Error al guardar la información.");
+                        }
+                    }).fail(function () {
+                        FCH.DespliegaErrorDialogo("Error al guardar la información.");
 
-                }).always(function () { FCH.botonMensaje(false, btn, 'Guardar'); });
+                    }).always(function () { FCH.botonMensaje(false, btn, 'Guardar'); });
 
+            } else {
+                FCH.botonMensaje(false, btn, 'Guardar');
+            }
         } else {
-            FCH.botonMensaje(false, btn, 'Guardar');
+            $('#NuevoTipoActividadForm #NombreActividad').addClass("input-validation-error");
+            $('#NuevoTipoActividadForm #NombreActividad').attr("placeholder", "Obligatorio");
         }
     },
     onActualizar: function () {
         var btn = this;
-
-        FCH.botonMensaje(true, btn, 'Guardar');
-        if ($("form").valid()) {
-            //Se hace el post para guardar la informacion
-            $('#ActualizaTipoActividadForm #RequiereCheckIn').val($('#ActualizaTipoActividadForm #chkRequiereCheckIn').prop("checked") ? true : false);
-            $.post(contextPath + "TipoActividades/Actualizar",
-                $("#ActualizaTipoActividadForm *").serialize(),
-                function (data) {
-                    if (data.Success === true) {
-                        $('#actualiza-Actividad').modal('hide');
-                        FCH.DespliegaInformacion("La actividad fue Actualizada. Id: " + data.id);
-                        TipoActividad.CargaGrid();
-                    } else {
-                        FCH.DespliegaErrorDialogo(data.Message);
-                    }
-                }).fail(function () {
-                    FCH.DespliegaErrorDialogo("Error al actualizar la información");
-                }).always(function () { FCH.botonMensaje(false, btn, 'Guardar'); });
+        if ($('#ActualizaTipoActividadForm #NombreActividad').val() !== "") {
+            FCH.botonMensaje(true, btn, 'Guardar');
+            if ($("form").valid()) {
+                //Se hace el post para guardar la informacion
+                $('#ActualizaTipoActividadForm #RequiereCheckIn').val($('#ActualizaTipoActividadForm #chkRequiereCheckIn').prop("checked") ? true : false);
+                $.post(contextPath + "TipoActividades/Actualizar",
+                    $("#ActualizaTipoActividadForm *").serialize(),
+                    function (data) {
+                        if (data.Success === true) {
+                            $('#actualiza-Actividad').modal('hide');
+                            FCH.DespliegaInformacion("La actividad fue Actualizada. Id: " + data.id);
+                            TipoActividad.CargaGrid();
+                        } else {
+                            FCH.DespliegaErrorDialogo(data.Message);
+                        }
+                    }).fail(function () {
+                        FCH.DespliegaErrorDialogo("Error al actualizar la información");
+                    }).always(function () { FCH.botonMensaje(false, btn, 'Guardar'); });
+            } else {
+                FCH.botonMensaje(false, btn, 'Guardar');
+            }
         } else {
-            FCH.botonMensaje(false, btn, 'Guardar');
+            $('#ActualizaTipoActividadForm #NombreActividad').addClass("input-validation-error");
+            $('#ActualizaTipoActividadForm #NombreActividad').attr("placeholder", "Obligatorio");
         }
     },
     Nuevo: function () {
@@ -133,10 +146,11 @@ var TipoActividad = {
          
             callback: function (result) {
                 if (result) {
-                    var url = contextPath + "TipoActividad/Borrar"; // El url del controlador
+                    var url = contextPath + "TipoActividades/Borrar"; // El url del controlador
                     $.post(url, { id: id }, function (data) {
                         if (data.Success === true) {
-                            TipoActividad.colTipoActividad.remove(id);
+                            //TipoActividad.colTipoActividad.remove(id);
+                            TipoActividad.CargaGrid()
                             FCH.DespliegaInformacion(data.Message + "  id:" + id);
                         } else {
                             FCH.DespliegaError(data.Message);
@@ -157,16 +171,17 @@ var TipoActividad = {
             if (bolFilter) {
                 TipoActividad.gridTipoActividad = new bbGrid.View({
                     container: $('#bbGrid-clear'),
-                    rows: 200,
-                    rowList: [15, 50, 200, 1000],
-                    enableSearch: true,
+                    //rows: TipoActividad.sm == 1 ? false : 200,
+                    //rowList: [15, 50, 200, 1000],
+                    //enableSearch: TipoActividad.sm == 1 ? false : true,
                     actionenable: true,
                     detalle: false,
                     clone: false,
                     editar: true,
-                    borrar: false,
+                    borrar: true,
                     collection: TipoActividad.colTipoActividad,
-                    colModel: [{ title: 'Id', name: 'id', width: '8%', sorttype: 'number' },
+                    colModel: [
+                            TipoActividad.sm == 1 ? { customclass : 'ocultaColumna' } : { title: 'Id', name: 'id', width: '8%', sorttype: 'number', index: true },
                             { title: 'Actividad', name: 'nombre', index: true },
                             { title: 'Requiere CheckIn', name: 'requiereck', index: true },
                             { title: 'Estatus', name: 'estatus',  index: true }]

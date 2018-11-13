@@ -55,16 +55,28 @@ var PlanSemanal = {
         $(document).on('click', '.btnRptPlaneacionExcel', function () {
             PlanSemanal.onExportarPlanSemanalExcel();
         });
-
-
+        $(document).on('click', '.btnRptPlaneacionPDF', function () {
+            PlanSemanal.onExportarPlanSemanalPDF();
+        });
         $(document).on('click', '.btnRptActividadesExcel', function () {
             PlanSemanal.onExportarActividadesRealizadasExcel();
         });
-
-
+        $(document).on('click', '.btnRptActividadesPDF', function () {
+            PlanSemanal.onExportarActividadesRealizadasPDF();
+        });
         $(document).on("change", '#selPeriodos', that.onCambiarPeriodos);
         $(document).on("change", '#selTipoFigura', that.onCambiarTiposFigura);
         $(document).on("change", '#selNombreFigura', that.onCambiarNombresFigura);
+
+        $(document).on('click', '.btnGpsVehiculo', function () {
+
+            $.post("http://gpsfollowme.com/service/1.php", { sep: ',', ter: '<br>', tipo: 0, placa: 'gur2955', fecha: '2018-08-06', hini: '10:00', hfin: '12:00' })
+                .done(function (data) {
+                    var datos = data.split('<br>');
+                    alert("Data Loaded: " + datos);
+                });
+        });
+        
      
     },
     onExportarPlanSemanal: function (idPlan, idUsuarioPlan) {
@@ -72,9 +84,9 @@ var PlanSemanal = {
         PlanSemanal.idUsuarioPlan = idUsuarioPlan;
         var htmlMessage = "<h4>Exportar</h4>";
         htmlMessage += "<h5>Formato de reporte</h5>";
-        htmlMessage += "<div class='text-center'><div class='btn-group btn-group-lg'>";
-        htmlMessage += "<button class='btn btn-success btnRptPlaneacionExcel'><i class='fa fa-file-excel-o'></i></button>";
-        htmlMessage += "<button class='btn btn-danger btnRptPlaneacionPDF' disabled><i class='fa fa-file-pdf-o'></i></button>";
+        htmlMessage += "<div class='text-center'><div class='btn-group btn-group-md'>";
+        htmlMessage += "<button class='btn btn-success btnRptPlaneacionExcel'><i class='fa fa-file-excel-o'></i> Excel</button>";
+        htmlMessage += "<button class='btn btn-danger btnRptPlaneacionPDF'><i class='fa fa-file-pdf-o'></i> PDF </button>";
         htmlMessage += "</div></div>";
 
         bootbox.alert({
@@ -88,14 +100,20 @@ var PlanSemanal = {
 
         window.open(url, '_blank');
     },
+    onExportarPlanSemanalPDF: function () {
+
+        var url = contextPath + "Pdf/ExportPlaneacionSemanalPDF?idUsu=" + localStorage.idUser + "&Periodos=&TiposFigura=&NombresFigura=" + PlanSemanal.idUsuarioPlan + "&idPlan=" + PlanSemanal.idPlan; // El url del controlador
+
+        window.open(url, '_blank');
+    },
     onExportarActividadesRealizadas: function (idPlan, idUsuarioPlan) {
         PlanSemanal.idPlan = idPlan;
         PlanSemanal.idUsuarioPlan = idUsuarioPlan;
         var htmlMessage = "<h4>Exportar</h4>";
         htmlMessage += "<h5>Formato de reporte</h5>";
-        htmlMessage += "<div class='text-center'><div class='btn-group btn-group-lg'>";
-        htmlMessage += "<button class='btn btn-success btnRptActividadesExcel'><i class='fa fa-file-excel-o'></i></button>";
-        htmlMessage += "<button class='btn btn-danger btnRptActividadesPDF' disabled><i class='fa fa-file-pdf-o'></i></button>";
+        htmlMessage += "<div class='text-center'><div class='btn-group btn-group-md'>";
+        htmlMessage += "<button class='btn btn-success btnRptActividadesExcel'><i class='fa fa-file-excel-o'></i> Excel</button>";
+        htmlMessage += "<button class='btn btn-danger btnRptActividadesPDF'><i class='fa fa-file-pdf-o'></i> PDF </button>";
         htmlMessage += "</div></div>";
 
         bootbox.alert({
@@ -106,6 +124,12 @@ var PlanSemanal = {
     onExportarActividadesRealizadasExcel: function () {
 
         var url = contextPath + "PlanSemanalSeguimiento/ExportActividadesRealizadas?idUsu=" + localStorage.idUser + "&Periodos=&TiposFigura=&NombresFigura=" + PlanSemanal.idUsuarioPlan + "&idPlan=" + PlanSemanal.idPlan; // El url del controlador
+
+        window.open(url, '_blank');
+    },
+    onExportarActividadesRealizadasPDF: function () {
+
+        var url = contextPath + "Pdf/ExportActividadesRealizadasPDF?idUsu=" + localStorage.idUser + "&Periodos=&TiposFigura=&NombresFigura=" + PlanSemanal.idUsuarioPlan + "&idPlan=" + PlanSemanal.idPlan; // El url del controlador
 
         window.open(url, '_blank');
     },
@@ -140,6 +164,7 @@ var PlanSemanal = {
                     FCH.DespliegaNotificacion('success', 'Plan ', data.Message, 'glyphicon-ok', 3000);
                     FCH.botonMensaje(false, btn, "<i class='fa fa-check-circle'></i> Aprobado");
                     $("#btnAprobar_" + idPlan).prop("disabled", true);
+                    FCH.cargarNotificaciones();
                 } else {
                     FCH.DespliegaError(data.Message);
                     FCH.botonMensaje(false, btn, "<i class='fa fa-check-circle'></i> Aprobar");
@@ -248,8 +273,10 @@ var PlanSemanal = {
                 colModel: [//{ title: 'id', name: 'id', index: true },
                     { title: 'Actividad', name: 'actividad', index: true },
                     { title: 'Descripción', name: 'descripcion', index: true },
+                    { title: 'Lugar', name: 'lugar', index: true },
                     { title: 'Fecha', name: 'fecha', index: true },
-                    { title: 'Hora', name: 'hora', index: true },
+                    { title: 'Hora Inicio', name: 'hora', index: true },
+                    { title: 'Hora Fin', name: 'horaFin', index: true },
                     { title: 'Estatus', name: 'checkin', index: true },
                     { title: 'Incidencias', name: 'incidencias' },
                     { title: 'Reporte GPS', name: 'gps', textalign: true },
@@ -313,7 +340,7 @@ var PlanSemanal = {
     },
     CargaNombresFigura: function () {
         if (PlanSemanal.colNombreFigura.length < 1) {
-            var url = contextPath + "Usuario/CargarNombresFigura?idEstatus=5";
+            var url = contextPath + "Usuario/CargarNombresFiguraPorCZ?idEstatus=5&idUsuarioCZ=" + localStorage.idUser;
             $.getJSON(url, function (data) {
                 PlanSemanal.colNombreFigura = data;
                 PlanSemanal.CargaListaNombreFigura();

@@ -33,7 +33,7 @@ namespace Saptra.Web.Controllers
             try
             {
                 var result = (from cat in db.mRoles
-                              where cat.EstatusId == (idEstatus == null ? cat.EstatusId : idEstatus)
+                              where cat.EstatusId == 5
                                   && cat.RolId == (id == null ? cat.RolId : id)
                               select new {
                                   id = cat.RolId,
@@ -46,7 +46,7 @@ namespace Saptra.Web.Controllers
             }
             catch(Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -72,7 +72,7 @@ namespace Saptra.Web.Controllers
                 }
                 catch (Exception exp)
                 {
-                    return Json(new { Success = false, Message = exp.Message });
+                    return Json(new { Success = false, Message = "Error al guardar la información" });
                 }
             }
 
@@ -106,7 +106,7 @@ namespace Saptra.Web.Controllers
                 }
                 catch (Exception exp)
                 {
-                    return Json(new { Success = false, Message = exp.Message });
+                    return Json(new { Success = false, Message = "Error al guardar la información" });
                 }
             }
 
@@ -129,7 +129,7 @@ namespace Saptra.Web.Controllers
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message });
+                return Json(new { Success = false, Message = "Error al eliminar la información" });
             }
         }
 
@@ -175,7 +175,7 @@ namespace Saptra.Web.Controllers
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -219,7 +219,7 @@ namespace Saptra.Web.Controllers
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message });
+                return Json(new { Success = false, Message = "Error al guardar la información" });
             }
         }
 

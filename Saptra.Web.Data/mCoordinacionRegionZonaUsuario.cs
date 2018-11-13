@@ -16,11 +16,9 @@ namespace Saptra.Web.Data
     {
         public int CoordinacionRegionZonaId { get; set; }
         public int CoordinacionRegionId { get; set; }
-        public int CoordinacionZonaId { get; set; }
         public int UsuarioJefeRegionId { get; set; }
     
         public virtual cCoordinacionesRegion cCoordinacionesRegion { get; set; }
-        public virtual cCoordinacionesZona cCoordinacionesZona { get; set; }
         public virtual mUsuarios mUsuarios { get; set; }
     }
 }

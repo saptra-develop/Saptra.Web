@@ -17,7 +17,6 @@ namespace Saptra.Web.Data
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public cCoordinacionesZona()
         {
-            this.mCoordinacionRegionZonaUsuario = new HashSet<mCoordinacionRegionZonaUsuario>();
             this.mCoordinacionZonaUsuario = new HashSet<mCoordinacionZonaUsuario>();
         }
     
@@ -26,11 +25,11 @@ namespace Saptra.Web.Data
         public int UsuarioCreacionId { get; set; }
         public string DescripcionCoordinacionZona { get; set; }
         public int EstatusId { get; set; }
+        public Nullable<int> CoordinacionRegionId { get; set; }
     
+        public virtual cCoordinacionesRegion cCoordinacionesRegion { get; set; }
         public virtual cEstatus cEstatus { get; set; }
         public virtual mUsuarios mUsuarios { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<mCoordinacionRegionZonaUsuario> mCoordinacionRegionZonaUsuario { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<mCoordinacionZonaUsuario> mCoordinacionZonaUsuario { get; set; }
     }

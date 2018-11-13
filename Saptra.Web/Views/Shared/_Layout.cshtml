@@ -58,7 +58,7 @@
 <body>
     <div id="wrapper" style="background-color:#E6E6E6;">
         <!-- Navigation for full screen -->
-        <nav class="navbar navbar-default navbar-static-top" id="navBarMainTop" role="navigation" style="background-color:#E6E6E6; margin-bottom: 0; position: fixed; z-index: 100; width: 100%; ">
+        <nav class="navbar navbar-default navbar-static-top" id="navBarMainTop" role="navigation" style="background-color:#E6E6E6; margin-bottom: 0; position: fixed; z-index: 100; width: 100%; border-bottom: 3pt solid #FF549E">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" onclick="FCH.menuPrincipal();">
                     <span class="sr-only">Toggle navigation</span>
@@ -68,13 +68,13 @@
                 </button>
                 <a class="navbar-brand accionMenu" href="#" onclick="FCH.menuPrincipal();"><span class="fa fa-bars"></span>&nbsp;</a>
 
-                @Html.ActionLink("Saptra", "Inicio", "Principal", new { area = "" }, new { @class = "navbar-brand logo-brand hidden-xs" })
-                <h4 class="hidden-lg"><span class="text-primary">SAPTRA</span></h4>
+                @Html.ActionLink("Saptra", "Inicio", "Principal", new { area = "" }, new { @class = "navbar-brand logo-brand" })
+                @*<h4 class="hidden-lg"><span class="text-primary">SAPTRA</span></h4>*@
                 @{
-                    if (scope == "DEBUG")
+                    @*if (scope == "DEBUG")
                     {
                         <a style="font-size:1.5em; color:#d9534f; font-weight:bold; text-decoration:none;     margin-top: 10px;" class="hidden-xs">PRUEBAS</a>
-                    }
+                    }*@
                 }
             </div>
             <!-- /.navbar-header -->
@@ -103,7 +103,7 @@
                     <!-- /.dropdown -->
                     <li class="dropdown hidden-xs">
                         <a class="dropdown-toggle ahrefDropdownMenuOnNavBar" data-toggle="dropdown" href="#" style="padding:10px 15px;">
-                            <img src="~/Content/images/avatar.jpg" id="UserAvatarLayout" class="img-circle img-responsive" style="width: 37px; height: 37px; display: none;" /> &nbsp; <span id="userName">Cargando</span><i class="fa fa-caret-down"></i>
+                            <img src="../Content/images/avatar.jpg" id="UserAvatarLayout" class="img-circle img-responsive" style="width: 37px; height: 37px; display: none;" /> &nbsp; <span id="userName">Cargando</span><i class="fa fa-caret-down"></i>
 
                         </a>
 
@@ -114,7 +114,7 @@
                     </li>
 
                     <li>
-                        <div class="hidden-lg">
+                        <div class="hidden-lg hidden-md">
                             <button onclick="window.location.href = contextPath + 'Autentificacion/LogOut'" class="btn btn-xs btn-danger "><i class="fa fa-power-off  fa-fw"></i> Salir </button>
                         </div>
 
@@ -156,7 +156,7 @@
         </div>
 
         <!-- Footer -->
-        <footer class="page-footer navbar-fixed-bottom" style="background-color:#E6E6E6; position: fixed; z-index: 100; width: 100%; ">
+        <footer class="page-footer navbar-fixed-bottom hidden-xs" style="background-color:#E6E6E6; position: fixed; z-index: 100; width: 100%; ">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-2 ">
@@ -225,7 +225,7 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/bundles/sispro")
+    @Scripts.Render("~/bundles/saptra")
 
     @Html.IncludeVersionedJs(Url.Content("~/Scripts/_Saptra.js"))
     <script type="text/javascript">

@@ -14,11 +14,11 @@
                     <div class="col-sm-12">
                         <div class="col-sm-4">Descripción</div>
                         <div class="col-sm-8">
-                            @Html.TextBoxFor(model => model.DescripcionTipoFigura, new { @class = "form-control", maxlength = 100, required = "required" })
+                            @Html.TextBoxFor(model => model.DescripcionTipoFigura, new { @class = "form-control", maxlength = 100, required = "required", onkeypress = "return /[a-zA-Z ]/i.test(event.key)" })
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
+                @*<div class="form-group">
                     <div class="col-sm-12">
                         <div class="col-sm-4">Estatus</div>
                         <div class="col-sm-8">
@@ -29,7 +29,7 @@
                                                                                "Value", "Text"), new { @class = "form-control" })
                         </div>
                     </div>
-                </div>
+                </div>*@
                 @Html.HiddenFor(model => model.UsuarioCreacionId)
             }
         </div>

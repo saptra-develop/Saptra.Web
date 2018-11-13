@@ -26,12 +26,12 @@
                 <div class="form-group">
                     <div class="col-sm-2"><label class="control-label">@Resources.Usuarios.lblNameUser</label></div>
                     <div class="col-sm-4">
-                        @Html.TextBoxFor(model => model.NombresUsuario, new { @class = "form-control", maxlength = 100, required = "required", @readonly = "readonly" })
+                        @Html.TextBoxFor(model => model.NombresUsuario, new { @class = "form-control", maxlength = 100, required = "required", @readonly = "readonly", onkeypress = "return /[a-zA-Z ]/i.test(event.key)" })
                         @Html.TextBoxFor(model => model.ImagenUsuario, new { @class = "form-control", maxlength = 100, required = "required", style = "display: none;" })
                     </div>
                     <div class="col-sm-2"><label class="control-label">@Resources.Usuarios.lblApellido</label></div>
                     <div class="col-sm-4">
-                        @Html.TextBoxFor(model => model.ApellidosUsuario, new { @class = "form-control", maxlength = 100, required = "required", @readonly = "readonly" })
+                        @Html.TextBoxFor(model => model.ApellidosUsuario, new { @class = "form-control", maxlength = 100, required = "required", @readonly = "readonly", onkeypress = "return /[a-zA-Z ]/i.test(event.key)" })
                     </div>
                 </div>
                 <div class="form-group">
@@ -48,7 +48,7 @@
                 <div class="form-group">
                     <div class="col-sm-2"><label class="control-label">@Resources.Usuarios.lblEmail</label></div>
                     <div class="col-sm-4">
-                        @Html.TextBoxFor(model => model.EmailUsuario, new { @class = "form-control", maxlength = 100, required = "required" })
+                        @Html.TextBoxFor(model => model.EmailUsuario, new { @class = "form-control", type = "email", maxlength = 100, required = "required" })
                     </div>
                 </div>      
                   @Html.HiddenFor(model => model.UsuarioId)

@@ -14,18 +14,18 @@
                     <div class="col-sm-12">
                         <div class="col-sm-4">Periodo</div>
                         <div class="col-sm-8">
-                            <select class="form-control" id="selPeriodo"></select>
+                            <select class="form-control" id="selPeriodo" required><option> Cargando...</option><</select>
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
+                @*<div class="form-group">
                     <div class="col-sm-12">
                         <div class="col-sm-4">Descripción</div>
                         <div class="col-sm-8">
                             @Html.TextBoxFor(model => model.DescripcionPlaneacion, new { @class = "form-control", maxlength = 100, required = "required" })
                         </div>
                     </div>
-                </div>
+                </div>*@
                 @Html.HiddenFor(model => model.UsuarioCreacionId)
                 @Html.HiddenFor(model => model.PeriodoId)
             }

@@ -112,6 +112,9 @@
     <Compile Include="dModulos.cs">
       <DependentUpon>db.tt</DependentUpon>
     </Compile>
+    <Compile Include="InaebaPreregistros.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
     <Compile Include="mBitacora.cs">
       <DependentUpon>db.tt</DependentUpon>
     </Compile>
@@ -159,19 +162,16 @@
     <Compile Include="Split_Result.cs">
       <DependentUpon>db.tt</DependentUpon>
     </Compile>
-    <Compile Include="sp_helpdiagramdefinition_Result.cs">
-      <DependentUpon>db.tt</DependentUpon>
-    </Compile>
-    <Compile Include="sp_helpdiagrams_Result.cs">
-      <DependentUpon>db.tt</DependentUpon>
-    </Compile>
-    <Compile Include="sysdiagrams.cs">
-      <DependentUpon>db.tt</DependentUpon>
-    </Compile>
     <Compile Include="udf_IncumplimientoActividadesPeriodoList_Result.cs">
       <DependentUpon>db.tt</DependentUpon>
     </Compile>
     <Compile Include="udf_IncumplimientoActividadesPeriodoRegionList_Result.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udf_IncumplimientoActividadesPeriodoRegionZonaList_Result.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udf_IncumplimientoActividadesPeriodoZonaActividadList_Result.cs">
       <DependentUpon>db.tt</DependentUpon>
     </Compile>
     <Compile Include="udf_ModulosSeguridadxRol_Result.cs">
@@ -187,6 +187,51 @@
       <DependentUpon>db.tt</DependentUpon>
     </Compile>
     <Compile Include="udf_PlanSemanalValidarList_Result.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udf_PreregistrosIncorporadosBaseList_Result.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udf_PreregistrosIncorporadosBaseRegionList_Result.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udf_PreregistrosIncorporadosPeriodoFiguraEducandoList_Result.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udf_PreregistrosIncorporadosPeriodoFiguraList_Result.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udf_PreregistrosIncorporadosZonaList_Result.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udf_RechazoAprobacionBaseList_Result.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udf_RechazoAprobacionRegionList_Result.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udf_RechazoAprobacionZonaFiguraNombreAprobacionAct_Result.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udf_RechazoAprobacionZonaFiguraNombreAprobacionList_Result.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udf_RechazoAprobacionZonaList_Result.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udf_RechazoValidacionBaseList_Result.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udf_RechazoValidacionRegionList_Result.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udf_RechazoValidacionZonaFiguraNombreValidacionAct_Result.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udf_RechazoValidacionZonaFiguraNombreValidacion_Result.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udf_RechazoValidacionZonaList_Result.cs">
       <DependentUpon>db.tt</DependentUpon>
     </Compile>
   </ItemGroup>

@@ -26,12 +26,12 @@
                 <div class="form-group">
                     <div class="col-sm-2"><label class="control-label">@Resources.Usuarios.lblNameUser</label></div>
                     <div class="col-sm-4">
-                        @Html.TextBoxFor(model => model.NombresUsuario, new { @class = "form-control", maxlength = 100, required = "required" })
+                        @Html.TextBoxFor(model => model.NombresUsuario, new { @class = "form-control", maxlength = 100, required = "required", onkeypress = "return /[a-zA-Z ]/i.test(event.key)" })
                         @Html.TextBoxFor(model => model.ImagenUsuario, new { @class = "form-control", maxlength = 100, required = "required", style = "display: none;" })
                     </div>
                     <div class="col-sm-2"><label class="control-label">@Resources.Usuarios.lblApellido</label></div>
                     <div class="col-sm-4">
-                        @Html.TextBoxFor(model => model.ApellidosUsuario, new { @class = "form-control", maxlength = 100, required = "required" })
+                        @Html.TextBoxFor(model => model.ApellidosUsuario, new { @class = "form-control", maxlength = 100, required = "required", onkeypress = "return /[a-zA-Z ]/i.test(event.key)" })
                     </div>
                 </div>
                 <div class="form-group">
@@ -56,7 +56,26 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    
+                    <div style="display:none;" id="divRegion">
+                        <div class="col-sm-2"><label class="control-label">Región</label></div>
+                        <div class="col-sm-4">
+                            <select id="RegionId" name="RegionId" class="form-control" required="required"><option value="0">ELIJA UNA REGIÓN...</option></select>
+                            <input type="hidden" id="selRegionId" value="@ViewBag.RegionId" />
+                        </div>
+                    </div>
+                    <div style="display:none;" id="divZona">
+                        <div class="col-sm-2"><label class="control-label">Zona</label></div>
+                        <div class="col-sm-4">
+                            <select id="ZonaId" name="ZonaId" class="form-control" required="required"><option value="0">ELIJA UNA ZONA...</option></select>
+                            <input type="hidden" id="selZonaId" value="@ViewBag.ZonaId" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-2"><label class="control-label">RFC</label></div>
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(model => model.RFCUsuario, new { @class = "form-control", maxlength = 13, required = "required", onkeypress = "return /[a-zA-Z0-9 ]/i.test(event.key)" })
+                    </div>
                     <div class="col-sm-2"><label class="control-label">Estatus</label></div>
                     <div class="col-sm-4">
                         @Html.DropDownListFor(model => model.EstatusId,
@@ -67,11 +86,11 @@
                     </div>
                 </div>
 
-                @Html.HiddenFor(model => model.UsuarioId)
-                <input type="hidden" id="Rol" value="@Model.RolId" />
+                    @Html.HiddenFor(model => model.UsuarioId)
+                    <input type="hidden" id="Rol" value="@Model.RolId" />
 
-            }
-        </div>
+                    }
+                </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-default " data-dismiss="modal">@Resources.Global.btnCancel</button>
             <button type="button" class="btn btn-primary btn-ActualizarUsuario">@Resources.Global.btnSave</button>

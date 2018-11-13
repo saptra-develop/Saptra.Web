@@ -36,6 +36,15 @@
     <Reference Include="EPPlus">
       <HintPath>..\packages\EPPlus.4.1.0\lib\net40\EPPlus.dll</HintPath>
     </Reference>
+    <Reference Include="itextsharp">
+      <HintPath>..\packages\iTextSharp.5.5.10\lib\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp.xmlworker">
+      <HintPath>..\packages\itextsharp.xmlworker.5.5.10\lib\itextsharp.xmlworker.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp.xtra">
+      <HintPath>..\packages\itextsharp.xtra.5.5.10\lib\itextsharp.xtra.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -77,7 +86,11 @@
     <Compile Include="IndicadoresController.cs" />
     <Compile Include="IncidenciasController.cs" />
     <Compile Include="MailController.cs" />
+    <Compile Include="PdfController.cs" />
+    <Compile Include="ZonasController.cs" />
     <Compile Include="RolController.cs" />
+    <Compile Include="EncriptarController.cs" />
+    <Compile Include="RegionesController.cs" />
     <Compile Include="TiposFiguraController.cs" />
     <Compile Include="PeriodosController.cs" />
     <Compile Include="PlanSemanalSeguimientoController.cs" />

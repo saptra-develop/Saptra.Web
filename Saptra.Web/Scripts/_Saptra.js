@@ -14,7 +14,7 @@ var FCH = {
             }
         } catch (exp) {
         }        
-        FCH.asignaIdioma(lang);
+        //FCH.asignaIdioma(lang);
         FCH.eventos();
         FCH.CargaSideBar();
         //if (localStorage.getItem("idProveedor") !== null) {
@@ -67,6 +67,10 @@ var FCH = {
         $('#layoutDefaultModal').on('hide.bs.modal', function () {
             FCH.BackToItem();//$('body').animate({ scrollTop: FCH.scrollTop }, 400);
         });
+
+        $(document).on('click', '.btnNotificacion', function () {
+            localStorage["IdPlan"] = $(this).data('idplan');
+        }); 
     },
     //seleccionarManual: function () {
     //    FCH.CierraMensajes();
@@ -238,37 +242,37 @@ var FCH = {
     //        $('#proyectoSelected').html(localStorage.nombreProyectoSelected);
     //    }
     //},
-    asignaIdioma: function (lang) {
-        //Se agrega en el URL el idioma seleccionado
-        localStorage.lang = lang;
-        if (localStorage.lang !== '') {
-            contextPath = contextPath + lang + "/";
-            bootbox.setDefaults({ locale: "es" });
-            system_lang = 'es';
-        }
-        else {
-            bootbox.setDefaults({ locale: "en" });
-            system_lang = 'en';
-        }
-        $('#language').removeClass('fa-check-circle');
-        $('#languagees').removeClass('fa-check-circle');
-        $('#language' + lang).addClass('fa-check-circle');
-    },
-    cambiaIdioma: function (lang) {
-        if (lang !== localStorage.lang) {
-            var lenguaje = lang === "" ? "en" : "es";
-            var url = contextPath + "Usuario/CambiarLenguaje?idUsuario=" + localStorage.idUser + "&lenguaje=" + lenguaje;
-            $.post(url, null, function (data) {
-                if (data.Success === true) {
-                    var host = $(location).attr('host');
-                    var path = window.location.pathname;
-                    path = lang !== "" ? '/es' + path : path.substring(3, path.length);
+    //asignaIdioma: function (lang) {
+    //    //Se agrega en el URL el idioma seleccionado
+    //    localStorage.lang = lang;
+    //    if (localStorage.lang !== '') {
+    //        contextPath = contextPath + lang + "/";
+    //        bootbox.setDefaults({ locale: "es" });
+    //        system_lang = 'es';
+    //    }
+    //    else {
+    //        bootbox.setDefaults({ locale: "en" });
+    //        system_lang = 'en';
+    //    }
+    //    $('#language').removeClass('fa-check-circle');
+    //    $('#languagees').removeClass('fa-check-circle');
+    //    $('#language' + lang).addClass('fa-check-circle');
+    //},
+    //cambiaIdioma: function (lang) {
+    //    if (lang !== localStorage.lang) {
+    //        var lenguaje = lang === "" ? "en" : "es";
+    //        var url = contextPath + "Usuario/CambiarLenguaje?idUsuario=" + localStorage.idUser + "&lenguaje=" + lenguaje;
+    //        $.post(url, null, function (data) {
+    //            if (data.Success === true) {
+    //                var host = $(location).attr('host');
+    //                var path = window.location.pathname;
+    //                path = lang !== "" ? '/es' + path : path.substring(3, path.length);
 
-                    $(location).attr('href', 'http://' + host + path);
-                }
-            });
-        }
-    },
+    //                $(location).attr('href', 'http://' + host + path);
+    //            }
+    //        });
+    //    }
+    //},
     menuPrincipal: function () {
         if ($('#navBarMainTop').is(':visible') === true) {
             if ($('#divSideBar').is(":visible") === true) {
@@ -550,44 +554,49 @@ var FCH = {
             form = '#ActualizaPerfilUsuarioForm',
             btnName = $(this).innerText,
             files;
-
-        if ($("form").valid()) {
-            FCH.botonMensaje(true, btn, btnName);
-            files = document.getElementById(filesName).files;
-            if (files.length > 0) {
-                if (window.FormData !== undefined) {
-                    var data = new FormData();
-                    for (var count = 0; count < files.length; count++) {
-                        data.append(files[count].name, files[count]);
-                    }
-                    $.ajax({
-                        type: "POST",
-                        url: '/Usuario/SubirArchivo', //contextPath + '/Usuario/SubirArchivo', para produccion
-                        contentType: false,
-                        processData: false,
-                        data: data,
-                        success: function (result) {
-                            if (result.Success === true) {
-                                $(form + ' #imagenUsuario').val(result.Archivo);
-                                FCH.GuardaDatosPerfilUsuario();
-                            }
-                        },
-                        error: function (xhr, status, p3, p4) {
-                            var err = "Error " + " " + status + " " + p3 + " " + p4;
-                            if (xhr.responseText && xhr.responseText[0] === "{") {
-                                err = JSON.parse(xhr.responseText).Message;
-                            }
-                            FCH.DespliegaErrorDialogo(err);
-                            FCH.botonMensaje(false, btn, 'Guardar');
+        if ($('#ActualizaPerfilUsuarioForm #EmailUsuario').val() !== "") {
+            if ($("form").valid()) {
+                FCH.botonMensaje(true, btn, btnName);
+                files = document.getElementById(filesName).files;
+                if (files.length > 0) {
+                    if (window.FormData !== undefined) {
+                        var data = new FormData();
+                        for (var count = 0; count < files.length; count++) {
+                            data.append(files[count].name, files[count]);
                         }
-                    });
+                        $.ajax({
+                            type: "POST",
+                            url: contextPath + "Usuario/SubirArchivo", //contextPath + '/Usuario/SubirArchivo, para produccion
+                            contentType: false,
+                            processData: false,
+                            data: data,
+                            success: function (result) {
+                                if (result.Success === true) {
+                                    $(form + ' #ImagenUsuario').val(result.Archivo);
+                                    FCH.GuardaDatosPerfilUsuario();
+                                }
+                            },
+                            error: function (xhr, status, p3, p4) {
+                                var err = "Error " + " " + status + " " + p3 + " " + p4;
+                                if (xhr.responseText && xhr.responseText[0] === "{") {
+                                    err = JSON.parse(xhr.responseText).Message;
+                                }
+                                FCH.DespliegaErrorDialogo(err);
+                                FCH.botonMensaje(false, btn, 'Guardar');
+                            }
+                        });
+                    } else {
+                        FCH.DespliegaErrorDialogo("Este explorador no soportado por la aplicacion favor de utilizar una version mas reciente. Chrome");
+                        FCH.botonMensaje(false, btn, btnName);
+                    }
                 } else {
-                    FCH.DespliegaErrorDialogo("Este explorador no soportado por la aplicacion favor de utilizar una version mas reciente. Chrome");
-                    FCH.botonMensaje(false, btn, btnName);
+                    FCH.GuardaDatosPerfilUsuario();
                 }
-            } else {
-                FCH.GuardaDatosPerfilUsuario();
             }
+        } else {
+
+            $('#ActualizaPerfilUsuarioForm #EmailUsuario').addClass("input-validation-error");
+            $('#ActualizaPerfilUsuarioForm #EmailUsuario').attr("placeholder", "Obligatorio");
         }
     },
     GuardaDatosPerfilUsuario: function () {
@@ -596,13 +605,12 @@ var FCH = {
             function (data) {
                 if (data.Success === true) {
                     $('#actualiza-PerfilUsuario').modal('hide');
-                    $('#telefonoUsuarioMenu').text(data.UsuarioPerfil[0].telefonoUsuario);
-                    $('#celularUsuarioMenu').text(data.UsuarioPerfil[0].celularUsuario);
                     $('#emailUsuarioMenu').text(data.UsuarioPerfil[0].emailUsuario);
                     localStorage.UserAvatar = data.UsuarioPerfil[0].imagenUsuario;
                     $('#UserAvatarLayout').attr('src', localStorage.UserAvatar);
                     $('#UserAvatarMenu').attr('src', localStorage.UserAvatar);
-                    //FCH.DespliegaInformacion(jsglb[system_lang].Usuario_success_update + data.UsuarioPerfil.id);
+                    $('#dropdownMenuUsuario').attr('src', localStorage.UserAvatar);
+                    FCH.DespliegaInformacion("Se actualizo correctamente tú perfil");
                 } else {
                     FCH.DespliegaErrorDialogo(data.Message);
                 }
@@ -620,9 +628,15 @@ var FCH = {
                 function (data) {
                     if (data.Success === true) {
                         $('#actualiza-password').modal('hide');
-                        FCH.DespliegaInformacion("El Usuario fue Actualizado. Id: " + data.id);
+                        FCH.DespliegaInformacion(data.Message);
                     } else {
                         FCH.DespliegaErrorDialogo(data.Message);
+                        if (data.tipo == 1) {
+                            $('#passwordNuevo').addClass('input-validation-error');
+                            $('#passwordConfirmar').addClass('input-validation-error');
+                        } else if (data.tipo == 2){
+                            $('#passwordActual').addClass('input-validation-error');
+                        }
                     }
                 }).fail(function () {
                     FCH.DespliegaErrorDialogo("Error al actualizar la información");

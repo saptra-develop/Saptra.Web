@@ -11,9 +11,14 @@ namespace Saptra.Web.Data
 {
     using System;
     
-    public partial class sp_helpdiagramdefinition_Result
+    public partial class udf_RechazoValidacionZonaFiguraNombreValidacionAct_Result
     {
-        public Nullable<int> version { get; set; }
-        public byte[] definition { get; set; }
+        public string Periodo { get; set; }
+        public string Region { get; set; }
+        public string Zona { get; set; }
+        public string TipoFigura { get; set; }
+        public string NombreFigura { get; set; }
+        public string DescripcionActividad { get; set; }
+        public string ComentariosNoValidacion { get; set; }
     }
 }

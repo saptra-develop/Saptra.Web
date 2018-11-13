@@ -14,7 +14,7 @@
                     <div class="col-sm-12">
                         <div class="col-sm-4">Actividad</div>
                         <div class="col-sm-8">
-                            <select class="form-control" id="selTipoActividad"></select>
+                            <select class="form-control" id="selTipoActividad"><option> Cargando...</option><</select>
                         </div>
                     </div>
                 </div>
@@ -28,9 +28,17 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-12">
+                        <div class="col-sm-4">Lugar</div>
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(model => model.LugarActividad, new { @class = "form-control", maxlength = 100, required = "required" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
                         <div class="col-sm-4">Fecha</div>
                         <div class="col-sm-8">
-                            <div class='input-group date' id='dtpfechaCompromiso'>
+                            <div class='input-group date' id='dtpfechaCompromiso' data-fini="@ViewBag.FechaIni" data-ffin="@ViewBag.FechaFin">
                                 <input type="text" id="fechaAct" class="form-control" required />
                                 @*@Html.TextBoxFor(model => model.FechaActividad, new { @class = "form-control", maxlength = 10, required = "required" })*@
                                 <span class="input-group-addon">
@@ -42,9 +50,32 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-12">
-                        <div class="col-sm-4">Hora</div>
+                        <div class="col-sm-4">Hora Inicio</div>
                         <div class="col-sm-8">
                             @Html.DropDownListFor(model => model.HoraActividad,
+                                                                                        new SelectList(new[]{
+                                                                                                        new SelectListItem{ Text="08:00", Value="08:00"},
+                                                                                                        new SelectListItem{ Text="09:00", Value="09:00"},
+                                                                                                        new SelectListItem{ Text="10:00", Value="10:00"},
+                                                                                                        new SelectListItem{ Text="11:00", Value="11:00"},
+                                                                                                        new SelectListItem{ Text="12:00", Value="12:00"},
+                                                                                                        new SelectListItem{ Text="13:00", Value="13:00"},
+                                                                                                        new SelectListItem{ Text="14:00", Value="14:00"},
+                                                                                                        new SelectListItem{ Text="15:00", Value="15:00"},
+                                                                                                        new SelectListItem{ Text="16:00", Value="16:00"},
+                                                                                                        new SelectListItem{ Text="17:00", Value="17:00"},
+                                                                                                        new SelectListItem{ Text="18:00", Value="18:00"},
+                                                                                                        new SelectListItem{ Text="19:00", Value="19:00"},
+                                                                                                        new SelectListItem{ Text="20:00", Value="20:00"}},
+                                                                                "Value", "Text"), new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">Hora Fin</div>
+                        <div class="col-sm-8">
+                            @Html.DropDownListFor(model => model.HoraFin,
                                                                                         new SelectList(new[]{
                                                                                                         new SelectListItem{ Text="08:00", Value="08:00"},
                                                                                                         new SelectListItem{ Text="09:00", Value="09:00"},
@@ -71,17 +102,39 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <div class="col-lg-12">
+                            <div class="col-lg-offset-4 col-lg-3">
+                                <button type="button" class="btn btn-primary btn-AgregarDetalle">Guardar actividad</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <div class="col-lg-12" style="overflow-x: auto; overflow-y: auto; max-height:150px;">
+                            <div id="bbGrid-Actividades" style="overflow-x: auto; overflow-y: hidden;">
+                                <div id="cargandoInfo">
+                                    <div class='alert alert-warning'>
+                                        <button type='button' class='close' data-dismiss='alert'>x</button>
+                                        Sin actividades
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                @Html.HiddenFor(model => model.PlanSemanalId)
-                @Html.HiddenFor(model => model.UsuarioCreacionId)
-                @Html.HiddenFor(model => model.TipoActividadId)
-                @Html.HiddenFor(model => model.FechaActividad)
-            }
-        </div>
+                    @Html.HiddenFor(model => model.PlanSemanalId)
+                    @Html.HiddenFor(model => model.UsuarioCreacionId)
+                    @Html.HiddenFor(model => model.TipoActividadId)
+                    @Html.HiddenFor(model => model.FechaActividad)
+                    }
+                </div>
 
         <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Global.btnCancel</button>
-            <button type="button" class="btn btn-primary btn-GuardaDetalleNuevo">@Resources.Global.btnSave</button>
+            <button type="button" class="btn btn-primary btn-GuardaDetalleNuevo" data-dismiss="modal">Cerrar</button>
         </div>
     </div><!-- /.modal-content -->
 </div>

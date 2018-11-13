@@ -19,7 +19,7 @@ namespace Saptra.Web
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                           "~/Scripts/lib/modernizr-*"));
 
-            bundles.Add(new ScriptBundle("~/bundles/sispro").Include(
+            bundles.Add(new ScriptBundle("~/bundles/saptra").Include(
                       "~/Scripts/lib/bower_components/bootstrap/dist/js/bootstrap.js",
                       "~/Scripts/lib/bootbox/bootbox.min.js",
                       "~/Scripts/lib/chartjs/Chart.min.js",

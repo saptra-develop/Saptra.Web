@@ -11,8 +11,12 @@ var Usuario = {
     activeForm: '',
     colUsuarios: {},
     colRoles: [],
+    colRegiones: [],
+    colZonas: [],
     colUsuariosJefe: [],
     gridUsuarios: {},
+    validaRegion: 0,
+    validaZona: 0,
     Inicial: function () {
         $.ajaxSetup({ cache: false });
         this.CargaGrid();
@@ -22,8 +26,8 @@ var Usuario = {
     Eventos: function () {
         var that = this;
         $('.btnNuevo').click(that.Nuevo);
-        $(document).on("click", '.btn-GuardaNuevo', that.onGuardar);
-        $(document).on("click", '.btn-ActualizarUsuario', that.onActualizar);
+        $(document).on("click", '.btn-GuardaNuevo', that.onSubirArchivo);
+        $(document).on("click", '.btn-ActualizarUsuario', that.onSubirArchivo);
         //$(document).on("click", '.btn-Avatar', that.onAvatar());
 
         //Eventos de los botones de Acciones del grid
@@ -50,61 +54,301 @@ var Usuario = {
         });
 
 
-    },
-    onGuardar: function () {
-        var btn = this;
+        $(document).on("change", '#imgUsuAct', function () {
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#imgUpl').attr('src', e.target.result);
+                };
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
 
-        FCH.botonMensaje(true, btn, 'Guardar');
-        if ($("form").valid()) {
-            $('#NuevoUsuarioForm #liberaMatriz').val($('#NuevoUsuarioForm #chkReleasedMatrix').prop("checked") ? 1 : 0);
-            //$("#imagenUsuario").val('Hola');
-            //Se hace el post para guardar la informacion
-            $.post(contextPath + "Usuario/Nuevo",
-                $("#NuevoUsuarioForm *").serialize(),
-                function (data) {
-                    if (data.Success === true) {
-                        Usuario.colUsuarios.add(Usuario.serializaUsuario(data.id, '#NuevoUsuarioForm'));
-                        FCH.DespliegaInformacion("El Usuario fue guardado con el Id: " + data.id);
-                        $('#nuevo-Usuario').modal('hide');
-                        if (Usuario.colUsuarios.length === 1) {
-                            Usuario.CargaGrid();
-                        }
+        $(document).on("change", '#RolId', function () {
+            if ($(Usuario.activeForm + ' #RolId').val() == "6") {
+                $(Usuario.activeForm + ' #divRegion').show();
+                $(Usuario.activeForm + ' #divZona').hide();
+                Usuario.CargarColeccionRegiones();
+                //Usuario.ValidarJefeRegion();
+            } else if ($(Usuario.activeForm + ' #RolId').val() == "3" || $(Usuario.activeForm + ' #RolId').val() == "2" || $(Usuario.activeForm + ' #RolId').val() == "4" || $(Usuario.activeForm + ' #RolId').val() == "5") {
+                $(Usuario.activeForm + ' #divZona').show();
+                Usuario.CargarColeccionZonas();
+                $(Usuario.activeForm + ' #divRegion').hide();
+            }
+            else {
+                $(Usuario.activeForm + ' #divRegion').hide();
+                $(Usuario.activeForm + ' #divZona').hide();
+            }
+        });
+
+        $(document).on("change", '#RegionId', function () {
+            validaRegion = Usuario.ValidarJefeRegion();
+           
+        });
+
+        $(document).on("change", '#ZonaId', function () {
+            validaZona = Usuario.ValidarJefeZona();
+
+        });
+
+
+
+
+    },
+    ValidarJefeRegion: function () {
+        var url = contextPath + "Usuario/ValidaJefeRegion?RegionId=" + $(Usuario.activeForm + ' #RegionId').val();
+        $.getJSON(url, function (respuesta) {
+            if (respuesta.Success === true) {
+
+                Usuario.validaRegion = 1;
+     
+            }
+            else {
+                Usuario.validaRegion = 0;
+            }
+        });
+    },
+    ValidarJefeZona: function () {
+        var url = contextPath + "Usuario/ValidaJefeZona?ZonaId=" + $(Usuario.activeForm + ' #ZonaId').val();
+        $.getJSON(url, function (respuesta) {
+            if (respuesta.Success === true) {
+                Usuario.validaZona = 1;
+            }
+            else {
+                Usuario.validaZona = 0;
+            }
+        });
+    },
+    onGuardaValidado: function () {
+        var btn = this;
+        var atpos = $('#NuevoUsuarioForm #EmailUsuario').val().indexOf("@");
+        var dotpos = $('#NuevoUsuarioForm #EmailUsuario').val().lastIndexOf(".")
+
+        //if (valida == 0) {
+            if (atpos < 1 || (dotpos - atpos < 2)) {
+                FCH.DespliegaErrorDialogo("Correo invalido");
+            } else {
+                if ($('#NuevoUsuarioForm #NombresUsuario').val() !== "" && $('#NuevoUsuarioForm #ApellidosUsuario').val() !== "" && $('#NuevoUsuarioForm #LoginUsuario').val() !== "" && $('#NuevoUsuarioForm #PasswordUsuario').val() !== "" && $('#NuevoUsuarioForm #EmailUsuario').val() !== "" && $('#NuevoUsuarioForm #EmailUsuario').val() !== "0") {
+                    FCH.botonMensaje(true, btn, 'Guardar');
+                    if ($("form").valid()) {
+                        //$("#imagenUsuario").val('Hola');
+                        //Se hace el post para guardar la informacion
+                        $.post(contextPath + "Usuario/Nuevo?RegionId=" + $('#NuevoUsuarioForm #RegionId').val() + "&ZonaId=" + $('#NuevoUsuarioForm #ZonaId').val() + "&idUsuario=" + localStorage.idUser,
+                            $("#NuevoUsuarioForm *").serialize(),
+                            function (data) {
+                                if (data.Success === true) {
+                                    Usuario.colUsuarios.add(Usuario.serializaUsuario(data.id, '#NuevoUsuarioForm'));
+                                    FCH.DespliegaInformacion("El Usuario fue guardado con el Id: " + data.id);
+                                    $('#nuevo-Usuario').modal('hide');
+                                    if (Usuario.colUsuarios.length === 1) {
+                                        Usuario.CargaGrid();
+                                    }
+                                } else {
+                                    FCH.botonMensaje(false, btn, 'Guardar');
+                                    FCH.DespliegaErrorDialogo(data.Message);
+
+                                }
+                            }).fail(function () {
+                                FCH.DespliegaErrorDialogo("Error al guardar la información.");
+
+                            }).always(function () { FCH.botonMensaje(false, btn, 'Guardar'); });
+
                     } else {
                         FCH.botonMensaje(false, btn, 'Guardar');
-                        FCH.DespliegaErrorDialogo(data.Message);
-                        
                     }
-                }).fail(function () {
-                    FCH.DespliegaErrorDialogo("Error al guardar la información.");
+                } else {
+                    if ($('#NuevoUsuarioForm #NombresUsuario').val() == "") {
+                        $('#NuevoUsuarioForm #NombresUsuario').addClass("input-validation-error");
+                        $('#NuevoUsuarioForm #NombresUsuario').attr("placeholder", "Obligatorio");
+                    }
+                    if ($('#NuevoUsuarioForm #ApellidosUsuario').val() == "") {
+                        $('#NuevoUsuarioForm #ApellidosUsuario').addClass("input-validation-error");
+                        $('#NuevoUsuarioForm #ApellidosUsuario').attr("placeholder", "Obligatorio");
+                    }
+                    if ($('#NuevoUsuarioForm #LoginUsuario').val() == "") {
+                        $('#NuevoUsuarioForm #LoginUsuario').addClass("input-validation-error");
+                        $('#NuevoUsuarioForm #LoginUsuario').attr("placeholder", "Obligatorio");
+                    }
+                    if ($('#NuevoUsuarioForm #PasswordUsuario').val() == "") {
+                        $('#NuevoUsuarioForm #PasswordUsuario').addClass("input-validation-error");
+                        $('#NuevoUsuarioForm #PasswordUsuario').attr("placeholder", "Obligatorio");
+                    }
+                    if ($('#NuevoUsuarioForm #EmailUsuario').val() == "") {
+                        $('#NuevoUsuarioForm #EmailUsuario').addClass("input-validation-error");
+                        $('#NuevoUsuarioForm #EmailUsuario').attr("placeholder", "Obligatorio");
+                    }
+                    if ($('#NuevoUsuarioForm #RolId').val() == "0") {
+                        $('#NuevoUsuarioForm #RolId').addClass("has-error");
+                    }
 
-                }).always(function () { FCH.botonMensaje(false, btn, 'Guardar'); });
+                    if ($('#NuevoUsuarioForm #EmailUsuario').val() == "") {
+                        $('#NuevoUsuarioForm #EmailUsuario').addClass("input-validation-error");
+                        $('#NuevoUsuarioForm #EmailUsuario').attr("placeholder", "Obligatorio");
+                    }
+                    if ($('#NuevoUsuarioForm #ZonaId').val() == null) {
+                        $('#NuevoUsuarioForm #ZonaId').addClass("has-error");
+                    }
+                    if ($('#NuevoUsuarioForm #RegionId').val() == "0") {
+                        $('#NuevoUsuarioForm #RegionId').addClass("has-error");
+                    }
+                }
+            }
+        //}
 
-        } else {
-            FCH.botonMensaje(false, btn, 'Guardar');
+    
+        
+    },
+    onGuardar: function (estado) {
+        var btn = this;
+        FCH.botonMensaje(true, btn, 'Guardar');
+        var estado = 0;
+        if ($(Usuario.activeForm + ' #RolId').val() == "6") {
+            if ($(Usuario.activeForm + ' #RolId').val() == "6" && $('#NuevoUsuarioForm #RegionId').val() == "0") {
+                estado = 1;
+                FCH.DespliegaErrorDialogo("Es necesario elegir una Región");
+            } else {
+                estado = 0;
+            }
         }
+
+        //if ($(Usuario.activeForm + ' #RolId').val() == "3") {
+
+            if (($(Usuario.activeForm + ' #RolId').val() == "3" || $(Usuario.activeForm + ' #RolId').val() == "2" || $(Usuario.activeForm + ' #RolId').val() == "4" || $(Usuario.activeForm + ' #RolId').val() == "5") && $('#NuevoUsuarioForm #ZonaId').val() == "0") {
+                estado = 1;
+                FCH.DespliegaErrorDialogo("Es necesario elegir una Zona");
+            } else {
+                estado = 0;
+            }
+        //}
+
+        if (estado == 0) {
+            var valida = 0;
+            if ($(Usuario.activeForm + ' #RolId').val() == "6" && Usuario.validaRegion == 1) {
+                bootbox.confirm("¿Desea eliminar al jefe de la coordinación de región actual?", function (result) {
+                    if (result) {
+                        Usuario.onGuardaValidado();
+                    } else {
+                        valida= 1;
+                    }
+                });
+            } else if ($(Usuario.activeForm + ' #RolId').val() == "3" && Usuario.validaZona == 1) {
+                bootbox.confirm("¿Desea eliminar al jefe de la coordinación de zona actual?", function (result) {
+                    if (result) {
+                        Usuario.onGuardaValidado();
+                    } else {
+                        valida = 1;
+                    }
+                });
+            }
+            else {
+                Usuario.onGuardaValidado();
+            }
+           
+        } 
+
     },
     onActualizar: function () {
         var btn = this;
-
         FCH.botonMensaje(true, btn, 'Guardar');
-        if ($("form").valid()) {
-            $('#ActualizaUsuarioForm #liberaMatriz').val($('#ActualizaUsuarioForm #chkReleasedMatrix').prop("checked") ? 1 : 0);
-            //Se hace el post para guardar la informacion
-            $.post(contextPath + "Usuario/Actualiza",
-                $("#ActualizaUsuarioForm *").serialize(),
-                function (data) {
-                    if (data.Success === true) {
-                        $('#actualiza-Usuario').modal('hide');
-                        Usuario.colUsuarios.add(Usuario.serializaUsuario(data.id, '#ActualizaUsuarioForm'), { merge: true });
-                        FCH.DespliegaInformacion("El Usuario fue Actualizado. Id: " + data.id);
-                    } else {
-                        FCH.DespliegaErrorDialogo(data.Message);
-                    }
-                }).fail(function () {
-                    FCH.DespliegaErrorDialogo("Error al actualizar la información");
-                }).always(function () { FCH.botonMensaje(false, btn, 'Guardar'); });
+
+        var estado = 0;
+        if ($(Usuario.activeForm + ' #RolId').val() == "6") {
+            if ($(Usuario.activeForm + ' #RolId').val() == "6" && $('#ActualizaUsuarioForm #RegionId').val() == "0") {
+                estado = 1;
+                FCH.DespliegaErrorDialogo("Es necesario elegir una Región");
+            } else {
+                estado = 0;
+            }
+        }
+
+        if (($(Usuario.activeForm + ' #RolId').val() == "3" || $(Usuario.activeForm + ' #RolId').val() == "2" || $(Usuario.activeForm + ' #RolId').val() == "4" || $(Usuario.activeForm + ' #RolId').val() == "5") && $('#ActualizaUsuarioForm #ZonaId').val() == "0") {
+            estado = 1;
+            FCH.DespliegaErrorDialogo("Es necesario elegir una Zona");
         } else {
-            FCH.botonMensaje(false, btn, 'Guardar');
+            estado = 0;
+        }
+
+        if (estado == 0) {
+            var valida = 0;
+            if ($(Usuario.activeForm + ' #RolId').val() == "6" && Usuario.validaRegion == 1) {
+                bootbox.confirm("¿Desea eliminar al jefe de la coordinación de región actual?", function (result) {
+                    if (result) {
+                        Usuario.onActualizarValidado();
+                    } else {
+                        valida = 1;
+                    }
+                });
+            } else if ($(Usuario.activeForm + ' #RolId').val() == "3" && Usuario.validaZona == 1) {
+                bootbox.confirm("¿Desea eliminar al jefe de la coordinación de zona actual?", function (result) {
+                    if (result) {
+                        Usuario.onActualizarValidado();
+                    } else {
+                        valida = 1;
+                    }
+                });
+            }
+            else {
+                Usuario.onActualizarValidado();
+            }
+
+        } 
+        
+    },
+    onActualizarValidado: function () {
+        var btn = this;
+
+        var atpos = $('#ActualizaUsuarioForm #EmailUsuario').val().indexOf("@");
+        var dotpos = $('#ActualizaUsuarioForm #EmailUsuario').val().lastIndexOf(".");
+
+        if (atpos < 1 || (dotpos - atpos < 2)) {
+            FCH.DespliegaErrorDialogo("Correo invalido");
+        } else {
+            if ($('#ActualizaUsuarioForm #NombresUsuario').val() !== "" && $('#ActualizaUsuarioForm #ApellidosUsuario').val() !== "" && $('#ActualizaUsuarioForm #LoginUsuario').val() !== "" && $('#ActualizaUsuarioForm #PasswordUsuario').val() !== "" && $('#ActualizaUsuarioForm #EmailUsuario').val() !== "" && $('#ActualizaUsuarioForm #EmailUsuario').val() !== "0") {
+                FCH.botonMensaje(true, btn, 'Guardar');
+                if ($("form").valid()) {
+                    //Se hace el post para guardar la informacion
+                    $.post(contextPath + "Usuario/Actualiza?RegionId=" + $('#ActualizaUsuarioForm #RegionId').val() + "&ZonaId=" + $('#ActualizaUsuarioForm #ZonaId').val() + "&idUsuario=" + localStorage.idUser,
+                        $("#ActualizaUsuarioForm *").serialize(),
+                        function (data) {
+                            if (data.Success === true) {
+                                $('#actualiza-Usuario').modal('hide');
+                                Usuario.colUsuarios.add(Usuario.serializaUsuario(data.id, '#ActualizaUsuarioForm'), { merge: true });
+                                FCH.DespliegaInformacion("El Usuario fue Actualizado. Id: " + data.id);
+                            } else {
+                                FCH.DespliegaErrorDialogo(data.Message);
+                            }
+                        }).fail(function () {
+                            FCH.DespliegaErrorDialogo("Error al actualizar la información");
+                        }).always(function () { FCH.botonMensaje(false, btn, 'Guardar'); });
+                } else {
+                    FCH.botonMensaje(false, btn, 'Guardar');
+                }
+            } else {
+                if ($('#ActualizaUsuarioForm #NombresUsuario').val() == "") {
+                    $('#ActualizaUsuarioForm #NombresUsuario').addClass("input-validation-error");
+                    $('#ActualizaUsuarioForm #NombresUsuario').attr("placeholder", "Obligatorio");
+                }
+                if ($('#ActualizaUsuarioForm #ApellidosUsuario').val() == "") {
+                    $('#ActualizaUsuarioForm #ApellidosUsuario').addClass("input-validation-error");
+                    $('#ActualizaUsuarioForm #ApellidosUsuario').attr("placeholder", "Obligatorio");
+                }
+                if ($('#ActualizaUsuarioForm #LoginUsuario').val() == "") {
+                    $('#ActualizaUsuarioForm #LoginUsuario').addClass("input-validation-error");
+                    $('#ActualizaUsuarioForm #LoginUsuario').attr("placeholder", "Obligatorio");
+                }
+                if ($('#ActualizaUsuarioForm #PasswordUsuario').val() == "") {
+                    $('#ActualizaUsuarioForm #PasswordUsuario').addClass("input-validation-error");
+                    $('#ActualizaUsuarioForm #PasswordUsuario').attr("placeholder", "Obligatorio");
+                }
+                if ($('#ActualizaUsuarioForm #EmailUsuario').val() == "") {
+                    $('#ActualizaUsuarioForm #EmailUsuario').addClass("input-validation-error");
+                    $('#ActualizaUsuarioForm #EmailUsuario').attr("placeholder", "Obligatorio");
+                }
+                if ($('#ActualizaUsuarioForm #RolId').val() == "0") {
+                    $('#ActualizaUsuarioForm #RolId').addClass("has-error");
+                }
+
+            }
         }
     },
     onSubirArchivo: function () {
@@ -124,15 +368,18 @@ var Usuario = {
                     }
                     $.ajax({
                         type: "POST",
-                        url: '/Usuario/SubirArchivo', //contextPath + '/Usuario/SubirArchivo', para produccion
+                        url: contextPath + 'Usuario/SubirArchivo', //contextPath + '/Usuario/SubirArchivo', para produccion
                         contentType: false,
                         processData: false,
                         data: data,
                         success: function (result) {
 
                             if (result.Success === true) {
-                                $(Usuario.activeForm + ' #imagenUsuario').val(result.Archivo);
-
+                                $(Usuario.activeForm + ' #ImagenUsuario').val(result.Archivo);
+                                localStorage.UserAvatar = result.Archivo;
+                                $('#UserAvatarLayout').attr('src', localStorage.UserAvatar);
+                                $('#UserAvatarMenu').attr('src', localStorage.UserAvatar);
+                                $('#dropdownMenuUsuario').attr('src', localStorage.UserAvatar);
                                 if (Usuario.activeForm !== '#NuevoUsuarioForm') {
                                     Usuario.onActualizar(btn);
                                 } else {
@@ -140,7 +387,7 @@ var Usuario = {
                                 }
 
                             } else {
-                                $(Usuario.activeForm + ' #imagenUsuario').val('');
+                                $(Usuario.activeForm + ' #ImagenUsuario').val('');
                                 FCH.DespliegaErrorDialogo(result.Message);
                                 FCH.botonMensaje(false, btn, 'Guardar');
                             }
@@ -162,7 +409,7 @@ var Usuario = {
                 if (Usuario.activeForm !== '#NuevoUsuarioForm') {
                     Usuario.onActualizar(btn);
                 } else {
-                    $(Usuario.activeForm + ' #imagenUsuario').val('');
+                    $(Usuario.activeForm + ' #ImagenUsuario').val('');
                     Usuario.onGuardar(btn);
                 }
             }
@@ -179,13 +426,10 @@ var Usuario = {
             }, 'show');
             FCH.RedefinirValidaciones(); //para los formularios dinamicos
             Usuario.activeForm = '#NuevoUsuarioForm';
-            $('#NuevoUsuarioForm #chkReleasedMatrix').bootstrapSwitch({
-                size: 'small',
-                onText: 'YES',
-                offText: 'NO',
-            });
+            //Usuario.CargarColeccionRegiones();
+            //Usuario.CargarColeccionZonas();
             Usuario.CargarColeccionRoles();
-            Usuario.CargarColeccionUsuarios();
+            //Usuario.CargarColeccionUsuarios();
             Usuario.EventoNombreArchivo();
         });
     },
@@ -201,14 +445,17 @@ var Usuario = {
 
             FCH.RedefinirValidaciones(); //para los formularios dinamicos
             Usuario.activeForm = '#ActualizaUsuarioForm';
-            $('#ActualizaUsuarioForm #chkReleasedMatrix').prop('checked', $('#ActualizaUsuarioForm #liberaMatriz').val() === '1' ? true : false);
-            $('#ActualizaUsuarioForm #chkReleasedMatrix').bootstrapSwitch({
-                size: 'small',
-                onText: 'YES',
-                offText: 'NO',
-            });
+   
+            if ($('#ActualizaUsuarioForm #RolId').val() == 6) {
+                Usuario.CargarColeccionRegiones();
+                $(Usuario.activeForm + ' #divRegion').show();
+            } else if ($('#ActualizaUsuarioForm #RolId').val() == 3 || $('#ActualizaUsuarioForm #RolId').val() == 2 || $('#ActualizaUsuarioForm #RolId').val() == 4 || $('#ActualizaUsuarioForm #RolId').val() == 5  ) {
+                Usuario.CargarColeccionZonas();
+             
+                $(Usuario.activeForm + ' #divZona').show();
+            }
             Usuario.CargarColeccionRoles();
-            Usuario.CargarColeccionUsuarios();
+            //Usuario.CargarColeccionUsuarios();
             Usuario.EventoNombreArchivo();
 
         });
@@ -263,7 +510,7 @@ var Usuario = {
             FCH.RedefinirValidaciones(); //para los formularios dinamicos
             Usuario.activeForm = '#NuevoUsuarioForm';
             Usuario.CargarColeccionRoles();
-            Usuario.CargarColeccionUsuarios();
+            //Usuario.CargarColeccionUsuarios();
         });
 
     },
@@ -292,6 +539,63 @@ var Usuario = {
         $(form + " #RolId").select2({ allowClear: true });
         if (form !== undefined)
             $(form + ' #RolId').val($(form + ' #Rol').val()).change();
+
+
+    },
+    CargarColeccionRegiones: function () {
+        var form = Usuario.activeForm;
+        if (Usuario.colRegiones.length < 1) {
+            var url = contextPath + "Regiones/CargarRegiones"; // El url del controlador
+            $.getJSON(url, function (data) {
+                Usuario.colRegiones = data;
+                Usuario.CargaListaRegiones(form);
+            }).fail(function () {
+                FCH.DespliegaErrorDialogo("No se pudo cargar la informacion de regiones ");
+            });
+        } else {
+            Usuario.CargaListaRegiones(form);
+        }
+    },
+    CargaListaRegiones: function (form) {
+        var select = $(form + ' #RegionId').empty();
+
+        select.append('<option value="0">ELIJA UNA REGION...</option>');
+        $.each(Usuario.colRegiones, function (i, item) {
+            select.append('<option value="' + item.id + '">' + item.nombre + '</option>');
+        });
+
+
+        $(Usuario.activeForm + " #RegionId").select2({ allowClear: true });
+        if ($(Usuario.activeForm + " #selRegionId").val() !== "0")
+            $(Usuario.activeForm + ' #RegionId').val($(Usuario.activeForm + " #selRegionId").val()).change();
+
+      
+
+
+    },
+    CargarColeccionZonas: function () {
+        var form = Usuario.activeForm;
+
+        var url = contextPath + "Zonas/CargarZonasRegion"; // El url del controlador
+        $.getJSON(url, function (data) {
+            Usuario.colZonas = data;
+            Usuario.CargaListaZonas(form);
+        }).fail(function () {
+            FCH.DespliegaErrorDialogo("No se pudo cargar la informacion de zonas ");
+        });
+
+    },
+    CargaListaZonas: function (form) {
+        var select = $(form + ' #ZonaId').empty();
+
+        select.append('<option value="0">ELIJA UNA ZONA...</option>');
+        $.each(Usuario.colZonas, function (i, item) {
+            select.append('<option value="' + item.id + '">' + item.nombre + '</option>');
+        });
+
+        $(form + " #ZonaId").select2({ allowClear: true });
+        if ($(Usuario.activeForm + " #selZonaId").val() !== "0")
+            $(Usuario.activeForm + ' #ZonaId').val($(Usuario.activeForm + " #selZonaId").val()).change();
 
 
     },
@@ -377,14 +681,15 @@ var Usuario = {
                     enableSearch: true,
                     actionenable: true,
                     detalle: false,
-                    clone: Usuario.accClonar,
+                    clone: false,
                     editar: Usuario.accEscritura,
                     borrar: Usuario.accBorrar,
                     collection: Usuario.colUsuarios,
                     colModel: [//{ title: 'Id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
-                               { title: 'Usuario', name: 'nombreCompleto', filter: true, filterType: 'input', index: true },
+                                { title: 'Usuario', name: 'nombreCompleto', filter: true, filterType: 'input', index: true },
                                 { title: 'Correo', name: 'email', filter: true, filterType: 'input', index: true },
-                                { title: 'Rol', name: 'nombreRol', filter: true, filterType: 'input', index: true }]
+                                { title: 'Rol', name: 'nombreRol', filter: true, filterType: 'input', index: true },
+                                { title: 'Estatus', name: 'NombreEstatus', filter: true, filterType: 'input', index: true }]
 
                 });
                 $('#cargandoInfo').hide();

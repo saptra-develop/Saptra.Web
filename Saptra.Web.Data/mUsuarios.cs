@@ -50,6 +50,7 @@ namespace Saptra.Web.Data
         public string ImagenUsuario { get; set; }
         public string EmailUsuario { get; set; }
         public Nullable<int> TipoFiguraId { get; set; }
+        public string RFCUsuario { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cCoordinacionesRegion> cCoordinacionesRegion { get; set; }

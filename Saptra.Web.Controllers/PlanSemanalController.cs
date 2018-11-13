@@ -47,14 +47,16 @@ namespace Sispro.Web.Controllers
                     descripcionPlan = C.DescripcionPlan,
                     periodo = C.Periodo.ToUpper(),
                     usuario = C.Usuario,
-                    accion = "<button class='btn btn-xs " + (C.EstatusId == 10 ? "btn-success" : "btn-primary") + " btnEnvioValidacion' style='border-radius: 21px;' id='btnEnvioValidacion_" + C.PlnSemanalId + "' data-idplan='" + C.PlnSemanalId + "' data-idestatus='" + C.EstatusId + "' " + (C.TieneDetalle == 0 || C.EstatusId == 10 ? "disabled" : "") + "><i class='fa fa-paper-plane  fa-lg fa-fw'></i>" + (C.EstatusId == 10 ? " Enviado" : " Enviar") + "</button>",
+                    accion = "<button class='btn btn-xs btn-info accrowProdDetalle' data-idplan='" + C.PlnSemanalId + "' data-idestatus='" + C.EstatusId + "' " + (C.EstatusId == 10 ? "disabled" : "") + "><i class='fa fa-plus  fa-lg fa-fw'></i></button>" +
+                            " <button class='btn btn-xs " + (C.EstatusId == 10 ? "btn-success" : "btn-primary") + " btnEnvioValidacion' id='btnEnvioValidacion_" + C.PlnSemanalId + "' data-idplan='" + C.PlnSemanalId + "' data-idestatus='" + C.EstatusId + "' " + (C.TieneDetalle == 0 || C.EstatusId == 10 ? "disabled" : "") + "><i class='fa fa-paper-plane  fa-lg fa-fw'></i></button>",
+                    actividades  = (C.TieneActividades == 0 ? "<i class='fa fa-times-circle-o fa-2x' style='color:#F74048;'></i> Sin actividades" : "<i class='fa fa-check-circle-o fa-2x' style='color:#2FFA5D;'></i> Actividades registradas")
                 });
 
                 return Json(new { Success = true, datos = lstPlanSemanal }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -72,8 +74,10 @@ namespace Sispro.Web.Controllers
                     id = cat.DetallePlanId,
                     actividad = cat.cTipoActividades.NombreActividad,
                     descripcion = cat.DescripcionActividad,
+                    lugar = cat.LugarActividad,
                     fecha = cat.FechaActividad.ToString("MM/dd/yyyy"),
                     hora = cat.HoraActividad.ToString("hh':'mm"),
+                    horaFin = cat.HoraFin == null ? "" : cat.HoraFin.Value.ToString("hh':'mm"),
                     checkin = (cat.CantidadCheckIn < 1 ? "N/A" : cat.CantidadCheckIn.ToString()),
                     comentariosNoValidacion = "<strong>" + cat.ComentariosNoValidacion + "</strong>",
                     accion = "<button class='btn btn-xs btn-warning btnEditarDetalle' style='border-radius: 21px;' id='btnEditarDetalle_" + cat.DetallePlanId + "' data-iddetalleplan='" + cat.DetallePlanId + "' " + (cat.mPlanSemanal.EstatusId == 7 || cat.mPlanSemanal.EstatusId == 8 ? "" : "disabled") + ">Editar</button>"
@@ -85,7 +89,7 @@ namespace Sispro.Web.Controllers
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -104,16 +108,30 @@ namespace Sispro.Web.Controllers
             {
                 try
                 {
-                    pobjModelo.FechaCreacion = DateTime.Now;
-                    pobjModelo.EstatusId = 7;
-                    db.mPlanSemanal.Add(pobjModelo);
-                    db.SaveChanges();
+                    var existePlan = (from ps in db.mPlanSemanal
+                                      where ps.PeriodoId == pobjModelo.PeriodoId
+                                      && ps.UsuarioCreacionId == pobjModelo.UsuarioCreacionId
+                                      select ps).ToList();
+                    if (existePlan.Count() == 0) {
+                        var periodo = (from p in db.cPeriodos
+                                       where p.PeriodoId == pobjModelo.PeriodoId
+                                       select p).FirstOrDefault();
+                        pobjModelo.FechaCreacion = DateTime.Now;
+                        pobjModelo.DescripcionPlaneacion = "Plan Semanal del " + periodo.DecripcionPeriodo;
+                        pobjModelo.EstatusId = 7;
+                        db.mPlanSemanal.Add(pobjModelo);
+                        db.SaveChanges();
 
-                    return Json(new { Success = true, id = pobjModelo.PlanSemanalId, Message = "guardado correctamente " });
+                        return Json(new { Success = true, id = pobjModelo.PlanSemanalId, Message = "guardado correctamente " });
+                    }
+                    else
+                    {
+                        return Json(new { Success = false, id = pobjModelo.PlanSemanalId, Message = " No es posible crear mas de un plan por periodo." });
+                    }
                 }
                 catch (Exception exp)
                 {
-                    return Json(new { Success = false, Message = exp.Message });
+                    return Json(new { Success = false, Message = "Error al guardar la información" });
                 }
             }
 
@@ -123,10 +141,16 @@ namespace Sispro.Web.Controllers
         [HttpGet]
         public ActionResult NuevoDetalle(int id)
         {
+            var planPeriodo = (from pl in db.mPlanSemanal
+                               where pl.PlanSemanalId == id
+                               select pl).FirstOrDefault();
+
             var objDetallePlan = new dDetallePlanSemanal();
             ViewBag.Titulo = "Nueva actividad";
             objDetallePlan.PlanSemanalId = id;
             objDetallePlan.CantidadCheckIn = 1;
+            ViewBag.FechaIni = planPeriodo.cPeriodos.FechaInicio.ToString("MM/dd/yyyy");
+            ViewBag.FechaFin = planPeriodo.cPeriodos.FechaFin.ToString("MM/dd/yyyy");
             return PartialView("_NuevoDetalle", objDetallePlan);
         }
 
@@ -151,7 +175,7 @@ namespace Sispro.Web.Controllers
                 }
                 catch (Exception exp)
                 {
-                    return Json(new { Success = false, Message = exp.Message });
+                    return Json(new { Success = false, Message = "Error al guardar la información" });
                 }
             }
 
@@ -208,7 +232,7 @@ namespace Sispro.Web.Controllers
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message });
+                return Json(new { Success = false, Message = "Error al enviar la información" });
             }
         }
 
@@ -216,8 +240,20 @@ namespace Sispro.Web.Controllers
         [HttpGet]
         public ActionResult ActualizaDetallePlan(int id)
         {
+            var planPeriodo = (from pl in db.dDetallePlanSemanal
+                               where pl.DetallePlanId == id
+                               select pl).FirstOrDefault();
+
             var objDetallePlan = db.dDetallePlanSemanal.Find(id);
+            
+
+            TimeSpan hInicio = TimeSpan.Parse(objDetallePlan.HoraActividad.ToString("hh':'mm"));
+            TimeSpan hFin= TimeSpan.Parse(objDetallePlan.HoraFin.Value.ToString("hh':'mm"));
+            objDetallePlan.HoraActividad = hInicio;
+            objDetallePlan.HoraFin= hFin;
             ViewBag.Titulo = "Actualizar actividad";
+            ViewBag.FechaIni = planPeriodo.mPlanSemanal.cPeriodos.FechaInicio.ToString("MM/dd/yyyy");
+            ViewBag.FechaFin = planPeriodo.mPlanSemanal.cPeriodos.FechaFin.ToString("MM/dd/yyyy");
             return PartialView("_ActualizaDetalle", objDetallePlan);
         }
 
@@ -232,9 +268,12 @@ namespace Sispro.Web.Controllers
 
                 //Actualiza Detalle Plan
                 var dbTemp = result.First();
+                dbTemp.TipoActividadId = pobjModelo.TipoActividadId;
                 dbTemp.DescripcionActividad = pobjModelo.DescripcionActividad;
+                dbTemp.LugarActividad = pobjModelo.LugarActividad;
                 dbTemp.FechaActividad = pobjModelo.FechaActividad;
                 dbTemp.HoraActividad = pobjModelo.HoraActividad;
+                dbTemp.HoraFin = pobjModelo.HoraFin;
                 dbTemp.CantidadCheckIn = pobjModelo.CantidadCheckIn;
                 db.SaveChanges();
 
@@ -244,7 +283,7 @@ namespace Sispro.Web.Controllers
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message });
+                return Json(new { Success = false, Message = "Error al guardar la información" });
             }
         }
 

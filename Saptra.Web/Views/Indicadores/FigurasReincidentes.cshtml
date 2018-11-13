@@ -1,0 +1,143 @@
+﻿@{
+    ViewBag.Title = "Figuras reincidentes en rechazo de plan semanal";
+}
+<div class="row">
+    <div class="col-lg-12">
+        <h4 class="page-header">
+            Figuras reincidentes en rechazo de plan semanal
+        </h4>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="well well-sm" style="background-color: #fff; border-color:#337AB7;">
+    <div class="row">
+        <div class="col-lg-4">
+            <select id="selPeriodos" class="js-example-basic-multiple js-states form-control" multiple="multiple"><option> Cargando...</option></select>
+            <input type="hidden" id="selPeriodosMul" />
+        </div>
+        <div class="col-lg-4">
+            <select id="selRegiones" class="js-example-basic-multiple js-states form-control" multiple="multiple"><option> Cargando...</option><</select>
+            <input type="hidden" id="selRegionesMul" />
+        </div>
+        <div class="col-lg-3">
+            <select id="selZonas" class="js-example-basic-multiple js-states form-control" multiple="multiple"><option> Cargando...</option><</select>
+            <input type="hidden" id="selZonasMul" />
+        </div>
+        <div class="col-lg-1">
+            <a href="javascript:;" class="btn btn-primary" id="btnFilter"><i class="fa fa-filter"></i> Filtrar</a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <!-- TABS -->
+    <ul class="nav nav-tabs nav-justified">
+        <li class="active"><a href="#region" data-toggle="tab">Región</a></li>
+        <li><a href="#zonas" data-toggle="tab">Zonas</a></li>
+        <li><a href="#figuraValidacion" data-toggle="tab">Por Figura durante Validación</a></li>
+        <li><a href="#figuraAprobacion" data-toggle="tab">Detalle por Figura</a></li>
+    </ul><!-- end of nav -->
+
+    <div class="tab-content">
+        <!-- TAB REGION -->
+        <div class="tab-pane fade in active" id="region">
+            <div style="padding:5px 15px 0px 15px;">
+                <div class="row">
+                    <div class="col-lg-12 ">
+                        <div class="panel panel-default panel-small" align="center">
+                            <div id="bbGrid-clear" class="panel-body" style="overflow-x: auto; overflow-y: hidden;">
+                                <div class='alert alert-warning'>
+                                    <button type='button' class='close' data-dismiss='alert'>x</button>
+                                    Seleccionas filtros para obtener información
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 ">
+                        <div class="panel panel-default panel-small" align="center">
+                            <div id="grafico1" class="panel-body" style="overflow-x: auto; overflow-y: hidden;">
+                                <div class='alert alert-warning'>
+                                    <button type='button' class='close' data-dismiss='alert'>x</button>
+                                    Seleccionas filtros para obtener información
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB ZONAS -->
+        <div class="tab-pane fade" id="zonas">
+            <div style="padding:5px 15px 0px 15px;">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-default panel-small" align="center">
+                            <div id="indicadorZona" class="panel-body" style="overflow-x: auto; overflow-y: hidden;">
+                                <div class='alert alert-warning'>
+                                    <button type='button' class='close' data-dismiss='alert'>x</button>
+                                    Seleccionas filtros para obtener información
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 ">
+                        <div class="panel panel-default panel-small" align="center">
+                            <div id="graficozona" class="panel-body" style="overflow-x: auto; overflow-y: hidden;">
+                                <div class='alert alert-warning'>
+                                    <button type='button' class='close' data-dismiss='alert'>x</button>
+                                    Seleccionas filtros para obtener información
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB TIPO ACTIVIDAD -->
+        <div class="tab-pane fade" id="figuraValidacion">
+            <div style="padding:5px 15px 0px 15px;">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-default panel-small" align="center">
+                            <div id="indicadorZonaActividad" class="panel-body" style="overflow-x: auto; overflow-y: hidden;">
+                                <div class='alert alert-warning'>
+                                    <button type='button' class='close' data-dismiss='alert'>x</button>
+                                    Seleccionas filtros para obtener información
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB TIPO FIGURA -->
+        <div class="tab-pane fade" id="figuraAprobacion">
+            <div style="padding:5px 15px 0px 15px;">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-default panel-small" align="center">
+                            <div id="indicadorRegionZonaActividad" class="panel-body" style="overflow-x: auto; overflow-y: hidden;">
+                                <div class='alert alert-warning'>
+                                    <button type='button' class='close' data-dismiss='alert'>x</button>
+                                    Seleccionas filtros para obtener información
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@section Scripts {
+    @Html.IncludeVersionedJs(Url.Content("~/Scripts/IndFigurasReincidentesValidacion.js"))
+}

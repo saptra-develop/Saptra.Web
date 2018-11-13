@@ -30,8 +30,10 @@ namespace Saptra.Web.Data
         public int TipoActividadId { get; set; }
         public System.DateTime FechaActividad { get; set; }
         public System.TimeSpan HoraActividad { get; set; }
+        public Nullable<System.TimeSpan> HoraFin { get; set; }
         public int CantidadCheckIn { get; set; }
         public string DescripcionActividad { get; set; }
+        public string LugarActividad { get; set; }
         public string ComentariosNoValidacion { get; set; }
         public string ComentariosRechazo { get; set; }
         public Nullable<bool> ActividadRechazada { get; set; }

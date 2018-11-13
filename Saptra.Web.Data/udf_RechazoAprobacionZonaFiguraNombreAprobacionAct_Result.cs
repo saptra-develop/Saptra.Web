@@ -10,14 +10,15 @@
 namespace Saptra.Web.Data
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class sysdiagrams
+    public partial class udf_RechazoAprobacionZonaFiguraNombreAprobacionAct_Result
     {
-        public string name { get; set; }
-        public int principal_id { get; set; }
-        public int diagram_id { get; set; }
-        public Nullable<int> version { get; set; }
-        public byte[] definition { get; set; }
+        public string Periodo { get; set; }
+        public string Region { get; set; }
+        public string Zona { get; set; }
+        public string TipoFigura { get; set; }
+        public string NombreFigura { get; set; }
+        public string DescripcionActividad { get; set; }
+        public string ComentariosRechazo { get; set; }
     }
 }

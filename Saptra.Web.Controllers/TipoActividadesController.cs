@@ -35,8 +35,8 @@ namespace Sispro.Web.Controllers
         {
             try
             {
-                var result = (from cat in db.cTipoActividades
-                              where cat.EstatusId == (idEstatus == null ? cat.EstatusId : idEstatus)
+                    var result = (from cat in db.cTipoActividades
+                                    where cat.EstatusId == ( idEstatus == null ? cat.EstatusId : idEstatus)
                               select new
                               {
                                   id = cat.TipoActividadId,
@@ -44,7 +44,7 @@ namespace Sispro.Web.Controllers
                                   requiereck = (cat.RequiereCheckIn == true ? "Si" : "No" ),
                                   estatus = cat.cEstatus.NombreEstatus
                               })
-                              .OrderBy(cat => cat.nombre)
+                              .OrderBy(cat => cat.id)
                               .ToList();
 
                 return (Json(result, JsonRequestBehavior.AllowGet));
@@ -52,7 +52,7 @@ namespace Sispro.Web.Controllers
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -60,7 +60,7 @@ namespace Sispro.Web.Controllers
         public ActionResult Nuevo()
         {
             var objTiposActividades= new cTipoActividades();
-            ViewBag.Titulo = "Nuevo actividad";
+            ViewBag.Titulo = "Nueva actividad";
             return PartialView("_Nuevo", objTiposActividades);
         }
 
@@ -71,17 +71,28 @@ namespace Sispro.Web.Controllers
             {
                 try
                 {
-                    pobjModelo.FechaCreacion = DateTime.Now;
-                    pobjModelo.EstatusId = pobjModelo.EstatusId;
-                    pobjModelo.DescripcionActividad = pobjModelo.NombreActividad;
-                    db.cTipoActividades.Add(pobjModelo);
-                    db.SaveChanges();
+                    var validacion = 0;
 
-                    return Json(new { Success = true, id = pobjModelo.TipoActividadId, Message = "guardado correctamente " });
+                    validacion = (from c in db.cTipoActividades
+                                  where c.NombreActividad == (pobjModelo.NombreActividad.TrimStart()).TrimEnd()
+                                  select c).Count();
+                    if (validacion == 0)
+                    {
+                        pobjModelo.FechaCreacion = DateTime.Now;
+                        pobjModelo.EstatusId = 5;
+                        pobjModelo.DescripcionActividad = (pobjModelo.NombreActividad.TrimStart()).TrimEnd();
+                        db.cTipoActividades.Add(pobjModelo);
+                        db.SaveChanges();
+                        return Json(new { Success = true, id = pobjModelo.TipoActividadId, Message = "guardado correctamente " });
+                    }
+                    else
+                    {
+                        return Json(new { Success = false, Message = "Actividad existente." });
+                    }
                 }
                 catch (Exception exp)
                 {
-                    return Json(new { Success = false, Message = exp.Message });
+                    return Json(new { Success = false, Message = "Error al guardar la información" });
                 }
             }
 
@@ -104,22 +115,31 @@ namespace Sispro.Web.Controllers
                 var result = (from ps in db.cTipoActividades
                               where ps.TipoActividadId == pobjModelo.TipoActividadId
                               select ps).ToList();
+                var validacion = 0;
 
-                //Actualiza
-                var dbTemp = result.First();
-                dbTemp.NombreActividad = pobjModelo.NombreActividad;
-                dbTemp.DescripcionActividad = pobjModelo.NombreActividad;
-                dbTemp.RequiereCheckIn = pobjModelo.RequiereCheckIn;
-                dbTemp.EstatusId = pobjModelo.EstatusId;
-                db.SaveChanges();
-
-
-                return Json(new { Success = true, id = pobjModelo.TipoActividadId, Message = "actualizada correctamente " });
+                validacion = (from c in db.cTipoActividades
+                              where c.NombreActividad == (pobjModelo.NombreActividad.TrimStart()).TrimEnd()
+                              select c).Count();
+                if (validacion == 0)
+                {
+                    //Actualiza
+                    var dbTemp = result.First();
+                    dbTemp.NombreActividad = (pobjModelo.NombreActividad.TrimStart()).TrimEnd();
+                    dbTemp.DescripcionActividad = (pobjModelo.NombreActividad.TrimStart()).TrimEnd();
+                    dbTemp.RequiereCheckIn = pobjModelo.RequiereCheckIn;
+                    dbTemp.EstatusId = pobjModelo.EstatusId;
+                    db.SaveChanges();
+                    return Json(new { Success = true, id = pobjModelo.TipoActividadId, Message = "actualizada correctamente " });
+                }
+                else
+                {
+                    return Json(new { Success = false, Message = "Actividad existente." });
+                }
 
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message });
+                return Json(new { Success = false, Message = "Error al guardar la información" });
             }
         }
 
@@ -139,7 +159,7 @@ namespace Sispro.Web.Controllers
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message });
+                return Json(new { Success = false, Message = "Error al eliminar la información" });
             }
         }
 
@@ -164,7 +184,7 @@ namespace Sispro.Web.Controllers
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
         }
 

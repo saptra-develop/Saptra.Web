@@ -17,15 +17,11 @@ namespace Saptra.Web.Data
         public string Region { get; set; }
         public Nullable<int> PlaneadasTotal { get; set; }
         public Nullable<int> IncumplidasTotal { get; set; }
-        public Nullable<decimal> PorcentajeImcumplidasTotal { get; set; }
         public Nullable<int> PromotorPlanTotal { get; set; }
         public Nullable<int> PromotorIncumplio { get; set; }
-        public Nullable<decimal> PorcentajeIncumplioPromotor { get; set; }
         public Nullable<int> TecnicoPlan { get; set; }
         public Nullable<int> TecnicoIncumplio { get; set; }
-        public Nullable<decimal> TecnicoIncumplioPromotor { get; set; }
         public Nullable<int> FormadorPlan { get; set; }
         public Nullable<int> FormadorIncumplio { get; set; }
-        public Nullable<decimal> FormadorIncumplioPromotor { get; set; }
     }
 }

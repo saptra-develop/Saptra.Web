@@ -20,5 +20,6 @@ namespace Saptra.Web.Data
         public string Usuario { get; set; }
         public Nullable<int> TieneDetalle { get; set; }
         public Nullable<int> EstatusId { get; set; }
+        public Nullable<int> TieneActividades { get; set; }
     }
 }

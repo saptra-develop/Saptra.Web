@@ -35,6 +35,9 @@ var Incidencias = {
         $(document).on('click', '.btnExportarExcel', function () {
             Incidencias.onExportarIncidenciasExcel();
         });
+        $(document).on('click', '.btnExportarPDF', function () {
+            Incidencias.onExportarIncidenciasPDF();
+        });
         $(document).on("change", '#selPeriodos', that.onCambiarPeriodos);
         $(document).on("change", '#selTipoFigura', that.onCambiarTiposFigura);
         $(document).on("change", '#selNombreFigura', that.onCambiarNombresFigura);
@@ -44,9 +47,9 @@ var Incidencias = {
     onExportarIncidencias: function () {
         var htmlMessage = "<h4>Exportar</h4>";
         htmlMessage += "<h5>Formato de reporte</h5>";
-        htmlMessage += "<div class='text-center'><div class='btn-group btn-group-lg'>";
-        htmlMessage += "<button class='btn btn-success btnExportarExcel'><i class='fa fa-file-excel-o'></i></button>";
-        htmlMessage += "<button class='btn btn-danger btnExportarPDF' disabled><i class='fa fa-file-pdf-o'></i></button>";
+        htmlMessage += "<div class='text-center'><div class='btn-group btn-group-md'>";
+        htmlMessage += "<button class='btn btn-success btnExportarExcel'><i class='fa fa-file-excel-o'></i> Excel</button>";
+        htmlMessage += "<button class='btn btn-danger btnExportarPDF' ><i class='fa fa-file-pdf-o'></i> PDF </button>";
         htmlMessage += "</div></div>";
 
         bootbox.alert({
@@ -55,7 +58,12 @@ var Incidencias = {
         });
     },
     onExportarIncidenciasExcel: function () {
-         var url = contextPath + "Incidencias/ExportIncidencias?idUsu=" + localStorage.idUser + "&Periodos=" + $('#selecPeriodos').val() + "&TiposFigura=" + $('#selecTipoFigura').val() + "&NombresFigura=" + $('#selecNombreFigura').val() + "&TipoActividades=" + $('#selecTipoActividad').val(); // El url del controlador
+        var url = contextPath + "Incidencias/ExportIncidenciasExcel?idUsu=" + localStorage.idUser + "&Periodos=" + $('#selecPeriodos').val() + "&TiposFigura=" + $('#selecTipoFigura').val() + "&NombresFigura=" + $('#selecNombreFigura').val() + "&TipoActividades=" + $('#selecTipoActividad').val(); // El url del controlador
+
+        window.open(url, '_blank');
+    },
+    onExportarIncidenciasPDF: function () {
+        var url = contextPath + "Pdf/ExportIncidenciasPDF?idUsu=" + localStorage.idUser + "&Periodos=" + $('#selecPeriodos').val() + "&TiposFigura=" + $('#selecTipoFigura').val() + "&NombresFigura=" + $('#selecNombreFigura').val() + "&TipoActividades=" + $('#selecTipoActividad').val(); // El url del controlador
 
         window.open(url, '_blank');
     },
@@ -207,7 +215,7 @@ var Incidencias = {
                 Incidencias.colTiposActividad = data;
                 Incidencias.CargaListaTipoActividad();
             }).fail(function () {
-                FCH.DespliegaErrorDialogo("No se pudieron cargar las actvidades");
+                FCH.DespliegaErrorDialogo("No se pudieron cargar las actividades");
             });
         } else {
             Incidencias.CargaListaTipoActividad();
@@ -225,7 +233,7 @@ var Incidencias = {
     },
     CargaNombresFigura: function () {
         if (Incidencias.colNombreFigura.length < 1) {
-            var url = contextPath + "Usuario/CargarNombresFigura?idEstatus=5";
+            var url = contextPath + "Usuario/CargarNombresFiguraPorCZ?idEstatus=5&idUsuarioCZ=" + localStorage.idUser;
             $.getJSON(url, function (data) {
                 Incidencias.colNombreFigura = data;
                 Incidencias.CargaListaNombreFigura();

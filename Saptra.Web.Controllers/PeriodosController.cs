@@ -48,8 +48,8 @@ namespace Sispro.Web.Controllers
                 {
                     id = cat.PeriodoId,
                     nombre = cat.DecripcionPeriodo,
-                    fechaInicio = cat.FechaInicio.ToString("MM/dd/yyyy"),
-                    fechaFin = cat.FechaFin.ToString("MM/dd/yyyy"),
+                    fechaInicio = cat.FechaInicio.ToString("dd/MM/yyyy"),
+                    fechaFin = cat.FechaFin.ToString("dd/MM/yyyy"),
                     estatus = cat.cEstatus.NombreEstatus
                 });
 
@@ -58,7 +58,7 @@ namespace Sispro.Web.Controllers
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -84,7 +84,7 @@ namespace Sispro.Web.Controllers
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -94,25 +94,31 @@ namespace Sispro.Web.Controllers
         {
             var objPeriodos = new cPeriodos();
             ViewBag.Titulo = "Nuevo Periodo";
+            objPeriodos.FechaInicio.ToString("dd/MM/yyyy");
+            objPeriodos.FechaFin.ToString("dd/MM/yyyy");
             return PartialView("_Nuevo", objPeriodos);
         }
 
         [HttpPost]
-        public JsonResult Nuevo(cPeriodos pobjModelo)
+        public JsonResult Nuevo(cPeriodos pobjModelo, string fIni, string fFin)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    string diaInicio = pobjModelo.FechaInicio.ToString("dd");
-                    string diaFin = pobjModelo.FechaFin.ToString("dd");
-                    string mesInicio = pobjModelo.FechaInicio.ToString("MMM", new CultureInfo("es-ES"));
-                    string mesFin = pobjModelo.FechaFin.ToString("MMM", new CultureInfo("es-ES"));
-                    string anio = pobjModelo.FechaFin.ToString("yyyy");
+                    DateTime feIni = DateTime.ParseExact(fIni, "MM/dd/yyyy", null);
+                    DateTime feFin = DateTime.ParseExact(fFin, "MM/dd/yyyy", null);
+                    string diaInicio = feIni.ToString("dd");
+                    string diaFin = feFin.ToString("dd");
+                    string mesInicio = feIni.ToString("MMM", new CultureInfo("es-ES"));
+                    string mesFin = feFin.ToString("MMM", new CultureInfo("es-ES"));
+                    string anio = feFin.ToString("yyyy");
 
                     pobjModelo.FechaCreacion = DateTime.Now;
-                    pobjModelo.EstatusId = pobjModelo.EstatusId;
+                    pobjModelo.EstatusId = 5;
                     pobjModelo.DecripcionPeriodo = diaInicio + " " + mesInicio + " - " + diaFin + " " + mesFin + " " + anio;
+                    pobjModelo.FechaInicio = feIni;
+                    pobjModelo.FechaFin = feFin;
                     db.cPeriodos.Add(pobjModelo);
                     db.SaveChanges();
 
@@ -120,7 +126,7 @@ namespace Sispro.Web.Controllers
                 }
                 catch (Exception exp)
                 {
-                    return Json(new { Success = false, Message = exp.Message });
+                    return Json(new { Success = false, Message = "Error al guardar la información" });
                 }
             }
 
@@ -164,7 +170,7 @@ namespace Sispro.Web.Controllers
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message });
+                return Json(new { Success = false, Message = "Error al guardar la información" });
             }
         }
 
@@ -184,7 +190,7 @@ namespace Sispro.Web.Controllers
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message });
+                return Json(new { Success = false, Message = "Error al eliminar la información" });
             }
         }
 

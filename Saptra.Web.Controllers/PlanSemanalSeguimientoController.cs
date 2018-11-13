@@ -43,7 +43,7 @@ namespace Sispro.Web.Controllers
         {
             try
             {
-                List<udf_PlanSemanalValidarList_Result> result = (from u in db.udf_PlanSemanalValidarList(idUsu, Periodos, TiposFigura, NombresFigura) select u).Where(x => x.EstatusId == 10) .ToList();
+                List<udf_PlanSemanalValidarList_Result> result = (from u in db.udf_PlanSemanalValidarList(idUsu, Periodos, TiposFigura, NombresFigura) select u).ToList();
 
                 var lstPlanSemanal = result.Select(C => new
                 {
@@ -53,8 +53,8 @@ namespace Sispro.Web.Controllers
                     usuario = C.Usuario,
                     tipoFigura = C.TipoFigura,
                     acciones = "<div class='btn-group btn-group-sm' role='group'>" +
-                               "<button type='button' class='btn btn-success btnValidar' id='btnValidar_" + C.PlnSemanalId + "' data-idplan='" + C.PlnSemanalId + "'><i class='fa fa-check-circle fa-lg fa-fw'></i> Validar</button>" +
-                               "<button type='button' class='btn btn-warning btnFeedback' id='btnFeedback_" + C.PlnSemanalId + "' data-idplan='" + C.PlnSemanalId + "'><i class='fa fa-comment fa-lg fa-fw'></i> Feedback</button>" +
+                               "<button type='button' " + (C.EstatusId == 8 ? "disabled" : "") + " class='btn btn-success btnValidar' id='btnValidar_" + C.PlnSemanalId + "' data-idplan='" + C.PlnSemanalId + "'><i class='fa fa-check-circle fa-lg fa-fw'></i> Validar</button>" +
+                               "<button type='button' " + (C.EstatusId == 8 ? "disabled" : "") + " class='btn btn-warning btnFeedback' id='btnFeedback_" + C.PlnSemanalId + "' data-idplan='" + C.PlnSemanalId + "'><i class='fa fa-comment fa-lg fa-fw'></i> Observaciones</button>" +
                                "</div>"
                 });
 
@@ -62,7 +62,7 @@ namespace Sispro.Web.Controllers
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -80,13 +80,15 @@ namespace Sispro.Web.Controllers
                     id = cat.DetallePlanId,
                     actividad = cat.cTipoActividades.NombreActividad,
                     descripcion = cat.DescripcionActividad,
+                    lugar = cat.LugarActividad,
                     fecha = cat.FechaActividad.ToString("MM/dd/yyyy"),
                     hora = cat.HoraActividad.ToString("hh':'mm"),
+                    horaFin = cat.HoraFin == null ? "" : cat.HoraFin.Value.ToString("hh':'mm"),
                     checkin = (cat.CantidadCheckIn < 1 ? "N/A" : cat.CantidadCheckIn.ToString()),
                     comentariosNoValidacion = "<div class='row'>" +
-                                            "<div class='col-md-2'><br><div class='material-switch'><input class='checkComents' " + (cat.ComentariosNoValidacion == null ? "" : "checked") + " id='checkComents_" + cat.DetallePlanId + "' type='checkbox' data-iddetalleplan='" + cat.DetallePlanId + "'/>" +
+                                            "<div class='col-md-2'><br><div class='material-switch'><input " + (cat.mPlanSemanal.EstatusId == 8 || cat.ComentariosNoValidacion != null ? "disabled" : "") + "  class='checkComents' " + (cat.ComentariosNoValidacion == null ? "" : "checked") + " id='checkComents_" + cat.DetallePlanId + "' type='checkbox' data-iddetalleplan='" + cat.DetallePlanId + "'/>" +
                                             "<label for='checkComents_" + cat.DetallePlanId + "' class='label-success'></label></div></div>" +
-                                            "<div class='col-md-10'><textarea rows='2' class='form-control idComentariosCZ' id='idComentariosCZ_" + cat.DetallePlanId + "' data-idplan='" + cat.PlanSemanalId + "' data-iddetalleplan='" + cat.DetallePlanId + "'" + (cat.ComentariosNoValidacion == null ? "disabled" : "enabled") + ">" + cat.ComentariosNoValidacion + "</textarea></div>" + 
+                                            "<div class='col-md-10'><textarea maxlength='100' rows='2'  " + (cat.mPlanSemanal.EstatusId == 8 || cat.ComentariosNoValidacion != null ? "readonly" : "") + " class='form-control idComentariosCZ' id='idComentariosCZ_" + cat.DetallePlanId + "' data-idplan='" + cat.PlanSemanalId + "' data-iddetalleplan='" + cat.DetallePlanId + "'" + (cat.ComentariosNoValidacion == null ? "disabled" : "enabled") + ">" + cat.ComentariosNoValidacion + "</textarea></div>" + 
                                             "</div>"
                 });
 
@@ -96,7 +98,7 @@ namespace Sispro.Web.Controllers
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -131,7 +133,7 @@ namespace Sispro.Web.Controllers
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message });
+                return Json(new { Success = false, Message = "Error al guardar la información" });
             }
         }
 
@@ -198,7 +200,7 @@ namespace Sispro.Web.Controllers
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message });
+                return Json(new { Success = false, Message = "Error al guardar la información" });
             }
         }
 
@@ -235,7 +237,7 @@ namespace Sispro.Web.Controllers
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -253,15 +255,17 @@ namespace Sispro.Web.Controllers
                     id = cat.DetallePlanId,
                     actividad = cat.cTipoActividades.NombreActividad,
                     descripcion = cat.DescripcionActividad,
+                    lugar = cat.LugarActividad,
                     fecha = cat.FechaActividad.ToString("MM/dd/yyyy"),
                     hora = cat.HoraActividad.ToString("hh':'mm"),
+                    horaFin = cat.HoraFin == null ? "" : cat.HoraFin.Value.ToString("hh':'mm"),
                     checkin = (cat.cTipoActividades.RequiereCheckIn == true ? (cat.mCheckIn.Count() == 0 ? "No realizado" : "Realizado") : "Realizado"),
                     incidencias = (cat.mCheckIn.Count() == 0 ? "" : cat.mCheckIn.FirstOrDefault().Incidencias),
                     gps = (cat.mSolicitudesVehiculo.Count() == 0 ? "<button type='button' class='btn btn-xs btn-primary btnGpsVehiculo' id='btnGpsVehiculo_" + cat.DetallePlanId + "' data-iddetalleplan='" + cat.DetallePlanId + "'><i class='fa fa-car fa-md fa-fw'></i> Reporte GPS</button>" : ""),
                     comentariosRechazo = "<div class='row'>" +
                                             "<div class='col-md-2'><br><div class='material-switch'><input " + (cat.mPlanSemanal.EstatusId == 9 ? "disabled" : "") + " class='checkComents' " + (cat.ComentariosRechazo == null ? "" : "checked") + " id='checkComents_" + cat.DetallePlanId + "' type='checkbox' data-iddetalleplan='" + cat.DetallePlanId + "'/>" +
                                             "<label for='checkComents_" + cat.DetallePlanId + "' class='label-success'></label></div></div>" +
-                                            "<div class='col-md-10'><textarea rows='2' class='form-control idComentariosCZ' id='idComentariosCZ_" + cat.DetallePlanId + "' data-idplan='" + cat.PlanSemanalId + "' data-iddetalleplan='" + cat.DetallePlanId + "'" + (cat.ComentariosRechazo == null ? "disabled" : "enabled") + ">" + cat.ComentariosRechazo + "</textarea></div>" +
+                                            "<div class='col-md-10'><textarea maxlength='100' rows='2' class='form-control idComentariosCZ' id='idComentariosCZ_" + cat.DetallePlanId + "' data-idplan='" + cat.PlanSemanalId + "' data-iddetalleplan='" + cat.DetallePlanId + "'" + (cat.ComentariosRechazo == null ? "disabled" : "enabled") + ">" + cat.ComentariosRechazo + "</textarea></div>" +
                                             "</div>"
                 });
 
@@ -271,7 +275,7 @@ namespace Sispro.Web.Controllers
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -310,7 +314,7 @@ namespace Sispro.Web.Controllers
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message });
+                return Json(new { Success = false, Message = "Error al guardar la información" });
             }
         }
 
@@ -328,8 +332,8 @@ namespace Sispro.Web.Controllers
                     usuario = C.Usuario,
                     tipoFigura = C.TipoFigura,
                     cz = C.CoordinacionZona,
-                    anio = C.anio,
-                    mes = C.mes
+                    C.anio,
+                    mes = C.FechaInicioPeriodo.Value.ToString("MMMM", new CultureInfo("es-ES")).ToUpper()
                 });
 
                 if (lstPlanSemanal.Count() > 0)
@@ -342,11 +346,10 @@ namespace Sispro.Web.Controllers
                         ExcelWorksheet ws = pkg.Workbook.Worksheets.Add("Reporte Planeación Semanal");
                         Color colFromHex = System.Drawing.ColorTranslator.FromHtml("#D9D9D9");
                         ws.Cells["A8"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                        ws.Cells["D8"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                        ws.Cells["F8"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                        ws.Cells["H8"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                        ws.Cells["J8"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                        ws.Cells["A10:K10"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                        ws.Cells["F8:G8"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                        ws.Cells["J8:K8"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                        ws.Cells["N8"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                        ws.Cells["A10:P10"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
 
                         //Imagen logo GTO
                         Bitmap image = new Bitmap(Server.MapPath("~/Content/images/gto_logo.png"));
@@ -356,70 +359,89 @@ namespace Sispro.Web.Controllers
                         //Imagen logo soy inaeba
                         Bitmap imageInaeba = new Bitmap(Server.MapPath("~/Content/images/logo-soy-inaeba.png"));
                         var pictureInaeba = ws.Drawings.AddPicture("soyinaebalogo", imageInaeba);
-                        pictureInaeba.SetPosition(2 * 1, 0, 9, 0);
+                        pictureInaeba.SetPosition(2 * 1, 0, 13, 0);
 
-                        ws.Cells["B2:I2"].Merge = true;
-                        ws.Cells["B2:I2"].Value = "INSTITUTO DE ALFABETIZACIÓN Y EDUCACIÓN BÁSICA PARA ADULTOS";
-                        ws.Cells["B2:I2"].Style.Font.Bold = true;
-                        ws.Cells["B2:I2"].AutoFitColumns();
-                        ws.Cells["B2:I2"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                        ws.Cells["B2:L2"].Merge = true;
+                        ws.Cells["B2:L2"].Value = "INSTITUTO DE ALFABETIZACIÓN Y EDUCACIÓN BÁSICA PARA ADULTOS";
+                        ws.Cells["B2:L2"].Style.Font.Bold = true;
+                        ws.Cells["B2:L2"].AutoFitColumns();
+                        ws.Cells["B2:L2"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
 
-                        ws.Cells["B3:I3"].Merge = true;
-                        ws.Cells["B3:I3"].Value = "PLAN DE ACTIVIDADES SEMANAL";
-                        ws.Cells["B3:I3"].Style.Font.Bold = true;
-                        ws.Cells["B3:I3"].AutoFitColumns();
-                        ws.Cells["B3:I3"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                        ws.Cells["B3:L3"].Merge = true;
+                        ws.Cells["B3:L3"].Value = "PLAN DE ACTIVIDADES SEMANAL";
+                        ws.Cells["B3:L3"].Style.Font.Bold = true;
+                        ws.Cells["B3:L3"].AutoFitColumns();
+                        ws.Cells["B3:L3"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
 
-                        ws.Cells["D4:F4"].Merge = true;
-                        ws.Cells["D4:F4"].Value = "COORDINACIÓN DE ZONA:";
-                        ws.Cells["D4:F4"].Style.Font.Bold = true;
+                        ws.Cells["E4:G4"].Merge = true;
+                        ws.Cells["E4:G4"].Value = "COORDINACIÓN DE ZONA:";
+                        ws.Cells["E4:G4"].Style.Font.Bold = true;
+
+                        ws.Cells["H4:J4"].Merge = true;
+                        ws.Cells["H4:J4"].Value = lstPlanSemanal.FirstOrDefault().cz;
+                        ws.Cells["H4:J4"].Style.Font.Bold = true;
 
                         ws.Cells["A8"].Value = "PERSONAL OPERATIVO";
                         ws.Cells["A8"].Style.Font.Bold = true;
                         ws.Cells["A8"].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
                         ws.Cells["B8:E8"].Merge = true;
                         ws.Cells["B8:E8"].Value = lstPlanSemanal.FirstOrDefault().usuario;
-                        ws.Cells["F8"].Value = "PERIODO";
-                        ws.Cells["F8"].Style.Font.Bold = true;
-                        ws.Cells["F8"].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
-                        ws.Cells["G8"].Value = lstPlanSemanal.FirstOrDefault().periodo;
-                        ws.Cells["H8"].Value = "MES";
-                        ws.Cells["H8"].Style.Font.Bold = true;
-                        ws.Cells["H8"].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
-                        ws.Cells["I8"].Value = lstPlanSemanal.FirstOrDefault().mes;
-                        ws.Cells["J8"].Value = "AÑO";
-                        ws.Cells["J8"].Style.Font.Bold = true;
-                        ws.Cells["J8"].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
-                        ws.Cells["K8"].Value = lstPlanSemanal.FirstOrDefault().anio;
-                        ws.Cells["A8:K8"].Style.Border.BorderAround(ExcelBorderStyle.Medium, Color.Black);
+                        ws.Cells["F8:G8"].Merge = true;
+                        ws.Cells["F8:G8"].Value = "PERIODO";
+                        ws.Cells["F8:G8"].Style.Font.Bold = true;
+                        ws.Cells["F8:G8"].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
+                        ws.Cells["H8:I8"].Merge = true;
+                        ws.Cells["H8:I8"].Value = lstPlanSemanal.FirstOrDefault().periodo;
+                        ws.Cells["J8:K8"].Merge = true;
+                        ws.Cells["J8:K8"].Value = "MES";
+                        ws.Cells["J8:K8"].Style.Font.Bold = true;
+                        ws.Cells["J8:K8"].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
+                        ws.Cells["L8:M8"].Merge = true;
+                        ws.Cells["L8:M8"].Value = lstPlanSemanal.FirstOrDefault().mes;
+                        ws.Cells["N8"].Value = "AÑO";
+                        ws.Cells["N8"].Style.Font.Bold = true;
+                        ws.Cells["N8"].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
+                        ws.Cells["O8:P8"].Merge = true;
+                        ws.Cells["O8:P8"].Value = lstPlanSemanal.FirstOrDefault().anio;
+                        ws.Cells["A8:P8"].Style.Border.BorderAround(ExcelBorderStyle.Medium, Color.Black);
 
                         usuarioPlan = lstPlanSemanal.FirstOrDefault().usuario;
 
                         ws.Cells["A8"].Style.Fill.BackgroundColor.SetColor(colFromHex);
-                        ws.Cells["D8"].Style.Fill.BackgroundColor.SetColor(colFromHex);
-                        ws.Cells["F8"].Style.Fill.BackgroundColor.SetColor(colFromHex);
-                        ws.Cells["H8"].Style.Fill.BackgroundColor.SetColor(colFromHex);
-                        ws.Cells["J8"].Style.Fill.BackgroundColor.SetColor(colFromHex);
+                        ws.Cells["F8:G8"].Style.Fill.BackgroundColor.SetColor(colFromHex);
+                        ws.Cells["J8:K8"].Style.Fill.BackgroundColor.SetColor(colFromHex);
+                        ws.Cells["N8"].Style.Fill.BackgroundColor.SetColor(colFromHex);
 
                         ws.Cells["A10"].Value = "FECHA";
                         ws.Cells["A10"].Style.Font.Bold = true;
                         ws.Cells["A10"].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
-                        ws.Cells["B10"].Value = "HORA";
+                        ws.Cells["B10"].Value = "LUGAR A VISITAR";
                         ws.Cells["B10"].Style.Font.Bold = true;
                         ws.Cells["B10"].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
-                        ws.Cells["C10:F10"].Merge = true;
-                        ws.Cells["C10:F10"].Value = "ACTIVIDADES A REALIZAR (ESPECIFICAR)";
-                        ws.Cells["C10:F10"].Style.Font.Bold = true;
-                        ws.Cells["C10:F10"].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
-                        ws.Cells["G10:K10"].Merge = true;
-                        ws.Cells["G10:K10"].Value = "OBJETIVO (RESULTADO)";
-                        ws.Cells["G10:K10"].Style.Font.Bold = true;
-                        ws.Cells["G10:K10"].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
-                        ws.Cells["A10:K10"].Style.Border.BorderAround(ExcelBorderStyle.Medium, Color.Black);
+                        ws.Cells["C10"].Value = "HORA INICIO";
+                        ws.Cells["C10"].Style.Font.Bold = true;
+                        ws.Cells["C10"].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
+                        ws.Cells["D10"].Value = "HORA FIN";
+                        ws.Cells["D10"].Style.Font.Bold = true;
+                        ws.Cells["D10"].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
+                        ws.Cells["E10:H10"].Merge = true;
+                        ws.Cells["E10:H10"].Value = "ACTIVIDADES A REALIZAR (ESPECIFICAR)";
+                        ws.Cells["E10:H10"].Style.Font.Bold = true;
+                        ws.Cells["E10:H10"].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
+                        ws.Cells["I10:M10"].Merge = true;
+                        ws.Cells["I10:M10"].Value = "OBJETIVO (RESULTADO)";
+                        ws.Cells["I10:M10"].Style.Font.Bold = true;
+                        ws.Cells["I10:M10"].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
+                        ws.Cells["N10:P10"].Merge = true;
+                        ws.Cells["N10:P10"].Value = "COMENTARIOS CZ";
+                        ws.Cells["N10:P10"].Style.Font.Bold = true;
+                        ws.Cells["N10:P10"].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
+
+                        ws.Cells["A10:P10"].Style.Border.BorderAround(ExcelBorderStyle.Medium, Color.Black);
 
 
 
-                        using (ExcelRange cell = ws.Cells["A10:K10"])
+                        using (ExcelRange cell = ws.Cells["A10:P10"])
                         {
                             cell.Style.HorizontalAlignment = ExcelHorizontalAlignment.CenterContinuous;
                             cell.Style.Fill.BackgroundColor.SetColor(colFromHex);
@@ -435,8 +457,11 @@ namespace Sispro.Web.Controllers
                             descripcion = cat.DescripcionActividad,
                             fecha = cat.FechaActividad.ToString("MM/dd/yyyy"),
                             hora = cat.HoraActividad.ToString("hh':'mm"),
+                            horaFin = cat.HoraFin.Value.ToString("hh':'mm"),
                             checkin = (cat.cTipoActividades.RequiereCheckIn == true ? (cat.mCheckIn.Count() == 0 ? "No realizado" : "Realizado") : "Realizado"),
-                            incidencias = (cat.mCheckIn.Count() == 0 ? "" : cat.mCheckIn.FirstOrDefault().Incidencias)
+                            incidencias = (cat.mCheckIn.Count() == 0 ? "" : cat.mCheckIn.FirstOrDefault().Incidencias),
+                            lugar = cat.LugarActividad,
+                            comentarios = (cat.ComentariosNoValidacion == null ? "" :  cat.ComentariosNoValidacion) + (cat.ComentariosRechazo == null ? "" : ", " + cat.ComentariosRechazo)
                         });
 
                         int i = 11;
@@ -444,15 +469,22 @@ namespace Sispro.Web.Controllers
                         {
                             ws.Cells["A" + i.ToString()].Value = item.fecha;
                             ws.Cells["A" + i.ToString()].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
-                            ws.Cells["B" + i.ToString()].Value = item.hora;
+                            ws.Cells["B" + i.ToString()].Value = item.lugar;
                             ws.Cells["B" + i.ToString()].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
-                            ws.Cells["C" + i.ToString() + ":F" + i.ToString()].Merge = true;
-                            ws.Cells["C" + i.ToString() + ":F" + i.ToString()].Value = item.actividad;
-                            ws.Cells["C" + i.ToString() + ":F" + i.ToString()].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
-                            ws.Cells["G" + i.ToString() + ":K" + i.ToString()].Merge = true;
-                            ws.Cells["G" + i.ToString() + ":K" + i.ToString()].Value = item.descripcion;
-                            ws.Cells["G" + i.ToString() + ":K" + i.ToString()].AutoFitColumns();
-                            ws.Cells["G" + i.ToString() + ":K" + i.ToString()].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
+                            ws.Cells["C" + i.ToString()].Value = item.hora;
+                            ws.Cells["C" + i.ToString()].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
+                            ws.Cells["D" + i.ToString()].Value = item.horaFin;
+                            ws.Cells["D" + i.ToString()].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
+                            ws.Cells["E" + i.ToString() + ":H" + i.ToString()].Merge = true;
+                            ws.Cells["E" + i.ToString() + ":H" + i.ToString()].Value = item.actividad;
+                            ws.Cells["E" + i.ToString() + ":H" + i.ToString()].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
+                            ws.Cells["I" + i.ToString() + ":M" + i.ToString()].Merge = true;
+                            ws.Cells["I" + i.ToString() + ":M" + i.ToString()].Value = item.incidencias;
+                            ws.Cells["I" + i.ToString() + ":M" + i.ToString()].AutoFitColumns();
+                            ws.Cells["I" + i.ToString() + ":M" + i.ToString()].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
+                            ws.Cells["N" + i.ToString() + ":P" + i.ToString()].Merge = true;
+                            ws.Cells["N" + i.ToString() + ":P" + i.ToString()].Value = item.comentarios;
+                            ws.Cells["N" + i.ToString() + ":P" + i.ToString()].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
 
                             i++;
 
@@ -491,7 +523,7 @@ namespace Sispro.Web.Controllers
                     tipoFigura = C.TipoFigura,
                     cz = C.CoordinacionZona,
                     C.anio,
-                    mes = C.FechaInicioPeriodo.Value.ToString("MMMM", new CultureInfo("es-ES")),
+                    mes = C.FechaInicioPeriodo.Value.ToString("MMMM", new CultureInfo("es-ES")).ToUpper(),
                     C.dia
                 });
 
@@ -502,15 +534,15 @@ namespace Sispro.Web.Controllers
                     using (ExcelPackage pkg = new ExcelPackage())
                     {
                         string usuarioPlan = "";
-                        ExcelWorksheet ws = pkg.Workbook.Worksheets.Add("Reporte Actvidades Realizadas");
+                        ExcelWorksheet ws = pkg.Workbook.Worksheets.Add("Reporte Actividades Realizadas");
                         Color colFromHex = System.Drawing.ColorTranslator.FromHtml("#D9D9D9");
                         Color colorEncabezado = System.Drawing.ColorTranslator.FromHtml("#9CC3E6");
                         ws.Cells["B2"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                        ws.Cells["E2:H2"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                        ws.Cells["E2:I2"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                         ws.Cells["B4:D4"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                         ws.Cells["F4"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                        ws.Cells["H4"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                        ws.Cells["A6:H6"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                        ws.Cells["H4:I4"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                        ws.Cells["A6:I6"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
 
                         ws.Cells["A2"].Value = "CZ";
                         ws.Cells["A2"].Style.Font.Bold = true;
@@ -521,9 +553,9 @@ namespace Sispro.Web.Controllers
                         ws.Cells["C2:D2"].Value = "PERSONAL OPERATIVO";
                         ws.Cells["C2:D2"].Style.Font.Bold = true;
                         ws.Cells["C2:D2"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                        ws.Cells["E2:H2"].Merge = true;
-                        ws.Cells["E2:H2"].Value = lstPlanSemanal.FirstOrDefault().usuario;
-                        ws.Cells["E2:H2"].Style.Border.BorderAround(ExcelBorderStyle.Medium, Color.Black);
+                        ws.Cells["E2:I2"].Merge = true;
+                        ws.Cells["E2:I2"].Value = lstPlanSemanal.FirstOrDefault().usuario;
+                        ws.Cells["E2:I2"].Style.Border.BorderAround(ExcelBorderStyle.Medium, Color.Black);
 
                         ws.Cells["A4"].Value = "PERIODO";
                         ws.Cells["A4"].Style.Font.Bold = true;
@@ -541,17 +573,18 @@ namespace Sispro.Web.Controllers
                         ws.Cells["G4"].Value = "AÑO";
                         ws.Cells["G4"].Style.Font.Bold = true;
                         ws.Cells["G4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                        ws.Cells["H4"].Value = lstPlanSemanal.FirstOrDefault().anio;
-                        ws.Cells["H4"].Style.Border.BorderAround(ExcelBorderStyle.Medium, Color.Black);
-                        ws.Cells["H4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.CenterContinuous;
+                        ws.Cells["H4:I4"].Merge = true;
+                        ws.Cells["H4:I4"].Value = lstPlanSemanal.FirstOrDefault().anio;
+                        ws.Cells["H4:I4"].Style.Border.BorderAround(ExcelBorderStyle.Medium, Color.Black);
+                        ws.Cells["H4:I4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.CenterContinuous;
 
                         usuarioPlan = lstPlanSemanal.FirstOrDefault().usuario;
 
                         ws.Cells["B2"].Style.Fill.BackgroundColor.SetColor(colorEncabezado);
-                        ws.Cells["E2:H2"].Style.Fill.BackgroundColor.SetColor(colorEncabezado);
+                        ws.Cells["E2:I2"].Style.Fill.BackgroundColor.SetColor(colorEncabezado);
                         ws.Cells["B4:D4"].Style.Fill.BackgroundColor.SetColor(colorEncabezado);
                         ws.Cells["F4"].Style.Fill.BackgroundColor.SetColor(colorEncabezado);
-                        ws.Cells["H4"].Style.Fill.BackgroundColor.SetColor(colorEncabezado);
+                        ws.Cells["H4:I4"].Style.Fill.BackgroundColor.SetColor(colorEncabezado);
 
                         ws.Cells["A6"].Value = "DIA";
                         ws.Cells["A6"].Style.Font.Bold = true;
@@ -562,23 +595,26 @@ namespace Sispro.Web.Controllers
                         ws.Cells["C6"].Value = "HORA";
                         ws.Cells["C6"].Style.Font.Bold = true;
                         ws.Cells["C6"].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
-                        ws.Cells["D6"].Value = "ACTIVIDAD";
+                        ws.Cells["D6"].Value = "HORA";
                         ws.Cells["D6"].Style.Font.Bold = true;
                         ws.Cells["D6"].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
-                        ws.Cells["E6"].Value = "DESCRIPCIÓN ACTIVIDAD";
+                        ws.Cells["E6"].Value = "ACTIVIDAD";
                         ws.Cells["E6"].Style.Font.Bold = true;
                         ws.Cells["E6"].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
-                        ws.Cells["F6"].Value = "INCIDENCIA";
+                        ws.Cells["F6"].Value = "DESCRIPCIÓN ACTIVIDAD";
                         ws.Cells["F6"].Style.Font.Bold = true;
                         ws.Cells["F6"].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
-                        ws.Cells["G6"].Value = "ESTATUS ACTIVIDAD";
+                        ws.Cells["G6"].Value = "INCIDENCIA";
                         ws.Cells["G6"].Style.Font.Bold = true;
                         ws.Cells["G6"].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
-                        ws.Cells["H6"].Value = "COMENTARIOS CZ";
+                        ws.Cells["H6"].Value = "ESTATUS ACTIVIDAD";
                         ws.Cells["H6"].Style.Font.Bold = true;
                         ws.Cells["H6"].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
+                        ws.Cells["I6"].Value = "COMENTARIOS CZ";
+                        ws.Cells["I6"].Style.Font.Bold = true;
+                        ws.Cells["I6"].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
 
-                        using (ExcelRange cell = ws.Cells["A6:H6"])
+                        using (ExcelRange cell = ws.Cells["A6:I6"])
                         {
                             cell.Style.HorizontalAlignment = ExcelHorizontalAlignment.CenterContinuous;
                             cell.Style.Fill.BackgroundColor.SetColor(colorEncabezado);
@@ -595,10 +631,11 @@ namespace Sispro.Web.Controllers
                             descripcion = cat.DescripcionActividad,
                             fecha = cat.FechaActividad.ToString("MM/dd/yyyy"),
                             hora = cat.HoraActividad.ToString("hh':'mm"),
+                            horaFin = cat.HoraFin.Value.ToString("hh':'mm"),
                             checkin = (cat.cTipoActividades.RequiereCheckIn == true ? (cat.mCheckIn.Count() == 0 ? "No realizado" : "Realizado") : "Realizado"),
                             incidencias = (cat.mCheckIn.Count() == 0 ? "" : cat.mCheckIn.FirstOrDefault().Incidencias),
                             comentarios = cat.ComentariosRechazo,
-                            dia = cat.FechaActividad.ToString("dddd", new CultureInfo("es-ES"))
+                            dia = cat.FechaActividad.ToString("dddd", new CultureInfo("es-ES")).ToUpper()
                         });
 
                         int i = 7;
@@ -610,16 +647,18 @@ namespace Sispro.Web.Controllers
                             ws.Cells["B" + i.ToString()].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
                             ws.Cells["C" + i.ToString()].Value = item.hora;
                             ws.Cells["C" + i.ToString()].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
-                            ws.Cells["D" + i.ToString()].Value = item.actividad;
+                            ws.Cells["D" + i.ToString()].Value = item.horaFin;
                             ws.Cells["D" + i.ToString()].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
-                            ws.Cells["E" + i.ToString()].Value = item.descripcion;
+                            ws.Cells["E" + i.ToString()].Value = item.actividad;
                             ws.Cells["E" + i.ToString()].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
-                            ws.Cells["F" + i.ToString()].Value = item.incidencias;
+                            ws.Cells["F" + i.ToString()].Value = item.descripcion;
                             ws.Cells["F" + i.ToString()].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
-                            ws.Cells["G" + i.ToString()].Value = item.checkin;
+                            ws.Cells["G" + i.ToString()].Value = item.incidencias;
                             ws.Cells["G" + i.ToString()].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
-                            ws.Cells["H" + i.ToString()].Value = item.comentarios;
+                            ws.Cells["H" + i.ToString()].Value = item.checkin;
                             ws.Cells["H" + i.ToString()].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
+                            ws.Cells["I" + i.ToString()].Value = item.comentarios;
+                            ws.Cells["I" + i.ToString()].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
 
                             i++;
 
@@ -627,7 +666,7 @@ namespace Sispro.Web.Controllers
 
                         ws.Cells[ws.Dimension.Address].AutoFitColumns();
                         Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                        Response.AddHeader("content-disposition", "attachment;  filename=ActvidadesRealizadas_" + usuarioPlan + ".xlsx");
+                        Response.AddHeader("content-disposition", "attachment;  filename=ActividadesRealizadas_" + usuarioPlan + ".xlsx");
                         Response.BinaryWrite(pkg.GetAsByteArray());
 
                     }

@@ -20,7 +20,7 @@
                                 else
                                 {
                                     @Html.Raw("<li>");
-                                @Html.Raw(" <a href=" + Url.Content("~") + ViewBag.lang + item.urlModulo + " onclick='FCH.setPermisos(" + item.permisosAsignados + ")'>" + Resources.Global.ResourceManager.GetString(item.nombreModulo) + "</a>");
+                                @Html.Raw(" <a href=" + Url.Content("~") + item.urlModulo + " onclick='FCH.setPermisos(" + item.permisosAsignados + ")'>" + Resources.Global.ResourceManager.GetString(item.nombreModulo) + "</a>");
                                 @Html.Raw("</li>");
                                 }
                             }

@@ -172,9 +172,11 @@
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="width:342px; max-height:250px; overflow:auto;">
             @foreach (var notificaciones in Model)
             {
-                <div class="notifi__item" style="width:320px;" id="divNotifica_@notificaciones.NotificacionId" data-idnotificacion="@notificaciones.NotificacionId" data-idplan="@notificaciones.PlanSemanalId">
-                    @if (notificaciones.cTipoNotificaciones.TipoNotificacionId == 1)
-                    {
+
+                
+                if (notificaciones.cTipoNotificaciones.TipoNotificacionId == 1)
+                {
+                    <a class="notifi__item btnNotificacion" href="~/PlanSemanalSeguimiento/ValidacionPlan/" style="width:320px; text-decoration:none;" id="divNotifica_@notificaciones.NotificacionId" data-idnotificacion="@notificaciones.NotificacionId" data-idplan="@notificaciones.PlanSemanalId">
                         <div class="bg-c3 img-cir img-40">
                             <i class="fa fa-search"></i>
                         </div>
@@ -182,9 +184,11 @@
                             <p>Validar plan de <strong>@notificaciones.mPlanSemanal.mUsuarios.NombresUsuario  @notificaciones.mPlanSemanal.mUsuarios.ApellidosUsuario</strong></p>
                             <span class="date">@notificaciones.FechaCreacion</span>
                         </div>
-                    }
-                    else if (notificaciones.cTipoNotificaciones.TipoNotificacionId == 2)
-                    {
+                    </a>
+                }
+                else if (notificaciones.cTipoNotificaciones.TipoNotificacionId == 2)
+                {
+                    <a class="notifi__item btnNotificacion" href="~/PlanSemanalSeguimiento/AprobacionPlan/" style="width:320px; text-decoration:none;" id="divNotifica_@notificaciones.NotificacionId" data-idnotificacion="@notificaciones.NotificacionId" data-idplan="@notificaciones.PlanSemanalId">
                         <div class="bg-c1 img-cir img-40">
                             <i class="fa fa-check "></i>
                         </div>
@@ -192,9 +196,11 @@
                             <p>Aprobar plan de <strong>@notificaciones.mPlanSemanal.mUsuarios.NombresUsuario  @notificaciones.mPlanSemanal.mUsuarios.ApellidosUsuario</strong></p>
                             <span class="date">@notificaciones.FechaCreacion</span>
                         </div>
-                    }
-                    else
-                    {
+                    </a>
+                }
+                else
+                {
+                    <a class="notifi__item btnNotificacion" href="~/PlanSemanal/Index/" style="width:320px; text-decoration:none;" id="divNotifica_@notificaciones.NotificacionId" data-idnotificacion="@notificaciones.NotificacionId" data-idplan="@notificaciones.PlanSemanalId">
                         <div class="bg-c2 img-cir img-40">
                             <i class="fa fa-comments"></i>
                         </div>
@@ -202,8 +208,10 @@
                             <p>Revisar plan periodo: <strong>@notificaciones.mPlanSemanal.cPeriodos.DecripcionPeriodo</strong></p>
                             <span class="date">@notificaciones.FechaCreacion</span>
                         </div>
-                    }
-                </div>
+                    </a>
+                }
+      
+
                 count++;
             }
             <input type="hidden" id="cantNotificaciones" value="@count" />

@@ -35,7 +35,7 @@ namespace Sispro.Web.Controllers
         {
             try
             {
-                int[] estatus = { 2, 9 };
+                int[] estatus = { 2, 7, 9, 10 };
            
                 List<udf_PlanSemanalList_Result> result = (from u in db.udf_PlanSemanalList(idUsu) select u).Where(x => (idPeriodo == 0 ? 1 == 1 : x.PeriodoId == idPeriodo) && estatus.Contains(x.EstatusId.Value)) .ToList();
 
@@ -51,7 +51,7 @@ namespace Sispro.Web.Controllers
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -69,8 +69,10 @@ namespace Sispro.Web.Controllers
                     id = cat.DetallePlanId,
                     actividad = cat.cTipoActividades.NombreActividad,
                     descripcion = cat.DescripcionActividad,
+                    lugar = cat.LugarActividad,
                     fecha = cat.FechaActividad.ToString("MM/dd/yyyy"),
                     hora = cat.HoraActividad.ToString("hh':'mm"),
+                    horaFin = cat.HoraFin == null ? "" : cat.HoraFin.Value.ToString("hh':'mm"),
                     checkin = (cat.CantidadCheckIn < 1 ? "N/A" : cat.CantidadCheckIn.ToString()),
                     comentariosNoValidacion = "<strong>" + cat.ComentariosNoValidacion + "</strong>"
                 });
@@ -81,7 +83,7 @@ namespace Sispro.Web.Controllers
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
         }
         protected override void Dispose(bool disposing)

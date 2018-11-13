@@ -14,7 +14,7 @@
                     <div class="col-sm-12">
                         <div class="col-sm-4">Descripción</div>
                         <div class="col-sm-8">
-                            @Html.TextBoxFor(model => model.NombreActividad, new { @class = "form-control", maxlength = 100, required = "required" })
+                            @Html.TextBoxFor(model => model.NombreActividad, new { @class = "form-control", maxlength = 50, required = "required", onkeypress = "return /[a-zA-Z ]/i.test(event.key)" })
                         </div>
                     </div>
                 </div>

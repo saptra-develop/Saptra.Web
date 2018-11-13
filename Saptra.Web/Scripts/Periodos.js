@@ -36,10 +36,8 @@ var Periodo = {
         FCH.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#UsuarioCreacionId').val(localStorage.idUser);
-            $('#NuevoPeriodoForm #FechaInicio').val($('#fechaIni').val());
-            $('#NuevoPeriodoForm #FechaFin').val($('#fechaF').val());
             //Se hace el post para guardar la informacion
-            $.post(contextPath + "Periodos/Nuevo",
+            $.post(contextPath + "Periodos/Nuevo?fIni=" + $('#fechaIni').val() + "&fFin=" + $('#fechaF').val(),
                 $("#NuevoPeriodoForm *").serialize(),
                 function (data) {
                     if (data.Success === true) {
@@ -124,15 +122,15 @@ var Periodo = {
          
             callback: function (result) {
                 if (result) {
-                    var url = contextPath + "TiposFigura/Borrar"; // El url del controlador
+                    var url = contextPath + "Periodos/Borrar"; // El url del controlador
                     $.post(url, { id: id }, function (data) {
                         if (data.Success === true) {
-                            TipoFigura.colTipoFigura.remove(id);
+                            Periodo.colPeriodo.remove(id);
                             FCH.DespliegaInformacion(data.Message + "  id:" + id);
                         } else {
                             FCH.DespliegaError(data.Message);
                         }
-                    }).fail(function () { FCH.DespliegaError("No se pudo eliminar el tipo figura"); });
+                    }).fail(function () { FCH.DespliegaError("No se pudo eliminar el periodo"); });
                 } }
         })
     },
@@ -155,7 +153,7 @@ var Periodo = {
                     detalle: false,
                     clone: false,
                     editar: true,
-                    borrar: false,
+                    borrar: true,
                     collection: Periodo.colPeriodo,
                     colModel: [{ title: 'Id', name: 'id', width: '8%', sorttype: 'number' },
                                 { title: 'Fecha Inicio', name: 'fechaInicio', index: true },
@@ -182,10 +180,18 @@ var Periodo = {
             format: 'MM/DD/YYYY'
         });
 
+        var d = new Date();
+        var strDate = (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear();
+
+        $(form + ' #dtpfechaInicio').data("DateTimePicker").minDate(strDate);
+
+
         $(form + ' #dtpfechaFin').datetimepicker({
             useCurrent: false,
             format: 'MM/DD/YYYY'
         });
+
+        $(form + ' #dtpfechaFin').data("DateTimePicker").minDate(strDate);
     }
 };
 

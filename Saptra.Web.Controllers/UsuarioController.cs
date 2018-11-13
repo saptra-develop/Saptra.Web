@@ -33,7 +33,7 @@ namespace Saptra.Web.Controllers
         public PartialViewResult CargaMenuUsuario(int? id)
         {
             var objUsuario = db.mUsuarios.Find(id);
-            objUsuario.ImagenUsuario = objUsuario.ImagenUsuario == null ? "/Content/images/avatar.jpg" : objUsuario.ImagenUsuario;
+            objUsuario.ImagenUsuario = objUsuario.ImagenUsuario == null ? "../Content/images/avatar.jpg" : objUsuario.ImagenUsuario;
             return PartialView("_MenuUsuario", objUsuario);
         }
 
@@ -43,8 +43,7 @@ namespace Saptra.Web.Controllers
             try
             {
                 var result = (from cat in db.mUsuarios
-                              where cat.EstatusId == 5
-                                  && cat.UsuarioId == (idUsu == null ? cat.UsuarioId : idUsu)
+                              where  cat.UsuarioId == (idUsu == null ? cat.UsuarioId : idUsu)
                               select new
                               {
                                   id = cat.UsuarioId,
@@ -55,7 +54,7 @@ namespace Saptra.Web.Controllers
                                   nombreCompleto = cat.NombresUsuario.ToUpper() + " " + cat.ApellidosUsuario.ToUpper(),
                                   cat.RolId,
                                   nombreRol = cat.mRoles.NombreRol.ToUpper(),
-                                  imagen = cat.ImagenUsuario == null ? "/Content/images/avatar.jpg" : cat.ImagenUsuario,
+                                  imagen = cat.ImagenUsuario == null ? "../Content/images/avatar.jpg" : cat.ImagenUsuario,
                                   email = cat.EmailUsuario
                               }).ToList();
 
@@ -65,7 +64,7 @@ namespace Saptra.Web.Controllers
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = false, Message = "Error al cargar la información."}, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -79,29 +78,103 @@ namespace Saptra.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult Nuevo(mUsuarios pobjModelo)
+        public JsonResult Nuevo(mUsuarios pobjModelo, int RegionId, int ZonaId, int idUsuario)
         {
             if (ModelState.IsValid)
             {
                 try
-                {                    
-                    if (correoExistente(pobjModelo.EmailUsuario)==true)
+                {
+                    var jRegion = (from j in db.mCoordinacionRegionZonaUsuario
+                                      where j.CoordinacionRegionId == RegionId
+                                      select j).ToList();
+
+                    var jZona = (from z in db.mCoordinacionZonaUsuario
+                                 where z.CoordinacionZonaId == ZonaId
+                                 && z.JefeCoordinacionZona == true
+                                 select z).ToList();
+               
+                    if (correoExistente(pobjModelo.EmailUsuario) == true)
                         return Json(new { Success = false, Message = "The user's email is already in use" });
                     else if (loginExistente(pobjModelo.LoginUsuario))
                         return Json(new { Success = false, Message = "The user's login is already in use" });
                     else
                     {
+                        string contrasenaRec;
+                        contrasenaRec = EncriptarController.GetMD5(pobjModelo.PasswordUsuario);
+                        var fig = (pobjModelo.RolId == 2 ? 1 : (pobjModelo.RolId == 4 ? 2 : (pobjModelo.RolId == 5 ? 3 : 0)));
                         pobjModelo.FechaCreacion = DateTime.Now;
-                        pobjModelo.ImagenUsuario = pobjModelo.ImagenUsuario == null ? "/Content/images/avatar.jpg" : pobjModelo.ImagenUsuario;
+                        pobjModelo.ImagenUsuario = pobjModelo.ImagenUsuario == null ? null : pobjModelo.ImagenUsuario;
+                        pobjModelo.PasswordUsuario = contrasenaRec;
+                        if (fig != 0)
+                        {
+                            pobjModelo.TipoFiguraId = fig;
+                        }
                         db.mUsuarios.Add(pobjModelo);
                         db.SaveChanges();
+
+                        if (jZona.Count() == 0 && pobjModelo.RolId == 3)
+                        {
+                            mCoordinacionZonaUsuario objCoordinacionZona = new mCoordinacionZonaUsuario();
+
+                            objCoordinacionZona.UsuarioId = pobjModelo.UsuarioId;
+                            objCoordinacionZona.CoordinacionZonaId = ZonaId;
+                            objCoordinacionZona.JefeCoordinacionZona = true;
+                            objCoordinacionZona.UsuarioCreacionId = idUsuario;
+                            objCoordinacionZona.FechaCreacion = DateTime.Now;
+                            db.mCoordinacionZonaUsuario.Add(objCoordinacionZona);
+                            db.SaveChanges();
+                        }
+                        else if(pobjModelo.RolId != 6)
+                        {
+
+                            if (pobjModelo.RolId == 2 || pobjModelo.RolId == 4 || pobjModelo.RolId == 5)
+                            {
+
+                                mCoordinacionZonaUsuario objCoordinacionZona = new mCoordinacionZonaUsuario();
+
+                                objCoordinacionZona.UsuarioId = pobjModelo.UsuarioId;
+                                objCoordinacionZona.CoordinacionZonaId = ZonaId;
+                                objCoordinacionZona.JefeCoordinacionZona = false;
+                                objCoordinacionZona.UsuarioCreacionId = idUsuario;
+                                objCoordinacionZona.FechaCreacion = DateTime.Now;
+                                db.mCoordinacionZonaUsuario.Add(objCoordinacionZona);
+                                db.SaveChanges();
+                            }
+                            else if (pobjModelo.RolId == 3)
+                            {
+                                var temp = jZona.First();
+                                temp.UsuarioId = pobjModelo.UsuarioId;
+                                db.SaveChanges();
+                            }
+                        }
+
+                        if (jRegion.Count() == 0 && pobjModelo.RolId == 6)
+                        {
+                            mCoordinacionRegionZonaUsuario objCoordinacionZonaRegion = new mCoordinacionRegionZonaUsuario();
+
+                            objCoordinacionZonaRegion.UsuarioJefeRegionId = pobjModelo.UsuarioId;
+                            //objCoordinacionZonaRegion.CoordinacionZonaId = ZonaId;
+                            objCoordinacionZonaRegion.CoordinacionRegionId = RegionId;
+                            db.mCoordinacionRegionZonaUsuario.Add(objCoordinacionZonaRegion);
+                            db.SaveChanges();
+                        }
+                        else 
+                        {
+                            if (pobjModelo.RolId == 6)
+                            {
+                                var dbjefe = jRegion.First();
+                                dbjefe.UsuarioJefeRegionId = pobjModelo.UsuarioId;
+                                db.SaveChanges();
+                            }
+                        }
+
 
                         return Json(new { Success = true, id = pobjModelo.UsuarioId, Message = "Se guardó correctamente el usuario " });
                     }
                 }
                 catch (Exception exp)
                 {
-                    return Json(new { Success = false, Message = exp.Message });
+                    return Json(new { Success = false, Message = "No fue posible guardar la información" });
                 }
             }
 
@@ -112,7 +185,9 @@ namespace Saptra.Web.Controllers
         public ActionResult Actualiza(int id)
         {
             var objUsuario = db.mUsuarios.Find(id);
-            objUsuario.ImagenUsuario = objUsuario.ImagenUsuario == null ? "/Content/images/avatar.jpg" : objUsuario.ImagenUsuario;
+            objUsuario.ImagenUsuario = objUsuario.ImagenUsuario == null ? "../Content/images/avatar.jpg" : objUsuario.ImagenUsuario;
+            ViewBag.RegionId = objUsuario.mCoordinacionRegionZonaUsuario.FirstOrDefault() == null ? 0 : objUsuario.mCoordinacionRegionZonaUsuario.FirstOrDefault().CoordinacionRegionId;
+            ViewBag.ZonaId = objUsuario.mCoordinacionZonaUsuario1.FirstOrDefault() == null ? 0 : objUsuario.mCoordinacionZonaUsuario1.FirstOrDefault().CoordinacionZonaId;
             return PartialView("_Actualiza", objUsuario);
         }
 
@@ -120,7 +195,7 @@ namespace Saptra.Web.Controllers
         public ActionResult ActualizaPerfil(int id)
         {
             var objUsuario = db.mUsuarios.Find(id);
-            objUsuario.ImagenUsuario = objUsuario.ImagenUsuario == null ? "/Content/images/avatar.jpg" : objUsuario.ImagenUsuario;
+            objUsuario.ImagenUsuario = objUsuario.ImagenUsuario == null ? "../Content/images/avatar.jpg" : objUsuario.ImagenUsuario;
             return PartialView("_ActualizaPerfil", objUsuario);
         }
 
@@ -128,7 +203,7 @@ namespace Saptra.Web.Controllers
         public ActionResult ActualizaPassword(int id)
         {
             var objUsuario = db.mUsuarios.Find(id);
-            ViewBag.imagenUsuario = objUsuario.ImagenUsuario == null ? "/Content/images/avatar.jpg" : objUsuario.ImagenUsuario;
+            ViewBag.imagenUsuario = objUsuario.ImagenUsuario == null ? "../Content/images/avatar.jpg" : objUsuario.ImagenUsuario;
             ViewBag.idUsuario = objUsuario.UsuarioId;
             return PartialView("_ActualizaPassword");
         }
@@ -159,7 +234,9 @@ namespace Saptra.Web.Controllers
                                          where (u.UsuarioId == pobjModelo.UsuarioId)
                                          select new
                                          {
-                                             id = u.UsuarioId
+                                             id = u.UsuarioId,
+                                             emailUsuario = u.EmailUsuario,
+                                             imagenUsuario = u.ImagenUsuario
                                          }).ToList();
 
 
@@ -167,7 +244,7 @@ namespace Saptra.Web.Controllers
                 }
                 catch (Exception exp)
                 {
-                    return Json(new { Success = false, Message = exp.Message });
+                    return Json(new { Success = false, Message = "No fue posible guardar la información." });
                 }
             }
 
@@ -179,35 +256,97 @@ namespace Saptra.Web.Controllers
         {
             try
             {
-                var resultado = db.Database.SqlQuery<string>("execute [dbo].[sp_CambiarPassword] @p0,@p1,@p2,@p3", idUser, passwordActual, passwordNuevo, passwordConfirmar).FirstOrDefault();
-                string[] resultados = resultado.Split('|');
+                var result = from u in db.mUsuarios where (u.UsuarioId == idUser) select u;
 
-                if (resultados[0] == "0")
+                if (result.Count() != 0)
                 {
-                    return Json(new { Success = true, id = idUser, Message = resultados[1] });
+                    var dbUsu = result.First();
+                    string contrasenaAct;
+                    contrasenaAct = EncriptarController.GetMD5(passwordActual);
 
+                    if (contrasenaAct == dbUsu.PasswordUsuario)
+                    {
+                        if (passwordNuevo.Trim() == passwordConfirmar.Trim())
+                        {
+                            string contrasenaNueva;
+                            contrasenaNueva = EncriptarController.GetMD5(passwordConfirmar);
+                            dbUsu.PasswordUsuario = contrasenaNueva;
+                            db.SaveChanges();
+
+                            return Json(new { Success = true, id = idUser, Message = "Contraseña actualizada correctamente." });
+                        }
+                        else
+                        {
+                            return Json(new { Success = false, id = idUser, tipo = 1, Message = "Las contraseñas no coinciden." });
+                        }
+                    }
+                    else
+                    {
+                        return Json(new { Success = false, id = idUser, tipo = 2, Message = "La contraseña actual es incorrecta." });
+                    }
                 }
                 else
                 {
-                    return Json(new { Success = false, id = idUser, Message = "Error : " + resultados[1] });
+                    return Json(new { Success = false, id = idUser, Message = "Usuario no existe." });
                 }
+
+
+                //var resultado = db.Database.SqlQuery<string>("execute [dbo].[sp_CambiarPassword] @p0,@p1,@p2,@p3", idUser, passwordActual, passwordNuevo, passwordConfirmar).FirstOrDefault();
+                //string[] resultados = resultado.Split('|');
+
+                //if (resultados[0] == "0")
+                //{
+                //    return Json(new { Success = true, id = idUser, Message = resultados[1] });
+
+                //}
+                //else
+                //{
+                //    return Json(new { Success = false, id = idUser, Message = "Error : " + resultados[1] });
+                //}
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message });
+                return Json(new { Success = false, Message = "No fue posible guardar la información." });
             }
         }
 
 
         [HttpPost]
-        public JsonResult Actualiza(mUsuarios pobjModelo)
+        public JsonResult Actualiza(mUsuarios pobjModelo, int RegionId, int ZonaId, int idUsuario)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var result = from u in db.mUsuarios where (u.UsuarioId == pobjModelo.UsuarioId) select u;
+                    var jRegion = (from j in db.mCoordinacionRegionZonaUsuario
+                                   where j.CoordinacionRegionId == RegionId
+                                   select j).ToList();
 
+                    var usarioexisteReg = (from j in db.mCoordinacionRegionZonaUsuario
+                                                         where j.UsuarioJefeRegionId == pobjModelo.UsuarioId
+                                                         select j).ToList();
+
+                    var jZona = (from z in db.mCoordinacionZonaUsuario
+                                 where z.CoordinacionZonaId == ZonaId
+                                 && z.JefeCoordinacionZona == true
+                                 select z).ToList();
+
+
+                    var usarioexisteZona= (from j in db.mCoordinacionZonaUsuario
+                                           where j.UsuarioId == pobjModelo.UsuarioId
+                                           && j.JefeCoordinacionZona == true
+                                           select j).ToList();
+
+                    var result = from u in db.mUsuarios where (u.UsuarioId == pobjModelo.UsuarioId) select u;
+                    string contrasenaRec;
+                    if (result.First().PasswordUsuario != pobjModelo.PasswordUsuario)
+                    {
+                        contrasenaRec = EncriptarController.GetMD5(pobjModelo.PasswordUsuario);
+                    }
+                    else
+                    {
+                        contrasenaRec = result.First().PasswordUsuario;
+                    }
 
                     if (result.Count() != 0)
                     {
@@ -228,8 +367,9 @@ namespace Saptra.Web.Controllers
                         dbUsu.NombresUsuario = pobjModelo.NombresUsuario;
                         dbUsu.ApellidosUsuario = pobjModelo.ApellidosUsuario;
                         dbUsu.LoginUsuario = pobjModelo.LoginUsuario;
-                        dbUsu.PasswordUsuario = pobjModelo.PasswordUsuario;
+                        dbUsu.PasswordUsuario = contrasenaRec;
                         dbUsu.EmailUsuario = pobjModelo.EmailUsuario;
+                        dbUsu.RFCUsuario = pobjModelo.RFCUsuario;
                         dbUsu.RolId = pobjModelo.RolId;
                         if (pobjModelo.ImagenUsuario != null)
                         {
@@ -241,6 +381,121 @@ namespace Saptra.Web.Controllers
 
                         db.SaveChanges();
 
+                        if (jZona.Count() == 0 && pobjModelo.RolId == 3)
+                        {
+                            if (usarioexisteZona.Count == 0)
+                            {
+                                mCoordinacionZonaUsuario objCoordinacionZona = new mCoordinacionZonaUsuario();
+
+                                objCoordinacionZona.UsuarioId = pobjModelo.UsuarioId;
+                                objCoordinacionZona.CoordinacionZonaId = ZonaId;
+                                objCoordinacionZona.JefeCoordinacionZona = true;
+                                objCoordinacionZona.UsuarioCreacionId = idUsuario;
+                                objCoordinacionZona.FechaCreacion = DateTime.Now;
+                                db.mCoordinacionZonaUsuario.Add(objCoordinacionZona);
+                                db.SaveChanges();
+                            }
+                            else
+                            {
+                                var col = db.mCoordinacionZonaUsuario.Where(t => t.UsuarioId == pobjModelo.UsuarioId);
+                                db.mCoordinacionZonaUsuario.RemoveRange(col);
+                                db.SaveChanges();
+
+                                mCoordinacionZonaUsuario objCoordinacionZona = new mCoordinacionZonaUsuario();
+
+                                objCoordinacionZona.UsuarioId = pobjModelo.UsuarioId;
+                                objCoordinacionZona.CoordinacionZonaId = ZonaId;
+                                objCoordinacionZona.JefeCoordinacionZona = true;
+                                objCoordinacionZona.UsuarioCreacionId = idUsuario;
+                                objCoordinacionZona.FechaCreacion = DateTime.Now;
+                                db.mCoordinacionZonaUsuario.Add(objCoordinacionZona);
+                                db.SaveChanges();
+                            }
+                        }
+                        else if (pobjModelo.RolId != 6)
+                        {
+
+                            if (pobjModelo.RolId == 2 || pobjModelo.RolId == 4 || pobjModelo.RolId == 5)
+                            {
+                                var usuarioZona = (from j in db.mCoordinacionZonaUsuario
+                                                        where j.UsuarioId == pobjModelo.UsuarioId
+                                                        select j).ToList();
+                                if(usuarioZona.Count() == 0)
+                                {
+                                    mCoordinacionZonaUsuario objCoordinacionZona = new mCoordinacionZonaUsuario();
+
+                                    objCoordinacionZona.UsuarioId = pobjModelo.UsuarioId;
+                                    objCoordinacionZona.CoordinacionZonaId = ZonaId;
+                                    objCoordinacionZona.JefeCoordinacionZona = false;
+                                    objCoordinacionZona.UsuarioCreacionId = idUsuario;
+                                    objCoordinacionZona.FechaCreacion = DateTime.Now;
+                                    db.mCoordinacionZonaUsuario.Add(objCoordinacionZona);
+                                    db.SaveChanges();
+                                }
+                                else
+                                {
+                                    var col = db.mCoordinacionZonaUsuario.Where(t => t.UsuarioId == pobjModelo.UsuarioId);
+                                    db.mCoordinacionZonaUsuario.RemoveRange(col);
+                                    db.SaveChanges();
+
+                                    mCoordinacionZonaUsuario objCoordinacionZona = new mCoordinacionZonaUsuario();
+
+                                    objCoordinacionZona.UsuarioId = pobjModelo.UsuarioId;
+                                    objCoordinacionZona.CoordinacionZonaId = ZonaId;
+                                    objCoordinacionZona.JefeCoordinacionZona = false;
+                                    objCoordinacionZona.UsuarioCreacionId = idUsuario;
+                                    objCoordinacionZona.FechaCreacion = DateTime.Now;
+                                    db.mCoordinacionZonaUsuario.Add(objCoordinacionZona);
+                                    db.SaveChanges();
+                                }
+
+                                
+                            }
+                            else if (pobjModelo.RolId == 3)
+                            {
+                                var temp = jZona.First();
+                                temp.UsuarioId = pobjModelo.UsuarioId;
+                                db.SaveChanges();
+                            }
+                        }
+
+                        if (jRegion.Count() == 0 && pobjModelo.RolId == 6)
+                        {
+                            if (usarioexisteReg.Count() == 0)
+                            {
+                                mCoordinacionRegionZonaUsuario objCoordinacionZonaRegion = new mCoordinacionRegionZonaUsuario();
+
+                                objCoordinacionZonaRegion.UsuarioJefeRegionId = pobjModelo.UsuarioId;
+                                //objCoordinacionZonaRegion.CoordinacionZonaId = ZonaId;
+                                objCoordinacionZonaRegion.CoordinacionRegionId = RegionId;
+                                db.mCoordinacionRegionZonaUsuario.Add(objCoordinacionZonaRegion);
+                                db.SaveChanges();
+                            }
+                            else
+                            {
+                                var col = db.mCoordinacionRegionZonaUsuario.Where(t => t.UsuarioJefeRegionId == pobjModelo.UsuarioId);
+                                db.mCoordinacionRegionZonaUsuario.RemoveRange(col);
+                                db.SaveChanges();
+
+                                mCoordinacionRegionZonaUsuario objCoordinacionZonaRegion = new mCoordinacionRegionZonaUsuario();
+
+                                objCoordinacionZonaRegion.UsuarioJefeRegionId = pobjModelo.UsuarioId;
+                                //objCoordinacionZonaRegion.CoordinacionZonaId = ZonaId;
+                                objCoordinacionZonaRegion.CoordinacionRegionId = RegionId;
+                                db.mCoordinacionRegionZonaUsuario.Add(objCoordinacionZonaRegion);
+                                db.SaveChanges();
+                            }
+                        }
+                        else
+                        {
+                            if (pobjModelo.RolId == 6)
+                            {
+                                var dbjefe = jRegion.First();
+                                dbjefe.UsuarioJefeRegionId = pobjModelo.UsuarioId;
+                                db.SaveChanges();
+                            }
+                        }
+
 
                     }
                     return Json(new { Success = true, id = pobjModelo.UsuarioId, Message = "Se actualizó correctamente el usuario " });
@@ -248,7 +503,7 @@ namespace Saptra.Web.Controllers
                 }
                 catch (Exception exp)
                 {
-                    return Json(new { Success = false, Message = exp.Message });
+                    return Json(new { Success = false, Message = "No fue posible guardar la información." });
                 }
             }
 
@@ -283,7 +538,7 @@ namespace Saptra.Web.Controllers
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message });
+                return Json(new { Success = false, Message = "No fue posible eliminar la información." });
             }
         }
 
@@ -314,13 +569,20 @@ namespace Saptra.Web.Controllers
         }
 
         [HttpGet]
-        public JsonResult CargarNombresFigura(int? id, int? idEstatus)
+        public JsonResult CargarNombresFiguraPorCZ(int? id, int? idEstatus, int idUsuarioCZ)
         {
             try
             {
+                var cz = (from c in db.mCoordinacionZonaUsuario
+                          where c.UsuarioId == idUsuarioCZ
+                          && c.JefeCoordinacionZona == true
+                          select c).FirstOrDefault();
+
                 var result = (from cat in db.mUsuarios
+                              join c in db.mCoordinacionZonaUsuario on cat.UsuarioId equals c.UsuarioId
                               where cat.EstatusId == (idEstatus == null ? cat.EstatusId : idEstatus)
-                              && cat.RolId == 2
+                              && c.CoordinacionZonaId == cz.CoordinacionZonaId
+                              && c.JefeCoordinacionZona == false
                               select new
                               {
                                   id = cat.UsuarioId,
@@ -334,7 +596,93 @@ namespace Saptra.Web.Controllers
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = false, Message = "No fue posible cargar la información." }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public JsonResult ValidaJefeRegion(int RegionId)
+        {
+            try
+            {
+                var jefe = (from sec in db.mCoordinacionRegionZonaUsuario
+                              where sec.CoordinacionRegionId == RegionId
+                            select sec).ToList();
+
+                return (Json(new
+                {
+                    Success = (jefe.Count() == 0 ? false : true)
+                }, JsonRequestBehavior.AllowGet));
+
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = "No fue posible validar la información." }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public JsonResult ValidaJefeZona(int ZonaId)
+        {
+            try
+            {
+                var jefe = (from sec in db.mCoordinacionZonaUsuario
+                            where sec.CoordinacionZonaId == ZonaId
+                            && sec.JefeCoordinacionZona == true
+                            select sec).ToList();
+
+                return (Json(new
+                {
+                    Success = (jefe.Count() == 0 ? false : true)
+                }, JsonRequestBehavior.AllowGet));
+
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = "No fue posible validar la información." }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        /// <summary>
+        /// Metodo para subir los archivos del proyecto
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult SubirArchivo(mUsuarios pobjModelo)
+        {
+            string filePath = "";
+            string nombreArchivo = "";
+            string nombre = "";
+            try
+            {
+                string urlImagen = "prueba";
+                if (Request.Files.Count > 0)
+                {
+
+                    var file = Request.Files[0];
+
+
+                    string extension = System.IO.Path.GetExtension(file.FileName);
+                    nombre = string.Format("{0}{1}", Guid.NewGuid().ToString("N"), extension.ToLower());
+
+                    //"C:\inetpub\wwwroot\saptra\saptraImages\12884462db394dfb8a4293328c148ce1.jpg"
+                    filePath = Path.Combine(Server.MapPath("~/saptraImages/"), nombre);
+                    file.SaveAs(filePath);
+                    filePath = filePath.Replace(@"C:\inetpub\wwwroot\", "http://200.33.114.167/").Replace(@"\", "/");
+
+
+
+                }
+
+                   
+
+               
+
+                return Json(new { Success = true, Archivo = filePath });
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = "No fue posible subir la imagen." });
             }
         }
 

@@ -91,39 +91,39 @@ var Rol = {
                 keyboard: true
             }, 'show');
             FCH.RedefinirValidaciones(); //para los formularios dinamicos
-            $('#NuevoRolForm #chkViewAll').bootstrapSwitch({
-                size: 'small',
-                onText: 'YES',
-                offText: 'NO',
-            });
-            $('#infoViewAll').attr('title', 'View products from all LBs').tooltip();
         });
     },
     onGuardar: function () {
         var btn = this,
             btnName = btn.innerText;
-        FCH.botonMensaje(true, btn, btnName);
-        if ($("form").valid()) {
-            $('#NuevoRolForm #viewAll').val($('#NuevoRolForm #chkViewAll').prop("checked") ? 1 : 0);
-            //Se hace el post para guardar la informacion
-            $.post(contextPath + "Rol/NuevoRol",
-                $("#NuevoRolForm *").serialize(),
-                function (data) {
-                    if (data.Success === true) {
-                        Rol.colRoles.add(Rol.serializaRol(data.id, '#NuevoRolForm'));
-                        FCH.DespliegaInformacion("El Rol fue guardado con el Id: " + data.id);
-                        $('#nuevoRol').modal('hide');
-                        if (Rol.colRoles.length === 1) {
-                            Rol.CargaGrid();
+        if ($('#NuevoRolForm #NombreRol').val() !== "") {
+            FCH.botonMensaje(true, btn, btnName);
+            if ($("form").valid()) {
+    
+                //Se hace el post para guardar la informacion
+                $.post(contextPath + "Rol/NuevoRol",
+                    $("#NuevoRolForm *").serialize(),
+                    function (data) {
+                        if (data.Success === true) {
+                            //Rol.colRoles.add(Rol.serializaRol(data.id, '#NuevoRolForm'));
+                            FCH.DespliegaInformacion("El Rol fue guardado con el Id: " + data.id);
+                            $('#nuevoRol').modal('hide');
+                            //if (Rol.colRoles.length === 1) {
+                                Rol.CargaGrid();
+                            //}
+                        } else {
+                            FCH.DespliegaErrorDialogo(data.Message);
                         }
-                    } else {
-                        FCH.DespliegaErrorDialogo(data.Message);
-                    }
-                }).fail(function () {
-                    FCH.DespliegaErrorDialogo("Error al guardar la información.");
-                }).always(function () { FCH.botonMensaje(false, btn, btnName); });
+                    }).fail(function () {
+                        FCH.DespliegaErrorDialogo("Error al guardar la información.");
+                    }).always(function () { FCH.botonMensaje(false, btn, btnName); });
+            } else {
+                FCH.botonMensaje(false, btn, btnName);
+            }
         } else {
-            FCH.botonMensaje(false, btn, btnName);
+
+            $('#NuevoRolForm #NombreRol').addClass("input-validation-error");
+            $('#NuevoRolForm #NombreRol').attr("placeholder", "Obligatorio");
         }
     },
     Editar: function (id) {
@@ -148,26 +148,31 @@ var Rol = {
     onActualizar: function () {
         var btn = this,
             btnName = btn.innerText;
-
-        FCH.botonMensaje(true, btn, btnName);
-        if ($("form").valid()) {
-            //Se hace el post para guardar la informacion
-            $('#ActualizaRolForm #viewAll').val($('#ActualizaRolForm #chkViewAll').prop("checked") ? 1 : 0);
-            $.post(contextPath + "Rol/ActualizaRol",
-                $("#ActualizaRolForm *").serialize(),
-                function (data) {
-                    if (data.Success === true) {
-                        $('#actualizaRol').modal('hide');
-                        Rol.CargaGrid();
-                        FCH.DespliegaInformacion("Rol actualizado correctamente");
-                    } else {
-                        FCH.DespliegaErrorDialogo(data.Message);
-                    }
-                }).fail(function () {
-                    FCH.DespliegaErrorDialogo("Error al actualizar la información");
-                }).always(function () { FCH.botonMensaje(false, btn, btnName); });
+        if ($('#ActualizaRolForm #NombreRol').val() !== "") {
+            FCH.botonMensaje(true, btn, btnName);
+            if ($("form").valid()) {
+                //Se hace el post para guardar la informacion
+                $('#ActualizaRolForm #viewAll').val($('#ActualizaRolForm #chkViewAll').prop("checked") ? 1 : 0);
+                $.post(contextPath + "Rol/ActualizaRol",
+                    $("#ActualizaRolForm *").serialize(),
+                    function (data) {
+                        if (data.Success === true) {
+                            $('#actualizaRol').modal('hide');
+                            Rol.CargaGrid();
+                            FCH.DespliegaInformacion("Rol actualizado correctamente");
+                        } else {
+                            FCH.DespliegaErrorDialogo(data.Message);
+                        }
+                    }).fail(function () {
+                        FCH.DespliegaErrorDialogo("Error al actualizar la información");
+                    }).always(function () { FCH.botonMensaje(false, btn, btnName); });
+            } else {
+                FCH.botonMensaje(false, btn, btnName);
+            }
         } else {
-            FCH.botonMensaje(false, btn, btnName);
+
+            $('#ActualizaRolForm #NombreRol').addClass("input-validation-error");
+            $('#ActualizaRolForm #NombreRol').attr("placeholder", "Obligatorio");
         }
     },
     serializaRol: function (id, form) {

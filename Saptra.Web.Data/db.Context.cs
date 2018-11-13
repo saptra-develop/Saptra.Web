@@ -39,8 +39,8 @@ namespace Saptra.Web.Data
         public virtual DbSet<mLecturaCertificados> mLecturaCertificados { get; set; }
         public virtual DbSet<mCoordinacionRegionZonaUsuario> mCoordinacionRegionZonaUsuario { get; set; }
         public virtual DbSet<mCoordinacionZonaUsuario> mCoordinacionZonaUsuario { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<mEducandosCaptados> mEducandosCaptados { get; set; }
+        public virtual DbSet<InaebaPreregistros> InaebaPreregistros { get; set; }
         public virtual DbSet<dDetallePlanSemanal> dDetallePlanSemanal { get; set; }
         public virtual DbSet<mCheckIn> mCheckIn { get; set; }
         public virtual DbSet<mPlanSemanal> mPlanSemanal { get; set; }
@@ -65,21 +65,33 @@ namespace Saptra.Web.Data
         }
     
         [DbFunction("Entities", "udf_IncumplimientoActividadesPeriodoList")]
-        public virtual IQueryable<udf_IncumplimientoActividadesPeriodoList_Result> udf_IncumplimientoActividadesPeriodoList(Nullable<int> p_idPeriodo)
+        public virtual IQueryable<udf_IncumplimientoActividadesPeriodoList_Result> udf_IncumplimientoActividadesPeriodoList(string p_idPeriodo, string p_Region, string p_Zona, string p_TipoActividad)
         {
-            var p_idPeriodoParameter = p_idPeriodo.HasValue ?
+            var p_idPeriodoParameter = p_idPeriodo != null ?
                 new ObjectParameter("p_idPeriodo", p_idPeriodo) :
-                new ObjectParameter("p_idPeriodo", typeof(int));
+                new ObjectParameter("p_idPeriodo", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_IncumplimientoActividadesPeriodoList_Result>("[Entities].[udf_IncumplimientoActividadesPeriodoList](@p_idPeriodo)", p_idPeriodoParameter);
+            var p_RegionParameter = p_Region != null ?
+                new ObjectParameter("p_Region", p_Region) :
+                new ObjectParameter("p_Region", typeof(string));
+    
+            var p_ZonaParameter = p_Zona != null ?
+                new ObjectParameter("p_Zona", p_Zona) :
+                new ObjectParameter("p_Zona", typeof(string));
+    
+            var p_TipoActividadParameter = p_TipoActividad != null ?
+                new ObjectParameter("p_TipoActividad", p_TipoActividad) :
+                new ObjectParameter("p_TipoActividad", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_IncumplimientoActividadesPeriodoList_Result>("[Entities].[udf_IncumplimientoActividadesPeriodoList](@p_idPeriodo, @p_Region, @p_Zona, @p_TipoActividad)", p_idPeriodoParameter, p_RegionParameter, p_ZonaParameter, p_TipoActividadParameter);
         }
     
         [DbFunction("Entities", "udf_IncumplimientoActividadesPeriodoRegionList")]
-        public virtual IQueryable<udf_IncumplimientoActividadesPeriodoRegionList_Result> udf_IncumplimientoActividadesPeriodoRegionList(Nullable<int> p_idPeriodo, string p_Region, string p_Zona, string p_TipoActividad)
+        public virtual IQueryable<udf_IncumplimientoActividadesPeriodoRegionList_Result> udf_IncumplimientoActividadesPeriodoRegionList(string p_idPeriodo, string p_Region, string p_Zona, string p_TipoActividad)
         {
-            var p_idPeriodoParameter = p_idPeriodo.HasValue ?
+            var p_idPeriodoParameter = p_idPeriodo != null ?
                 new ObjectParameter("p_idPeriodo", p_idPeriodo) :
-                new ObjectParameter("p_idPeriodo", typeof(int));
+                new ObjectParameter("p_idPeriodo", typeof(string));
     
             var p_RegionParameter = p_Region != null ?
                 new ObjectParameter("p_Region", p_Region) :
@@ -94,6 +106,50 @@ namespace Saptra.Web.Data
                 new ObjectParameter("p_TipoActividad", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_IncumplimientoActividadesPeriodoRegionList_Result>("[Entities].[udf_IncumplimientoActividadesPeriodoRegionList](@p_idPeriodo, @p_Region, @p_Zona, @p_TipoActividad)", p_idPeriodoParameter, p_RegionParameter, p_ZonaParameter, p_TipoActividadParameter);
+        }
+    
+        [DbFunction("Entities", "udf_IncumplimientoActividadesPeriodoRegionZonaList")]
+        public virtual IQueryable<udf_IncumplimientoActividadesPeriodoRegionZonaList_Result> udf_IncumplimientoActividadesPeriodoRegionZonaList(string p_idPeriodo, string p_Region, string p_Zona, string p_TipoActividad)
+        {
+            var p_idPeriodoParameter = p_idPeriodo != null ?
+                new ObjectParameter("p_idPeriodo", p_idPeriodo) :
+                new ObjectParameter("p_idPeriodo", typeof(string));
+    
+            var p_RegionParameter = p_Region != null ?
+                new ObjectParameter("p_Region", p_Region) :
+                new ObjectParameter("p_Region", typeof(string));
+    
+            var p_ZonaParameter = p_Zona != null ?
+                new ObjectParameter("p_Zona", p_Zona) :
+                new ObjectParameter("p_Zona", typeof(string));
+    
+            var p_TipoActividadParameter = p_TipoActividad != null ?
+                new ObjectParameter("p_TipoActividad", p_TipoActividad) :
+                new ObjectParameter("p_TipoActividad", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_IncumplimientoActividadesPeriodoRegionZonaList_Result>("[Entities].[udf_IncumplimientoActividadesPeriodoRegionZonaList](@p_idPeriodo, @p_Region, @p_Zona, @p_TipoActividad)", p_idPeriodoParameter, p_RegionParameter, p_ZonaParameter, p_TipoActividadParameter);
+        }
+    
+        [DbFunction("Entities", "udf_IncumplimientoActividadesPeriodoZonaActividadList")]
+        public virtual IQueryable<udf_IncumplimientoActividadesPeriodoZonaActividadList_Result> udf_IncumplimientoActividadesPeriodoZonaActividadList(string p_idPeriodo, string p_Region, string p_Zona, string p_TipoActividad)
+        {
+            var p_idPeriodoParameter = p_idPeriodo != null ?
+                new ObjectParameter("p_idPeriodo", p_idPeriodo) :
+                new ObjectParameter("p_idPeriodo", typeof(string));
+    
+            var p_RegionParameter = p_Region != null ?
+                new ObjectParameter("p_Region", p_Region) :
+                new ObjectParameter("p_Region", typeof(string));
+    
+            var p_ZonaParameter = p_Zona != null ?
+                new ObjectParameter("p_Zona", p_Zona) :
+                new ObjectParameter("p_Zona", typeof(string));
+    
+            var p_TipoActividadParameter = p_TipoActividad != null ?
+                new ObjectParameter("p_TipoActividad", p_TipoActividad) :
+                new ObjectParameter("p_TipoActividad", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_IncumplimientoActividadesPeriodoZonaActividadList_Result>("[Entities].[udf_IncumplimientoActividadesPeriodoZonaActividadList](@p_idPeriodo, @p_Region, @p_Zona, @p_TipoActividad)", p_idPeriodoParameter, p_RegionParameter, p_ZonaParameter, p_TipoActividadParameter);
         }
     
         [DbFunction("Entities", "udf_ModulosSeguridadxRol")]
@@ -186,107 +242,334 @@ namespace Saptra.Web.Data
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_PlanSemanalValidarList_Result>("[Entities].[udf_PlanSemanalValidarList](@p_UsuarioId, @p_Periodos, @p_TiposFigura, @p_NombresFigura)", p_UsuarioIdParameter, p_PeriodosParameter, p_TiposFiguraParameter, p_NombresFiguraParameter);
         }
     
-        public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
+        [DbFunction("Entities", "udf_PreregistrosIncorporadosBaseList")]
+        public virtual IQueryable<udf_PreregistrosIncorporadosBaseList_Result> udf_PreregistrosIncorporadosBaseList(string p_idPeriodo, string p_Region, string p_Zona, string p_TipoActividad)
         {
-            var diagramnameParameter = diagramname != null ?
-                new ObjectParameter("diagramname", diagramname) :
-                new ObjectParameter("diagramname", typeof(string));
+            var p_idPeriodoParameter = p_idPeriodo != null ?
+                new ObjectParameter("p_idPeriodo", p_idPeriodo) :
+                new ObjectParameter("p_idPeriodo", typeof(string));
     
-            var owner_idParameter = owner_id.HasValue ?
-                new ObjectParameter("owner_id", owner_id) :
-                new ObjectParameter("owner_id", typeof(int));
+            var p_RegionParameter = p_Region != null ?
+                new ObjectParameter("p_Region", p_Region) :
+                new ObjectParameter("p_Region", typeof(string));
     
-            var versionParameter = version.HasValue ?
-                new ObjectParameter("version", version) :
-                new ObjectParameter("version", typeof(int));
+            var p_ZonaParameter = p_Zona != null ?
+                new ObjectParameter("p_Zona", p_Zona) :
+                new ObjectParameter("p_Zona", typeof(string));
     
-            var definitionParameter = definition != null ?
-                new ObjectParameter("definition", definition) :
-                new ObjectParameter("definition", typeof(byte[]));
+            var p_TipoActividadParameter = p_TipoActividad != null ?
+                new ObjectParameter("p_TipoActividad", p_TipoActividad) :
+                new ObjectParameter("p_TipoActividad", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_alterdiagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_PreregistrosIncorporadosBaseList_Result>("[Entities].[udf_PreregistrosIncorporadosBaseList](@p_idPeriodo, @p_Region, @p_Zona, @p_TipoActividad)", p_idPeriodoParameter, p_RegionParameter, p_ZonaParameter, p_TipoActividadParameter);
         }
     
-        public virtual int sp_creatediagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
+        [DbFunction("Entities", "udf_PreregistrosIncorporadosBaseRegionList")]
+        public virtual IQueryable<udf_PreregistrosIncorporadosBaseRegionList_Result> udf_PreregistrosIncorporadosBaseRegionList(string p_idPeriodo, string p_Region, string p_Zona, string p_TipoActividad)
         {
-            var diagramnameParameter = diagramname != null ?
-                new ObjectParameter("diagramname", diagramname) :
-                new ObjectParameter("diagramname", typeof(string));
+            var p_idPeriodoParameter = p_idPeriodo != null ?
+                new ObjectParameter("p_idPeriodo", p_idPeriodo) :
+                new ObjectParameter("p_idPeriodo", typeof(string));
     
-            var owner_idParameter = owner_id.HasValue ?
-                new ObjectParameter("owner_id", owner_id) :
-                new ObjectParameter("owner_id", typeof(int));
+            var p_RegionParameter = p_Region != null ?
+                new ObjectParameter("p_Region", p_Region) :
+                new ObjectParameter("p_Region", typeof(string));
     
-            var versionParameter = version.HasValue ?
-                new ObjectParameter("version", version) :
-                new ObjectParameter("version", typeof(int));
+            var p_ZonaParameter = p_Zona != null ?
+                new ObjectParameter("p_Zona", p_Zona) :
+                new ObjectParameter("p_Zona", typeof(string));
     
-            var definitionParameter = definition != null ?
-                new ObjectParameter("definition", definition) :
-                new ObjectParameter("definition", typeof(byte[]));
+            var p_TipoActividadParameter = p_TipoActividad != null ?
+                new ObjectParameter("p_TipoActividad", p_TipoActividad) :
+                new ObjectParameter("p_TipoActividad", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_creatediagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_PreregistrosIncorporadosBaseRegionList_Result>("[Entities].[udf_PreregistrosIncorporadosBaseRegionList](@p_idPeriodo, @p_Region, @p_Zona, @p_TipoActividad)", p_idPeriodoParameter, p_RegionParameter, p_ZonaParameter, p_TipoActividadParameter);
         }
     
-        public virtual int sp_dropdiagram(string diagramname, Nullable<int> owner_id)
+        [DbFunction("Entities", "udf_PreregistrosIncorporadosPeriodoFiguraEducandoList")]
+        public virtual IQueryable<udf_PreregistrosIncorporadosPeriodoFiguraEducandoList_Result> udf_PreregistrosIncorporadosPeriodoFiguraEducandoList(string p_idPeriodo, string p_Region, string p_Zona, string p_TipoActividad)
         {
-            var diagramnameParameter = diagramname != null ?
-                new ObjectParameter("diagramname", diagramname) :
-                new ObjectParameter("diagramname", typeof(string));
+            var p_idPeriodoParameter = p_idPeriodo != null ?
+                new ObjectParameter("p_idPeriodo", p_idPeriodo) :
+                new ObjectParameter("p_idPeriodo", typeof(string));
     
-            var owner_idParameter = owner_id.HasValue ?
-                new ObjectParameter("owner_id", owner_id) :
-                new ObjectParameter("owner_id", typeof(int));
+            var p_RegionParameter = p_Region != null ?
+                new ObjectParameter("p_Region", p_Region) :
+                new ObjectParameter("p_Region", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_dropdiagram", diagramnameParameter, owner_idParameter);
+            var p_ZonaParameter = p_Zona != null ?
+                new ObjectParameter("p_Zona", p_Zona) :
+                new ObjectParameter("p_Zona", typeof(string));
+    
+            var p_TipoActividadParameter = p_TipoActividad != null ?
+                new ObjectParameter("p_TipoActividad", p_TipoActividad) :
+                new ObjectParameter("p_TipoActividad", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_PreregistrosIncorporadosPeriodoFiguraEducandoList_Result>("[Entities].[udf_PreregistrosIncorporadosPeriodoFiguraEducandoList](@p_idPeriodo, @p_Region, @p_Zona, @p_TipoActividad)", p_idPeriodoParameter, p_RegionParameter, p_ZonaParameter, p_TipoActividadParameter);
         }
     
-        public virtual ObjectResult<sp_helpdiagramdefinition_Result> sp_helpdiagramdefinition(string diagramname, Nullable<int> owner_id)
+        [DbFunction("Entities", "udf_PreregistrosIncorporadosPeriodoFiguraList")]
+        public virtual IQueryable<udf_PreregistrosIncorporadosPeriodoFiguraList_Result> udf_PreregistrosIncorporadosPeriodoFiguraList(string p_idPeriodo, string p_Region, string p_Zona, string p_TipoActividad)
         {
-            var diagramnameParameter = diagramname != null ?
-                new ObjectParameter("diagramname", diagramname) :
-                new ObjectParameter("diagramname", typeof(string));
+            var p_idPeriodoParameter = p_idPeriodo != null ?
+                new ObjectParameter("p_idPeriodo", p_idPeriodo) :
+                new ObjectParameter("p_idPeriodo", typeof(string));
     
-            var owner_idParameter = owner_id.HasValue ?
-                new ObjectParameter("owner_id", owner_id) :
-                new ObjectParameter("owner_id", typeof(int));
+            var p_RegionParameter = p_Region != null ?
+                new ObjectParameter("p_Region", p_Region) :
+                new ObjectParameter("p_Region", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_helpdiagramdefinition_Result>("sp_helpdiagramdefinition", diagramnameParameter, owner_idParameter);
+            var p_ZonaParameter = p_Zona != null ?
+                new ObjectParameter("p_Zona", p_Zona) :
+                new ObjectParameter("p_Zona", typeof(string));
+    
+            var p_TipoActividadParameter = p_TipoActividad != null ?
+                new ObjectParameter("p_TipoActividad", p_TipoActividad) :
+                new ObjectParameter("p_TipoActividad", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_PreregistrosIncorporadosPeriodoFiguraList_Result>("[Entities].[udf_PreregistrosIncorporadosPeriodoFiguraList](@p_idPeriodo, @p_Region, @p_Zona, @p_TipoActividad)", p_idPeriodoParameter, p_RegionParameter, p_ZonaParameter, p_TipoActividadParameter);
         }
     
-        public virtual ObjectResult<sp_helpdiagrams_Result> sp_helpdiagrams(string diagramname, Nullable<int> owner_id)
+        [DbFunction("Entities", "udf_PreregistrosIncorporadosZonaList")]
+        public virtual IQueryable<udf_PreregistrosIncorporadosZonaList_Result> udf_PreregistrosIncorporadosZonaList(string p_idPeriodo, string p_Region, string p_Zona, string p_TipoActividad)
         {
-            var diagramnameParameter = diagramname != null ?
-                new ObjectParameter("diagramname", diagramname) :
-                new ObjectParameter("diagramname", typeof(string));
+            var p_idPeriodoParameter = p_idPeriodo != null ?
+                new ObjectParameter("p_idPeriodo", p_idPeriodo) :
+                new ObjectParameter("p_idPeriodo", typeof(string));
     
-            var owner_idParameter = owner_id.HasValue ?
-                new ObjectParameter("owner_id", owner_id) :
-                new ObjectParameter("owner_id", typeof(int));
+            var p_RegionParameter = p_Region != null ?
+                new ObjectParameter("p_Region", p_Region) :
+                new ObjectParameter("p_Region", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_helpdiagrams_Result>("sp_helpdiagrams", diagramnameParameter, owner_idParameter);
+            var p_ZonaParameter = p_Zona != null ?
+                new ObjectParameter("p_Zona", p_Zona) :
+                new ObjectParameter("p_Zona", typeof(string));
+    
+            var p_TipoActividadParameter = p_TipoActividad != null ?
+                new ObjectParameter("p_TipoActividad", p_TipoActividad) :
+                new ObjectParameter("p_TipoActividad", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_PreregistrosIncorporadosZonaList_Result>("[Entities].[udf_PreregistrosIncorporadosZonaList](@p_idPeriodo, @p_Region, @p_Zona, @p_TipoActividad)", p_idPeriodoParameter, p_RegionParameter, p_ZonaParameter, p_TipoActividadParameter);
         }
     
-        public virtual int sp_renamediagram(string diagramname, Nullable<int> owner_id, string new_diagramname)
+        [DbFunction("Entities", "udf_RechazoAprobacionBaseList")]
+        public virtual IQueryable<udf_RechazoAprobacionBaseList_Result> udf_RechazoAprobacionBaseList(string p_idPeriodo, string p_Region, string p_Zona, string p_TipoActividad)
         {
-            var diagramnameParameter = diagramname != null ?
-                new ObjectParameter("diagramname", diagramname) :
-                new ObjectParameter("diagramname", typeof(string));
+            var p_idPeriodoParameter = p_idPeriodo != null ?
+                new ObjectParameter("p_idPeriodo", p_idPeriodo) :
+                new ObjectParameter("p_idPeriodo", typeof(string));
     
-            var owner_idParameter = owner_id.HasValue ?
-                new ObjectParameter("owner_id", owner_id) :
-                new ObjectParameter("owner_id", typeof(int));
+            var p_RegionParameter = p_Region != null ?
+                new ObjectParameter("p_Region", p_Region) :
+                new ObjectParameter("p_Region", typeof(string));
     
-            var new_diagramnameParameter = new_diagramname != null ?
-                new ObjectParameter("new_diagramname", new_diagramname) :
-                new ObjectParameter("new_diagramname", typeof(string));
+            var p_ZonaParameter = p_Zona != null ?
+                new ObjectParameter("p_Zona", p_Zona) :
+                new ObjectParameter("p_Zona", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_renamediagram", diagramnameParameter, owner_idParameter, new_diagramnameParameter);
+            var p_TipoActividadParameter = p_TipoActividad != null ?
+                new ObjectParameter("p_TipoActividad", p_TipoActividad) :
+                new ObjectParameter("p_TipoActividad", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_RechazoAprobacionBaseList_Result>("[Entities].[udf_RechazoAprobacionBaseList](@p_idPeriodo, @p_Region, @p_Zona, @p_TipoActividad)", p_idPeriodoParameter, p_RegionParameter, p_ZonaParameter, p_TipoActividadParameter);
         }
     
-        public virtual int sp_upgraddiagrams()
+        [DbFunction("Entities", "udf_RechazoAprobacionRegionList")]
+        public virtual IQueryable<udf_RechazoAprobacionRegionList_Result> udf_RechazoAprobacionRegionList(string p_idPeriodo, string p_Region, string p_Zona, string p_TipoActividad)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_upgraddiagrams");
+            var p_idPeriodoParameter = p_idPeriodo != null ?
+                new ObjectParameter("p_idPeriodo", p_idPeriodo) :
+                new ObjectParameter("p_idPeriodo", typeof(string));
+    
+            var p_RegionParameter = p_Region != null ?
+                new ObjectParameter("p_Region", p_Region) :
+                new ObjectParameter("p_Region", typeof(string));
+    
+            var p_ZonaParameter = p_Zona != null ?
+                new ObjectParameter("p_Zona", p_Zona) :
+                new ObjectParameter("p_Zona", typeof(string));
+    
+            var p_TipoActividadParameter = p_TipoActividad != null ?
+                new ObjectParameter("p_TipoActividad", p_TipoActividad) :
+                new ObjectParameter("p_TipoActividad", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_RechazoAprobacionRegionList_Result>("[Entities].[udf_RechazoAprobacionRegionList](@p_idPeriodo, @p_Region, @p_Zona, @p_TipoActividad)", p_idPeriodoParameter, p_RegionParameter, p_ZonaParameter, p_TipoActividadParameter);
+        }
+    
+        [DbFunction("Entities", "udf_RechazoAprobacionZonaFiguraNombreAprobacionAct")]
+        public virtual IQueryable<udf_RechazoAprobacionZonaFiguraNombreAprobacionAct_Result> udf_RechazoAprobacionZonaFiguraNombreAprobacionAct(string p_idPeriodo, string p_Region, string p_Zona, string p_TipoActividad)
+        {
+            var p_idPeriodoParameter = p_idPeriodo != null ?
+                new ObjectParameter("p_idPeriodo", p_idPeriodo) :
+                new ObjectParameter("p_idPeriodo", typeof(string));
+    
+            var p_RegionParameter = p_Region != null ?
+                new ObjectParameter("p_Region", p_Region) :
+                new ObjectParameter("p_Region", typeof(string));
+    
+            var p_ZonaParameter = p_Zona != null ?
+                new ObjectParameter("p_Zona", p_Zona) :
+                new ObjectParameter("p_Zona", typeof(string));
+    
+            var p_TipoActividadParameter = p_TipoActividad != null ?
+                new ObjectParameter("p_TipoActividad", p_TipoActividad) :
+                new ObjectParameter("p_TipoActividad", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_RechazoAprobacionZonaFiguraNombreAprobacionAct_Result>("[Entities].[udf_RechazoAprobacionZonaFiguraNombreAprobacionAct](@p_idPeriodo, @p_Region, @p_Zona, @p_TipoActividad)", p_idPeriodoParameter, p_RegionParameter, p_ZonaParameter, p_TipoActividadParameter);
+        }
+    
+        [DbFunction("Entities", "udf_RechazoAprobacionZonaFiguraNombreAprobacionList")]
+        public virtual IQueryable<udf_RechazoAprobacionZonaFiguraNombreAprobacionList_Result> udf_RechazoAprobacionZonaFiguraNombreAprobacionList(string p_idPeriodo, string p_Region, string p_Zona, string p_TipoActividad)
+        {
+            var p_idPeriodoParameter = p_idPeriodo != null ?
+                new ObjectParameter("p_idPeriodo", p_idPeriodo) :
+                new ObjectParameter("p_idPeriodo", typeof(string));
+    
+            var p_RegionParameter = p_Region != null ?
+                new ObjectParameter("p_Region", p_Region) :
+                new ObjectParameter("p_Region", typeof(string));
+    
+            var p_ZonaParameter = p_Zona != null ?
+                new ObjectParameter("p_Zona", p_Zona) :
+                new ObjectParameter("p_Zona", typeof(string));
+    
+            var p_TipoActividadParameter = p_TipoActividad != null ?
+                new ObjectParameter("p_TipoActividad", p_TipoActividad) :
+                new ObjectParameter("p_TipoActividad", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_RechazoAprobacionZonaFiguraNombreAprobacionList_Result>("[Entities].[udf_RechazoAprobacionZonaFiguraNombreAprobacionList](@p_idPeriodo, @p_Region, @p_Zona, @p_TipoActividad)", p_idPeriodoParameter, p_RegionParameter, p_ZonaParameter, p_TipoActividadParameter);
+        }
+    
+        [DbFunction("Entities", "udf_RechazoAprobacionZonaList")]
+        public virtual IQueryable<udf_RechazoAprobacionZonaList_Result> udf_RechazoAprobacionZonaList(string p_idPeriodo, string p_Region, string p_Zona, string p_TipoActividad)
+        {
+            var p_idPeriodoParameter = p_idPeriodo != null ?
+                new ObjectParameter("p_idPeriodo", p_idPeriodo) :
+                new ObjectParameter("p_idPeriodo", typeof(string));
+    
+            var p_RegionParameter = p_Region != null ?
+                new ObjectParameter("p_Region", p_Region) :
+                new ObjectParameter("p_Region", typeof(string));
+    
+            var p_ZonaParameter = p_Zona != null ?
+                new ObjectParameter("p_Zona", p_Zona) :
+                new ObjectParameter("p_Zona", typeof(string));
+    
+            var p_TipoActividadParameter = p_TipoActividad != null ?
+                new ObjectParameter("p_TipoActividad", p_TipoActividad) :
+                new ObjectParameter("p_TipoActividad", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_RechazoAprobacionZonaList_Result>("[Entities].[udf_RechazoAprobacionZonaList](@p_idPeriodo, @p_Region, @p_Zona, @p_TipoActividad)", p_idPeriodoParameter, p_RegionParameter, p_ZonaParameter, p_TipoActividadParameter);
+        }
+    
+        [DbFunction("Entities", "udf_RechazoValidacionBaseList")]
+        public virtual IQueryable<udf_RechazoValidacionBaseList_Result> udf_RechazoValidacionBaseList(string p_idPeriodo, string p_Region, string p_Zona, string p_TipoActividad)
+        {
+            var p_idPeriodoParameter = p_idPeriodo != null ?
+                new ObjectParameter("p_idPeriodo", p_idPeriodo) :
+                new ObjectParameter("p_idPeriodo", typeof(string));
+    
+            var p_RegionParameter = p_Region != null ?
+                new ObjectParameter("p_Region", p_Region) :
+                new ObjectParameter("p_Region", typeof(string));
+    
+            var p_ZonaParameter = p_Zona != null ?
+                new ObjectParameter("p_Zona", p_Zona) :
+                new ObjectParameter("p_Zona", typeof(string));
+    
+            var p_TipoActividadParameter = p_TipoActividad != null ?
+                new ObjectParameter("p_TipoActividad", p_TipoActividad) :
+                new ObjectParameter("p_TipoActividad", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_RechazoValidacionBaseList_Result>("[Entities].[udf_RechazoValidacionBaseList](@p_idPeriodo, @p_Region, @p_Zona, @p_TipoActividad)", p_idPeriodoParameter, p_RegionParameter, p_ZonaParameter, p_TipoActividadParameter);
+        }
+    
+        [DbFunction("Entities", "udf_RechazoValidacionRegionList")]
+        public virtual IQueryable<udf_RechazoValidacionRegionList_Result> udf_RechazoValidacionRegionList(string p_idPeriodo, string p_Region, string p_Zona, string p_TipoActividad)
+        {
+            var p_idPeriodoParameter = p_idPeriodo != null ?
+                new ObjectParameter("p_idPeriodo", p_idPeriodo) :
+                new ObjectParameter("p_idPeriodo", typeof(string));
+    
+            var p_RegionParameter = p_Region != null ?
+                new ObjectParameter("p_Region", p_Region) :
+                new ObjectParameter("p_Region", typeof(string));
+    
+            var p_ZonaParameter = p_Zona != null ?
+                new ObjectParameter("p_Zona", p_Zona) :
+                new ObjectParameter("p_Zona", typeof(string));
+    
+            var p_TipoActividadParameter = p_TipoActividad != null ?
+                new ObjectParameter("p_TipoActividad", p_TipoActividad) :
+                new ObjectParameter("p_TipoActividad", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_RechazoValidacionRegionList_Result>("[Entities].[udf_RechazoValidacionRegionList](@p_idPeriodo, @p_Region, @p_Zona, @p_TipoActividad)", p_idPeriodoParameter, p_RegionParameter, p_ZonaParameter, p_TipoActividadParameter);
+        }
+    
+        [DbFunction("Entities", "udf_RechazoValidacionZonaFiguraNombreValidacion")]
+        public virtual IQueryable<udf_RechazoValidacionZonaFiguraNombreValidacion_Result> udf_RechazoValidacionZonaFiguraNombreValidacion(string p_idPeriodo, string p_Region, string p_Zona, string p_TipoActividad)
+        {
+            var p_idPeriodoParameter = p_idPeriodo != null ?
+                new ObjectParameter("p_idPeriodo", p_idPeriodo) :
+                new ObjectParameter("p_idPeriodo", typeof(string));
+    
+            var p_RegionParameter = p_Region != null ?
+                new ObjectParameter("p_Region", p_Region) :
+                new ObjectParameter("p_Region", typeof(string));
+    
+            var p_ZonaParameter = p_Zona != null ?
+                new ObjectParameter("p_Zona", p_Zona) :
+                new ObjectParameter("p_Zona", typeof(string));
+    
+            var p_TipoActividadParameter = p_TipoActividad != null ?
+                new ObjectParameter("p_TipoActividad", p_TipoActividad) :
+                new ObjectParameter("p_TipoActividad", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_RechazoValidacionZonaFiguraNombreValidacion_Result>("[Entities].[udf_RechazoValidacionZonaFiguraNombreValidacion](@p_idPeriodo, @p_Region, @p_Zona, @p_TipoActividad)", p_idPeriodoParameter, p_RegionParameter, p_ZonaParameter, p_TipoActividadParameter);
+        }
+    
+        [DbFunction("Entities", "udf_RechazoValidacionZonaFiguraNombreValidacionAct")]
+        public virtual IQueryable<udf_RechazoValidacionZonaFiguraNombreValidacionAct_Result> udf_RechazoValidacionZonaFiguraNombreValidacionAct(string p_idPeriodo, string p_Region, string p_Zona, string p_TipoActividad)
+        {
+            var p_idPeriodoParameter = p_idPeriodo != null ?
+                new ObjectParameter("p_idPeriodo", p_idPeriodo) :
+                new ObjectParameter("p_idPeriodo", typeof(string));
+    
+            var p_RegionParameter = p_Region != null ?
+                new ObjectParameter("p_Region", p_Region) :
+                new ObjectParameter("p_Region", typeof(string));
+    
+            var p_ZonaParameter = p_Zona != null ?
+                new ObjectParameter("p_Zona", p_Zona) :
+                new ObjectParameter("p_Zona", typeof(string));
+    
+            var p_TipoActividadParameter = p_TipoActividad != null ?
+                new ObjectParameter("p_TipoActividad", p_TipoActividad) :
+                new ObjectParameter("p_TipoActividad", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_RechazoValidacionZonaFiguraNombreValidacionAct_Result>("[Entities].[udf_RechazoValidacionZonaFiguraNombreValidacionAct](@p_idPeriodo, @p_Region, @p_Zona, @p_TipoActividad)", p_idPeriodoParameter, p_RegionParameter, p_ZonaParameter, p_TipoActividadParameter);
+        }
+    
+        [DbFunction("Entities", "udf_RechazoValidacionZonaList")]
+        public virtual IQueryable<udf_RechazoValidacionZonaList_Result> udf_RechazoValidacionZonaList(string p_idPeriodo, string p_Region, string p_Zona, string p_TipoActividad)
+        {
+            var p_idPeriodoParameter = p_idPeriodo != null ?
+                new ObjectParameter("p_idPeriodo", p_idPeriodo) :
+                new ObjectParameter("p_idPeriodo", typeof(string));
+    
+            var p_RegionParameter = p_Region != null ?
+                new ObjectParameter("p_Region", p_Region) :
+                new ObjectParameter("p_Region", typeof(string));
+    
+            var p_ZonaParameter = p_Zona != null ?
+                new ObjectParameter("p_Zona", p_Zona) :
+                new ObjectParameter("p_Zona", typeof(string));
+    
+            var p_TipoActividadParameter = p_TipoActividad != null ?
+                new ObjectParameter("p_TipoActividad", p_TipoActividad) :
+                new ObjectParameter("p_TipoActividad", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_RechazoValidacionZonaList_Result>("[Entities].[udf_RechazoValidacionZonaList](@p_idPeriodo, @p_Region, @p_Zona, @p_TipoActividad)", p_idPeriodoParameter, p_RegionParameter, p_ZonaParameter, p_TipoActividadParameter);
         }
     }
 }

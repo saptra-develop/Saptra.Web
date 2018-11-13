@@ -169,7 +169,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Educandos captados VS pre registrados.
+        ///   Busca una cadena traducida similar a Educandos Preregistrados vs Incorporados.
         /// </summary>
         public static string menuEducandos {
             get {
@@ -349,6 +349,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Regiones.
+        /// </summary>
+        public static string menuRegiones {
+            get {
+                return ResourceManager.GetString("menuRegiones", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Captura Plan Semanal.
         /// </summary>
         public static string menuRegistroPlan {
@@ -426,6 +435,15 @@ namespace Resources {
         public static string menuVerificarEnvio {
             get {
                 return ResourceManager.GetString("menuVerificarEnvio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Zonas.
+        /// </summary>
+        public static string menuZonas {
+            get {
+                return ResourceManager.GetString("menuZonas", resourceCulture);
             }
         }
         

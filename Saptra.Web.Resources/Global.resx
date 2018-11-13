@@ -154,7 +154,7 @@
     <value>Consulta Plan Semanal</value>
   </data>
   <data name="menuEducandos" xml:space="preserve">
-    <value>Educandos captados VS pre registrados</value>
+    <value>Educandos Preregistrados vs Incorporados</value>
   </data>
   <data name="menuEspanol" xml:space="preserve">
     <value>Spanish</value>
@@ -213,6 +213,9 @@
   <data name="menuPeriodos" xml:space="preserve">
     <value>Periodos</value>
   </data>
+  <data name="menuRegiones" xml:space="preserve">
+    <value>Regiones</value>
+  </data>
   <data name="menuRegistroPlan" xml:space="preserve">
     <value>Captura Plan Semanal</value>
   </data>
@@ -239,6 +242,9 @@
   </data>
   <data name="menuVerificarEnvio" xml:space="preserve">
     <value>Verificar Envio</value>
+  </data>
+  <data name="menuZonas" xml:space="preserve">
+    <value>Zonas</value>
   </data>
   <data name="titleList" xml:space="preserve">
     <value>List</value>

@@ -79,8 +79,10 @@ var PlanSemanal = {
                 colModel: [//{ title: 'id', name: 'id', index: true },
                             { title: 'Actividad', name: 'actividad',  index: true },
                             { title: 'Descripción', name: 'descripcion', index: true },
+                            { title: 'Lugar', name: 'lugar', index: true },
                             { title: 'Fecha', name: 'fecha',  index: true },
-                            { title: 'Hora', name: 'hora',  index: true },
+                            { title: 'Hora Inicio', name: 'hora', index: true },
+                            { title: 'Hora Fin', name: 'horaFin', index: true },
                             { title: 'Check In', name: 'checkin',  index: true },
                             { title: 'Comentarios CZ', name: 'comentariosNoValidacion',  index: true }],
                 onRowClick: function () {

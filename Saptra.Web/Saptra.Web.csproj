@@ -150,6 +150,7 @@
     <Content Include="Content\images\logo_inaeba.png" />
     <Content Include="Content\images\Logo_SAPTRA.jpg" />
     <Content Include="Content\images\Logo_SAPTRA_min.jpg" />
+    <Content Include="Content\images\saptraApp.png" />
     <Content Include="Content\images\select2.png" />
     <Content Include="Content\images\select2x2.png" />
     <Content Include="Content\OpenSans.css" />
@@ -166,6 +167,10 @@
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="Scripts\Autentificacion.js" />
+    <Content Include="Scripts\IndCertificados.js" />
+    <Content Include="Scripts\IndPreregistrosIncorporados.js" />
+    <Content Include="Scripts\IndFigurasObservacionesAprobacion.js" />
+    <Content Include="Scripts\IndFigurasReincidentesValidacion.js" />
     <Content Include="Scripts\lib\backbone\backbone-min.js" />
     <Content Include="Scripts\lib\backbone\backbone.js" />
     <Content Include="Scripts\lib\bbGrid.js" />
@@ -1289,6 +1294,9 @@
     <Content Include="Scripts\lib\ckeditor\styles.js" />
     <Content Include="Scripts\lib\fileinput\fileinput.min.css" />
     <Content Include="Scripts\lib\fileinput\fileinput.min.js" />
+    <Content Include="Scripts\lib\fusioncharts\fusioncharts.charts.js" />
+    <Content Include="Scripts\lib\fusioncharts\fusioncharts.js" />
+    <Content Include="Scripts\lib\fusioncharts\fusioncharts.widgets.js" />
     <Content Include="Scripts\lib\html2canvas.js" />
     <Content Include="Scripts\lib\jquery.floatThead.min.js" />
     <Content Include="Scripts\lib\jquery.loadingdotdotdot.js" />
@@ -1301,6 +1309,7 @@
     <Content Include="fonts\Ubuntu-Medium.ttf" />
     <Content Include="fonts\Ubuntu-MediumItalic.ttf" />
     <Content Include="fonts\Ubuntu-Regular.ttf" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\saptra - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\saptra - Web Deploy.pubxml" />
     <None Include="Scripts\lib\jquery.validate\jquery.validate-vsdoc.js" />
@@ -1433,7 +1442,10 @@
     <Content Include="Scripts\PlanSemanalValidacion.js" />
     <Content Include="Scripts\PlanSemanalConsulta.js" />
     <Content Include="Scripts\PlanSemanal.js" />
+    <Content Include="Scripts\IndIncumplimientoAct.js" />
+    <Content Include="Scripts\Zonas.js" />
     <Content Include="Scripts\Seguridad.js" />
+    <Content Include="Scripts\Regiones.js" />
     <Content Include="Scripts\TiposActividades.js" />
     <Content Include="Scripts\Periodos.js" />
     <Content Include="Scripts\TiposFigura.js" />
@@ -1448,7 +1460,9 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -1480,7 +1494,7 @@
     <Content Include="Views\Rol\_NuevoRol.cshtml" />
     <Content Include="Views\Incidencias\Index.cshtml" />
     <Content Include="Views\Autentificacion\ResetPassword.cshtml" />
-    <Content Include="Views\Indicadores\Index.cshtml" />
+    <Content Include="Views\Indicadores\IncumplimientoAct.cshtml" />
     <Content Include="Views\TiposFigura\_Actualizar.cshtml" />
     <Content Include="Views\TiposFigura\_Nuevo.cshtml" />
     <Content Include="Views\TipoActividades\_Actualizar.cshtml" />
@@ -1490,6 +1504,16 @@
     <Content Include="Views\Periodos\_Actualizar.cshtml" />
     <Content Include="Views\Periodos\_Nuevo.cshtml" />
     <Content Include="Views\Periodos\Periodos.cshtml" />
+    <Content Include="Views\Regiones\_Actualizar.cshtml" />
+    <Content Include="Views\Regiones\_Nuevo.cshtml" />
+    <Content Include="Views\Regiones\Regiones.cshtml" />
+    <Content Include="Views\Zonas\_Actualizar.cshtml" />
+    <Content Include="Views\Zonas\_Nuevo.cshtml" />
+    <Content Include="Views\Zonas\Zonas.cshtml" />
+    <Content Include="Views\Indicadores\FigurasReincidentes.cshtml" />
+    <Content Include="Views\Indicadores\FigurasObservaciones.cshtml" />
+    <Content Include="Views\Indicadores\IncorporadosPreregistrados.cshtml" />
+    <Content Include="Views\Indicadores\Certificados.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

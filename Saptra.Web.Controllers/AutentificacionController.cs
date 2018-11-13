@@ -8,6 +8,7 @@ using Saptra.Web.Data;
 using Saptra.Web.Models;
 using System.Net.Mail;
 using System.Net;
+using System.IO;
 
 namespace Saptra.Web.Controllers
 {
@@ -33,6 +34,10 @@ namespace Saptra.Web.Controllers
             ViewBag.error = string.Empty;
             try
             {
+                //EncriptarController DesencriptaController = new EncriptarController();
+                string contrasenaRec;
+                contrasenaRec = EncriptarController.GetMD5(model.Contrasena);
+
                 if (ModelState.IsValid)
                 {
                     string agentName = model.NombreUsuario;
@@ -43,7 +48,7 @@ namespace Saptra.Web.Controllers
 
                     if (result != null)
                     {
-                        if (result.PasswordUsuario == model.Contrasena)
+                        if (result.PasswordUsuario == contrasenaRec)
                         {
                             FormsAuthentication.SetAuthCookie(result.UsuarioId.ToString(), false);
                             var objCookie = new HttpCookie("data", result.UsuarioId.ToString());
@@ -74,7 +79,7 @@ namespace Saptra.Web.Controllers
             }
             catch (Exception exp)
             {
-                ViewBag.error = "Login:" + exp.Message;
+                ViewBag.error = "Login:" + "Error al obtener la información";
                 ViewBag.successChangePassword = string.Empty;
             }
 
@@ -306,7 +311,7 @@ namespace Saptra.Web.Controllers
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message });
+                return Json(new { Success = false, Message = "Error al obtener la información" });
             }
         }
 
@@ -338,8 +343,9 @@ namespace Saptra.Web.Controllers
                                 var Usuario = (from user in db.mUsuarios
                                                where user.UsuarioId == objResetPassword.UsuarioId && user.EstatusId == 5
                                                select user).FirstOrDefault();
-
-                                Usuario.PasswordUsuario = confirmaPassword;
+                                string contrasenaRec;
+                                contrasenaRec = EncriptarController.GetMD5(confirmaPassword);
+                                Usuario.PasswordUsuario = contrasenaRec;
                                 objResetPassword.EstatusId = 6;
                                 db.SaveChanges();
                                 ViewBag.successChangePassword = "Contraseña modificada!";
@@ -374,7 +380,7 @@ namespace Saptra.Web.Controllers
             }
             catch (Exception exp)
             {
-                ViewBag.error = "Login:" + exp.Message;
+                ViewBag.error = "Login:" + "Error al guardar la información";
             }
             return View();
         }

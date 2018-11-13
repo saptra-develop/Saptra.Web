@@ -11,10 +11,15 @@ var TipoFigura = {
     activeForm: '',
     gridTipoFigura: {},
     colTipoFigura: {},
+    sm: 0,
     Inicial: function () {
         $.ajaxSetup({ cache: false });
         this.CargaGrid();
         this.Eventos();
+        if (window.innerWidth < 768) {
+            // Extra Small Device
+            TipoFigura.sm = 1;
+        } 
     },
     Eventos: function () {
         var that = this;
@@ -32,53 +37,61 @@ var TipoFigura = {
     },
     onGuardar: function () {
         var btn = this;
+        if ($('#NuevoTipoFiguraForm #DescripcionTipoFigura').val() !== "") {
+            FCH.botonMensaje(true, btn, 'Guardar');
+            if ($("form").valid()) {
+                $('#UsuarioCreacionId').val(localStorage.idUser);
+                //Se hace el post para guardar la informacion
+                $.post(contextPath + "TiposFigura/Nuevo",
+                    $("#NuevoTipoFiguraForm *").serialize(),
+                    function (data) {
+                        if (data.Success === true) {
+                            FCH.DespliegaInformacion("El tipo figura fue guardado con el Id: " + data.id);
+                            $('#nuevo-Figura').modal('hide');
+                            TipoFigura.CargaGrid();
+                        } else {
+                            FCH.botonMensaje(false, btn, 'Guardar');
+                            FCH.DespliegaErrorDialogo(data.Message);
 
-        FCH.botonMensaje(true, btn, 'Guardar');
-        if ($("form").valid()) {
-            $('#UsuarioCreacionId').val(localStorage.idUser);
-            //Se hace el post para guardar la informacion
-            $.post(contextPath + "TiposFigura/Nuevo",
-                $("#NuevoTipoFiguraForm *").serialize(),
-                function (data) {
-                    if (data.Success === true) {
-                        FCH.DespliegaInformacion("El tipo figura fue guardado con el Id: " + data.id);
-                        $('#nuevo-Figura').modal('hide');
-                        TipoFigura.CargaGrid();
-                    } else {
-                        FCH.botonMensaje(false, btn, 'Guardar');
-                        FCH.DespliegaErrorDialogo(data.Message);
-                        
-                    }
-                }).fail(function () {
-                    FCH.DespliegaErrorDialogo("Error al guardar la información.");
+                        }
+                    }).fail(function () {
+                        FCH.DespliegaErrorDialogo("Error al guardar la información.");
 
-                }).always(function () { FCH.botonMensaje(false, btn, 'Guardar'); });
+                    }).always(function () { FCH.botonMensaje(false, btn, 'Guardar'); });
 
+            } else {
+                FCH.botonMensaje(false, btn, 'Guardar');
+            }
         } else {
-            FCH.botonMensaje(false, btn, 'Guardar');
+            $('#NuevoTipoFiguraForm #DescripcionTipoFigura').addClass("input-validation-error");
+            $('#NuevoTipoFiguraForm #DescripcionTipoFigura').attr("placeholder", "Obligatorio");
         }
     },
     onActualizar: function () {
         var btn = this;
-
-        FCH.botonMensaje(true, btn, 'Guardar');
-        if ($("form").valid()) {
-            //Se hace el post para guardar la informacion
-            $.post(contextPath + "TiposFigura/Actualizar",
-                $("#ActualizaTipoFiguraForm *").serialize(),
-                function (data) {
-                    if (data.Success === true) {
-                        $('#actualiza-Figura').modal('hide');
-                        FCH.DespliegaInformacion("El tipo figura fue Actualizado. Id: " + data.id);
-                        TipoFigura.CargaGrid();
-                    } else {
-                        FCH.DespliegaErrorDialogo(data.Message);
-                    }
-                }).fail(function () {
-                    FCH.DespliegaErrorDialogo("Error al actualizar la información");
-                }).always(function () { FCH.botonMensaje(false, btn, 'Guardar'); });
+        if ($('#ActualizaTipoFiguraForm #DescripcionTipoFigura').val() !== "") {
+            FCH.botonMensaje(true, btn, 'Guardar');
+            if ($("form").valid()) {
+                //Se hace el post para guardar la informacion
+                $.post(contextPath + "TiposFigura/Actualizar",
+                    $("#ActualizaTipoFiguraForm *").serialize(),
+                    function (data) {
+                        if (data.Success === true) {
+                            $('#actualiza-Figura').modal('hide');
+                            FCH.DespliegaInformacion("El tipo figura fue Actualizado. Id: " + data.id);
+                            TipoFigura.CargaGrid();
+                        } else {
+                            FCH.DespliegaErrorDialogo(data.Message);
+                        }
+                    }).fail(function () {
+                        FCH.DespliegaErrorDialogo("Error al actualizar la información");
+                    }).always(function () { FCH.botonMensaje(false, btn, 'Guardar'); });
+            } else {
+                FCH.botonMensaje(false, btn, 'Guardar');
+            }
         } else {
-            FCH.botonMensaje(false, btn, 'Guardar');
+            $('#ActualizaTipoFiguraForm #DescripcionTipoFigura').addClass("input-validation-error");
+            $('#ActualizaTipoFiguraForm #DescripcionTipoFigura').attr("placeholder", "Obligatorio");
         }
     },
     Nuevo: function () {
@@ -144,16 +157,17 @@ var TipoFigura = {
             if (bolFilter) {
                 TipoFigura.gridTipoFigura = new bbGrid.View({
                     container: $('#bbGrid-clear'),
-                    rows: 200,
+                    rows: TipoFigura.sm == 1 ? false : 200,
                     rowList: [15, 50, 200, 1000],
-                    enableSearch: true,
-                    actionenable: true,
+                    enableSearch: TipoFigura.sm == 1 ? false : true,
+                    actionenable: TipoFigura.sm == 1 ? false : true,
                     detalle: false,
                     clone: false,
                     editar: true,
-                    borrar: false,
+                    borrar: true,
                     collection: TipoFigura.colTipoFigura,
-                    colModel: [{ title: 'Id', name: 'id', width: '8%', sorttype: 'number' },
+                    colModel: [
+                               TipoFigura.sm == 1 ? { customclass: 'ocultaColumna' } : { title: 'Id', name: 'id', width: '8%', sorttype: 'number' },
                                { title: 'Tipo Figura', name: 'nombre',  index: true },
                                { title: 'Estatus', name: 'estatus',  index: true }]
 

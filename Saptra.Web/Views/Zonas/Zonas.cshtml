@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "Zonas";
+}
+<div class="row">
+    <div class="col-lg-12">
+        <h4 class="page-header">
+            Coordinaciones de Zona
+            <button class="btn btn-xs btn-outline btn-primary pull-right btnNuevo"><i class="fa fa-file-o fa-lg fa-fw"></i> Nuevo</button>
+        </h4>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div id="bbGrid-clear" style="overflow-x: auto; overflow-y: auto;">
+            <div id="cargandoInfo">
+                <div class='alert alert-warning'>
+                    <button type='button' class='close' data-dismiss='alert'>x</button>
+                    Cargando...
+                </div>
+            </div>
+        </div>
+        <br />
+        <br />
+        <br />
+    </div>
+</div>
+
+
+<div class="modal fade bs-example-modal-lg" id="nuevo-Zonas"
+     tabindex="-1" role="dialog"
+     aria-labelledby="nuevoZonasLabel">
+</div>
+
+<div class="modal fade bs-example-modal-lg" id="actualiza-Zonas"
+     tabindex="-1" role="dialog"
+     aria-labelledby="nuevoZonasLabel">
+</div>
+
+
+@section Scripts {
+    @Html.IncludeVersionedJs(Url.Content("~/Scripts/Zonas.js"))
+}

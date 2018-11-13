@@ -52,7 +52,7 @@ namespace Sispro.Web.Controllers
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -71,16 +71,29 @@ namespace Sispro.Web.Controllers
             {
                 try
                 {
-                    pobjModelo.FechaCreacion = DateTime.Now;
-                    pobjModelo.EstatusId = pobjModelo.EstatusId;
-                    db.cTipoFiguras.Add(pobjModelo);
-                    db.SaveChanges();
+                    var validacion = 0;
 
-                    return Json(new { Success = true, id = pobjModelo.TipoFiguraId, Message = "guardado correctamente " });
+                    validacion = (from c in db.cTipoFiguras
+                                  where c.DescripcionTipoFigura == (pobjModelo.DescripcionTipoFigura.TrimStart()).TrimEnd()
+                                  select c).Count();
+                    if (validacion == 0)
+                    {
+                        pobjModelo.FechaCreacion = DateTime.Now;
+                        pobjModelo.DescripcionTipoFigura = (pobjModelo.DescripcionTipoFigura.TrimStart()).TrimEnd();
+                        pobjModelo.EstatusId = 5;
+                        db.cTipoFiguras.Add(pobjModelo);
+                        db.SaveChanges();
+
+                        return Json(new { Success = true, id = pobjModelo.TipoFiguraId, Message = "guardado correctamente " });
+                    }
+                    else
+                    {
+                        return Json(new { Success = false, Message = "Figura existente." });
+                    }
                 }
                 catch (Exception exp)
                 {
-                    return Json(new { Success = false, Message = exp.Message });
+                    return Json(new { Success = false, Message = "Error al guardar la información" });
                 }
             }
 
@@ -103,20 +116,30 @@ namespace Sispro.Web.Controllers
                 var result = (from ps in db.cTipoFiguras
                               where ps.TipoFiguraId == pobjModelo.TipoFiguraId
                               select ps).ToList();
+                var validacion = 0;
 
-                //Actualiza
-                var dbTemp = result.First();
-                dbTemp.DescripcionTipoFigura = pobjModelo.DescripcionTipoFigura;
-                dbTemp.EstatusId = pobjModelo.EstatusId;
-                db.SaveChanges();
-
-
-                return Json(new { Success = true, id = pobjModelo.TipoFiguraId, Message = "actualizada correctamente " });
+                validacion = (from c in db.cTipoFiguras
+                              where c.DescripcionTipoFigura == pobjModelo.DescripcionTipoFigura
+                              select c).Count();
+                if (validacion == 0)
+                {
+                    //Actualiza
+                    var dbTemp = result.First();
+                    dbTemp.DescripcionTipoFigura = (pobjModelo.DescripcionTipoFigura.TrimStart()).TrimEnd();
+                    dbTemp.EstatusId = pobjModelo.EstatusId;
+                    db.SaveChanges();
+                    
+                    return Json(new { Success = true, id = pobjModelo.TipoFiguraId, Message = "actualizada correctamente " });
+                }
+                else
+                {
+                    return Json(new { Success = false, Message = "Figura existente." });
+                }
 
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message });
+                return Json(new { Success = false, Message = "Error al guardar la información" });
             }
         }
 
@@ -136,7 +159,7 @@ namespace Sispro.Web.Controllers
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message });
+                return Json(new { Success = false, Message = "Error al eliminar la información" });
             }
         }
 

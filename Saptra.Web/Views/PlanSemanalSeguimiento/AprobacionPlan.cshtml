@@ -12,15 +12,15 @@
 <div class="well well-sm" style="background-color: #fff; border-color:#337AB7;">
     <div class="row">
         <div class="col-lg-3">
-            <select id="selPeriodos" class="js-example-basic-multiple js-states form-control" multiple="multiple"></select>
+            <select id="selPeriodos" class="js-example-basic-multiple js-states form-control" multiple="multiple"><option> Cargando...</option><</select>
             <input type="hidden" id="selecPeriodos" />
         </div>
         <div class="col-lg-4">
-            <select id="selTipoFigura" class="js-example-basic-multiple js-states form-control" multiple="multiple"></select>
+            <select id="selTipoFigura" class="js-example-basic-multiple js-states form-control" multiple="multiple"><option> Cargando...</option><</select>
             <input type="hidden" id="selecTipoFigura" />
         </div>
         <div class="col-lg-4">
-            <select id="selNombreFigura" class="js-example-basic-multiple js-states form-control" multiple="multiple"></select>
+            <select id="selNombreFigura" class="js-example-basic-multiple js-states form-control" multiple="multiple"><option> Cargando...</option><</select>
             <input type="hidden" id="selecNombreFigura" />
         </div>
         <div class="col-lg-1">
@@ -35,7 +35,7 @@
                 <h3 class="panel-title">Plan Semanal</h3>
             </div>
             <div class="panel-body">
-                <div id="bbGrid-clear">
+                <div id="bbGrid-clear" style="overflow-x: auto; overflow-y: hidden;">
                     <div id="cargandoInfo">
                         <div class='alert alert-warning'>
                             <button type='button' class='close' data-dismiss='alert'>x</button>
@@ -43,6 +43,9 @@
                         </div>
                     </div>
                 </div>
+                <br />
+                <br />
+                <br />
             </div>
         </div>
     </div>

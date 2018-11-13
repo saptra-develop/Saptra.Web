@@ -10,13 +10,16 @@
 namespace Saptra.Web.Data
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class sp_helpdiagrams_Result
+    public partial class InaebaPreregistros
     {
-        public string Database { get; set; }
-        public string Name { get; set; }
-        public int ID { get; set; }
-        public string Owner { get; set; }
-        public int OwnerID { get; set; }
+        public int PreregistroId { get; set; }
+        public string ben_nom { get; set; }
+        public string ben_app { get; set; }
+        public string ben_apm { get; set; }
+        public string ben_nacf { get; set; }
+        public string ben_reg { get; set; }
+        public Nullable<int> num_activ_saptra { get; set; }
     }
 }

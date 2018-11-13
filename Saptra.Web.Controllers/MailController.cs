@@ -82,7 +82,7 @@ namespace Saptra.Web.Controllers
             }
             catch (Exception ex) 
             {
-                return ex.Message;
+                return "Error al enviar el correo";
             } 
             
         }

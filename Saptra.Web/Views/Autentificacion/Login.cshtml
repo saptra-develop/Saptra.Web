@@ -41,22 +41,22 @@
             </div>
             <div class="row">
                 <div id="div-forms">
-                    <div class="col-sm-12 container-login100">
+                    <div class="col-sm-12 container-login100" style="position: relative;">
                         <div class="wrap-login100" style="box-shadow: 4px 3px 19px -4px rgba(0,0,0,0.75);">
 
                             @using (Html.BeginForm("Login", "Autentificacion", new { ReturnUrl = ViewBag.ReturnUrl },
                             FormMethod.Post, new { id = "frmLogin", @role = "form", @class = "login100-form validate-form p-b-33 p-t-5" }))
                             {
                                 <span class="login100-form-logo">
-                                    <img src="/Content/images/Logo_SAPTRA.jpg" style="width:100%">
+                                    <img src="~/Content/images/Logo_SAPTRA.jpg" style="width:100%">
                                 </span>
                                 <div class="wrap-input100 validate-input" data-validate="Ingresar usuario">
-                                    @Html.TextBoxFor(m => m.NombreUsuario, new { @class = "input100", autofocus = "true", placeholder = Resources.Autentificacion.userName })
+                                    @Html.TextBoxFor(m => m.NombreUsuario, new { @class = "input100", autofocus = "true", placeholder = Resources.Autentificacion.userName, autocomplete = "off" })
                                     <span class="focus-input100" data-placeholder="&#xe82a;"></span>
                                 </div>
 
                                 <div class="wrap-input100 validate-input" data-validate="Ingresar contraseña">
-                                    @Html.PasswordFor(m => m.Contrasena, new { @class = "input100", placeholder = Resources.Autentificacion.password })
+                                    @Html.PasswordFor(m => m.Contrasena, new { @class = "input100", placeholder = Resources.Autentificacion.password, autocomplete = "off" })
                                     <span class="focus-input100" data-placeholder="&#xe80f;"></span>
                                 </div>
                                 <div>
@@ -87,7 +87,7 @@
                             @using (Html.BeginForm("EnviarEmail", "Autentificacion", FormMethod.Post, new { id = "frmEnviarEmail", @role = "form", @style = "display:none;", onsubmit = "return false", @class = "login100-form validate-form p-b-33 p-t-5" }))
                             {
                                 <span class="login100-form-logo">
-                                    <img src="/Content/images/Logo_SAPTRA.jpg" style="width:100%">
+                                    <img src="~/Content/images/Logo_SAPTRA.jpg" style="width:100%">
                                 </span>
                                 <p class="text-info">
                                     Si ha olvidado su contraseña, puede restablecerla aquí.
@@ -114,6 +114,7 @@
                         </div>
                     </div>
                 </div>
+                <div style="position: absolute; float:right; right: 30px; bottom: 85px; z-index:10;"><a href="http://200.33.114.167/saptra/saptraImages/app-debug.apk" target="_blank"><img src="~/Content/images/saptraApp.png" width="170" /></a></div>
             </div>
 
         </div>

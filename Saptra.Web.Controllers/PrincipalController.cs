@@ -49,7 +49,7 @@ namespace Saptra.Web.Controllers
                 //    ViewBag.IdProveedor = result.idProveedor;
                 //}
                 ViewBag.UserName = result.NombresUsuario + " " + result.ApellidosUsuario;
-                ViewBag.UserAvatar = result.ImagenUsuario == null ? "/Content/images/avatar.jpg" : result.ImagenUsuario;
+                ViewBag.UserAvatar = result.ImagenUsuario == null ? "../Content/images/avatar.jpg" : result.ImagenUsuario;
 
                 Response.Cookies.Add(cookie);
             }

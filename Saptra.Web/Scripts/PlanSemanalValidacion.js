@@ -16,13 +16,20 @@ var PlanSemanal = {
     colTiposFigura: [],
     colPeriodos: [],
     colNombreFigura: [],
-    comentarios : [],
+    comentarios: [],
+    detalleContainer: {},
+    idPlan: 0,
     Inicial: function () {
         $.ajaxSetup({ cache: false });
         this.CargaPeriodos();
         this.CargaTiposFigura();
         this.CargaNombresFigura();
         this.Eventos();
+        if (localStorage.IdPlan != undefined) {
+            localStorage.removeItem("IdPlan");
+
+            PlanSemanal.CargaGrid();
+        }
     },
     Eventos: function () {
         var that = this;
@@ -122,6 +129,7 @@ var PlanSemanal = {
                     FCH.botonMensaje(false, btn, "<i class='fa fa-check-circle'></i> Validado");
                     $("#btnValidar_" + idPlan).prop("disabled", true);
                     $("#btnFeedback_" + idPlan).prop("disabled", true);
+                    FCH.cargarNotificaciones();
                 } else {
                     FCH.DespliegaError(data.Message);
                     FCH.botonMensaje(false, btn, "<i class='fa fa-check-circle'></i> Validar");
@@ -133,26 +141,35 @@ var PlanSemanal = {
     },
     FeedbackPlan: function (idPlan) {
         var objetoJson = PlanSemanal.comentarios;
-        var btn = $('#btnFeedback_' + idPlan),
-            btnName = $('#btnFeedback_' + idPlan).text();
-        FCH.botonMensaje(true, btn, btnName);
-        $.ajax({
-            url: contextPath + "PlanSemanalSeguimiento/FeedbackPlan?idPlan=" + idPlan + "&idUsuario=" + localStorage.idUser,
-            type: 'post',
-            data: objetoJson,
-            contentType: 'application/json; charset=utf-8',
-            success: function (data) {
-                if (data.Success === true) {
-                    FCH.DespliegaNotificacion('success', 'Plan ', data.Message, 'glyphicon-ok', 3000);
-                    FCH.botonMensaje(false, btn, "<i class='fa fa-check-circle'></i> Feedback");
-                    $("#btnFeedback_" + idPlan).prop("disabled", true);
-                    $("#btnValidar_" + idPlan).prop("disabled", true);
-                } else {
-                    FCH.DespliegaError(data.Message);
-                    FCH.botonMensaje(false, btn, "<i class='fa fa-check-circle'></i> Feedback");
+        if (objetoJson != 0) {
+            var btn = $('#btnFeedback_' + idPlan),
+                btnName = $('#btnFeedback_' + idPlan).text();
+            FCH.botonMensaje(true, btn, btnName);
+            $.ajax({
+                url: contextPath + "PlanSemanalSeguimiento/FeedbackPlan?idPlan=" + idPlan + "&idUsuario=" + localStorage.idUser,
+                type: 'post',
+                data: objetoJson,
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    if (data.Success === true) {
+                        FCH.DespliegaNotificacion('success', 'Plan ', data.Message, 'glyphicon-ok', 3000);
+                        FCH.botonMensaje(false, btn, "<i class='fa fa-check-circle'></i> Observaciones");
+                        $("#btnFeedback_" + idPlan).prop("disabled", true);
+                        $("#btnValidar_" + idPlan).prop("disabled", true);
+                        if (PlanSemanal.idPlan != 0) {
+                            PlanSemanal.CargaGridDetallesPackingList(PlanSemanal.idPlan, PlanSemanal.detalleContainer);
+                        }
+                        FCH.cargarNotificaciones();
+                    } else {
+                        FCH.DespliegaError(data.Message);
+                        FCH.botonMensaje(false, btn, "<i class='fa fa-check-circle'></i> Observaciones");
+                    }
                 }
-            }
-        });
+            });
+        }
+        else {
+            FCH.DespliegaError("Es necesario agregar comentarios para enviar a revisión");
+        }
     },
     CargaGrid: function () {
         $('#bbGrid-clear')[0].innerHTML = "";
@@ -180,6 +197,7 @@ var PlanSemanal = {
                         { title: 'Periodo', name: 'periodo', index: true },
                         { title: 'Acciones', name: 'acciones', textalign: true }],
                     onRowExpanded: function ($el, rowid) {
+                        PlanSemanal.idPlan = rowid;
                         PlanSemanal.CargaGridDetallesPackingList(rowid, $el);
                     }
 
@@ -212,8 +230,10 @@ var PlanSemanal = {
                 colModel: [//{ title: 'id', name: 'id', index: true },
                             { title: 'Actividad', name: 'actividad',  index: true },
                             { title: 'Descripción', name: 'descripcion', index: true },
+                            { title: 'Lugar', name: 'lugar', index: true },
                             { title: 'Fecha', name: 'fecha',  index: true },
-                            { title: 'Hora', name: 'hora',  index: true },
+                            { title: 'Hora Inicio', name: 'hora', index: true },
+                            { title: 'Hora Fin', name: 'horaFin', index: true },
                             { title: 'Check In', name: 'checkin',  index: true },
                             { title: 'Comentarios CZ', name: 'comentariosNoValidacion',  index: true }],
                 onRowClick: function () {
@@ -275,7 +295,7 @@ var PlanSemanal = {
     },
     CargaNombresFigura: function () {
         if (PlanSemanal.colNombreFigura.length < 1) {
-            var url = contextPath + "Usuario/CargarNombresFigura?idEstatus=5";
+            var url = contextPath + "Usuario/CargarNombresFiguraPorCZ?idEstatus=5&idUsuarioCZ=" + localStorage.idUser;
             $.getJSON(url, function (data) {
                 PlanSemanal.colNombreFigura = data;
                 PlanSemanal.CargaListaNombreFigura();

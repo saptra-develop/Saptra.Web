@@ -64,11 +64,11 @@ namespace Sispro.Web.Controllers
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
         }
 
-        public void ExportIncidencias(int? idUsu, int? idEstatus, string Periodos, string TiposFigura, string NombresFigura, string TipoActividades)
+        public void ExportIncidenciasExcel(int? idUsu, int? idEstatus, string Periodos, string TiposFigura, string NombresFigura, string TipoActividades)
         {
             try
             {
@@ -82,7 +82,8 @@ namespace Sispro.Web.Controllers
                     actividad = C.NombreActividad,
                     descripcion = C.DescripcionActividad,
                     fecha = C.FechaActividad.Value.ToString("MM/dd/yyyy"),
-                    comentarios = C.ComentariosRechazo
+                    comentarios = C.ComentariosRechazo,
+                    C.CoordinacionZona
                 });
 
                 if (lstPlanSemanal.Count() > 0)
@@ -119,6 +120,10 @@ namespace Sispro.Web.Controllers
                         ws.Cells["D4:F4"].Merge = true;
                         ws.Cells["D4:F4"].Value = "COORDINACIÓN DE ZONA:";
                         ws.Cells["D4:F4"].Style.Font.Bold = true;
+
+                        ws.Cells["G4:J4"].Merge = true;
+                        ws.Cells["G4:J4"].Value = lstPlanSemanal.FirstOrDefault().CoordinacionZona;
+                        ws.Cells["G4:J4"].Style.Font.Bold = true;
 
                         ws.Cells["A8"].Value = "PERIODO";
                         ws.Cells["A8"].Style.Font.Bold = true;
