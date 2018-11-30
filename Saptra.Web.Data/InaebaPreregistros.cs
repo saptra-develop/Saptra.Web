@@ -21,5 +21,11 @@ namespace Saptra.Web.Data
         public string ben_nacf { get; set; }
         public string ben_reg { get; set; }
         public Nullable<int> num_activ_saptra { get; set; }
+        public string mwu_rfc { get; set; }
+        public string ben_curp { get; set; }
+        public string fsit_sasa { get; set; }
+        public string estatus { get; set; }
+    
+        public virtual dDetallePlanSemanal dDetallePlanSemanal { get; set; }
     }
 }

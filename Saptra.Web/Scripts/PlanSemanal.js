@@ -14,6 +14,7 @@ var PlanSemanal = {
     gridPlanDetalle: {},
     gridPlanSemanal: {},
     colTipoActividad: [],
+    colVehiculos: [],
     colPeriodos: [],
     colPeriodoActual: [],
     detalleContainer: {},
@@ -22,6 +23,7 @@ var PlanSemanal = {
         $.ajaxSetup({ cache: false });
         this.CargaPeriodos();
         this.Eventos();
+        this.CargaGrid();
         //this.ValidaPermisos();
         $('.nav-tabs > li a[title]').tooltip();
         if (localStorage.IdPlan != undefined) {
@@ -37,9 +39,9 @@ var PlanSemanal = {
 
         //$('.btnNuevo').click(that.Nuevo);
 
-        $(document).on("click", '.btnNuevo', that.NuevoPlan);
+        $(document).on("click", '.btnNuevo', that.onGuardar);
 
-        $(document).on("click", '.btn-GuardaNuevo', that.onGuardar);
+        //$(document).on("click", '.btn-GuardaNuevo', that.onGuardar);
 
         $(document).on('click', '.accrowProdDetalle', function () {
             var idPlan = $(this).data("idplan");
@@ -51,6 +53,11 @@ var PlanSemanal = {
                 PlanSemanal.NuevoDetalle(idPlan);
             }
         });
+
+        $(document).on('click', '.btnVehiculo', function () {
+            PlanSemanal.NuevoVehiculo($(this).data("iddetalleplan"));
+        });
+        $(document).on("click", '.btn-GuardaVehiculo', that.onGuardarVehiculo);
 
         $(document).on('click', '.btn-GuardaDetalleNuevo', function () {
             PlanSemanal.CargaGrid();
@@ -104,6 +111,7 @@ var PlanSemanal = {
                     $('#btnEnvioValidacion_' + idPlan).addClass("btn-success");
                     $("#btnEnvioValidacion_" + idPlan).prop("disabled", true);
                     $("#btnEnvioValidacion_" + idPlan).tooltip('destroy');
+                    $("#accrowProdDetalle_" + idPlan).prop("disabled", true);
                     if (PlanSemanal.idPlan != 0) {
                         PlanSemanal.CargaGridDetallesPackingList(PlanSemanal.idPlan, PlanSemanal.detalleContainer);
                     }
@@ -143,6 +151,21 @@ var PlanSemanal = {
             PlanSemanal.CargaTipoActividad();
             PlanSemanal.IniciaDateControls();
             $(PlanSemanal.activeForm + ' #HoraActividad').select2();
+            $(PlanSemanal.activeForm + ' #HoraFin').select2();
+        });
+    },
+    NuevoVehiculo: function (id) {
+        FCH.CierraMensajes();
+        var url = contextPath + "PlanSemanal/NuevoVehiculo/" + id; // El url del controlador      
+        $.get(url, function (data) {
+            $('#nuevo-Vehiculo').html(data);
+            $('#nuevo-Vehiculo').modal({
+                backdrop: 'static',
+                keyboard: true
+            }, 'show');
+            FCH.RedefinirValidaciones(); //para los formularios dinamicos
+            PlanSemanal.activeForm = '#NuevoVehiculoForm';
+            PlanSemanal.CargaVehiculosSipae();
         });
     },
     EditarDetalle: function (id) {
@@ -158,190 +181,261 @@ var PlanSemanal = {
             PlanSemanal.activeForm = '#ActualizaDetallePlanForm';
             PlanSemanal.IniciaDateControls();
             $(PlanSemanal.activeForm + ' #HoraActividad').select2();
+            $(PlanSemanal.activeForm + ' #HoraFin').select2();
             if ($('#ActualizaDetallePlanForm #TipoActividadId').val() == "6") {
                 $('#divCheckIn').hide();
             }
             PlanSemanal.CargaTipoActividad();
         });
     },
-    onGuardar: function (e) {
+    onGuardar: function () {
+        //Se hace el post para guardar la informacion
+        $.post(contextPath + "PlanSemanal/Nuevo?idUsuario=" + localStorage.idUser,
+            function (data) {
+                if (data.Success === true) {
+                    PlanSemanal.CargaGrid();
+                    PlanSemanal.NuevoDetalle(data.id);
+                } else {
+                    FCH.DespliegaError(data.Message);
+                }
+            }).fail(function () {
+                FCH.DespliegaErrorDialogo("Error al guardar la información");
+
+            }).always(function () { "" });
+
+
+
+
+            //if ($('#NuevoPlanForm #selPeriodo').val() !== "0") {
+            //    FCH.botonMensaje(true, btn, btnName);
+            //    if ($("form").valid()) {
+            //        $('#UsuarioCreacionId').val(localStorage.idUser);
+            //        $('#PeriodoId').val($('#selPeriodo').val());
+            //        //Se hace el post para guardar la informacion
+            //        $.post(contextPath + "PlanSemanal/Nuevo",
+            //            $("#NuevoPlanForm *").serialize(),
+            //            function (data) {
+            //                if (data.Success === true) {
+            //                    //if ($('#bbGrid-clear:contains("Seleccionar periodo si desea filtrar la información")').length > 0 || $('#bbGrid-clear:contains("No se encontro información")').length > 0) {
+            //                        //if ($('#bbGrid-clear').has('<div id="cargandoInfo">')) {
+            //                    PlanSemanal.CargaGrid();
+            //                    PlanSemanal.NuevoDetalle(data.id);
+            //                    //} else {
+            //                    //    PlanSemanal.colPlanSemanal.add(PlanSemanal.serializaPlan(data.id, '#NuevoPlanForm'));
+            //                    //}
+            //                    $('#nuevo-PlanSemanal').modal('hide');
+            //                    FCH.DespliegaNotificacion('success', 'Plan ', data.Message, 'glyphicon-ok', 3000);
+            //                } else {
+            //                    FCH.DespliegaErrorDialogo(data.Message);
+            //                }
+            //            }).fail(function () {
+            //                FCH.DespliegaErrorDialogo("Error al guardar la información");
+
+            //            }).always(function () { FCH.botonMensaje(false, btn, btnName); });
+
+            //    } else {
+            //        FCH.botonMensaje(false, btn, btnName);
+            //    }
+            //} else {
+            //    $('#NuevoPlanForm #selPeriodo').addClass("has-error");
+            //}
+     
+    },
+    onGuardarVehiculo: function (e) {
         var btn = this,
             btnName = btn.innerText;
 
 
-                if ($('#NuevoPlanForm #selPeriodo').val() !== "0") {
-                    FCH.botonMensaje(true, btn, btnName);
-                    if ($("form").valid()) {
-                        $('#UsuarioCreacionId').val(localStorage.idUser);
-                        $('#PeriodoId').val($('#selPeriodo').val());
-                        //Se hace el post para guardar la informacion
-                        $.post(contextPath + "PlanSemanal/Nuevo",
-                            $("#NuevoPlanForm *").serialize(),
-                            function (data) {
-                                if (data.Success === true) {
-                                    //if ($('#bbGrid-clear:contains("Seleccionar periodo si desea filtrar la información")').length > 0 || $('#bbGrid-clear:contains("No se encontro información")').length > 0) {
-                                        //if ($('#bbGrid-clear').has('<div id="cargandoInfo">')) {
-                                    PlanSemanal.CargaGrid();
-                                    PlanSemanal.NuevoDetalle(data.id);
-                                    //} else {
-                                    //    PlanSemanal.colPlanSemanal.add(PlanSemanal.serializaPlan(data.id, '#NuevoPlanForm'));
-                                    //}
-                                    $('#nuevo-PlanSemanal').modal('hide');
-                                    FCH.DespliegaNotificacion('success', 'Plan ', data.Message, 'glyphicon-ok', 3000);
-                                } else {
-                                    FCH.DespliegaErrorDialogo(data.Message);
-                                }
-                            }).fail(function () {
-                                FCH.DespliegaErrorDialogo("Error al guardar la información");
-
-                            }).always(function () { FCH.botonMensaje(false, btn, btnName); });
-
-                    } else {
-                        FCH.botonMensaje(false, btn, btnName);
-                    }
-                } else {
-                    $('#NuevoPlanForm #selPeriodo').addClass("has-error");
-                }
-     
-    },
-    onGuardarDetalle: function (tipo, boton) {
-        var btn = $(boton),
-            btnName = $(boton).text();
-
-        if ($('#NuevoDetallePlanForm #HoraActividad').val() <= $('#NuevoDetallePlanForm #HoraFin').val()) {
-            if ($('#NuevoDetallePlanForm #HoraFin').val() >= $('#NuevoDetallePlanForm #HoraActividad').val()) {
-                if ($('#NuevoDetallePlanForm #DescripcionActividad').val() !== "" && $('#NuevoDetallePlanForm #selTipoActividad').val() !== "0" && $('#NuevoDetallePlanForm #fechaAct').val() !== "" && $('#NuevoDetallePlanForm #LugarActividad').val() !== "") {
-                    FCH.botonMensaje(true, btn, btnName);
-                    if ($("form").valid()) {
-                        $('#NuevoDetallePlanForm #UsuarioCreacionId').val(localStorage.idUser);
-                        $('#NuevoDetallePlanForm #TipoActividadId').val($('#selTipoActividad').val());
-                        $('#NuevoDetallePlanForm #FechaActividad').val($('#fechaAct').val());
-                        var PlanSemanalId = $('#PlanSemanalId').val();
-                        //Se hace el post para guardar la informacion
-                        $.post(contextPath + "PlanSemanal/NuevoDetalle",
-                            $("#NuevoDetallePlanForm *").serialize(),
-                            function (data) {
-                                if (data.Success === true) {
-                             
-                                    if (tipo == 2) {
-                                        PlanSemanal.CargaGridDetallesModal(PlanSemanalId);
-                                    }
-                                    else {
-                                        $('#nuevo-PlanDetalle').modal('hide');
-                                        PlanSemanal.CargaGrid();
-                                    }
-                                    //if (PlanSemanal.colPlanDetalle.length >= 1) {
-                                    //    PlanSemanal.colPlanDetalle.add(PlanSemanal.serializaPlanDetalle(data.id, '#NuevoDetallePlanForm'));
-                                    //} else if (PlanSemanal.detalleContainer != "") {
-                                    //    PlanSemanal.CargaGridDetallesPackingList(PlanSemanalId, PlanSemanal.detalleContainer);
-                                    //}
-                                  
-                                    FCH.DespliegaNotificacion('success', 'Actividad ', data.Message, 'glyphicon-ok', 3000);
-                                    $("#btnEnvioValidacion_" + PlanSemanalId).prop("disabled", false);
-                                } else {
-                                    FCH.DespliegaErrorDialogo(data.Message);
-                                }
-                            }).fail(function () {
-                                FCH.DespliegaErrorDialogo("Error al guardar la información");
-
-                            }).always(function () { FCH.botonMensaje(false, btn, btnName); });
-
-                    } else {
-                        FCH.botonMensaje(false, btn, btnName);
-                        if ($('#selTipoActividad').val() == "0") {
-                            $('#selTipoActividad').addClass("select2.error")
-                        }
-                    }
-                } else {
-                    if ($('#NuevoDetallePlanForm #DescripcionActividad').val() == "" && $('#NuevoDetallePlanForm #selTipoActividad').val() == "0" && $('#NuevoDetallePlanForm #fechaAct').val() == "" && $('#NuevoDetallePlanForm #LugarActividad').val() == "") {
-                        $('#NuevoDetallePlanForm #selTipoActividad').addClass("has-error");
-                        $('#NuevoDetallePlanForm #fechaAct').addClass("input-validation-error");
-                        $('#NuevoDetallePlanForm #fechaAct').attr("placeholder", "Obligatorio");
-                        $('#NuevoDetallePlanForm #DescripcionActividad').addClass("input-validation-error");
-                        $('#NuevoDetallePlanForm #DescripcionActividad').attr("placeholder", "Obligatorio");
-                        $('#NuevoDetallePlanForm #LugarActividad').attr("placeholder", "Obligatorio");
-                        $('#NuevoDetallePlanForm #LugarActividad').addClass("input-validation-error");
-                    } else {
-                        if ($('#NuevoDetallePlanForm #selTipoActividad').val() == "0") {
-                            $('#NuevoDetallePlanForm #selTipoActividad').addClass("has-error");
-                        } else if ($('#NuevoDetallePlanForm #DescripcionActividad').val() == "") {
-                            $('#NuevoDetallePlanForm #DescripcionActividad').addClass("input-validation-error");
-                            $('#NuevoDetallePlanForm #DescripcionActividad').attr("placeholder", "Obligatorio");
-                        } else if ($('#NuevoDetallePlanForm #fechaAct').val() == "") {
-                            $('#NuevoDetallePlanForm #fechaAct').attr("placeholder", "Obligatorio");
-                            $('#NuevoDetallePlanForm #fechaAct').addClass("input-validation-error");
+        if ($('#NuevoVehiculoForm #selVehiculo').val() !== "0") {
+            FCH.botonMensaje(true, btn, btnName);
+            if ($("form").valid()) {
+                $('#NuevoVehiculoForm #UsuarioCreacionId').val(localStorage.idUser);
+                $('#NuevoVehiculoForm  #VehiculoId').val($('#selVehiculo').val());
+                //Se hace el post para guardar la informacion
+                $.post(contextPath + "PlanSemanal/NuevoVehiculo",
+                    $("#NuevoVehiculoForm *").serialize(),
+                    function (data) {
+                        if (data.Success === true) {
+                            $('#nuevo-Vehiculo').modal('hide');
+                            FCH.DespliegaNotificacion('success', 'Vehiculo ', data.Message, 'glyphicon-ok', 3000);
+                            PlanSemanal.CargaGridDetallesPackingList(PlanSemanal.idPlan, PlanSemanal.detalleContainer);
                         } else {
-                            $('#NuevoDetallePlanForm #LugarActividad').attr("placeholder", "Obligatorio");
-                            $('#NuevoDetallePlanForm #LugarActividad').addClass("input-validation-error");
+                            FCH.DespliegaErrorDialogo(data.Message);
                         }
-                    }
-                }
+                    }).fail(function () {
+                        FCH.DespliegaErrorDialogo("Error al guardar la información");
+
+                    }).always(function () { FCH.botonMensaje(false, btn, btnName); });
+
             } else {
-                FCH.DespliegaErrorDialogo("La hora fin debe ser mayor o igual a la hora inicial");
+                FCH.botonMensaje(false, btn, btnName);
             }
         } else {
-            FCH.DespliegaErrorDialogo("La hora inicial debe ser igual o menor a la hora fin");
+            $('#NuevoVehiculoForm #selVehiculo').addClass("has-error");
         }
+
+    },
+    onGuardarDetalle: function (tipo, boton) {
+        FCH.CierraMensajes();
+        var btn = $(boton),
+            btnName = $(boton).text();
+        var url = contextPath + "PlanSemanal/ValidarActividadFecha?idPlan=" + $('#PlanSemanalId').val() + "&fecha=" + $('#fechaAct').val() + "&hInicio=" + $('#NuevoDetallePlanForm #HoraActividad').val() + "&hFin=" + $('#NuevoDetallePlanForm #HoraFin').val();
+        $.getJSON(url, function (data) {
+            if (data.Success === true) {
+                FCH.DespliegaErrorDialogo(data.Message);
+            } else {
+                if ($('#NuevoDetallePlanForm #HoraActividad').val() < $('#NuevoDetallePlanForm #HoraFin').val()) {
+                    if ($('#NuevoDetallePlanForm #HoraFin').val() > $('#NuevoDetallePlanForm #HoraActividad').val()) {
+                        if ($('#NuevoDetallePlanForm #DescripcionActividad').val() !== "" && $('#NuevoDetallePlanForm #selTipoActividad').val() !== "0" && $('#NuevoDetallePlanForm #fechaAct').val() !== "" && $('#NuevoDetallePlanForm #LugarActividad').val() !== "") {
+                            FCH.botonMensaje(true, btn, btnName);
+                            if ($("form").valid()) {
+                                $('#NuevoDetallePlanForm #UsuarioCreacionId').val(localStorage.idUser);
+                                $('#NuevoDetallePlanForm #TipoActividadId').val($('#selTipoActividad').val());
+                                $('#NuevoDetallePlanForm #FechaActividad').val($('#fechaAct').val());
+                                var PlanSemanalId = $('#PlanSemanalId').val();
+                                //Se hace el post para guardar la informacion
+                                $.post(contextPath + "PlanSemanal/NuevoDetalle",
+                                    $("#NuevoDetallePlanForm *").serialize(),
+                                    function (data) {
+                                        if (data.Success === true) {
+
+                                            if (tipo == 2) {
+                                                //$('#NuevoDetallePlanForm #selTipoActividad').val(0);
+                                                $("#NuevoDetallePlanForm #selTipoActividad").val('0').change();
+                                                $('#NuevoDetallePlanForm #DescripcionActividad').val('');
+                                                $('#NuevoDetallePlanForm #LugarActividad').val('');
+                                                $('#NuevoDetallePlanForm #fechaAct').val('');
+                                                $('#NuevoDetallePlanForm #HoraActividad').val('08:00').change();
+                                                $('#NuevoDetallePlanForm #HoraFin').val('08:00').change();
+                                                $('#NuevoDetallePlanForm #CantidadCheckIn').val(1);
+                                                PlanSemanal.CargaGridDetallesModal(PlanSemanalId);
+
+                                            }
+                                            else {
+                                                $('#nuevo-PlanDetalle').modal('hide');
+                                                PlanSemanal.CargaGrid();
+                                            }
+                                            //if (PlanSemanal.colPlanDetalle.length >= 1) {
+                                            //    PlanSemanal.colPlanDetalle.add(PlanSemanal.serializaPlanDetalle(data.id, '#NuevoDetallePlanForm'));
+                                            //} else if (PlanSemanal.detalleContainer != "") {
+                                            //    PlanSemanal.CargaGridDetallesPackingList(PlanSemanalId, PlanSemanal.detalleContainer);
+                                            //}
+
+                                            FCH.DespliegaNotificacion('success', 'Actividad ', data.Message, 'glyphicon-ok', 3000);
+                                            $("#btnEnvioValidacion_" + PlanSemanalId).prop("disabled", false);
+                                        } else {
+                                            FCH.DespliegaErrorDialogo(data.Message);
+                                        }
+                                    }).fail(function () {
+                                        FCH.DespliegaErrorDialogo("Error al guardar la información");
+
+                                    }).always(function () { FCH.botonMensaje(false, btn, btnName); });
+
+                            } else {
+                                FCH.botonMensaje(false, btn, btnName);
+                                if ($('#selTipoActividad').val() == "0") {
+                                    $('#selTipoActividad').addClass("select2.error")
+                                }
+                            }
+                        } else {
+                            if ($('#NuevoDetallePlanForm #DescripcionActividad').val() == "" && $('#NuevoDetallePlanForm #selTipoActividad').val() == "0" && $('#NuevoDetallePlanForm #fechaAct').val() == "" && $('#NuevoDetallePlanForm #LugarActividad').val() == "") {
+                                $('#NuevoDetallePlanForm #selTipoActividad').addClass("has-error");
+                                $('#NuevoDetallePlanForm #fechaAct').addClass("input-validation-error");
+                                $('#NuevoDetallePlanForm #fechaAct').attr("placeholder", "Obligatorio");
+                                $('#NuevoDetallePlanForm #DescripcionActividad').addClass("input-validation-error");
+                                $('#NuevoDetallePlanForm #DescripcionActividad').attr("placeholder", "Obligatorio");
+                                $('#NuevoDetallePlanForm #LugarActividad').attr("placeholder", "Obligatorio");
+                                $('#NuevoDetallePlanForm #LugarActividad').addClass("input-validation-error");
+                            } else {
+                                if ($('#NuevoDetallePlanForm #selTipoActividad').val() == "0") {
+                                    $('#NuevoDetallePlanForm #selTipoActividad').addClass("has-error");
+                                } else if ($('#NuevoDetallePlanForm #DescripcionActividad').val() == "") {
+                                    $('#NuevoDetallePlanForm #DescripcionActividad').addClass("input-validation-error");
+                                    $('#NuevoDetallePlanForm #DescripcionActividad').attr("placeholder", "Obligatorio");
+                                } else if ($('#NuevoDetallePlanForm #fechaAct').val() == "") {
+                                    $('#NuevoDetallePlanForm #fechaAct').attr("placeholder", "Obligatorio");
+                                    $('#NuevoDetallePlanForm #fechaAct').addClass("input-validation-error");
+                                } else {
+                                    $('#NuevoDetallePlanForm #LugarActividad').attr("placeholder", "Obligatorio");
+                                    $('#NuevoDetallePlanForm #LugarActividad').addClass("input-validation-error");
+                                }
+                            }
+                        }
+                    } else {
+                        FCH.DespliegaErrorDialogo("La hora fin debe ser mayor a la hora inicial");
+                    }
+                } else {
+                    FCH.DespliegaErrorDialogo("La hora inicial debe ser menor a la hora fin");
+                }
+            }
+        });
     },
     onActualizarDetalle: function (e) {
         var btn = this,
             btnName = btn.innerText;
-        if ($('#ActualizaDetallePlanForm #HoraActividad').val() <= $('#ActualizaDetallePlanForm #HoraFin').val()) {
-            if ($('#ActualizaDetallePlanForm #HoraFin').val() >= $('#ActualizaDetallePlanForm #HoraActividad').val()) {
-                if ($('#ActualizaDetallePlanForm #DescripcionActividad').val() !== "" && $('#ActualizaDetallePlanForm #selTipoActividad').val() !== "0" && $('#ActualizaDetallePlanForm #fechaAct').val() !== "" && $('#ActualizaDetallePlanForm #LugarActividad').val() !== "") {
-                    FCH.botonMensaje(true, btn, btnName);
-                    if ($("form").valid()) {
-                        $('#ActualizaDetallePlanForm #UsuarioCreacionId').val(localStorage.idUser);
-                        $('#ActualizaDetallePlanForm #TipoActividadId').val($('#ActualizaDetallePlanForm #selTipoActividad').val());
-                        var PlanSemanalId = $('#PlanSemanalId').val();
-                        //Se hace el post para guardar la informacion
-                        $.post(contextPath + "PlanSemanal/ActualizaDetalle",
-                            $("#ActualizaDetallePlanForm *").serialize(),
-                            function (data) {
-                                if (data.Success === true) {
-                                    $('#actualiza-PlanDetalle').modal('hide');
-                                    FCH.DespliegaNotificacion('success', 'Actividad ', data.Message, 'glyphicon-ok', 3000);
-                                    PlanSemanal.CargaGridDetallesPackingList(PlanSemanal.idPlan, PlanSemanal.detalleContainer);
-                                    // PlanSemanal.colPlanDetalle.add(PlanSemanal.serializaPlanDetalle(data.idDetallePlan, '#ActualizaDetallePlanForm'), { merge: true });
+        var url = contextPath + "PlanSemanal/ValidarActividadFechaActualizar?idPlan=" + $('#ActualizaDetallePlanForm #PlanSemanalId').val() + "&idDetallePlan=" + $('#ActualizaDetallePlanForm #DetallePlanId').val() + "&idActividad=" + $('#ActualizaDetallePlanForm #TipoActividadId').val() + "&fecha=" + $('#ActualizaDetallePlanForm #FechaActividad').val() + "&hInicio=" + $('#ActualizaDetallePlanForm #HoraActividad').val() + "&hFin=" + $('#ActualizaDetallePlanForm #HoraFin').val();
+        $.getJSON(url, function (data) {
+            if (data.Success === true) {
+                FCH.DespliegaErrorDialogo(data.Message);
+            } else {
+                if ($('#ActualizaDetallePlanForm #HoraActividad').val() < $('#ActualizaDetallePlanForm #HoraFin').val()) {
+                    if ($('#ActualizaDetallePlanForm #HoraFin').val() > $('#ActualizaDetallePlanForm #HoraActividad').val()) {
+                        if ($('#ActualizaDetallePlanForm #DescripcionActividad').val() !== "" && $('#ActualizaDetallePlanForm #selTipoActividad').val() !== "0" && $('#ActualizaDetallePlanForm #fechaAct').val() !== "" && $('#ActualizaDetallePlanForm #LugarActividad').val() !== "") {
+                            FCH.botonMensaje(true, btn, btnName);
+                            if ($("form").valid()) {
+                                $('#ActualizaDetallePlanForm #UsuarioCreacionId').val(localStorage.idUser);
+                                $('#ActualizaDetallePlanForm #TipoActividadId').val($('#ActualizaDetallePlanForm #selTipoActividad').val());
+                                var PlanSemanalId = $('#PlanSemanalId').val();
+                                //Se hace el post para guardar la informacion
+                                $.post(contextPath + "PlanSemanal/ActualizaDetalle",
+                                    $("#ActualizaDetallePlanForm *").serialize(),
+                                    function (data) {
+                                        if (data.Success === true) {
+                                            $('#actualiza-PlanDetalle').modal('hide');
+                                            FCH.DespliegaNotificacion('success', 'Actividad ', data.Message, 'glyphicon-ok', 3000);
+                                            PlanSemanal.CargaGridDetallesPackingList(PlanSemanal.idPlan, PlanSemanal.detalleContainer);
+                                            // PlanSemanal.colPlanDetalle.add(PlanSemanal.serializaPlanDetalle(data.idDetallePlan, '#ActualizaDetallePlanForm'), { merge: true });
+                                        } else {
+                                            FCH.DespliegaErrorDialogo(data.Message);
+                                        }
+                                    }).fail(function () {
+                                        FCH.DespliegaErrorDialogo("Error al guardar la información");
+                                    }).always(function () { FCH.botonMensaje(false, btn, btnName); });
+                            } else {
+                                FCH.botonMensaje(false, btn, btnName);
+                            }
+                        } else {
+                            if ($('#ActualizaDetallePlanForm #DescripcionActividad').val() == "" && $('#ActualizaDetallePlanForm #selTipoActividad').val() == "0" && $('#ActualizaDetallePlanForm #fechaAct').val() == "" && $('#ActualizaDetallePlanForm #LugarActividad').val() == "") {
+                                $('#ActualizaDetallePlanForm #selTipoActividad').addClass("has-error");
+                                $('#ActualizaDetallePlanForm #fechaAct').addClass("input-validation-error");
+                                $('#ActualizaDetallePlanForm #fechaAct').attr("placeholder", "Obligatorio");
+                                $('#ActualizaDetallePlanForm #DescripcionActividad').addClass("input-validation-error");
+                                $('#ActualizaDetallePlanForm #DescripcionActividad').attr("placeholder", "Obligatorio");
+                                $('#ActualizaDetallePlanForm #LugarActividad').attr("placeholder", "Obligatorio");
+                                $('#ActualizaDetallePlanForm #LugarActividad').addClass("input-validation-error");
+                            } else {
+                                if ($('#ActualizaDetallePlanForm #selTipoActividad').val() == "0") {
+                                    $('#ActualizaDetallePlanForm #selTipoActividad').addClass("has-error");
+                                } else if ($('#ActualizaDetallePlanForm #DescripcionActividad').val() == "") {
+                                    $('#ActualizaDetallePlanForm #DescripcionActividad').addClass("input-validation-error");
+                                    $('#ActualizaDetallePlanForm #DescripcionActividad').attr("placeholder", "Obligatorio");
+                                } else if ($('#ActualizaDetallePlanForm #fechaAct').val() == "") {
+                                    $('#ActualizaDetallePlanForm #fechaAct').attr("placeholder", "Obligatorio");
+                                    $('#ActualizaDetallePlanForm #fechaAct').addClass("input-validation-error");
                                 } else {
-                                    FCH.DespliegaErrorDialogo(data.Message);
+                                    $('#ActualizaDetallePlanForm #LugarActividad').attr("placeholder", "Obligatorio");
+                                    $('#ActualizaDetallePlanForm #LugarActividad').addClass("input-validation-error");
                                 }
-                            }).fail(function () {
-                                FCH.DespliegaErrorDialogo("Error al guardar la información");
-                            }).always(function () { FCH.botonMensaje(false, btn, btnName); });
+                            }
+                        }
                     } else {
-                        FCH.botonMensaje(false, btn, btnName);
+                        FCH.DespliegaErrorDialogo("La hora fin debe ser mayor a la hora inicial");
                     }
                 } else {
-                    if ($('#ActualizaDetallePlanForm #DescripcionActividad').val() == "" && $('#ActualizaDetallePlanForm #selTipoActividad').val() == "0" && $('#ActualizaDetallePlanForm #fechaAct').val() == "" && $('#ActualizaDetallePlanForm #LugarActividad').val() == "") {
-                        $('#ActualizaDetallePlanForm #selTipoActividad').addClass("has-error");
-                        $('#ActualizaDetallePlanForm #fechaAct').addClass("input-validation-error");
-                        $('#ActualizaDetallePlanForm #fechaAct').attr("placeholder", "Obligatorio");
-                        $('#ActualizaDetallePlanForm #DescripcionActividad').addClass("input-validation-error");
-                        $('#ActualizaDetallePlanForm #DescripcionActividad').attr("placeholder", "Obligatorio");
-                        $('#ActualizaDetallePlanForm #LugarActividad').attr("placeholder", "Obligatorio");
-                        $('#ActualizaDetallePlanForm #LugarActividad').addClass("input-validation-error");
-                    } else {
-                        if ($('#ActualizaDetallePlanForm #selTipoActividad').val() == "0") {
-                            $('#ActualizaDetallePlanForm #selTipoActividad').addClass("has-error");
-                        } else if ($('#ActualizaDetallePlanForm #DescripcionActividad').val() == "") {
-                            $('#ActualizaDetallePlanForm #DescripcionActividad').addClass("input-validation-error");
-                            $('#ActualizaDetallePlanForm #DescripcionActividad').attr("placeholder", "Obligatorio");
-                        } else if ($('#ActualizaDetallePlanForm #fechaAct').val() == "") {
-                            $('#ActualizaDetallePlanForm #fechaAct').attr("placeholder", "Obligatorio");
-                            $('#ActualizaDetallePlanForm #fechaAct').addClass("input-validation-error");
-                        } else {
-                            $('#ActualizaDetallePlanForm #LugarActividad').attr("placeholder", "Obligatorio");
-                            $('#ActualizaDetallePlanForm #LugarActividad').addClass("input-validation-error");
-                        }
-                    }
+                    FCH.DespliegaErrorDialogo("La hora inicial debe ser menor a la hora fin");
                 }
-            } else {
-                FCH.DespliegaErrorDialogo("La hora fin debe ser mayor o igual a la hora inicial");
             }
-        } else {
-            FCH.DespliegaErrorDialogo("La hora inicial debe ser igual o menor a la hora fin");
-        }
+        });
     },
     CargaGrid: function () {
         $('#bbGrid-clear')[0].innerHTML = "";
@@ -424,24 +518,28 @@ var PlanSemanal = {
                             { title: 'Fecha', name: 'fecha',  index: true },
                             { title: 'Hora Inicio', name: 'hora', index: true },
                             { title: 'Hora Fin', name: 'horaFin', index: true },
-                            { title: 'Check In', name: 'checkin',  index: true },
+                            { title: 'Check In', name: 'checkin', index: true },
+                            { title: 'Matricula automovil', name: 'placa', index: true },
                             { title: 'Comentarios CZ', name: 'comentariosNoValidacion',  index: true }],
                 onRowClick: function () {
                     PlanSemanal.evento = 'detalle';
                     return false;
                 }
             });
-
+            PlanSemanal.PintarFilasConHidden();
             if (PlanSemanal.colPlanDetalle.length < 1) {
                 PlanSemanal.gridPlanDetalle.toggleLoading(false);
             }
         });
     },
+    PintarFilasConHidden: function () {
+        $('.hdnPintaFila').parent().parent().addClass('requestedOutTime');
+    },
     CargaGridDetallesModal: function (id) {
         $('#bbGrid-Actividades')[0].innerHTML = "";
         var url = contextPath + "PlanSemanal/CargarDetallePlan?idPlanSemanal=" + id; // El url del controlador
         $('#cargandoInfo').show();
-        $('#bbGrid-Actividades')[0].innerHTML = "<span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span> Cargando Información...";
+        //$('#bbGrid-Actividades')[0].innerHTML = "<span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span> Cargando Información...";
         $.getJSON(url, function (data) {
             if (data.Success === false) { FCH.DespliegaError(data.Message); return; }
             $('#bbGrid-Actividades')[0].innerHTML = "";
@@ -492,6 +590,31 @@ var PlanSemanal = {
         $(PlanSemanal.activeForm + " #selTipoActividad").select2({ allowClear: true });
         if ($(PlanSemanal.activeForm + " #TipoActividadId").val() !== "")
             $(PlanSemanal.activeForm + ' #selTipoActividad').val($(PlanSemanal.activeForm + " #TipoActividadId").val()).change();
+    },
+    CargaVehiculosSipae: function () {
+        //if (PlanSemanal.colVehiculos.length < 1) {
+        var url = contextPath + "TipoActividades/CargarVehiculosSipae";
+        $.getJSON(url, function (data) {
+            PlanSemanal.colVehiculos = data;
+            PlanSemanal.CargaListaVehiculos();
+        }).fail(function () {
+            FCH.DespliegaErrorDialogo("No se pudieron cargar los vehiculos");
+        });
+        //} else {
+        //    PlanSemanal.CargaListaVehiculos();
+        //}
+    },
+    CargaListaVehiculos: function () {
+        var select = $(PlanSemanal.activeForm + ' #selVehiculo').empty();
+
+        select.append('<option value="0">SELECCIONA VEHICULO</option>');
+        $.each(PlanSemanal.colVehiculos, function (i, item) {
+            select.append('<option value="' + item.id + '">' + item.nombre + '</option>');
+        });
+
+        $(PlanSemanal.activeForm + " #selVehiculo").select2({ allowClear: true });
+        if ($(PlanSemanal.activeForm + " #selVehiculo").val() !== "")
+            $(PlanSemanal.activeForm + ' #selVehiculo').val($(PlanSemanal.activeForm + " #VehiculoId").val()).change();
     },
     CargaPeriodoActual: function () {
         if (PlanSemanal.colPeriodoActual.length < 1) {
@@ -545,8 +668,8 @@ var PlanSemanal = {
             useCurrent: false,
             format: 'MM/DD/YYYY'
         });
-        $('#dtpfechaCompromiso').data("DateTimePicker").minDate($(form + ' #dtpfechaCompromiso').attr('data-fini'));
-        $('#dtpfechaCompromiso').data("DateTimePicker").maxDate($(form + ' #dtpfechaCompromiso').attr('data-ffin'));
+        $(form + ' #dtpfechaCompromiso').data("DateTimePicker").minDate($(form + ' #dtpfechaCompromiso').attr('data-fini'));
+        $(form + ' #dtpfechaCompromiso').data("DateTimePicker").maxDate($(form + ' #dtpfechaCompromiso').attr('data-ffin'));
     },
     serializaPlan: function (id, form) {
         return ({
@@ -567,6 +690,17 @@ var PlanSemanal = {
             'checkin': $(form + ' #CantidadCheckIn').val(),
             'accion': '<button class="btn btn-xs btn-warning btnEditarDetalle" style="border-radius: 21px;" id="btnEditarDetalle_' + id + '" data-iddetalleplan="' + id + '">Editar</button>',
             'id': id
+        });
+    },
+    validarFechaHora: function (idPlan, fecha, hInicio, hFin) {
+        var url = contextPath + "PlanSemanal/ValidarActividadFecha?idPlan=" + idPlan + "&fecha=" + fecha + "&hInicio=" + hInicio + "&hFin=" + hFin;
+        $.getJSON(url, function (data) {
+            if (data.Success === true) {
+                FCH.DespliegaErrorDialogo(data.Message);
+                return 0;
+            } else {
+                return 1;
+            }
         });
     }
 };

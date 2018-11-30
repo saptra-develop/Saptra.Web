@@ -24,7 +24,8 @@ namespace Sispro.Web.Controllers
     public class TipoActividadesController : Controller
     {
         private Inaeba_SaptraEntities db = new Inaeba_SaptraEntities();
-        
+        private SipaeEntities dbSipae = new SipaeEntities();
+
         public ActionResult Actividades()
         {
             return View();
@@ -163,6 +164,29 @@ namespace Sispro.Web.Controllers
             }
         }
 
+        public JsonResult CargarVehiculosSipae()
+        {
+            try
+            {
+                var result = (from v in dbSipae.Vehiculos
+                              where v.Estatus == true
+                              select new
+                              {
+                                  id = v.VehiculoId,
+                                  nombre = v.Marca + " " + v.Modelo + " " + v.Anio + " " + v.Color + " (" + v.Matricula + ")"
+                              })
+                          .OrderBy(cat => cat.id)
+                          .ToList();
+
+                return (Json(result, JsonRequestBehavior.AllowGet));
+
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         [HttpGet]
         public JsonResult CargarTipoActividadesSinCheckIn(int? id, int? idEstatus)
         {
@@ -193,6 +217,7 @@ namespace Sispro.Web.Controllers
             if (disposing)
             {
                 db.Dispose();
+                dbSipae.Dispose();
             }
             base.Dispose(disposing);
         }

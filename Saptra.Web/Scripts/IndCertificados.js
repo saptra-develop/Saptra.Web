@@ -33,17 +33,49 @@ var Indicador5 = {
         //$('#btnFilter').click(that.CargaGrid);
 
         $(document).on('click', '#btnFilter', function () {
-            //Indicador5.CargaGrid();
-            //Indicador5.CargaGridRegionZona();
-            //Indicador5.CargaGridRegionZonaActividad();
-            //Indicador5.CargaGridRegionZonaActividadFigura();
-            //Indicador5.GraficoIncumplidasRegion();
-            //Indicador5.GraficoIncumplidasZona();
+            Indicador5.CargaGrid();
+            Indicador5.CargaGridRegionZona();
+            Indicador5.CargaGridRegionZonaActividad();
+            Indicador5.CargaGridRegionZonaActividadFigura();
+            Indicador5.GraficoIncumplidasRegion();
+            Indicador5.GraficoIncumplidasZona();
         });
 
         $(document).on("change", '#selPeriodos', that.onCambiarPeriodos);
         $(document).on("change", '#selRegiones', that.onCambiarRegiones);
         $(document).on("change", '#selZonas', that.onCambiarZonas);
+        $(document).on('click', '.btnExportar', function () {
+            Indicador5.onExportarFormato();
+        });
+        $(document).on('click', '.btnExportarExcel', function () {
+            Indicador5.onExportarExcel();
+        });
+        $(document).on('click', '.btnExportarPDF', function () {
+            Indicador5.onExportarPDF();
+        });
+    },
+    onExportarFormato: function () {
+        var htmlMessage = "<h4>Exportar</h4>";
+        htmlMessage += "<h5>Formato de reporte</h5>";
+        htmlMessage += "<div class='text-center'><div class='btn-group btn-group-md'>";
+        htmlMessage += "<button class='btn btn-success btnExportarExcel'><i class='fa fa-file-excel-o'></i> Excel</button>";
+        htmlMessage += "<button class='btn btn-danger btnExportarPDF' ><i class='fa fa-file-pdf-o'></i> PDF </button>";
+        htmlMessage += "</div></div>";
+
+        bootbox.alert({
+            message: htmlMessage,
+            size: 'small'
+        });
+    },
+    onExportarExcel: function () {
+        var url = contextPath + "Indicadores/ExportIndCertificadosExcel?idPeriodo=" + $('#selPeriodosMul').val() + "&Region=" + $('#selRegionesMul').val() + "&Zonas=" + $('#selZonasMul').val() + "&idUsuario=" + localStorage.idUser;  // El url del controlador
+
+        window.open(url, '_blank');
+    },
+    onExportarPDF: function () {
+        var url = contextPath + "Pdf/ExportIndicadorCertificadosPDF?idPeriodo=" + $('#selPeriodosMul').val() + "&Region=" + $('#selRegionesMul').val() + "&Zonas=" + $('#selZonasMul').val() + "&idUsuario=" + localStorage.idUser;  // El url del controlador
+
+        window.open(url, '_blank');
     },
     onCambiarPeriodos: function () {
         $('#selPeriodosMul').val($('#selPeriodos').val());
@@ -61,7 +93,7 @@ var Indicador5 = {
             "<i class='fa fa-spinner fa-spin fa-3x fa-fw'></i>" +
             "<span>Cargando...</span>" +
             "</div>";
-        var url = contextPath + "Indicadores/CargarIndPreregistradosIncRegion?idPeriodo=" + $('#selPeriodosMul').val() + "&Region=" + $('#selRegionesMul').val() + "&Zonas=" + $('#selZonasMul').val() + "&idUsuario=" + localStorage.idUser; // El url del controlador
+        var url = contextPath + "Indicadores/CargarIndCertificadosRegion?idPeriodo=" + $('#selPeriodosMul').val() + "&Region=" + $('#selRegionesMul').val() + "&Zonas=" + $('#selZonasMul').val() + "&idUsuario=" + localStorage.idUser; // El url del controlador
         $.getJSON(url, function (data) {
             if (data.Success === false) { FCH.DespliegaError(data.Message); return; }
             $('#bbGrid-clear')[0].innerHTML = "";
@@ -70,13 +102,13 @@ var Indicador5 = {
             if (bolFilter) {
                 var table = data.datos;
                 var tabIndicador = "<table class='table table-striped' style='-webkit-box-shadow: 0px 0px 22px -2px rgba(0,0,0,0.75); -moz-box-shadow: 0px 0px 22px -2px rgba(0, 0, 0, 0.75);box-shadow: 0px 0px 22px -2px rgba(0, 0, 0, 0.75);border-collapse: collapse;-webkit-border-radius: 7px;-webkit-border-bottom-right-radius: 4px;-webkit-border-bottom-left-radius: 4px;-moz-border-radius: 7px;-moz-border-radius-bottomright: 4px;-moz-border-radius-bottomleft: 4px;border-radius: 7px;border-bottom-right-radius: 4px;border-bottom-left-radius: 4px;overflow: hidden;'>";
-                tabIndicador += "<thead> <tr style='color:#fff; background-color:#0F7CB9;border-bottom: 3pt solid #233246;'> <th style='text-align:center;' scope='col'>Región</th> <th style='text-align:center;' scope='col'>Educando preregistrados</th> <th style='text-align:center;' scope='col'>Educando incorporados</th> <th style='text-align:center;' scope='col'>%Incorporados</th> <th style='text-align:center;' scope='col'>%Promotor</th> <th style='text-align:center;' scope='col'>%Técnicos docentes</th> <th style='text-align:center;' scope='col'>%Formadores</th> </tr> </thead>";
+                tabIndicador += "<thead> <tr style='color:#fff; background-color:#0F7CB9;border-bottom: 3pt solid #233246;'> <th style='text-align:center;' scope='col'>Región</th> <th style='text-align:center;' scope='col'>Certificados programados</th> <th style='text-align:center;' scope='col'>Certificados entregados</th> <th style='text-align:center;' scope='col'>%Cumplimiento</th> <th style='text-align:center;' scope='col'>%Promotor</th> <th style='text-align:center;' scope='col'>%Técnicos docentes</th> <th style='text-align:center;' scope='col'>%Formadores</th> </tr> </thead>";
                 for (j = 0; j < table.length; j++) {
                     tabIndicador += "<tr style='text-align:center;'>";
                     tabIndicador += "<td data-label='Región'>" + table[j]['Region'] + "</td>";
-                    tabIndicador += "<td data-label='Educando preregistrados'>" + table[j]['preregistrosTotal'] + "</td>";
-                    tabIndicador += "<td data-label='Educando incorporados'>" + table[j]['imcorporadostotal'] + "</td>";
-                    tabIndicador += "<td data-label='%Incorporados'>" + table[j]['porcentajeIncorporadosT'] + "</td>";
+                    tabIndicador += "<td data-label='Educando preregistrados'>" + table[j]['certificadosProgramadosTotal'] + "</td>";
+                    tabIndicador += "<td data-label='Educando incorporados'>" + table[j]['certificadosEntregadosTotal'] + "</td>";
+                    tabIndicador += "<td data-label='%Incorporados'>" + table[j]['porcentajeCumplimientoT'] + "</td>";
                     tabIndicador += "<td data-label='%Promotor'>" + table[j]['pocentajePromotor'] + "</td>";
                     tabIndicador += "<td data-label='%Técnicos docentes'>" + table[j]['pocentajeTecnico'] + "</td>";
                     tabIndicador += "<td data-label='%Formadores'>" + table[j]['pocentajeFormador'] + "</td>";
@@ -102,7 +134,7 @@ var Indicador5 = {
             "<i class='fa fa-spinner fa-spin fa-3x fa-fw'></i>" +
             "<span >Cargando...</span>" +
             "</div>";
-        var url = contextPath + "Indicadores/CargarIndPreregistradosIncZona?idPeriodo=" + $('#selPeriodosMul').val() + "&Region=" + $('#selRegionesMul').val() + "&Zonas=" + $('#selZonasMul').val() + "&idUsuario=" + localStorage.idUser;  // El url del controlador
+        var url = contextPath + "Indicadores/CargarIndCertificadosZona?idPeriodo=" + $('#selPeriodosMul').val() + "&Region=" + $('#selRegionesMul').val() + "&Zonas=" + $('#selZonasMul').val() + "&idUsuario=" + localStorage.idUser;  // El url del controlador
         $.getJSON(url, function (data) {
             if (data.Success === false) { FCH.DespliegaError(data.Message); return; }
             $('#indicadorZona')[0].innerHTML = "";
@@ -111,14 +143,14 @@ var Indicador5 = {
             if (bolFilter) {
                 var table = data.datos;
                 var tabIndicador = "<table class='table table-striped' style='-webkit-box-shadow: 0px 0px 22px -2px rgba(0,0,0,0.75); -moz-box-shadow: 0px 0px 22px -2px rgba(0, 0, 0, 0.75);box-shadow: 0px 0px 22px -2px rgba(0, 0, 0, 0.75);border-collapse: collapse;-webkit-border-radius: 7px;-webkit-border-bottom-right-radius: 4px;-webkit-border-bottom-left-radius: 4px;-moz-border-radius: 7px;-moz-border-radius-bottomright: 4px;-moz-border-radius-bottomleft: 4px;border-radius: 7px;border-bottom-right-radius: 4px;border-bottom-left-radius: 4px;overflow: hidden;'>";
-                tabIndicador += "<thead> <tr style='color:#fff; background-color:#0F7CB9;border-bottom: 3pt solid #233246;'> <th style='text-align:center;' scope='col'>Región</th> <th style='text-align:center;' scope='col'>Zona</th> <th style='text-align:center;' scope='col'>Educando preregistrados</th> <th style='text-align:center;' scope='col'>Educando incorporados</th> <th style='text-align:center;' scope='col'>%Incorporados</th> <th style='text-align:center;' scope='col'>%Promotor</th> <th style='text-align:center;' scope='col'>%Técnicos docentes</th> <th style='text-align:center;' scope='col'>%Formadores</th> </tr> </thead>";
+                tabIndicador += "<thead> <tr style='color:#fff; background-color:#0F7CB9;border-bottom: 3pt solid #233246;'> <th style='text-align:center;' scope='col'>Región</th> <th style='text-align:center;' scope='col'>Zona</th> <th style='text-align:center;' scope='col'>Certificados programados</th> <th style='text-align:center;' scope='col'>Certificados entregados</th> <th style='text-align:center;' scope='col'>%Cumplimiento</th> <th style='text-align:center;' scope='col'>%Promotor</th> <th style='text-align:center;' scope='col'>%Técnicos docentes</th> <th style='text-align:center;' scope='col'>%Formadores</th> </tr> </thead>";
                 for (j = 0; j < table.length; j++) {
                     tabIndicador += "<tr style='text-align:center;'>";
                     tabIndicador += "<td data-label='Región'>" + table[j]['Region'] + "</td>";
                     tabIndicador += "<td data-label='Zona'>" + table[j]['Zona'] + "</td>";
-                    tabIndicador += "<td data-label='Educando preregistrados'>" + table[j]['preregistrosTotal'] + "</td>";
-                    tabIndicador += "<td data-label='Educando incorporados'>" + table[j]['imcorporadostotal'] + "</td>";
-                    tabIndicador += "<td data-label='%Incorporados'>" + table[j]['porcentajeIncorporadosT'] + "</td>";
+                    tabIndicador += "<td data-label='Educando preregistrados'>" + table[j]['certificadosProgramadosTotal'] + "</td>";
+                    tabIndicador += "<td data-label='Educando incorporados'>" + table[j]['certificadosEntregadosTotal'] + "</td>";
+                    tabIndicador += "<td data-label='%Incorporados'>" + table[j]['porcentajeCumplimientoT'] + "</td>";
                     tabIndicador += "<td data-label='%Promotor'>" + table[j]['pocentajePromotor'] + "</td>";
                     tabIndicador += "<td data-label='%Técnicos docentes'>" + table[j]['pocentajeTecnico'] + "</td>";
                     tabIndicador += "<td data-label='%Formadores'>" + table[j]['pocentajeFormador'] + "</td>";
@@ -144,7 +176,7 @@ var Indicador5 = {
             "<i class='fa fa-spinner fa-spin fa-3x fa-fw'></i>" +
             "<span >Cargando...</span>" +
             "</div>";
-        var url = contextPath + "Indicadores/CargarIndPreregistradosIncZonaFigura?idPeriodo=" + $('#selPeriodosMul').val() + "&Region=" + $('#selRegionesMul').val() + "&Zonas=" + $('#selZonasMul').val() + "&idUsuario=" + localStorage.idUser;  // El url del controlador
+        var url = contextPath + "Indicadores/CargarIndCertificadosZonaFigura?idPeriodo=" + $('#selPeriodosMul').val() + "&Region=" + $('#selRegionesMul').val() + "&Zonas=" + $('#selZonasMul').val() + "&idUsuario=" + localStorage.idUser;  // El url del controlador
         $.getJSON(url, function (data) {
             if (data.Success === false) { FCH.DespliegaError(data.Message); return; }
             $('#indicadorZonaActividad')[0].innerHTML = "";
@@ -153,7 +185,7 @@ var Indicador5 = {
             if (bolFilter) {
                 var table = data.datos;
                 var tabIndicador = "<table class='table table-striped' style='-webkit-box-shadow: 0px 0px 22px -2px rgba(0,0,0,0.75); -moz-box-shadow: 0px 0px 22px -2px rgba(0, 0, 0, 0.75);box-shadow: 0px 0px 22px -2px rgba(0, 0, 0, 0.75);border-collapse: collapse;-webkit-border-radius: 7px;-webkit-border-bottom-right-radius: 4px;-webkit-border-bottom-left-radius: 4px;-moz-border-radius: 7px;-moz-border-radius-bottomright: 4px;-moz-border-radius-bottomleft: 4px;border-radius: 7px;border-bottom-right-radius: 4px;border-bottom-left-radius: 4px;overflow: hidden;'>";
-                tabIndicador += "<thead> <tr style='color:#fff; background-color:#0F7CB9;border-bottom: 3pt solid #233246;'> <th style='text-align:center;' scope='col'>Periodo</th> <th style='text-align:center;' scope='col'>Región</th> <th style='text-align:center;' scope='col'>Zona</th> <th style='text-align:center;' scope='col'>Tipo Figura</th> <th style='text-align:center;' scope='col'>Nombre Figura</th> <th style='text-align:center;' scope='col'>Educandos preregistrados</th> <th style='text-align:center;' scope='col'>Educandos incorporados</th> <th style='text-align:center;' scope='col'>%Incorporados</th> </tr> </thead>";
+                tabIndicador += "<thead> <tr style='color:#fff; background-color:#0F7CB9;border-bottom: 3pt solid #233246;'> <th style='text-align:center;' scope='col'>Periodo</th> <th style='text-align:center;' scope='col'>Región</th> <th style='text-align:center;' scope='col'>Zona</th> <th style='text-align:center;' scope='col'>Tipo Figura</th> <th style='text-align:center;' scope='col'>Nombre Figura</th> <th style='text-align:center;' scope='col'>Certificados programados</th> <th style='text-align:center;' scope='col'>Certificados entregados</th> <th style='text-align:center;' scope='col'>%Cumplimiento</th> </tr> </thead>";
                 for (j = 0; j < table.length; j++) {
                     tabIndicador += "<tr style='text-align:center;'>";
                     tabIndicador += "<td data-label='Periodo'>" + table[j]['Periodo'] + "</td>";
@@ -161,9 +193,9 @@ var Indicador5 = {
                     tabIndicador += "<td data-label='Zona'>" + table[j]['Zona'] + "</td>";
                     tabIndicador += "<td data-label='Tipo Figura'>" + table[j]['DescripcionTipoFigura'] + "</td>";
                     tabIndicador += "<td data-label='Nombre Figura'>" + table[j]['NombreUsuario'] + "</td>";
-                    tabIndicador += "<td data-label='Educando preregistrados'>" + table[j]['preregistrosTotal'] + "</td>";
-                    tabIndicador += "<td data-label='Educando incorporados'>" + table[j]['imcorporadostotal'] + "</td>";
-                    tabIndicador += "<td data-label='%Incorporados'>" + table[j]['porcentajeIncorporadosT'] + "</td>";
+                    tabIndicador += "<td data-label='Educando preregistrados'>" + table[j]['certificadosProgramadosTotal'] + "</td>";
+                    tabIndicador += "<td data-label='Educando incorporados'>" + table[j]['certificadosEntregadosTotal'] + "</td>";
+                    tabIndicador += "<td data-label='%Incorporados'>" + table[j]['porcentajeCumplimientoT'] + "</td>";
                     tabIndicador += "</tr>";
                 }
 
@@ -186,7 +218,7 @@ var Indicador5 = {
             "<i class='fa fa-spinner fa-spin fa-3x fa-fw'></i>" +
             "<span >Cargando...</span>" +
             "</div>";
-        var url = contextPath + "Indicadores/CargarIndPreregistradosIncZonaFiguraEducando?idPeriodo=" + $('#selPeriodosMul').val() + "&Region=" + $('#selRegionesMul').val() + "&Zonas=" + $('#selZonasMul').val() + "&idUsuario=" + localStorage.idUser;  // El url del controlador
+        var url = contextPath + "Indicadores/CargarIndCertificadosFiguraEducando?idPeriodo=" + $('#selPeriodosMul').val() + "&Region=" + $('#selRegionesMul').val() + "&Zonas=" + $('#selZonasMul').val() + "&idUsuario=" + localStorage.idUser;  // El url del controlador
         $.getJSON(url, function (data) {
             if (data.Success === false) { FCH.DespliegaError(data.Message); return; }
             $('#indicadorRegionZonaActividad')[0].innerHTML = "";
@@ -195,7 +227,7 @@ var Indicador5 = {
             if (bolFilter) {
                 var table = data.datos;
                 var tabIndicador = "<table class='table table-striped' style='-webkit-box-shadow: 0px 0px 22px -2px rgba(0,0,0,0.75); -moz-box-shadow: 0px 0px 22px -2px rgba(0, 0, 0, 0.75);box-shadow: 0px 0px 22px -2px rgba(0, 0, 0, 0.75);border-collapse: collapse;-webkit-border-radius: 7px;-webkit-border-bottom-right-radius: 4px;-webkit-border-bottom-left-radius: 4px;-moz-border-radius: 7px;-moz-border-radius-bottomright: 4px;-moz-border-radius-bottomleft: 4px;border-radius: 7px;border-bottom-right-radius: 4px;border-bottom-left-radius: 4px;overflow: hidden;'>";
-                tabIndicador += "<thead> <tr style='color:#fff; background-color:#0F7CB9;border-bottom: 3pt solid #233246;'> <th style='text-align:center;' scope='col'>Periodo</th> <th style='text-align:center;' scope='col'>Región</th> <th style='text-align:center;' scope='col'>Zona</th> <th style='text-align:center;' scope='col'>Tipo Figura</th> <th style='text-align:center;' scope='col'>Nombre Figura</th> <th style='text-align:center;' scope='col'>Nombre del educando</th> <th style='text-align:center;' scope='col'>Fecha Preregistro</th> </tr> </thead>";
+                tabIndicador += "<thead> <tr style='color:#fff; background-color:#0F7CB9;border-bottom: 3pt solid #233246;'> <th style='text-align:center;' scope='col'>Periodo</th> <th style='text-align:center;' scope='col'>Región</th> <th style='text-align:center;' scope='col'>Zona</th> <th style='text-align:center;' scope='col'>Tipo Figura</th> <th style='text-align:center;' scope='col'>Nombre Figura</th> <th style='text-align:center;' scope='col'>Nombre del educando</th> <th style='text-align:center;' scope='col'>CURP del educando</th> <th style='text-align:center;' scope='col'>Folio del certificado</th> <th style='text-align:center;' scope='col'>Acuse de recibo</th> <th style='text-align:center;' scope='col'>Estatus del certificado</th> <th style='text-align:center;' scope='col'>Fecha emisión</th> <th style='text-align:center;' scope='col'>Fecha programada</th> <th style='text-align:center;' scope='col'>Fecha entregado</th> </tr> </thead>";
                 for (j = 0; j < table.length; j++) {
                     tabIndicador += "<tr style='text-align:center;'>";
                     tabIndicador += "<td data-label='Periodo'>" + table[j]['Periodo'] + "</td>";
@@ -203,8 +235,14 @@ var Indicador5 = {
                     tabIndicador += "<td data-label='Zona'>" + table[j]['Zona'] + "</td>";
                     tabIndicador += "<td data-label='Tipo Figura'>" + table[j]['DescripcionTipoFigura'] + "</td>";
                     tabIndicador += "<td data-label='Nombre Figura'>" + table[j]['NombreUsuario'] + "</td>";
-                    tabIndicador += "<td data-label='Nombre del educando'>" + table[j]['NombrePreregistro'] + "</td>";
-                    tabIndicador += "<td data-label='Fecha Preregistro'>" + table[j]['FechaRegistro'] + "</td>";
+                    tabIndicador += "<td data-label='Nombre del educando'>" + table[j]['Educando'] + "</td>";
+                    tabIndicador += "<td data-label='Fecha Preregistro'>" + table[j]['Curp'] + "</td>";
+                    tabIndicador += "<td data-label='Nombre Figura'>" + table[j]['FolioCertificado'] + "</td>";
+                    tabIndicador += "<td data-label='Nombre Figura'>" + table[j]['Acuse'] + "</td>";
+                    tabIndicador += "<td data-label='Nombre del educando'>" + table[j]['EstatusCert'] + "</td>";
+                    tabIndicador += "<td data-label='Fecha Preregistro'>" + table[j]['FechaEmision'] + "</td>";
+                    tabIndicador += "<td data-label='Nombre del educando'>" + table[j]['FechaPlan'] + "</td>";
+                    tabIndicador += "<td data-label='Fecha Preregistro'>" + table[j]['FechaCheck'] + "</td>";
                     tabIndicador += "</tr>";
                 }
 
@@ -227,7 +265,7 @@ var Indicador5 = {
             "<i class='fa fa-spinner fa-spin fa-3x fa-fw'></i>" +
             "<span >Cargando...</span>" +
             "</div>";
-        var url1 = contextPath + "Indicadores/CargarIndPreregistradosIncRegionGrafico?idPeriodo=" + $('#selPeriodosMul').val() + "&Region=" + $('#selRegionesMul').val() + "&Zonas=" + $('#selZonasMul').val() + "&idUsuario=" + localStorage.idUser;    
+        var url1 = contextPath + "Indicadores/CargarIndCertificadosRegionGrafico?idPeriodo=" + $('#selPeriodosMul').val() + "&Region=" + $('#selRegionesMul').val() + "&Zonas=" + $('#selZonasMul').val() + "&idUsuario=" + localStorage.idUser;    
         $.getJSON(url1, function (data) {
         if (data.Success !== undefined) {
             FCH.DespliegaError(data.Message);
@@ -321,7 +359,7 @@ var Indicador5 = {
             "<i class='fa fa-spinner fa-spin fa-3x fa-fw'></i>" +
             "<span >Cargando...</span>" +
             "</div>";
-        var url1 = contextPath + "Indicadores/CargarIndPreregistradosIncZonaGrafico?idPeriodo=" + $('#selPeriodosMul').val() + "&Region=" + $('#selRegionesMul').val() + "&Zonas=" + $('#selZonasMul').val() + "&idUsuario=" + localStorage.idUser;
+        var url1 = contextPath + "Indicadores/CargarIndCertificadosZonaGrafico?idPeriodo=" + $('#selPeriodosMul').val() + "&Region=" + $('#selRegionesMul').val() + "&Zonas=" + $('#selZonasMul').val() + "&idUsuario=" + localStorage.idUser;
         $.getJSON(url1, function (data) {
             if (data.Success !== undefined) {
                 FCH.DespliegaError(data.Message);

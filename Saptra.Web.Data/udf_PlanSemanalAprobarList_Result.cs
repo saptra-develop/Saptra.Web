@@ -27,5 +27,6 @@ namespace Saptra.Web.Data
         public string mes { get; set; }
         public string dia { get; set; }
         public Nullable<System.DateTime> FechaInicioPeriodo { get; set; }
+        public Nullable<int> Aprobar { get; set; }
     }
 }

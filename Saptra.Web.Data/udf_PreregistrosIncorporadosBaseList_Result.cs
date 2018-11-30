@@ -18,6 +18,7 @@ namespace Saptra.Web.Data
         public Nullable<int> PreregistroId { get; set; }
         public Nullable<int> num_activ_saptra { get; set; }
         public string NombrePreregistro { get; set; }
+        public string FechaPreregistro { get; set; }
         public string FechaRegistro { get; set; }
         public Nullable<int> CoordinacionRegionId { get; set; }
         public string DescripcionCoordinacionRegion { get; set; }
@@ -31,5 +32,6 @@ namespace Saptra.Web.Data
         public string DescripcionActividad { get; set; }
         public Nullable<int> UsuarioId { get; set; }
         public string NombreUsuario { get; set; }
+        public string estatus { get; set; }
     }
 }

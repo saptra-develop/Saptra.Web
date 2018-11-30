@@ -1,0 +1,31 @@
+﻿@model Saptra.Web.Data.mSolicitudesVehiculo
+
+<div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">@ViewBag.Titulo</h4>
+        </div>
+        <div class="modal-body">
+            <div class="clientAlertDlg"></div>
+            @using (Html.BeginForm("Nuevo", "Vehiculo", FormMethod.Post, new { id = "NuevoVehiculoForm", name = "NuevoVehiculoForm", @class = "form-horizontal", onsubmit = "return false" }))
+            {
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="col-sm-12">
+                            <select class="form-control" id="selVehiculo" required><option> Cargando...</option></select>
+                        </div>
+                    </div>
+                </div>
+                @Html.HiddenFor(model => model.DetallePlanId)
+                @Html.HiddenFor(model => model.UsuarioCreacionId)
+                @Html.HiddenFor(model => model.VehiculoId)
+            }
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Global.btnCancel</button>
+            <button type="button" class="btn btn-primary btn-GuardaVehiculo">@Resources.Global.btnSave</button>
+        </div>
+    </div><!-- /.modal-content -->
+</div>

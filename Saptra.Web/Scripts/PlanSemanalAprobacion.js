@@ -19,12 +19,15 @@ var PlanSemanal = {
     comentarios: [],
     idPlan: 0,
     idUsuarioPlan: 0,
+    colCertificados: {},
+    colVerEducandos: {},
     Inicial: function () {
         $.ajaxSetup({ cache: false });
         this.CargaPeriodos();
         this.CargaTiposFigura();
         this.CargaNombresFigura();
         this.Eventos();
+        this.CargaGrid();
     },
     Eventos: function () {
         var that = this;
@@ -69,15 +72,191 @@ var PlanSemanal = {
         $(document).on("change", '#selNombreFigura', that.onCambiarNombresFigura);
 
         $(document).on('click', '.btnGpsVehiculo', function () {
+            var placa = "",
+                fecha = "",
+                horaInicio = "",
+                horaFin = "";
 
-            $.post("http://gpsfollowme.com/service/1.php", { sep: ',', ter: '<br>', tipo: 0, placa: 'gur2955', fecha: '2018-08-06', hini: '10:00', hfin: '12:00' })
-                .done(function (data) {
-                    var datos = data.split('<br>');
-                    alert("Data Loaded: " + datos);
-                });
+            var url = contextPath + "PlanSemanalSeguimiento/ObtenerVehiculo?idDetallePlan=" + $(this).data("iddetalleplan");
+            $.getJSON(url, function (respuesta) {
+                if (respuesta.Success === true) {
+                    placa = respuesta.placa;
+                    fecha = respuesta.fecha;
+                    horaInicio = respuesta.horaInicio;
+                    horaFin = respuesta.horaFin;
+
+                    $.post("http://gpsfollowme.com/service/1.php", { sep: ',', ter: '<br>', tipo: 0, placa: placa, fecha: fecha, hini: horaInicio, hfin: horaFin })
+                        .done(function (data) {
+                            if (data !== "null") {
+                                var datos = data.split('<br>');
+                                //alert("Data Loaded: " + datos);
+
+                                var templateURL = contextPath + "Content/template/rpt_gps.html",
+                                    rptTemplate = '',
+                                    tabla_html,
+                                    tablatmpHe = '',
+                                    tablatmp = '',
+                                    tableData,
+                                    tableData2,
+                                    tcompleta = '',
+                                    tHeader = '';
+
+                                $.get(templateURL, function (data) {
+                                    rptTemplate = data;
+                                    for (i = 0; i < datos.length; i++) {
+                                        var detalle = datos[i].split(',');
+                                        if (detalle == "") {
+
+                                        } else {
+
+                                            tcompleta += "<tr>";
+                                            tcompleta += "<td>" + detalle[0] + "</td>";
+                                            tcompleta += "<td>" + detalle[1] + ", " + detalle[2] + "</td>";
+                                            tcompleta += "</tr>";
+                                        }
+                                    }
+
+                                    tablatmp += rptTemplate.replace('vrDetalle', tcompleta);
+
+                                    var tmpElemento = document.createElement('a');
+                                    var data_type = 'data:application/vnd.ms-excel';
+                                    tabla_html = tablatmp.replace(/ /g, '%20');
+                                    tmpElemento.href = data_type + ', ' + tabla_html;
+                                    //Asignamos el nombre a nuestro EXCEL
+                                    tmpElemento.download = 'Reporte_Gps.xls';
+                                    // Simulamos el click al elemento creado para descargarlo
+                                    tmpElemento.click();
+                                });
+
+                            } else {
+                                FCH.DespliegaError("No existe informacion en el sistema de GPS, relacionada con el vehículo asignado.");
+                            }
+
+                        });
+                }
+            });
+
+          
         });
-        
-     
+
+        $(document).on('click', '.btnImagen', function () {
+            FCH.verPopupImagen($(this).data('src'), false);
+        });
+
+        $(document).on('click', '.btnCoordenadas', function () {
+            PlanSemanal.Mapa($(this).data("iddetalleplan"));
+        });
+
+        $(document).on('click', '.btnCertificados', function () {
+            PlanSemanal.Certificados($(this).data("iddetalleplan"));
+        });
+
+        $(document).on('click', '.hrefVerEducandos', function () {
+            PlanSemanal.VerEducandos($(this).data("iddetalleplan"));
+        });
+    },
+    VerEducandos: function (id) {
+        FCH.CierraMensajes();
+        var url = contextPath + "PlanSemanalConsulta/VerEducandos"; // El url del controlador      
+        $.get(url, function (data) {
+            $('#nuevo-Preregistros').html(data);
+            $('#nuevo-Preregistros').modal({
+                backdrop: 'static',
+                keyboard: true
+            }, 'show');
+            PlanSemanal.CargaGridVerEducandos(id);
+        });
+    },
+    CargaGridVerEducandos: function (id) {
+        $('#bbGrid-VerPreregistros')[0].innerHTML = "";
+
+        $('#cargandoInfo').show();
+        $('#bbGrid-VerPreregistros')[0].innerHTML = "<span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span> Cargando Información...";
+        var url = contextPath + "PlanSemanalConsulta/CargarVerEducandos?idDetallePlan=" + id; // El url del controlador
+        $.getJSON(url, function (data) {
+            if (data.Success === false) { FCH.DespliegaError(data.Message); return; }
+            $('#bbGrid-VerPreregistros')[0].innerHTML = "";
+            PlanSemanal.colVerEducandos = new Backbone.Collection(data.datos);
+            var bolFilter = PlanSemanal.colVerEducandos.length > 0 ? true : false;
+            if (bolFilter) {
+                PlanSemanal.gridPlanSemanal = new bbGrid.View({
+                    container: $('#bbGrid-VerPreregistros'),
+                    collection: PlanSemanal.colVerEducandos,
+                    colModel: [
+                        { title: 'Nombre', name: 'nombre', index: true, filter: true, filterType: 'input' },
+                        { title: 'CURP', name: 'curp', index: true, filter: true, filterType: 'input' },
+                        { title: 'Fecha nacimiento', name: 'fecha', index: true, filter: true, filterType: 'input' }]
+
+                });
+                $('#cargandoInfo').hide();
+            } else {
+                $('#bbGrid-VerPreregistros')[0].innerHTML = "<div class='alert alert-warning'>" +
+                    "<button type='button' class='close' data-dismiss='alert'>x</button>" +
+                    "No se encontro información" +
+                    "</div>";
+            }
+
+            //getJSON fail
+        }).fail(function (e) {
+            FCH.DespliegaError("No se pudo cargar la informacion de los pre-registros");
+        });
+    },
+    Certificados: function (id) {
+        FCH.CierraMensajes();
+        var url = contextPath + "PlanSemanalSeguimiento/Certificados"; // El url del controlador      
+        $.get(url, function (data) {
+            $('#nuevo-Certificados').html(data);
+            $('#nuevo-Certificados').modal({
+                backdrop: 'static',
+                keyboard: true
+            }, 'show');
+            FCH.RedefinirValidaciones(); //para los formularios dinamicos
+            PlanSemanal.activeForm = '#NuevoCertificadosForm';
+            PlanSemanal.CargaGridCertificados(id);
+        });
+    },
+    CargaGridCertificados: function (id) {
+        $('#bbGrid-Certificados')[0].innerHTML = "";
+
+        $('#cargandoInfo').show();
+        $('#bbGrid-Certificados')[0].innerHTML = "<span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span> Cargando Información...";
+        var url = contextPath + "PlanSemanalSeguimiento/CargarCertificados?id=" + id; // El url del controlador
+        $.getJSON(url, function (data) {
+            if (data.Success === false) { FCH.DespliegaError(data.Message); return; }
+            $('#bbGrid-Certificados')[0].innerHTML = "";
+            PlanSemanal.colCertificados = new Backbone.Collection(data.datos);
+            var bolFilter = PlanSemanal.colCertificados.length > 0 ? true : false;
+            if (bolFilter) {
+                PlanSemanal.gridPlanSemanal = new bbGrid.View({
+                    container: $('#bbGrid-Certificados'),
+                    collection: PlanSemanal.colCertificados,
+                    colModel: [
+                        { title: 'Acuse Certificado', name: 'folio', index: true, filter: true, filterType: 'input' },
+                    { title: 'Acción', name: 'accion'}]
+
+                });
+                $('#cargandoInfo').hide();
+            } else {
+                $('#bbGrid-Certificados')[0].innerHTML = "<div class='alert alert-warning'>" +
+                    "<button type='button' class='close' data-dismiss='alert'>x</button>" +
+                    "No se encontro información" +
+                    "</div>";
+            }
+
+            //getJSON fail
+        }).fail(function (e) {
+            FCH.DespliegaError("No se pudo cargar la informacion de los certificados");
+        });
+    },
+    Mapa: function (id) {
+        var url = contextPath + "PlanSemanalSeguimiento/Mapas?id=" + id; // El url del controlador      
+        $.get(url, function (data) {
+            $('#nuevo-Mapa').html(data);
+            $('#nuevo-Mapa').modal({
+                backdrop: 'static',
+                keyboard: true
+            }, 'show');
+        });
     },
     onExportarPlanSemanal: function (idPlan, idUsuarioPlan) {
         PlanSemanal.idPlan = idPlan;
@@ -165,6 +344,7 @@ var PlanSemanal = {
                     FCH.botonMensaje(false, btn, "<i class='fa fa-check-circle'></i> Aprobado");
                     $("#btnAprobar_" + idPlan).prop("disabled", true);
                     FCH.cargarNotificaciones();
+                    PlanSemanal.CargaGrid();
                 } else {
                     FCH.DespliegaError(data.Message);
                     FCH.botonMensaje(false, btn, "<i class='fa fa-check-circle'></i> Aprobar");
@@ -260,7 +440,7 @@ var PlanSemanal = {
     },
     CargaGridDetallesPackingList: function (id, $container) {
         var url = contextPath + "PlanSemanalSeguimiento/CargarDetallePlanAprobacion?idPlanSemanal=" + id; // El url del controlador
-        $container.innerHTML = '<label > Loading...</label>';
+        $container.innerHTML = '<label > Cargando...</label>';
 
         PlanSemanal.detalleContainer = $container;
         $.getJSON(url, function (data) {
@@ -277,7 +457,7 @@ var PlanSemanal = {
                     { title: 'Fecha', name: 'fecha', index: true },
                     { title: 'Hora Inicio', name: 'hora', index: true },
                     { title: 'Hora Fin', name: 'horaFin', index: true },
-                    { title: 'Estatus', name: 'checkin', index: true },
+                    { title: 'Estatus', name: 'checkin', index: true, textalign: true },
                     { title: 'Incidencias', name: 'incidencias' },
                     { title: 'Reporte GPS', name: 'gps', textalign: true },
                     { title: 'Comentarios CZ', name: 'comentariosRechazo', index: true }],

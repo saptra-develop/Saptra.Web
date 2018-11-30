@@ -23,5 +23,6 @@ namespace Saptra.Web.Data
         public string ComentariosRechazo { get; set; }
         public string Periodo { get; set; }
         public string CoordinacionZona { get; set; }
+        public Nullable<int> NumeroEmpleado { get; set; }
     }
 }

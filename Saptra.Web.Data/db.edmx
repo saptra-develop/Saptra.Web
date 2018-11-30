@@ -110,6 +110,8 @@
           <Property Name="FolioCertificado" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="EstatusId" Type="int" Nullable="false" />
           <Property Name="CheckInId" Type="int" Nullable="false" />
+          <Property Name="SincronizadoMySQL" Type="bit" />
+          <Property Name="UUID" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="mCoordinacionRegionZonaUsuario">
           <Key>
@@ -151,6 +153,20 @@
           <Property Name="CurpEducando" Type="varchar" MaxLength="18" />
           <Property Name="DetallePlanId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="CertificadosProgramados">
+          <Key>
+            <PropertyRef Name="CertificadosId" />
+          </Key>
+          <Property Name="CertificadosId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="mc_id" Type="int" Nullable="false" />
+          <Property Name="mc_nombre" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="mc_curp" Type="varchar" MaxLength="50" />
+          <Property Name="mc_foliocert" Type="varchar" MaxLength="50" />
+          <Property Name="st_desc" Type="varchar" MaxLength="50" />
+          <Property Name="mc_fconclusion" Type="varchar" MaxLength="50" />
+          <Property Name="rfc_figura" Type="varchar" MaxLength="50" />
+          <Property Name="mc_matrnu" Type="varchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="InaebaPreregistros">
           <Key>
             <PropertyRef Name="PreregistroId" />
@@ -162,6 +178,10 @@
           <Property Name="ben_nacf" Type="varchar" MaxLength="100" />
           <Property Name="ben_reg" Type="varchar" MaxLength="100" />
           <Property Name="num_activ_saptra" Type="int" />
+          <Property Name="mwu_rfc" Type="varchar" MaxLength="50" />
+          <Property Name="ben_curp" Type="varchar" MaxLength="18" />
+          <Property Name="fsit_sasa" Type="varchar" MaxLength="100" />
+          <Property Name="estatus" Type="varchar" MaxLength="30" />
         </EntityType>
         <EntityType Name="dDetallePlanSemanal">
           <Key>
@@ -182,6 +202,7 @@
           <Property Name="ComentariosNoValidacion" Type="varchar" MaxLength="255" />
           <Property Name="ComentariosRechazo" Type="varchar" MaxLength="255" />
           <Property Name="ActividadRechazada" Type="bit" />
+          <Property Name="SinProspectos" Type="int" />
         </EntityType>
         <EntityType Name="mCheckIn">
           <Key>
@@ -194,6 +215,8 @@
           <Property Name="DetallePlanId" Type="int" Nullable="false" />
           <Property Name="Incidencias" Type="varchar" MaxLength="1024" />
           <Property Name="FotoIncidencia" Type="text" />
+          <Property Name="UUID" Type="varchar" MaxLength="50" />
+          <Property Name="FotoRutaLocal" Type="text" />
         </EntityType>
         <EntityType Name="mPlanSemanal">
           <Key>
@@ -305,6 +328,8 @@
           <Property Name="EmailUsuario" Type="varchar" MaxLength="50" />
           <Property Name="TipoFiguraId" Type="int" />
           <Property Name="RFCUsuario" Type="varchar" MaxLength="13" />
+          <Property Name="LoggedUsuario" Type="bit" />
+          <Property Name="NumeroEmpleado" Type="int" />
         </EntityType>
         <EntityType Name="mSolicitudesVehiculo">
           <Key>
@@ -556,6 +581,18 @@
             </Principal>
             <Dependent Role="cEstatus">
               <PropertyRef Name="TipoEstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InaebaPreregistros_dDetallePlanSemanal">
+          <End Role="dDetallePlanSemanal" Type="Self.dDetallePlanSemanal" Multiplicity="0..1" />
+          <End Role="InaebaPreregistros" Type="Self.InaebaPreregistros" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dDetallePlanSemanal">
+              <PropertyRef Name="DetallePlanId" />
+            </Principal>
+            <Dependent Role="InaebaPreregistros">
+              <PropertyRef Name="num_activ_saptra" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -977,6 +1014,131 @@
             </CollectionType>
           </ReturnType>
         </Function>
+        <Function Name="udf_CertificadosInaebaBaseList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="p_idPeriodo" Type="varchar" Mode="In" />
+          <Parameter Name="p_Region" Type="varchar" Mode="In" />
+          <Parameter Name="p_Zona" Type="varchar" Mode="In" />
+          <Parameter Name="p_TipoActividad" Type="varchar" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="CheckInId" Type="int" />
+                <Property Name="PlnSemanalId" Type="int" />
+                <Property Name="DetallePlanId" Type="int" />
+                <Property Name="CertificadosId" Type="int" />
+                <Property Name="mc_nombre" Type="varchar" MaxLength="150" />
+                <Property Name="mc_curp" Type="varchar" MaxLength="50" />
+                <Property Name="mc_foliocert" Type="varchar" MaxLength="50" />
+                <Property Name="st_desc" Type="varchar" MaxLength="50" />
+                <Property Name="mc_fconclusion" Type="varchar" MaxLength="50" />
+                <Property Name="FechaActividad" Type="varchar" MaxLength="50" />
+                <Property Name="FechaCreacion" Type="varchar" MaxLength="50" />
+                <Property Name="CoordinacionRegionId" Type="int" />
+                <Property Name="DescripcionCoordinacionRegion" Type="varchar" MaxLength="100" />
+                <Property Name="CoordinacionZonaId" Type="int" />
+                <Property Name="DescripcionCoordinacionZona" Type="varchar" MaxLength="100" />
+                <Property Name="PeriodoId" Type="int" />
+                <Property Name="Periodo" Type="varchar" MaxLength="100" />
+                <Property Name="TipoFiguraId" Type="int" />
+                <Property Name="DescripcionTipoFigura" Type="varchar" MaxLength="150" />
+                <Property Name="UsuarioId" Type="int" />
+                <Property Name="NombreUsuario" Type="varchar" MaxLength="255" />
+                <Property Name="CantidadCheckIn" Type="int" />
+                <Property Name="mc_matrnu" Type="varchar" MaxLength="50" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="udf_CertificadosInaebaFiguraEducandoList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="p_idPeriodo" Type="varchar" Mode="In" />
+          <Parameter Name="p_Region" Type="varchar" Mode="In" />
+          <Parameter Name="p_Zona" Type="varchar" Mode="In" />
+          <Parameter Name="p_TipoActividad" Type="varchar" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="Periodo" Type="varchar" MaxLength="100" />
+                <Property Name="Region" Type="varchar" MaxLength="100" />
+                <Property Name="Zona" Type="varchar" MaxLength="100" />
+                <Property Name="DescripcionTipoFigura" Type="varchar" MaxLength="150" />
+                <Property Name="NombreUsuario" Type="varchar" MaxLength="255" />
+                <Property Name="mc_nombre" Type="varchar" MaxLength="150" />
+                <Property Name="mc_curp" Type="varchar" MaxLength="50" />
+                <Property Name="mc_foliocert" Type="varchar" MaxLength="50" />
+                <Property Name="mc_matrnu" Type="varchar" MaxLength="50" />
+                <Property Name="st_desc" Type="varchar" MaxLength="50" />
+                <Property Name="mc_fconclusion" Type="varchar" MaxLength="50" />
+                <Property Name="FechaActividad" Type="varchar" MaxLength="50" />
+                <Property Name="FechaCreacion" Type="varchar" MaxLength="50" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="udf_CertificadosInaebaRegionList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="p_idPeriodo" Type="varchar" Mode="In" />
+          <Parameter Name="p_Region" Type="varchar" Mode="In" />
+          <Parameter Name="p_Zona" Type="varchar" Mode="In" />
+          <Parameter Name="p_TipoActividad" Type="varchar" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="Region" Type="varchar" MaxLength="100" />
+                <Property Name="certificadosProgramados" Type="int" />
+                <Property Name="certificadosEntregados" Type="int" />
+                <Property Name="ProgramadosPromotorTotal" Type="int" />
+                <Property Name="EntregadosPromotorTotal" Type="int" />
+                <Property Name="ProgramadosTecnicoTotal" Type="int" />
+                <Property Name="EntregadosTecnicoTotal" Type="int" />
+                <Property Name="ProgramadosFromadorTotal" Type="int" />
+                <Property Name="EntregadosFormadorTotal" Type="int" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="udf_CertificadosInaebaZonaFiguraList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="p_idPeriodo" Type="varchar" Mode="In" />
+          <Parameter Name="p_Region" Type="varchar" Mode="In" />
+          <Parameter Name="p_Zona" Type="varchar" Mode="In" />
+          <Parameter Name="p_TipoActividad" Type="varchar" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="Periodo" Type="varchar" MaxLength="100" />
+                <Property Name="Region" Type="varchar" MaxLength="100" />
+                <Property Name="Zona" Type="varchar" MaxLength="100" />
+                <Property Name="DescripcionTipoFigura" Type="varchar" MaxLength="150" />
+                <Property Name="NombreUsuario" Type="varchar" MaxLength="255" />
+                <Property Name="certificadosProgramados" Type="int" />
+                <Property Name="certificadosEntregados" Type="int" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="udf_CertificadosInaebaZonaList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="p_idPeriodo" Type="varchar" Mode="In" />
+          <Parameter Name="p_Region" Type="varchar" Mode="In" />
+          <Parameter Name="p_Zona" Type="varchar" Mode="In" />
+          <Parameter Name="p_TipoActividad" Type="varchar" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="Region" Type="varchar" MaxLength="100" />
+                <Property Name="Zona" Type="varchar" MaxLength="100" />
+                <Property Name="certificadosProgramados" Type="int" />
+                <Property Name="certificadosEntregados" Type="int" />
+                <Property Name="ProgramadosPromotorTotal" Type="int" />
+                <Property Name="EntregadosPromotorTotal" Type="int" />
+                <Property Name="ProgramadosTecnicoTotal" Type="int" />
+                <Property Name="EntregadosTecnicoTotal" Type="int" />
+                <Property Name="ProgramadosFromadorTotal" Type="int" />
+                <Property Name="EntregadosFormadorTotal" Type="int" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="udf_ComparaFechas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
+          <Parameter Name="p_PeriodoId" Type="int" Mode="In" />
+        </Function>
         <Function Name="udf_DetalleCapturado" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
           <Parameter Name="p_PlanSemanalId" Type="int" Mode="In" />
         </Function>
@@ -995,6 +1157,7 @@
                 <Property Name="CoordinacionZonaId" Type="int" />
                 <Property Name="DescripcionCoordinacionZona" Type="varchar" MaxLength="100" />
                 <Property Name="PeriodoId" Type="int" />
+                <Property Name="DecripcionPeriodo" Type="varchar" MaxLength="50" />
                 <Property Name="TipoFiguraId" Type="int" />
                 <Property Name="DescripcionTipoFigura" Type="varchar" MaxLength="150" />
                 <Property Name="TipoActividadId" Type="int" />
@@ -1013,6 +1176,8 @@
           <ReturnType>
             <CollectionType>
               <RowType>
+                <Property Name="PeriodoId" Type="int" />
+                <Property Name="DecripcionPeriodo" Type="varchar" MaxLength="50" />
                 <Property Name="CoordinacionRegionId" Type="int" />
                 <Property Name="Region" Type="varchar" MaxLength="100" />
                 <Property Name="PlaneadasTotal" Type="int" />
@@ -1035,6 +1200,8 @@
           <ReturnType>
             <CollectionType>
               <RowType>
+                <Property Name="PeriodoId" Type="int" />
+                <Property Name="DecripcionPeriodo" Type="varchar" MaxLength="50" />
                 <Property Name="CoordinacionRegionId" Type="int" />
                 <Property Name="Region" Type="varchar" MaxLength="100" />
                 <Property Name="CoordinacionZonaId" Type="int" />
@@ -1059,6 +1226,8 @@
           <ReturnType>
             <CollectionType>
               <RowType>
+                <Property Name="PeriodoId" Type="int" />
+                <Property Name="DecripcionPeriodo" Type="varchar" MaxLength="50" />
                 <Property Name="CoordinacionRegionId" Type="int" />
                 <Property Name="Region" Type="varchar" MaxLength="100" />
                 <Property Name="CoordinacionZonaId" Type="int" />
@@ -1119,6 +1288,7 @@
                 <Property Name="mes" Type="varchar" MaxLength="20" />
                 <Property Name="dia" Type="varchar" MaxLength="20" />
                 <Property Name="FechaInicioPeriodo" Type="datetime" />
+                <Property Name="Aprobar" Type="int" />
               </RowType>
             </CollectionType>
           </ReturnType>
@@ -1142,6 +1312,7 @@
                 <Property Name="ComentariosRechazo" Type="varchar" MaxLength="255" />
                 <Property Name="Periodo" Type="varchar" MaxLength="50" />
                 <Property Name="CoordinacionZona" Type="varchar" MaxLength="255" />
+                <Property Name="NumeroEmpleado" Type="int" />
               </RowType>
             </CollectionType>
           </ReturnType>
@@ -1196,6 +1367,7 @@
                 <Property Name="PreregistroId" Type="int" />
                 <Property Name="num_activ_saptra" Type="int" />
                 <Property Name="NombrePreregistro" Type="varchar" MaxLength="255" />
+                <Property Name="FechaPreregistro" Type="varchar" MaxLength="100" />
                 <Property Name="FechaRegistro" Type="varchar" MaxLength="100" />
                 <Property Name="CoordinacionRegionId" Type="int" />
                 <Property Name="DescripcionCoordinacionRegion" Type="varchar" MaxLength="100" />
@@ -1209,6 +1381,7 @@
                 <Property Name="DescripcionActividad" Type="varchar" MaxLength="255" />
                 <Property Name="UsuarioId" Type="int" />
                 <Property Name="NombreUsuario" Type="varchar" MaxLength="255" />
+                <Property Name="estatus" Type="varchar" MaxLength="30" />
               </RowType>
             </CollectionType>
           </ReturnType>
@@ -1248,6 +1421,7 @@
                 <Property Name="DescripcionTipoFigura" Type="varchar" MaxLength="150" />
                 <Property Name="NombreUsuario" Type="varchar" MaxLength="255" />
                 <Property Name="NombrePreregistro" Type="varchar" MaxLength="255" />
+                <Property Name="FechaPreregistro" Type="varchar" MaxLength="100" />
                 <Property Name="FechaRegistro" Type="varchar" MaxLength="100" />
                 <Property Name="prerregistradosTotal" Type="int" />
                 <Property Name="incorporadosTotal" Type="int" />
@@ -1390,6 +1564,7 @@
                 <Property Name="Zona" Type="varchar" MaxLength="100" />
                 <Property Name="TipoFiguraId" Type="int" />
                 <Property Name="TipoFigura" Type="varchar" MaxLength="100" />
+                <Property Name="UsuarioId" Type="int" />
                 <Property Name="NombreFigura" Type="varchar" MaxLength="255" />
                 <Property Name="capturadasTotal" Type="int" />
                 <Property Name="rechazadasTotal" Type="int" />
@@ -1487,6 +1662,7 @@
                 <Property Name="Zona" Type="varchar" MaxLength="100" />
                 <Property Name="TipoFiguraId" Type="int" />
                 <Property Name="TipoFigura" Type="varchar" MaxLength="100" />
+                <Property Name="UsuarioId" Type="int" />
                 <Property Name="NombreFigura" Type="varchar" MaxLength="255" />
                 <Property Name="capturadasTotal" Type="int" />
                 <Property Name="rechazadasTotal" Type="int" />
@@ -1555,6 +1731,7 @@
           <EntitySet Name="mCoordinacionRegionZonaUsuario" EntityType="Self.mCoordinacionRegionZonaUsuario" Schema="COORDINACIONREGION" store:Type="Tables" />
           <EntitySet Name="mCoordinacionZonaUsuario" EntityType="Self.mCoordinacionZonaUsuario" Schema="COORDINACIONZONA" store:Type="Tables" />
           <EntitySet Name="mEducandosCaptados" EntityType="Self.mEducandosCaptados" Schema="EDUCANDOS" store:Type="Tables" />
+          <EntitySet Name="CertificadosProgramados" EntityType="Self.CertificadosProgramados" Schema="INAEBA" store:Type="Tables" />
           <EntitySet Name="InaebaPreregistros" EntityType="Self.InaebaPreregistros" Schema="INAEBA" store:Type="Tables" />
           <EntitySet Name="dDetallePlanSemanal" EntityType="Self.dDetallePlanSemanal" Schema="PLANSEMANAL" store:Type="Tables" />
           <EntitySet Name="mCheckIn" EntityType="Self.mCheckIn" Schema="PLANSEMANAL" store:Type="Tables" />
@@ -1647,6 +1824,10 @@
           <AssociationSet Name="FK_Estatus_TipoEstatus" Association="Self.FK_Estatus_TipoEstatus">
             <End Role="cTipoEstatus" EntitySet="cTipoEstatus" />
             <End Role="cEstatus" EntitySet="cEstatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InaebaPreregistros_dDetallePlanSemanal" Association="Self.FK_InaebaPreregistros_dDetallePlanSemanal">
+            <End Role="dDetallePlanSemanal" EntitySet="dDetallePlanSemanal" />
+            <End Role="InaebaPreregistros" EntitySet="InaebaPreregistros" />
           </AssociationSet>
           <AssociationSet Name="FK_mCheckIn_dDetallePlanSemanal" Association="Self.FK_mCheckIn_dDetallePlanSemanal">
             <End Role="dDetallePlanSemanal" EntitySet="dDetallePlanSemanal" />
@@ -1793,6 +1974,78 @@
         <ComplexType Name="Split_Result">
           <Property Name="Value" Type="Int64" />
         </ComplexType>
+        <ComplexType Name="udf_CertificadosInaebaBaseList_Result">
+          <Property Name="CheckInId" Type="Int32" />
+          <Property Name="PlnSemanalId" Type="Int32" />
+          <Property Name="DetallePlanId" Type="Int32" />
+          <Property Name="CertificadosId" Type="Int32" />
+          <Property Name="mc_nombre" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="mc_curp" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="mc_foliocert" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="st_desc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="mc_fconclusion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FechaActividad" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FechaCreacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CoordinacionRegionId" Type="Int32" />
+          <Property Name="DescripcionCoordinacionRegion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CoordinacionZonaId" Type="Int32" />
+          <Property Name="DescripcionCoordinacionZona" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PeriodoId" Type="Int32" />
+          <Property Name="Periodo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="TipoFiguraId" Type="Int32" />
+          <Property Name="DescripcionTipoFigura" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="UsuarioId" Type="Int32" />
+          <Property Name="NombreUsuario" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CantidadCheckIn" Type="Int32" />
+          <Property Name="mc_matrnu" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </ComplexType>
+        <ComplexType Name="udf_CertificadosInaebaFiguraEducandoList_Result">
+          <Property Name="Periodo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Region" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Zona" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DescripcionTipoFigura" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="NombreUsuario" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="mc_nombre" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="mc_curp" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="mc_foliocert" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="mc_matrnu" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="st_desc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="mc_fconclusion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FechaActividad" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FechaCreacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </ComplexType>
+        <ComplexType Name="udf_CertificadosInaebaRegionList_Result">
+          <Property Name="Region" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="certificadosProgramados" Type="Int32" />
+          <Property Name="certificadosEntregados" Type="Int32" />
+          <Property Name="ProgramadosPromotorTotal" Type="Int32" />
+          <Property Name="EntregadosPromotorTotal" Type="Int32" />
+          <Property Name="ProgramadosTecnicoTotal" Type="Int32" />
+          <Property Name="EntregadosTecnicoTotal" Type="Int32" />
+          <Property Name="ProgramadosFromadorTotal" Type="Int32" />
+          <Property Name="EntregadosFormadorTotal" Type="Int32" />
+        </ComplexType>
+        <ComplexType Name="udf_CertificadosInaebaZonaFiguraList_Result">
+          <Property Name="Periodo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Region" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Zona" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DescripcionTipoFigura" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="NombreUsuario" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="certificadosProgramados" Type="Int32" />
+          <Property Name="certificadosEntregados" Type="Int32" />
+        </ComplexType>
+        <ComplexType Name="udf_CertificadosInaebaZonaList_Result">
+          <Property Name="Region" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Zona" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="certificadosProgramados" Type="Int32" />
+          <Property Name="certificadosEntregados" Type="Int32" />
+          <Property Name="ProgramadosPromotorTotal" Type="Int32" />
+          <Property Name="EntregadosPromotorTotal" Type="Int32" />
+          <Property Name="ProgramadosTecnicoTotal" Type="Int32" />
+          <Property Name="EntregadosTecnicoTotal" Type="Int32" />
+          <Property Name="ProgramadosFromadorTotal" Type="Int32" />
+          <Property Name="EntregadosFormadorTotal" Type="Int32" />
+        </ComplexType>
         <ComplexType Name="udf_IncumplimientoActividadesPeriodoList_Result">
           <Property Name="PlnSemanalId" Type="Int32" />
           <Property Name="DetallePlanId" Type="Int32" />
@@ -1801,6 +2054,7 @@
           <Property Name="CoordinacionZonaId" Type="Int32" />
           <Property Name="DescripcionCoordinacionZona" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="PeriodoId" Type="Int32" />
+          <Property Name="DecripcionPeriodo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="TipoFiguraId" Type="Int32" />
           <Property Name="DescripcionTipoFigura" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="TipoActividadId" Type="Int32" />
@@ -1809,6 +2063,8 @@
           <Property Name="CheckInRealizado" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
         </ComplexType>
         <ComplexType Name="udf_IncumplimientoActividadesPeriodoRegionList_Result">
+          <Property Name="PeriodoId" Type="Int32" />
+          <Property Name="DecripcionPeriodo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CoordinacionRegionId" Type="Int32" />
           <Property Name="Region" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="PlaneadasTotal" Type="Int32" />
@@ -1821,6 +2077,8 @@
           <Property Name="FormadorIncumplio" Type="Int32" />
         </ComplexType>
         <ComplexType Name="udf_IncumplimientoActividadesPeriodoRegionZonaList_Result">
+          <Property Name="PeriodoId" Type="Int32" />
+          <Property Name="DecripcionPeriodo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CoordinacionRegionId" Type="Int32" />
           <Property Name="Region" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="CoordinacionZonaId" Type="Int32" />
@@ -1835,6 +2093,8 @@
           <Property Name="FormadorIncumplio" Type="Int32" />
         </ComplexType>
         <ComplexType Name="udf_IncumplimientoActividadesPeriodoZonaActividadList_Result">
+          <Property Name="PeriodoId" Type="Int32" />
+          <Property Name="DecripcionPeriodo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CoordinacionRegionId" Type="Int32" />
           <Property Name="Region" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="CoordinacionZonaId" Type="Int32" />
@@ -1878,6 +2138,7 @@
           <Property Name="mes" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="dia" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="FechaInicioPeriodo" Type="DateTime" />
+          <Property Name="Aprobar" Type="Int32" />
         </ComplexType>
         <ComplexType Name="udf_PlanSemanalIncidenciasList_Result">
           <Property Name="PlnSemanalId" Type="Int32" />
@@ -1890,6 +2151,7 @@
           <Property Name="ComentariosRechazo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Periodo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CoordinacionZona" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="NumeroEmpleado" Type="Int32" />
         </ComplexType>
         <ComplexType Name="udf_PlanSemanalList_Result">
           <Property Name="PlnSemanalId" Type="Int32" />
@@ -1917,6 +2179,7 @@
           <Property Name="PreregistroId" Type="Int32" />
           <Property Name="num_activ_saptra" Type="Int32" />
           <Property Name="NombrePreregistro" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FechaPreregistro" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="FechaRegistro" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="CoordinacionRegionId" Type="Int32" />
           <Property Name="DescripcionCoordinacionRegion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
@@ -1930,6 +2193,7 @@
           <Property Name="DescripcionActividad" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="UsuarioId" Type="Int32" />
           <Property Name="NombreUsuario" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="estatus" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
         </ComplexType>
         <ComplexType Name="udf_PreregistrosIncorporadosBaseRegionList_Result">
           <Property Name="Region" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
@@ -1949,6 +2213,7 @@
           <Property Name="DescripcionTipoFigura" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="NombreUsuario" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="NombrePreregistro" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FechaPreregistro" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="FechaRegistro" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="prerregistradosTotal" Type="Int32" />
           <Property Name="incorporadosTotal" Type="Int32" />
@@ -2031,6 +2296,7 @@
           <Property Name="Zona" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="TipoFiguraId" Type="Int32" />
           <Property Name="TipoFigura" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="UsuarioId" Type="Int32" />
           <Property Name="NombreFigura" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="capturadasTotal" Type="Int32" />
           <Property Name="rechazadasTotal" Type="Int32" />
@@ -2088,6 +2354,7 @@
           <Property Name="Zona" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="TipoFiguraId" Type="Int32" />
           <Property Name="TipoFigura" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="UsuarioId" Type="Int32" />
           <Property Name="NombreFigura" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="capturadasTotal" Type="Int32" />
           <Property Name="rechazadasTotal" Type="Int32" />
@@ -2264,6 +2531,8 @@
           <Property Name="FolioCertificado" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="EstatusId" Type="Int32" Nullable="false" />
           <Property Name="CheckInId" Type="Int32" Nullable="false" />
+          <Property Name="SincronizadoMySQL" Type="Boolean" />
+          <Property Name="UUID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="cEstatus" Relationship="Self.FK_mLecturaCertificados_cEstatus" FromRole="mLecturaCertificados" ToRole="cEstatus" />
           <NavigationProperty Name="mCheckIn" Relationship="Self.FK_mLecturaCertificados_mCheckIn" FromRole="mLecturaCertificados" ToRole="mCheckIn" />
           <NavigationProperty Name="mUsuarios" Relationship="Self.FK_mLecturaCertificados_mUsuarios" FromRole="mLecturaCertificados" ToRole="mUsuarios" />
@@ -2316,6 +2585,20 @@
           <NavigationProperty Name="dDetallePlanSemanal" Relationship="Self.FK_mEducandosCaptados_dDetallePlanSemanal" FromRole="mEducandosCaptados" ToRole="dDetallePlanSemanal" />
           <NavigationProperty Name="mUsuarios" Relationship="Self.FK_mEducandosCaptados_mUsuarios" FromRole="mEducandosCaptados" ToRole="mUsuarios" />
         </EntityType>
+        <EntityType Name="CertificadosProgramados">
+          <Key>
+            <PropertyRef Name="CertificadosId" />
+          </Key>
+          <Property Name="CertificadosId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="mc_id" Type="Int32" Nullable="false" />
+          <Property Name="mc_nombre" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="mc_curp" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="mc_foliocert" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="st_desc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="mc_fconclusion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="rfc_figura" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="mc_matrnu" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
         <EntityType Name="InaebaPreregistros">
           <Key>
             <PropertyRef Name="PreregistroId" />
@@ -2327,6 +2610,11 @@
           <Property Name="ben_nacf" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ben_reg" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="num_activ_saptra" Type="Int32" />
+          <Property Name="mwu_rfc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ben_curp" Type="String" MaxLength="18" FixedLength="false" Unicode="false" />
+          <Property Name="fsit_sasa" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="estatus" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="dDetallePlanSemanal" Relationship="Self.FK_InaebaPreregistros_dDetallePlanSemanal" FromRole="InaebaPreregistros" ToRole="dDetallePlanSemanal" />
         </EntityType>
         <EntityType Name="dDetallePlanSemanal">
           <Key>
@@ -2347,9 +2635,11 @@
           <Property Name="ComentariosNoValidacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="ComentariosRechazo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="ActividadRechazada" Type="Boolean" />
+          <Property Name="SinProspectos" Type="Int32" />
           <NavigationProperty Name="cEstatus" Relationship="Self.FK_DetallePlanSemanal_Estatus" FromRole="dDetallePlanSemanal" ToRole="cEstatus" />
           <NavigationProperty Name="cTipoActividades" Relationship="Self.FK_DetallePlanSemanal_TipoActividades" FromRole="dDetallePlanSemanal" ToRole="cTipoActividades" />
           <NavigationProperty Name="mEducandosCaptados" Relationship="Self.FK_mEducandosCaptados_dDetallePlanSemanal" FromRole="dDetallePlanSemanal" ToRole="mEducandosCaptados" />
+          <NavigationProperty Name="InaebaPreregistros" Relationship="Self.FK_InaebaPreregistros_dDetallePlanSemanal" FromRole="dDetallePlanSemanal" ToRole="InaebaPreregistros" />
           <NavigationProperty Name="mPlanSemanal" Relationship="Self.FK_dDetallePlanSemanal_mPlanSemanal" FromRole="dDetallePlanSemanal" ToRole="mPlanSemanal" />
           <NavigationProperty Name="mUsuarios" Relationship="Self.FK_dDetallePlanSemanal_mUsuarios" FromRole="dDetallePlanSemanal" ToRole="mUsuarios" />
           <NavigationProperty Name="mCheckIn" Relationship="Self.FK_mCheckIn_dDetallePlanSemanal" FromRole="dDetallePlanSemanal" ToRole="mCheckIn" />
@@ -2366,6 +2656,8 @@
           <Property Name="DetallePlanId" Type="Int32" Nullable="false" />
           <Property Name="Incidencias" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
           <Property Name="FotoIncidencia" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="UUID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FotoRutaLocal" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="mLecturaCertificados" Relationship="Self.FK_mLecturaCertificados_mCheckIn" FromRole="mCheckIn" ToRole="mLecturaCertificados" />
           <NavigationProperty Name="dDetallePlanSemanal" Relationship="Self.FK_mCheckIn_dDetallePlanSemanal" FromRole="mCheckIn" ToRole="dDetallePlanSemanal" />
           <NavigationProperty Name="mUsuarios" Relationship="Self.FK_mCheckIn_mUsuarios" FromRole="mCheckIn" ToRole="mUsuarios" />
@@ -2502,6 +2794,8 @@
           <Property Name="EmailUsuario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="TipoFiguraId" Type="Int32" />
           <Property Name="RFCUsuario" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="LoggedUsuario" Type="Boolean" />
+          <Property Name="NumeroEmpleado" Type="Int32" />
           <NavigationProperty Name="cCoordinacionesRegion" Relationship="Self.FK_cCoordinacionesRegion_mUsuarios" FromRole="mUsuarios" ToRole="cCoordinacionesRegion" />
           <NavigationProperty Name="cCoordinacionesZona" Relationship="Self.FK_cCoordinacionesZona_mUsuarios" FromRole="mUsuarios" ToRole="cCoordinacionesZona" />
           <NavigationProperty Name="cEstatus" Relationship="Self.FK_cEstatus_mUsuarios" FromRole="mUsuarios" ToRole="cEstatus" />
@@ -3021,6 +3315,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_InaebaPreregistros_dDetallePlanSemanal">
+          <End Role="dDetallePlanSemanal" Type="Self.dDetallePlanSemanal" Multiplicity="0..1" />
+          <End Role="InaebaPreregistros" Type="Self.InaebaPreregistros" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dDetallePlanSemanal">
+              <PropertyRef Name="DetallePlanId" />
+            </Principal>
+            <Dependent Role="InaebaPreregistros">
+              <PropertyRef Name="num_activ_saptra" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_dDetallePlanSemanal_mPlanSemanal">
           <End Role="mPlanSemanal" Type="Self.mPlanSemanal" Multiplicity="1" />
           <End Role="dDetallePlanSemanal" Type="Self.dDetallePlanSemanal" Multiplicity="*" />
@@ -3203,6 +3509,7 @@
           <EntitySet Name="mCoordinacionRegionZonaUsuario" EntityType="Self.mCoordinacionRegionZonaUsuario" />
           <EntitySet Name="mCoordinacionZonaUsuario" EntityType="Self.mCoordinacionZonaUsuario" />
           <EntitySet Name="mEducandosCaptados" EntityType="Self.mEducandosCaptados" />
+          <EntitySet Name="CertificadosProgramados" EntityType="Self.CertificadosProgramados" />
           <EntitySet Name="InaebaPreregistros" EntityType="Self.InaebaPreregistros" />
           <EntitySet Name="dDetallePlanSemanal" EntityType="Self.dDetallePlanSemanal" />
           <EntitySet Name="mCheckIn" EntityType="Self.mCheckIn" />
@@ -3376,6 +3683,10 @@
             <End Role="mUsuarios" EntitySet="mUsuarios" />
             <End Role="mEducandosCaptados" EntitySet="mEducandosCaptados" />
           </AssociationSet>
+          <AssociationSet Name="FK_InaebaPreregistros_dDetallePlanSemanal" Association="Self.FK_InaebaPreregistros_dDetallePlanSemanal">
+            <End Role="dDetallePlanSemanal" EntitySet="dDetallePlanSemanal" />
+            <End Role="InaebaPreregistros" EntitySet="InaebaPreregistros" />
+          </AssociationSet>
           <AssociationSet Name="FK_dDetallePlanSemanal_mPlanSemanal" Association="Self.FK_dDetallePlanSemanal_mPlanSemanal">
             <End Role="mPlanSemanal" EntitySet="mPlanSemanal" />
             <End Role="dDetallePlanSemanal" EntitySet="dDetallePlanSemanal" />
@@ -3434,6 +3745,36 @@
           </AssociationSet>
           <FunctionImport Name="Split" IsComposable="true" ReturnType="Collection(Inaeba_GeorreferenciaModel.Split_Result)">
             <Parameter Name="strString" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="udf_CertificadosInaebaBaseList" IsComposable="true" ReturnType="Collection(Inaeba_GeorreferenciaModel.udf_CertificadosInaebaBaseList_Result)">
+            <Parameter Name="p_idPeriodo" Mode="In" Type="String" />
+            <Parameter Name="p_Region" Mode="In" Type="String" />
+            <Parameter Name="p_Zona" Mode="In" Type="String" />
+            <Parameter Name="p_TipoActividad" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="udf_CertificadosInaebaFiguraEducandoList" IsComposable="true" ReturnType="Collection(Inaeba_GeorreferenciaModel.udf_CertificadosInaebaFiguraEducandoList_Result)">
+            <Parameter Name="p_idPeriodo" Mode="In" Type="String" />
+            <Parameter Name="p_Region" Mode="In" Type="String" />
+            <Parameter Name="p_Zona" Mode="In" Type="String" />
+            <Parameter Name="p_TipoActividad" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="udf_CertificadosInaebaRegionList" IsComposable="true" ReturnType="Collection(Inaeba_GeorreferenciaModel.udf_CertificadosInaebaRegionList_Result)">
+            <Parameter Name="p_idPeriodo" Mode="In" Type="String" />
+            <Parameter Name="p_Region" Mode="In" Type="String" />
+            <Parameter Name="p_Zona" Mode="In" Type="String" />
+            <Parameter Name="p_TipoActividad" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="udf_CertificadosInaebaZonaFiguraList" IsComposable="true" ReturnType="Collection(Inaeba_GeorreferenciaModel.udf_CertificadosInaebaZonaFiguraList_Result)">
+            <Parameter Name="p_idPeriodo" Mode="In" Type="String" />
+            <Parameter Name="p_Region" Mode="In" Type="String" />
+            <Parameter Name="p_Zona" Mode="In" Type="String" />
+            <Parameter Name="p_TipoActividad" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="udf_CertificadosInaebaZonaList" IsComposable="true" ReturnType="Collection(Inaeba_GeorreferenciaModel.udf_CertificadosInaebaZonaList_Result)">
+            <Parameter Name="p_idPeriodo" Mode="In" Type="String" />
+            <Parameter Name="p_Region" Mode="In" Type="String" />
+            <Parameter Name="p_Zona" Mode="In" Type="String" />
+            <Parameter Name="p_TipoActividad" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="udf_IncumplimientoActividadesPeriodoList" IsComposable="true" ReturnType="Collection(Inaeba_GeorreferenciaModel.udf_IncumplimientoActividadesPeriodoList_Result)">
             <Parameter Name="p_idPeriodo" Mode="In" Type="String" />
@@ -3694,6 +4035,8 @@
                 <ScalarProperty Name="FolioCertificado" ColumnName="FolioCertificado" />
                 <ScalarProperty Name="EstatusId" ColumnName="EstatusId" />
                 <ScalarProperty Name="CheckInId" ColumnName="CheckInId" />
+                <ScalarProperty Name="SincronizadoMySQL" ColumnName="SincronizadoMySQL" />
+                <ScalarProperty Name="UUID" ColumnName="UUID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3740,6 +4083,21 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="CertificadosProgramados">
+            <EntityTypeMapping TypeName="Inaeba_GeorreferenciaModel.CertificadosProgramados">
+              <MappingFragment StoreEntitySet="CertificadosProgramados">
+                <ScalarProperty Name="CertificadosId" ColumnName="CertificadosId" />
+                <ScalarProperty Name="mc_id" ColumnName="mc_id" />
+                <ScalarProperty Name="mc_nombre" ColumnName="mc_nombre" />
+                <ScalarProperty Name="mc_curp" ColumnName="mc_curp" />
+                <ScalarProperty Name="mc_foliocert" ColumnName="mc_foliocert" />
+                <ScalarProperty Name="st_desc" ColumnName="st_desc" />
+                <ScalarProperty Name="mc_fconclusion" ColumnName="mc_fconclusion" />
+                <ScalarProperty Name="rfc_figura" ColumnName="rfc_figura" />
+                <ScalarProperty Name="mc_matrnu" ColumnName="mc_matrnu" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="InaebaPreregistros">
             <EntityTypeMapping TypeName="Inaeba_GeorreferenciaModel.InaebaPreregistros">
               <MappingFragment StoreEntitySet="InaebaPreregistros">
@@ -3750,6 +4108,10 @@
                 <ScalarProperty Name="ben_nacf" ColumnName="ben_nacf" />
                 <ScalarProperty Name="ben_reg" ColumnName="ben_reg" />
                 <ScalarProperty Name="num_activ_saptra" ColumnName="num_activ_saptra" />
+                <ScalarProperty Name="mwu_rfc" ColumnName="mwu_rfc" />
+                <ScalarProperty Name="ben_curp" ColumnName="ben_curp" />
+                <ScalarProperty Name="fsit_sasa" ColumnName="fsit_sasa" />
+                <ScalarProperty Name="estatus" ColumnName="estatus" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3771,6 +4133,7 @@
                 <ScalarProperty Name="ComentariosNoValidacion" ColumnName="ComentariosNoValidacion" />
                 <ScalarProperty Name="ComentariosRechazo" ColumnName="ComentariosRechazo" />
                 <ScalarProperty Name="ActividadRechazada" ColumnName="ActividadRechazada" />
+                <ScalarProperty Name="SinProspectos" ColumnName="SinProspectos" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3784,6 +4147,8 @@
                 <ScalarProperty Name="DetallePlanId" ColumnName="DetallePlanId" />
                 <ScalarProperty Name="Incidencias" ColumnName="Incidencias" />
                 <ScalarProperty Name="FotoIncidencia" ColumnName="FotoIncidencia" />
+                <ScalarProperty Name="UUID" ColumnName="UUID" />
+                <ScalarProperty Name="FotoRutaLocal" ColumnName="FotoRutaLocal" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3903,6 +4268,8 @@
                 <ScalarProperty Name="EmailUsuario" ColumnName="EmailUsuario" />
                 <ScalarProperty Name="TipoFiguraId" ColumnName="TipoFiguraId" />
                 <ScalarProperty Name="RFCUsuario" ColumnName="RFCUsuario" />
+                <ScalarProperty Name="LoggedUsuario" ColumnName="LoggedUsuario" />
+                <ScalarProperty Name="NumeroEmpleado" ColumnName="NumeroEmpleado" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3927,6 +4294,98 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionName="Inaeba_GeorreferenciaModel.Store.udf_CertificadosInaebaBaseList" FunctionImportName="udf_CertificadosInaebaBaseList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Inaeba_GeorreferenciaModel.udf_CertificadosInaebaBaseList_Result">
+                <ScalarProperty Name="CheckInId" ColumnName="CheckInId" />
+                <ScalarProperty Name="PlnSemanalId" ColumnName="PlnSemanalId" />
+                <ScalarProperty Name="DetallePlanId" ColumnName="DetallePlanId" />
+                <ScalarProperty Name="CertificadosId" ColumnName="CertificadosId" />
+                <ScalarProperty Name="mc_nombre" ColumnName="mc_nombre" />
+                <ScalarProperty Name="mc_curp" ColumnName="mc_curp" />
+                <ScalarProperty Name="mc_foliocert" ColumnName="mc_foliocert" />
+                <ScalarProperty Name="st_desc" ColumnName="st_desc" />
+                <ScalarProperty Name="mc_fconclusion" ColumnName="mc_fconclusion" />
+                <ScalarProperty Name="FechaActividad" ColumnName="FechaActividad" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="CoordinacionRegionId" ColumnName="CoordinacionRegionId" />
+                <ScalarProperty Name="DescripcionCoordinacionRegion" ColumnName="DescripcionCoordinacionRegion" />
+                <ScalarProperty Name="CoordinacionZonaId" ColumnName="CoordinacionZonaId" />
+                <ScalarProperty Name="DescripcionCoordinacionZona" ColumnName="DescripcionCoordinacionZona" />
+                <ScalarProperty Name="PeriodoId" ColumnName="PeriodoId" />
+                <ScalarProperty Name="Periodo" ColumnName="Periodo" />
+                <ScalarProperty Name="TipoFiguraId" ColumnName="TipoFiguraId" />
+                <ScalarProperty Name="DescripcionTipoFigura" ColumnName="DescripcionTipoFigura" />
+                <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
+                <ScalarProperty Name="NombreUsuario" ColumnName="NombreUsuario" />
+                <ScalarProperty Name="CantidadCheckIn" ColumnName="CantidadCheckIn" />
+                <ScalarProperty Name="mc_matrnu" ColumnName="mc_matrnu" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionName="Inaeba_GeorreferenciaModel.Store.udf_CertificadosInaebaFiguraEducandoList" FunctionImportName="udf_CertificadosInaebaFiguraEducandoList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Inaeba_GeorreferenciaModel.udf_CertificadosInaebaFiguraEducandoList_Result">
+                <ScalarProperty Name="Periodo" ColumnName="Periodo" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+                <ScalarProperty Name="Zona" ColumnName="Zona" />
+                <ScalarProperty Name="DescripcionTipoFigura" ColumnName="DescripcionTipoFigura" />
+                <ScalarProperty Name="NombreUsuario" ColumnName="NombreUsuario" />
+                <ScalarProperty Name="mc_nombre" ColumnName="mc_nombre" />
+                <ScalarProperty Name="mc_curp" ColumnName="mc_curp" />
+                <ScalarProperty Name="mc_foliocert" ColumnName="mc_foliocert" />
+                <ScalarProperty Name="mc_matrnu" ColumnName="mc_matrnu" />
+                <ScalarProperty Name="st_desc" ColumnName="st_desc" />
+                <ScalarProperty Name="mc_fconclusion" ColumnName="mc_fconclusion" />
+                <ScalarProperty Name="FechaActividad" ColumnName="FechaActividad" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionName="Inaeba_GeorreferenciaModel.Store.udf_CertificadosInaebaRegionList" FunctionImportName="udf_CertificadosInaebaRegionList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Inaeba_GeorreferenciaModel.udf_CertificadosInaebaRegionList_Result">
+                <ScalarProperty Name="Region" ColumnName="Region" />
+                <ScalarProperty Name="certificadosProgramados" ColumnName="certificadosProgramados" />
+                <ScalarProperty Name="certificadosEntregados" ColumnName="certificadosEntregados" />
+                <ScalarProperty Name="ProgramadosPromotorTotal" ColumnName="ProgramadosPromotorTotal" />
+                <ScalarProperty Name="EntregadosPromotorTotal" ColumnName="EntregadosPromotorTotal" />
+                <ScalarProperty Name="ProgramadosTecnicoTotal" ColumnName="ProgramadosTecnicoTotal" />
+                <ScalarProperty Name="EntregadosTecnicoTotal" ColumnName="EntregadosTecnicoTotal" />
+                <ScalarProperty Name="ProgramadosFromadorTotal" ColumnName="ProgramadosFromadorTotal" />
+                <ScalarProperty Name="EntregadosFormadorTotal" ColumnName="EntregadosFormadorTotal" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionName="Inaeba_GeorreferenciaModel.Store.udf_CertificadosInaebaZonaFiguraList" FunctionImportName="udf_CertificadosInaebaZonaFiguraList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Inaeba_GeorreferenciaModel.udf_CertificadosInaebaZonaFiguraList_Result">
+                <ScalarProperty Name="Periodo" ColumnName="Periodo" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+                <ScalarProperty Name="Zona" ColumnName="Zona" />
+                <ScalarProperty Name="DescripcionTipoFigura" ColumnName="DescripcionTipoFigura" />
+                <ScalarProperty Name="NombreUsuario" ColumnName="NombreUsuario" />
+                <ScalarProperty Name="certificadosProgramados" ColumnName="certificadosProgramados" />
+                <ScalarProperty Name="certificadosEntregados" ColumnName="certificadosEntregados" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionName="Inaeba_GeorreferenciaModel.Store.udf_CertificadosInaebaZonaList" FunctionImportName="udf_CertificadosInaebaZonaList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Inaeba_GeorreferenciaModel.udf_CertificadosInaebaZonaList_Result">
+                <ScalarProperty Name="Region" ColumnName="Region" />
+                <ScalarProperty Name="Zona" ColumnName="Zona" />
+                <ScalarProperty Name="certificadosProgramados" ColumnName="certificadosProgramados" />
+                <ScalarProperty Name="certificadosEntregados" ColumnName="certificadosEntregados" />
+                <ScalarProperty Name="ProgramadosPromotorTotal" ColumnName="ProgramadosPromotorTotal" />
+                <ScalarProperty Name="EntregadosPromotorTotal" ColumnName="EntregadosPromotorTotal" />
+                <ScalarProperty Name="ProgramadosTecnicoTotal" ColumnName="ProgramadosTecnicoTotal" />
+                <ScalarProperty Name="EntregadosTecnicoTotal" ColumnName="EntregadosTecnicoTotal" />
+                <ScalarProperty Name="ProgramadosFromadorTotal" ColumnName="ProgramadosFromadorTotal" />
+                <ScalarProperty Name="EntregadosFormadorTotal" ColumnName="EntregadosFormadorTotal" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionName="Inaeba_GeorreferenciaModel.Store.udf_IncumplimientoActividadesPeriodoList" FunctionImportName="udf_IncumplimientoActividadesPeriodoList">
             <ResultMapping>
               <ComplexTypeMapping TypeName="Inaeba_GeorreferenciaModel.udf_IncumplimientoActividadesPeriodoList_Result">
@@ -3937,6 +4396,7 @@
                 <ScalarProperty Name="CoordinacionZonaId" ColumnName="CoordinacionZonaId" />
                 <ScalarProperty Name="DescripcionCoordinacionZona" ColumnName="DescripcionCoordinacionZona" />
                 <ScalarProperty Name="PeriodoId" ColumnName="PeriodoId" />
+                <ScalarProperty Name="DecripcionPeriodo" ColumnName="DecripcionPeriodo" />
                 <ScalarProperty Name="TipoFiguraId" ColumnName="TipoFiguraId" />
                 <ScalarProperty Name="DescripcionTipoFigura" ColumnName="DescripcionTipoFigura" />
                 <ScalarProperty Name="TipoActividadId" ColumnName="TipoActividadId" />
@@ -3949,6 +4409,8 @@
           <FunctionImportMapping FunctionName="Inaeba_GeorreferenciaModel.Store.udf_IncumplimientoActividadesPeriodoRegionList" FunctionImportName="udf_IncumplimientoActividadesPeriodoRegionList">
             <ResultMapping>
               <ComplexTypeMapping TypeName="Inaeba_GeorreferenciaModel.udf_IncumplimientoActividadesPeriodoRegionList_Result">
+                <ScalarProperty Name="PeriodoId" ColumnName="PeriodoId" />
+                <ScalarProperty Name="DecripcionPeriodo" ColumnName="DecripcionPeriodo" />
                 <ScalarProperty Name="CoordinacionRegionId" ColumnName="CoordinacionRegionId" />
                 <ScalarProperty Name="Region" ColumnName="Region" />
                 <ScalarProperty Name="PlaneadasTotal" ColumnName="PlaneadasTotal" />
@@ -3965,6 +4427,8 @@
           <FunctionImportMapping FunctionName="Inaeba_GeorreferenciaModel.Store.udf_IncumplimientoActividadesPeriodoRegionZonaList" FunctionImportName="udf_IncumplimientoActividadesPeriodoRegionZonaList">
             <ResultMapping>
               <ComplexTypeMapping TypeName="Inaeba_GeorreferenciaModel.udf_IncumplimientoActividadesPeriodoRegionZonaList_Result">
+                <ScalarProperty Name="PeriodoId" ColumnName="PeriodoId" />
+                <ScalarProperty Name="DecripcionPeriodo" ColumnName="DecripcionPeriodo" />
                 <ScalarProperty Name="CoordinacionRegionId" ColumnName="CoordinacionRegionId" />
                 <ScalarProperty Name="Region" ColumnName="Region" />
                 <ScalarProperty Name="CoordinacionZonaId" ColumnName="CoordinacionZonaId" />
@@ -3983,6 +4447,8 @@
           <FunctionImportMapping FunctionName="Inaeba_GeorreferenciaModel.Store.udf_IncumplimientoActividadesPeriodoZonaActividadList" FunctionImportName="udf_IncumplimientoActividadesPeriodoZonaActividadList">
             <ResultMapping>
               <ComplexTypeMapping TypeName="Inaeba_GeorreferenciaModel.udf_IncumplimientoActividadesPeriodoZonaActividadList_Result">
+                <ScalarProperty Name="PeriodoId" ColumnName="PeriodoId" />
+                <ScalarProperty Name="DecripcionPeriodo" ColumnName="DecripcionPeriodo" />
                 <ScalarProperty Name="CoordinacionRegionId" ColumnName="CoordinacionRegionId" />
                 <ScalarProperty Name="Region" ColumnName="Region" />
                 <ScalarProperty Name="CoordinacionZonaId" ColumnName="CoordinacionZonaId" />
@@ -4034,6 +4500,7 @@
                 <ScalarProperty Name="mes" ColumnName="mes" />
                 <ScalarProperty Name="dia" ColumnName="dia" />
                 <ScalarProperty Name="FechaInicioPeriodo" ColumnName="FechaInicioPeriodo" />
+                <ScalarProperty Name="Aprobar" ColumnName="Aprobar" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -4050,6 +4517,7 @@
                 <ScalarProperty Name="ComentariosRechazo" ColumnName="ComentariosRechazo" />
                 <ScalarProperty Name="Periodo" ColumnName="Periodo" />
                 <ScalarProperty Name="CoordinacionZona" ColumnName="CoordinacionZona" />
+                <ScalarProperty Name="NumeroEmpleado" ColumnName="NumeroEmpleado" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -4089,6 +4557,7 @@
                 <ScalarProperty Name="PreregistroId" ColumnName="PreregistroId" />
                 <ScalarProperty Name="num_activ_saptra" ColumnName="num_activ_saptra" />
                 <ScalarProperty Name="NombrePreregistro" ColumnName="NombrePreregistro" />
+                <ScalarProperty Name="FechaPreregistro" ColumnName="FechaPreregistro" />
                 <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
                 <ScalarProperty Name="CoordinacionRegionId" ColumnName="CoordinacionRegionId" />
                 <ScalarProperty Name="DescripcionCoordinacionRegion" ColumnName="DescripcionCoordinacionRegion" />
@@ -4102,6 +4571,7 @@
                 <ScalarProperty Name="DescripcionActividad" ColumnName="DescripcionActividad" />
                 <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
                 <ScalarProperty Name="NombreUsuario" ColumnName="NombreUsuario" />
+                <ScalarProperty Name="estatus" ColumnName="estatus" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -4129,6 +4599,7 @@
                 <ScalarProperty Name="DescripcionTipoFigura" ColumnName="DescripcionTipoFigura" />
                 <ScalarProperty Name="NombreUsuario" ColumnName="NombreUsuario" />
                 <ScalarProperty Name="NombrePreregistro" ColumnName="NombrePreregistro" />
+                <ScalarProperty Name="FechaPreregistro" ColumnName="FechaPreregistro" />
                 <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
                 <ScalarProperty Name="prerregistradosTotal" ColumnName="prerregistradosTotal" />
                 <ScalarProperty Name="incorporadosTotal" ColumnName="incorporadosTotal" />
@@ -4235,6 +4706,7 @@
                 <ScalarProperty Name="Zona" ColumnName="Zona" />
                 <ScalarProperty Name="TipoFiguraId" ColumnName="TipoFiguraId" />
                 <ScalarProperty Name="TipoFigura" ColumnName="TipoFigura" />
+                <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
                 <ScalarProperty Name="NombreFigura" ColumnName="NombreFigura" />
                 <ScalarProperty Name="capturadasTotal" ColumnName="capturadasTotal" />
                 <ScalarProperty Name="rechazadasTotal" ColumnName="rechazadasTotal" />
@@ -4308,6 +4780,7 @@
                 <ScalarProperty Name="Zona" ColumnName="Zona" />
                 <ScalarProperty Name="TipoFiguraId" ColumnName="TipoFiguraId" />
                 <ScalarProperty Name="TipoFigura" ColumnName="TipoFigura" />
+                <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
                 <ScalarProperty Name="NombreFigura" ColumnName="NombreFigura" />
                 <ScalarProperty Name="capturadasTotal" ColumnName="capturadasTotal" />
                 <ScalarProperty Name="rechazadasTotal" ColumnName="rechazadasTotal" />

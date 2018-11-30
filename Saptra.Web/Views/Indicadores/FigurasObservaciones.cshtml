@@ -5,6 +5,7 @@
     <div class="col-lg-12">
         <h4 class="page-header">
             Figuras con observaciones en la aprobación
+            <button class="btn btn-xs btn-outline btn-success pull-right btnExportar" style="margin-right:5px;"><i class="fa fa-file-o"></i> Exportar indicadores</button>
         </h4>
     </div>
     <!-- /.col-lg-12 -->
@@ -31,7 +32,8 @@
 <div class="row">
     <!-- TABS -->
     <ul class="nav nav-tabs nav-justified">
-        <li class="active"><a href="#region" data-toggle="tab">Región</a></li>
+
+         <li class="active"><a href="#region" data-toggle="tab">Región</a></li>
         <li><a href="#zonas" data-toggle="tab">Zonas</a></li>
         <li><a href="#figuraValidacion" data-toggle="tab">Por Figura durante la Aprobación</a></li>
         <li><a href="#figuraAprobacion" data-toggle="tab">Detalle por Figura durante Aprobación</a></li>
@@ -39,102 +41,101 @@
 
     <div class="tab-content">
         <!-- TAB REGION -->
-        <div class="tab-pane fade in active" id="region">
-            <div style="padding:5px 15px 0px 15px;">
-                <div class="row">
-                    <div class="col-lg-12 ">
-                        <div class="panel panel-default panel-small" align="center">
-                            <div id="bbGrid-clear" class="panel-body" style="overflow-x: auto; overflow-y: hidden;">
-                                <div class='alert alert-warning'>
-                                    <button type='button' class='close' data-dismiss='alert'>x</button>
-                                    Seleccionas filtros para obtener información
+            <div class="tab-pane fade in active" id="region">
+                <div style="padding:5px 15px 0px 15px;">
+                    <div class="row">
+                        <div class="col-lg-12 ">
+                            <div class="panel panel-default panel-small" align="center">
+                                <div id="bbGrid-clear" class="panel-body" style="overflow-x: auto; overflow-y: hidden;">
+                                    <div class='alert alert-warning'>
+                                        <button type='button' class='close' data-dismiss='alert'>x</button>
+                                        Seleccionas filtros para obtener información
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 ">
-                        <div class="panel panel-default panel-small" align="center">
-                            <div id="grafico1" class="panel-body" style="overflow-x: auto; overflow-y: hidden;">
-                                <div class='alert alert-warning'>
-                                    <button type='button' class='close' data-dismiss='alert'>x</button>
-                                    Seleccionas filtros para obtener información
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- TAB ZONAS -->
-        <div class="tab-pane fade" id="zonas">
-            <div style="padding:5px 15px 0px 15px;">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="panel panel-default panel-small" align="center">
-                            <div id="indicadorZona" class="panel-body" style="overflow-x: auto; overflow-y: hidden;">
-                                <div class='alert alert-warning'>
-                                    <button type='button' class='close' data-dismiss='alert'>x</button>
-                                    Seleccionas filtros para obtener información
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 ">
-                        <div class="panel panel-default panel-small" align="center">
-                            <div id="graficozona" class="panel-body" style="overflow-x: auto; overflow-y: hidden;">
-                                <div class='alert alert-warning'>
-                                    <button type='button' class='close' data-dismiss='alert'>x</button>
-                                    Seleccionas filtros para obtener información
+                    <div class="row">
+                        <div class="col-lg-12 ">
+                            <div class="panel panel-default panel-small" align="center">
+                                <div id="grafico1" class="panel-body" style="overflow-x: auto; overflow-y: hidden;">
+                                    <div class='alert alert-warning'>
+                                        <button type='button' class='close' data-dismiss='alert'>x</button>
+                                        Seleccionas filtros para obtener información
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- TAB TIPO ACTIVIDAD -->
-        <div class="tab-pane fade" id="figuraValidacion">
-            <div style="padding:5px 15px 0px 15px;">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="panel panel-default panel-small" align="center">
-                            <div id="indicadorZonaActividad" class="panel-body" style="overflow-x: auto; overflow-y: hidden;">
-                                <div class='alert alert-warning'>
-                                    <button type='button' class='close' data-dismiss='alert'>x</button>
-                                    Seleccionas filtros para obtener información
+            <!-- TAB ZONAS -->
+            <div class="tab-pane fade" id="zonas">
+                <div style="padding:5px 15px 0px 15px;">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-default panel-small" align="center">
+                                <div id="indicadorZona" class="panel-body" style="overflow-x: auto; overflow-y: hidden;">
+                                    <div class='alert alert-warning'>
+                                        <button type='button' class='close' data-dismiss='alert'>x</button>
+                                        Seleccionas filtros para obtener información
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 ">
+                            <div class="panel panel-default panel-small" align="center">
+                                <div id="graficozona" class="panel-body" style="overflow-x: auto; overflow-y: hidden;">
+                                    <div class='alert alert-warning'>
+                                        <button type='button' class='close' data-dismiss='alert'>x</button>
+                                        Seleccionas filtros para obtener información
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- TAB TIPO FIGURA -->
-        <div class="tab-pane fade" id="figuraAprobacion">
-            <div style="padding:5px 15px 0px 15px;">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="panel panel-default panel-small" align="center">
-                            <div id="indicadorRegionZonaActividad" class="panel-body" style="overflow-x: auto; overflow-y: hidden;">
-                                <div class='alert alert-warning'>
-                                    <button type='button' class='close' data-dismiss='alert'>x</button>
-                                    Seleccionas filtros para obtener información
+            <!-- TAB TIPO ACTIVIDAD -->
+            <div class="tab-pane fade" id="figuraValidacion">
+                <div style="padding:5px 15px 0px 15px;">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-default panel-small" align="center">
+                                <div id="indicadorZonaActividad" class="panel-body" style="overflow-x: auto; overflow-y: hidden;">
+                                    <div class='alert alert-warning'>
+                                        <button type='button' class='close' data-dismiss='alert'>x</button>
+                                        Seleccionas filtros para obtener información
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-    </div>
+            <!-- TAB TIPO FIGURA -->
+            <div class="tab-pane fade" id="figuraAprobacion">
+                <div style="padding:5px 15px 0px 15px;">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-default panel-small" align="center">
+                                <div id="indicadorRegionZonaActividad" class="panel-body" style="overflow-x: auto; overflow-y: hidden;">
+                                    <div class='alert alert-warning'>
+                                        <button type='button' class='close' data-dismiss='alert'>x</button>
+                                        Seleccionas filtros para obtener información
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
 </div>
 
 

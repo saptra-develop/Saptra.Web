@@ -13,7 +13,7 @@
     <div class="row">
         <div class="col-lg-3">
             <select id="selPeriodos" class="js-example-basic-multiple js-states form-control" multiple="multiple"><option> Cargando...</option><</select>
-            <input type="hidden" id="selecPeriodos"/>
+            <input type="hidden" id="selecPeriodos" />
         </div>
         <div class="col-lg-4">
             <select id="selTipoFigura" class="js-example-basic-multiple js-states form-control" multiple="multiple"><option> Cargando...</option><</select>
@@ -26,6 +26,7 @@
         <div class="col-lg-1">
             <a href="javascript:;" class="btn btn-primary" id="btnFilter"><i class="fa fa-filter"></i> Filtrar</a>
         </div>
+       
     </div>
 </div>
 <div class="row">
@@ -50,6 +51,8 @@
         </div>
     </div>
 </div>
+
+
 
 @section Scripts {
     @Html.IncludeVersionedJs(Url.Content("~/Scripts/PlanSemanalValidacion.js"))

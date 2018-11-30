@@ -41,12 +41,45 @@ var Indicador1 = {
             Indicador1.CargaGridRegionZonaActividad();
             Indicador1.CargaGridRegionZonaActividadFigura();
             Indicador1.GraficoIncumplidasRegion();
+            Indicador1.GraficoIncumplidasZona();
         });
 
         $(document).on("change", '#selPeriodos', that.onCambiarPeriodos);
         $(document).on("change", '#selRegiones', that.onCambiarRegiones);
         $(document).on("change", '#selZonas', that.onCambiarZonas);
         $(document).on("change", '#selTipoActividad', that.onCambiarActividades);
+        $(document).on('click', '.btnExportar', function () {
+            Indicador1.onExportarFormato();
+        });
+        $(document).on('click', '.btnExportarExcel', function () {
+            Indicador1.onExportarExcel();
+        });
+        $(document).on('click', '.btnExportarPDF', function () {
+            Indicador1.onExportarPDF();
+        });
+    },
+    onExportarFormato: function () {
+        var htmlMessage = "<h4>Exportar</h4>";
+        htmlMessage += "<h5>Formato de reporte</h5>";
+        htmlMessage += "<div class='text-center'><div class='btn-group btn-group-md'>";
+        htmlMessage += "<button class='btn btn-success btnExportarExcel'><i class='fa fa-file-excel-o'></i> Excel</button>";
+        htmlMessage += "<button class='btn btn-danger btnExportarPDF' ><i class='fa fa-file-pdf-o'></i> PDF </button>";
+        htmlMessage += "</div></div>";
+
+        bootbox.alert({
+            message: htmlMessage,
+            size: 'small'
+        });
+    },
+    onExportarExcel: function () {
+        var url = contextPath + "Indicadores/ExportIndIncumplimientoExcel?idPeriodo=" + $('#selPeriodosMul').val() + "&Region=" + $('#selRegionesMul').val() + "&Zonas=" + $('#selZonasMul').val() + "&TipoActividad=" + $('#selTipoActividadMul').val() + "&idUsuario=" + localStorage.idUser; // El url del controlador
+
+        window.open(url, '_blank');
+    },
+    onExportarPDF: function () {
+        var url = contextPath + "Pdf/ExportIndicadorIncumplidasPDF?idPeriodo=" + $('#selPeriodosMul').val() + "&Region=" + $('#selRegionesMul').val() + "&Zonas=" + $('#selZonasMul').val() + "&TipoActividad=" + $('#selTipoActividadMul').val() + "&idUsuario=" + localStorage.idUser; // El url del controlador
+
+        window.open(url, '_blank');
     },
     onCambiarPeriodos: function () {
         $('#selPeriodosMul').val($('#selPeriodos').val());
@@ -76,12 +109,13 @@ var Indicador1 = {
             if (bolFilter) {
                 var table = data.datos;
                 var tabIndicador = "<table class='table table-striped' style='-webkit-box-shadow: 0px 0px 22px -2px rgba(0,0,0,0.75); -moz-box-shadow: 0px 0px 22px -2px rgba(0, 0, 0, 0.75);box-shadow: 0px 0px 22px -2px rgba(0, 0, 0, 0.75);border-collapse: collapse;-webkit-border-radius: 7px;-webkit-border-bottom-right-radius: 4px;-webkit-border-bottom-left-radius: 4px;-moz-border-radius: 7px;-moz-border-radius-bottomright: 4px;-moz-border-radius-bottomleft: 4px;border-radius: 7px;border-bottom-right-radius: 4px;border-bottom-left-radius: 4px;overflow: hidden;'>";
-                tabIndicador += "<thead> <tr style='color:#fff; background-color:#0F7CB9;border-bottom: 3pt solid #233246;'> <th style='text-align:center;' scope='col'>REGIÓN</th> <th style='text-align:center;' scope='col'>Total Actividades planeadas</th> <th style='text-align:center;' scope='col'>Incumplidas</th> <th style='text-align:center;' scope='col'>%Incumplimiento Promotor</th> <th style='text-align:center;' scope='col'>%Incumplimiento Tecnico docente</th> <th style='text-align:center;' scope='col'>%Incumplimiento Formador</th> </tr> </thead>";
+                tabIndicador += "<thead> <tr style='color:#fff; background-color:#0F7CB9;border-bottom: 3pt solid #233246;'> <th style='text-align:center;' scope='col'>REGIÓN</th> <th style='text-align:center;' scope='col'>Total Actividades planeadas</th> <th style='text-align:center;' scope='col'>Incumplidas</th> <th style='text-align:center;' scope='col'>%Incumplimiento</th> <th style='text-align:center;' scope='col'>%Incumplimiento Promotor</th> <th style='text-align:center;' scope='col'>%Incumplimiento Tecnico docente</th> <th style='text-align:center;' scope='col'>%Incumplimiento Formador</th> </tr> </thead>";
                 for (j = 0; j < table.length; j++) {
                     tabIndicador += "<tr style='text-align:center;'>";
                     tabIndicador += "<td data-label='Región'>" + table[j]['region'] + "</td>";
                     tabIndicador += "<td data-label='Total Actividades planeadas'>" + table[j]['planeadastotal'] + "</td>";
                     tabIndicador += "<td data-label='Incumplidas'>" + table[j]['incumplidastotal'] + "</td>";
+                    tabIndicador += "<td data-label='%Incumplimiento'>" + table[j]['pocentajeTotal'] + "</td>";
                     tabIndicador += "<td data-label='%Incumplimiento Promotor'>" + table[j]['pocentajepromotor'] + "</td>";
                     tabIndicador += "<td data-label='%Incumplimiento Tecnico docente'>" + table[j]['pocentajetecnico'] + "</td>";
                     tabIndicador += "<td data-label='%Incumplimiento Formador'>" + table[j]['pocentajeformador'] + "</td>";
@@ -134,12 +168,14 @@ var Indicador1 = {
             if (bolFilter) {
                 var table = data.datos;
                 var tabIndicador = "<table class='table table-striped' style='-webkit-box-shadow: 0px 0px 22px -2px rgba(0,0,0,0.75); -moz-box-shadow: 0px 0px 22px -2px rgba(0, 0, 0, 0.75);box-shadow: 0px 0px 22px -2px rgba(0, 0, 0, 0.75);border-collapse: collapse;-webkit-border-radius: 7px;-webkit-border-bottom-right-radius: 4px;-webkit-border-bottom-left-radius: 4px;-moz-border-radius: 7px;-moz-border-radius-bottomright: 4px;-moz-border-radius-bottomleft: 4px;border-radius: 7px;border-bottom-right-radius: 4px;border-bottom-left-radius: 4px;overflow: hidden;'>";
-                tabIndicador += "<thead> <tr style='color:#fff; background-color:#0F7CB9;border-bottom: 3pt solid #233246;'> <th style='text-align:center;'>Región</th> <th style='text-align:center;'>Zona</th> <th style='text-align:center;'>Total Actividades planeadas</th> <th style='text-align:center;'>%Incumplimiento Promotor</th> <th style='text-align:center;'>%Incumplimiento Tecnico docente</th> <th style='text-align:center;'>%Incumplimiento Formador</th> </tr> </thead>";
+                tabIndicador += "<thead> <tr style='color:#fff; background-color:#0F7CB9;border-bottom: 3pt solid #233246;'> <th style='text-align:center;'>Región</th> <th style='text-align:center;'>Zona</th> <th style='text-align:center;'>Total Actividades planeadas</th> <th style='text-align:center;' scope='col'>Incumplidas</th> <th style='text-align:center;' scope='col'>%Incumplimiento</th> <th style='text-align:center;'>%Incumplimiento Promotor</th> <th style='text-align:center;'>%Incumplimiento Tecnico docente</th> <th style='text-align:center;'>%Incumplimiento Formador</th> </tr> </thead>";
                 for (j = 0; j < table.length; j++) {
                     tabIndicador += "<tr style='text-align:center;'>";
                     tabIndicador += "<td data-label='Región'>" + table[j]['region'] + "</td>";
                     tabIndicador += "<td data-label='Zona'>" + table[j]['zona'] + "</td>";
                     tabIndicador += "<td data-label='Total Actividades planeadas'>" + table[j]['planeadastotal'] + "</td>";
+                    tabIndicador += "<td data-label='Incumplidas'>" + table[j]['incumplidastotal'] + "</td>";
+                    tabIndicador += "<td data-label='%Incumplimiento'>" + table[j]['pocentajeTotal'] + "</td>";
                     tabIndicador += "<td data-label='%Incumplimiento Promotor'>" + table[j]['pocentajepromotor'] + "</td>";
                     tabIndicador += "<td data-label='%Incumplimiento Tecnico docente'>" + table[j]['pocentajetecnico'] + "</td>";
                     tabIndicador += "<td data-label='%Incumplimiento Formador'>" + table[j]['pocentajeformador'] + "</td>";
@@ -181,7 +217,9 @@ var Indicador1 = {
                 for (j = 0; j < table.length; j++) {
                     tabIndicador += "<tr style='text-align:center;'>";
                     for (i = 0; i < textHeader.length; i++) {
-                        tabIndicador += "<td data-label='" + textHeader[i] + "' style='background-color:" + (i == 0 ? "" : (table[j][textHeader[i]] <= 49 ? "#C6EFC9" : (table[j][textHeader[i]] >= 50 && table[j][textHeader[i]] <= 79 ? "#FFEB9C" : "#FFC7CE")))  + "'>" + table[j][textHeader[i]] + "</td>";
+                        tabIndicador += "<td data-label='" + textHeader[i] + "' style='background-color:" + (i == 0 ? "" : (table[j][textHeader[i]] <= 49 ? "#C6EFC9" : (table[j][textHeader[i]] >= 50 && table[j][textHeader[i]] <= 79 ? "#FFEB9C" : "#FFC7CE"))) + "'>" + 
+                            table[j][textHeader[i]] + (isNaN(table[j][textHeader[i]]) == true ? "" : "%")
+                            + "</td>";
                     }
              
                     tabIndicador += "</tr>";
@@ -221,9 +259,9 @@ var Indicador1 = {
                     tabIndicador += "<td data-label='Región'>" + table[j]['region'] + "</td>";
                     tabIndicador += "<td data-label='Zona'>" + table[j]['zona'] + "</td>";
                     tabIndicador += "<td data-label='Actividad'>" + table[j]['actividad'] + "</td>";
-                    tabIndicador += "<td data-label='%Promotor'>" + table[j]['promotorIncumplio'] + "</td>";
-                    tabIndicador += "<td data-label='%Tecnico docente'>" + table[j]['tecnicoIncumplio'] + "</td>";
-                    tabIndicador += "<td data-label='%Formador'>" + table[j]['formadorIncumplio'] + "</td>";
+                    tabIndicador += "<td data-label='%Promotor' style='background-color:" + (table[j]['promotorIncumplio'] <= 49 ? "#C6EFC9" : (table[j]['promotorIncumplio'] >= 50 && table[j]['promotorIncumplio'] <= 79 ? "#FFEB9C" : "#FFC7CE")) + "'>" + table[j]['promotorIncumplio'] + "%"  + "</td>";
+                    tabIndicador += "<td data-label='%Tecnico docente' style='background-color:" + (table[j]['tecnicoIncumplio'] <= 49 ? "#C6EFC9" : (table[j]['tecnicoIncumplio'] >= 50 && table[j]['tecnicoIncumplio'] <= 79 ? "#FFEB9C" : "#FFC7CE")) + "'>" + table[j]['tecnicoIncumplio'] + "%" + "</td>";
+                    tabIndicador += "<td data-label='%Formador' style='background-color:" + (table[j]['formadorIncumplio'] <= 49 ? "#C6EFC9" : (table[j]['formadorIncumplio'] >= 50 && table[j]['formadorIncumplio'] <= 79 ? "#FFEB9C" : "#FFC7CE")) + "'>" + table[j]['formadorIncumplio'] + "%" + "</td>";
                     tabIndicador += "</tr>";
                 }
 
@@ -332,6 +370,100 @@ var Indicador1 = {
             }).fail(function () {
                 FCH.DespliegaError("No se encontro información");
             });
+    },
+    GraficoIncumplidasZona: function () {
+        $('#graficozona')[0].innerHTML = ""; //remove canvas from container
+        $('#graficozona')[0].innerHTML = "<div class='alert alert-warning'>" +
+            "<button type='button' class='close' data-dismiss='alert'>x</button>" +
+            "<i class='fa fa-spinner fa-spin fa-3x fa-fw'></i>" +
+            "<span >Cargando...</span>" +
+            "</div>";
+        var url1 = contextPath + "Indicadores/CargarIndIncumplimintoZonaGrafico?idPeriodo=" + $('#selPeriodosMul').val() + "&Region=" + $('#selRegionesMul').val() + "&Zonas=" + $('#selZonasMul').val() + "&TipoActividad=" + $('#selTipoActividadMul').val() + "&idUsuario=" + localStorage.idUser;
+        $.getJSON(url1, function (data) {
+            if (data.Success !== undefined) {
+                FCH.DespliegaError(data.Message);
+                $('#graficozona')[0].innerHTML = "";
+                return;
+            }
+            var bolFilterFobGC = data.dataCFigura.length > 0 ? true : false;
+            if (bolFilterFobGC) {
+
+                FusionCharts.ready(function () {
+                    var ChartFobGC = new FusionCharts({
+                        type: 'scrollColumn2d',
+                        renderAt: 'graficozona',
+                        width: '100%',
+                        height: '400',
+                        dataFormat: 'json',
+                        dataSource: {
+                            "chart": {
+                                "caption": "%Incumplimiento actividades por zona",
+                                "subCaption": "",
+                                "captionFontSize": "14",
+                                "subcaptionFontSize": "14",
+                                "subcaptionFontBold": "0",
+
+                                "baseFontSize": "15",
+                                "valueFontSize": "14",
+                                "baseFontColor": "#333333",
+                                "baseFont": "Helvetica Neue,Arial",
+                                "baseFontSize": "15",
+                                "valueFontSize": "14",
+                                "xAxisName": "Figura",
+                                "yAxisName": "% Incumplimiento",
+                                "decimals": "2",
+                                "numberprefix": "%",
+                                "forceDecimals": "2",
+                                "paletteColors": "#2874A6,#239B56,#D4AC0D",
+                                "bgColor": "#ffffff",
+                                "showBorder": "0",
+                                "showCanvasBorder": "0",
+                                "showPlotBorder": "0",
+                                "showAlternateHgridColor": "0",
+                                "showXAxisLine": "1",
+                                "usePlotGradientcolor": "0",
+                                "numVisiblePlot": "22",
+                                "placeValuesInside": "0",
+                                "rotateValues": "1",
+                                "LegendShadow": "0",
+                                "legendBorderAlpha": "0",
+                                "base": "10",
+                                "axisLineAlpha": "10",
+                                "toolTipColor": "#ffffff",
+                                "toolTipBorderThickness": "0",
+                                "toolTipBgColor": "#000000",
+                                "toolTipBgAlpha": "80",
+                                "toolTipBorderRadius": "2",
+                                "toolTipPadding": "5",
+                                "divlineAlpha": "100",
+                                "divlineColor": "#999999",
+                                "divlineThickness": "1",
+                                "divLineIsDashed": "1",
+                                "divLineDashLen": "1",
+                                "divLineGapLen": "1",
+                                "flatScrollBars": "1",
+                                "formatNumberScale": "0",
+                                "decimalSeparator": ",",
+                                "thousandSeparator": ","
+                            },
+                            "categories": [
+                                {
+                                    "category": data.modelCZona
+                                }
+                            ],
+                            "dataset": data.dataCFigura
+
+                        }
+                    }).render();
+                });
+            } else {
+                $('#graficozona')[0].innerHTML = "<div class='alert alert-warning'>" +
+                    "<button type='button' class='close' data-dismiss='alert'>x</button>No se encontro información</div>";
+            }
+            //getJSON fail
+        }).fail(function () {
+            FCH.DespliegaError("No se encontro información");
+        });
     },
     CargaPeriodos: function () {
         if (Indicador1.colPeriodos.length < 1) {

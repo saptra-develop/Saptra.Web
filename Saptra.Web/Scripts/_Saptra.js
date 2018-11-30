@@ -651,17 +651,16 @@ var FCH = {
     downloadExcel: function(id) {
         window.open('data:application/vnd.ms-excel,' + encodeURIComponent($('#' + id).html()));
     },
-    verPopupImagen: function(col, url, nav) {
-        FCH.colElements = col;
+    verPopupImagen: function(url, nav) {
         FCH.urlImagePopup = url;
         FCH.scrollTop = $(document).scrollTop();
 
-        data = "<div class='modal-dialog modal-xxl' role='document'><div class='modal-content'>";
+        data = "<div class='modal-dialog modal-md' role='document'><div class='modal-content'>";
         data += "<div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>";
         data += "</div>";
         data += "<div class='modal-body text-center'><div style='display: flex; justify-content: center;'>";
         data += (nav ? "<div id='previousimageLayoutPopup' style='cursor:pointer; position:absolute; left:20px; top:45%; opacity:0.1;'><i class='fa fa-2x fa-chevron-left'></i></div>" : "");
-        data += "<img src='" + FCH.urlImagePopup + "' class='img-responsive' style='width:100%; height:100%;' />";
+        data += "<img src='" + FCH.urlImagePopup + "' class='img-responsive' style='width:60%; height:60%;' />";
         data += (nav ? "<div id='nextimageLayoutPopup' style='cursor:pointer; position:absolute; left:97%; top:45%; opacity:0.1;'><i class='fa fa-2x fa-chevron-right'></i></div>" : "");
         data += "</div></div>";
         data += "</div></div>";
@@ -671,89 +670,6 @@ var FCH = {
             backdrop: 'static',
             keyboard: true
         }, 'show');
-
-        $(document).on('click', '#previousimageLayoutPopup', function () {
-            var found = FCH.colElements.find(function (item) {
-                if (item.attributes.imagen != undefined) {
-                    if (item.attributes.imagen.indexOf(FCH.urlImagePopup.replace('conceptos', 'miniaturas')) > 0) {
-                        return item;
-                    }
-                }
-                if (item.attributes.image != undefined) {
-                    if (item.attributes.image.indexOf(FCH.urlImagePopup.replace('conceptos', 'miniaturas')) > 0) {
-                        return item;
-                    }
-                }
-                if (item.attributes.picture != undefined) {
-                    if (item.attributes.picture.indexOf(FCH.urlImagePopup.replace('conceptos', 'miniaturas')) > 0) {
-                        return item;
-                    }
-                }
-            });
-            var ind = FCH.colElements.indexOf(found);
-            if (ind > 0) {
-                var prevModel = FCH.colElements.at(ind - 1);
-                var posIniImage, posEndImage, ahrefimage;
-                if (prevModel.attributes.imagen != undefined) {
-                    posIniImage = prevModel.attributes.imagen.indexOf("http");
-                    posEndImage = prevModel.attributes.imagen.indexOf("'", posIniImage) -1;
-                    ahrefimage = prevModel.attributes.imagen.replace('miniaturas', 'conceptos').substring(posIniImage, posEndImage);
-                }
-                if (prevModel.attributes.image != undefined) {
-                    posIniImage = prevModel.attributes.image.indexOf("http");
-                    posEndImage = prevModel.attributes.image.indexOf("'", posIniImage);
-                    ahrefimage = prevModel.attributes.image.replace('miniaturas', 'conceptos').substring(posIniImage, posEndImage);
-                }
-                if (prevModel.attributes.picture != undefined) {
-                    posIniImage = prevModel.attributes.picture.indexOf("http");
-                    posEndImage = prevModel.attributes.picture.indexOf("'", posIniImage);
-                    ahrefimage = prevModel.attributes.picture.replace('miniaturas', 'conceptos').substring(posIniImage, posEndImage);
-                }
-                FCH.urlImagePopup = ahrefimage;
-                $('#layoutDefaultModal').find('img').attr('src', FCH.urlImagePopup);
-            }
-        });
-        $(document).on('click', '#nextimageLayoutPopup', function () {
-            var found = FCH.colElements.find(function (item) {
-                if (item.attributes.imagen != undefined) {
-                    if (item.attributes.imagen.indexOf(FCH.urlImagePopup.replace('conceptos', 'miniaturas')) > 0) {
-                        return item;
-                    }
-                }
-                if (item.attributes.image != undefined) {
-                    if (item.attributes.image.indexOf(FCH.urlImagePopup.replace('conceptos', 'miniaturas')) > 0) {
-                        return item;
-                    }
-                }
-                if (item.attributes.picture != undefined) {
-                    if (item.attributes.picture.indexOf(FCH.urlImagePopup.replace('conceptos', 'miniaturas')) > 0) {
-                        return item;
-                    }
-                }
-            });
-            var ind = FCH.colElements.indexOf(found);
-            if (ind + 1 < FCH.colElements.length) {
-                var nextModel = FCH.colElements.at(ind + 1);
-                var posIniImage, posEndImage, ahrefimage;
-                if (nextModel.attributes.imagen != undefined) {
-                    posIniImage = nextModel.attributes.imagen.indexOf("http");
-                    posEndImage = nextModel.attributes.imagen.indexOf("'", posIniImage) - 1;
-                    ahrefimage = nextModel.attributes.imagen.replace('miniaturas', 'conceptos').substring(posIniImage, posEndImage);
-                }
-                if (nextModel.attributes.image != undefined) {
-                    posIniImage = nextModel.attributes.image.indexOf("http");
-                    posEndImage = nextModel.attributes.image.indexOf("'", posIniImage);
-                    ahrefimage = nextModel.attributes.image.replace('miniaturas', 'conceptos').substring(posIniImage, posEndImage);
-                }
-                if (nextModel.attributes.picture != undefined) {
-                    posIniImage = nextModel.attributes.picture.indexOf("http");
-                    posEndImage = nextModel.attributes.picture.indexOf("'", posIniImage);
-                    ahrefimage = nextModel.attributes.picture.replace('miniaturas', 'conceptos').substring(posIniImage, posEndImage);
-                }
-                FCH.urlImagePopup = ahrefimage;
-                $('#layoutDefaultModal').find('img').attr('src', FCH.urlImagePopup);
-            }
-        });
     },
     obtenerAlturaPantalla: function () {
         var w = window,

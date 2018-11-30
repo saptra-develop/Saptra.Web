@@ -18,6 +18,7 @@ namespace Saptra.Web.Data
         public dDetallePlanSemanal()
         {
             this.mEducandosCaptados = new HashSet<mEducandosCaptados>();
+            this.InaebaPreregistros = new HashSet<InaebaPreregistros>();
             this.mCheckIn = new HashSet<mCheckIn>();
             this.mSolicitudesVehiculo = new HashSet<mSolicitudesVehiculo>();
         }
@@ -37,11 +38,14 @@ namespace Saptra.Web.Data
         public string ComentariosNoValidacion { get; set; }
         public string ComentariosRechazo { get; set; }
         public Nullable<bool> ActividadRechazada { get; set; }
+        public Nullable<int> SinProspectos { get; set; }
     
         public virtual cEstatus cEstatus { get; set; }
         public virtual cTipoActividades cTipoActividades { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<mEducandosCaptados> mEducandosCaptados { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<InaebaPreregistros> InaebaPreregistros { get; set; }
         public virtual mPlanSemanal mPlanSemanal { get; set; }
         public virtual mUsuarios mUsuarios { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

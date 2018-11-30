@@ -19,6 +19,7 @@ namespace Saptra.Web.Data
         public string Zona { get; set; }
         public Nullable<int> TipoFiguraId { get; set; }
         public string TipoFigura { get; set; }
+        public Nullable<int> UsuarioId { get; set; }
         public string NombreFigura { get; set; }
         public Nullable<int> capturadasTotal { get; set; }
         public Nullable<int> rechazadasTotal { get; set; }

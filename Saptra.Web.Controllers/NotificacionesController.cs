@@ -45,7 +45,7 @@ namespace Sispro.Web.Controllers
                 {
                     lstNotificaciones = (from n in db.mNotificaciones
                                          where n.EstatusId == 3
-                                         && n.CoordinacionZonaUsuarioId == coordinacion.CoordinacionZonaId
+                                         && n.CoordinacionZonaUsuarioId == coordinacion.CordinacionZonaUsuarioId
                                          && n.TipoNotificacionId != 3
                                          select n)
                                .OrderByDescending(not => not.NotificacionId)
@@ -55,7 +55,7 @@ namespace Sispro.Web.Controllers
                 {
                     lstNotificaciones = (from n in db.mNotificaciones
                                          where n.EstatusId == 3
-                                         && n.CoordinacionZonaUsuarioId == coordinacion.CoordinacionZonaId
+                                         && n.CoordinacionZonaUsuarioId == coordinacion.CordinacionZonaUsuarioId
                                          && n.UsuarioId == idUsuario
                                          && n.TipoNotificacionId == 3
                                          select n)

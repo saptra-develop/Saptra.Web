@@ -13,6 +13,8 @@ namespace Saptra.Web.Data
     
     public partial class udf_IncumplimientoActividadesPeriodoRegionList_Result
     {
+        public Nullable<int> PeriodoId { get; set; }
+        public string DecripcionPeriodo { get; set; }
         public Nullable<int> CoordinacionRegionId { get; set; }
         public string Region { get; set; }
         public Nullable<int> PlaneadasTotal { get; set; }

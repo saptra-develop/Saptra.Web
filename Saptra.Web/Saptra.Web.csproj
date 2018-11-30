@@ -145,15 +145,19 @@
     <Content Include="Content\bbGrid.css" />
     <Content Include="Content\images\avatar.jpg" />
     <Content Include="Content\images\back2.jpg" />
+    <Content Include="Content\images\chrome-icon.png" />
+    <Content Include="Content\images\firefox-icon.png" />
     <Content Include="Content\images\gto_logo.png" />
     <Content Include="Content\images\logo-soy-inaeba.png" />
     <Content Include="Content\images\logo_inaeba.png" />
     <Content Include="Content\images\Logo_SAPTRA.jpg" />
     <Content Include="Content\images\Logo_SAPTRA_min.jpg" />
+    <Content Include="Content\images\marker.png" />
     <Content Include="Content\images\saptraApp.png" />
     <Content Include="Content\images\select2.png" />
     <Content Include="Content\images\select2x2.png" />
     <Content Include="Content\OpenSans.css" />
+    <Content Include="Content\template\rpt_gps.html" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -1514,6 +1518,11 @@
     <Content Include="Views\Indicadores\FigurasObservaciones.cshtml" />
     <Content Include="Views\Indicadores\IncorporadosPreregistrados.cshtml" />
     <Content Include="Views\Indicadores\Certificados.cshtml" />
+    <Content Include="Views\PlanSemanal\_Automoviles.cshtml" />
+    <Content Include="Views\PlanSemanalSeguimiento\_Mapa.cshtml" />
+    <Content Include="Views\PlanSemanalConsulta\_Educandos.cshtml" />
+    <Content Include="Views\PlanSemanalSeguimiento\_Certificados.cshtml" />
+    <Content Include="Views\PlanSemanalConsulta\_VerEducandos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

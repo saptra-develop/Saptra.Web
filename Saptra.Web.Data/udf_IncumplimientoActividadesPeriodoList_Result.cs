@@ -20,6 +20,7 @@ namespace Saptra.Web.Data
         public Nullable<int> CoordinacionZonaId { get; set; }
         public string DescripcionCoordinacionZona { get; set; }
         public Nullable<int> PeriodoId { get; set; }
+        public string DecripcionPeriodo { get; set; }
         public Nullable<int> TipoFiguraId { get; set; }
         public string DescripcionTipoFigura { get; set; }
         public Nullable<int> TipoActividadId { get; set; }

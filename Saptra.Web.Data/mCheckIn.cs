@@ -27,6 +27,8 @@ namespace Saptra.Web.Data
         public int DetallePlanId { get; set; }
         public string Incidencias { get; set; }
         public string FotoIncidencia { get; set; }
+        public string UUID { get; set; }
+        public string FotoRutaLocal { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<mLecturaCertificados> mLecturaCertificados { get; set; }

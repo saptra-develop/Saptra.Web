@@ -40,6 +40,7 @@ namespace Saptra.Web.Data
         public virtual DbSet<mCoordinacionRegionZonaUsuario> mCoordinacionRegionZonaUsuario { get; set; }
         public virtual DbSet<mCoordinacionZonaUsuario> mCoordinacionZonaUsuario { get; set; }
         public virtual DbSet<mEducandosCaptados> mEducandosCaptados { get; set; }
+        public virtual DbSet<CertificadosProgramados> CertificadosProgramados { get; set; }
         public virtual DbSet<InaebaPreregistros> InaebaPreregistros { get; set; }
         public virtual DbSet<dDetallePlanSemanal> dDetallePlanSemanal { get; set; }
         public virtual DbSet<mCheckIn> mCheckIn { get; set; }
@@ -62,6 +63,116 @@ namespace Saptra.Web.Data
                 new ObjectParameter("strString", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Split_Result>("[Entities].[Split](@strString)", strStringParameter);
+        }
+    
+        [DbFunction("Entities", "udf_CertificadosInaebaBaseList")]
+        public virtual IQueryable<udf_CertificadosInaebaBaseList_Result> udf_CertificadosInaebaBaseList(string p_idPeriodo, string p_Region, string p_Zona, string p_TipoActividad)
+        {
+            var p_idPeriodoParameter = p_idPeriodo != null ?
+                new ObjectParameter("p_idPeriodo", p_idPeriodo) :
+                new ObjectParameter("p_idPeriodo", typeof(string));
+    
+            var p_RegionParameter = p_Region != null ?
+                new ObjectParameter("p_Region", p_Region) :
+                new ObjectParameter("p_Region", typeof(string));
+    
+            var p_ZonaParameter = p_Zona != null ?
+                new ObjectParameter("p_Zona", p_Zona) :
+                new ObjectParameter("p_Zona", typeof(string));
+    
+            var p_TipoActividadParameter = p_TipoActividad != null ?
+                new ObjectParameter("p_TipoActividad", p_TipoActividad) :
+                new ObjectParameter("p_TipoActividad", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_CertificadosInaebaBaseList_Result>("[Entities].[udf_CertificadosInaebaBaseList](@p_idPeriodo, @p_Region, @p_Zona, @p_TipoActividad)", p_idPeriodoParameter, p_RegionParameter, p_ZonaParameter, p_TipoActividadParameter);
+        }
+    
+        [DbFunction("Entities", "udf_CertificadosInaebaFiguraEducandoList")]
+        public virtual IQueryable<udf_CertificadosInaebaFiguraEducandoList_Result> udf_CertificadosInaebaFiguraEducandoList(string p_idPeriodo, string p_Region, string p_Zona, string p_TipoActividad)
+        {
+            var p_idPeriodoParameter = p_idPeriodo != null ?
+                new ObjectParameter("p_idPeriodo", p_idPeriodo) :
+                new ObjectParameter("p_idPeriodo", typeof(string));
+    
+            var p_RegionParameter = p_Region != null ?
+                new ObjectParameter("p_Region", p_Region) :
+                new ObjectParameter("p_Region", typeof(string));
+    
+            var p_ZonaParameter = p_Zona != null ?
+                new ObjectParameter("p_Zona", p_Zona) :
+                new ObjectParameter("p_Zona", typeof(string));
+    
+            var p_TipoActividadParameter = p_TipoActividad != null ?
+                new ObjectParameter("p_TipoActividad", p_TipoActividad) :
+                new ObjectParameter("p_TipoActividad", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_CertificadosInaebaFiguraEducandoList_Result>("[Entities].[udf_CertificadosInaebaFiguraEducandoList](@p_idPeriodo, @p_Region, @p_Zona, @p_TipoActividad)", p_idPeriodoParameter, p_RegionParameter, p_ZonaParameter, p_TipoActividadParameter);
+        }
+    
+        [DbFunction("Entities", "udf_CertificadosInaebaRegionList")]
+        public virtual IQueryable<udf_CertificadosInaebaRegionList_Result> udf_CertificadosInaebaRegionList(string p_idPeriodo, string p_Region, string p_Zona, string p_TipoActividad)
+        {
+            var p_idPeriodoParameter = p_idPeriodo != null ?
+                new ObjectParameter("p_idPeriodo", p_idPeriodo) :
+                new ObjectParameter("p_idPeriodo", typeof(string));
+    
+            var p_RegionParameter = p_Region != null ?
+                new ObjectParameter("p_Region", p_Region) :
+                new ObjectParameter("p_Region", typeof(string));
+    
+            var p_ZonaParameter = p_Zona != null ?
+                new ObjectParameter("p_Zona", p_Zona) :
+                new ObjectParameter("p_Zona", typeof(string));
+    
+            var p_TipoActividadParameter = p_TipoActividad != null ?
+                new ObjectParameter("p_TipoActividad", p_TipoActividad) :
+                new ObjectParameter("p_TipoActividad", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_CertificadosInaebaRegionList_Result>("[Entities].[udf_CertificadosInaebaRegionList](@p_idPeriodo, @p_Region, @p_Zona, @p_TipoActividad)", p_idPeriodoParameter, p_RegionParameter, p_ZonaParameter, p_TipoActividadParameter);
+        }
+    
+        [DbFunction("Entities", "udf_CertificadosInaebaZonaFiguraList")]
+        public virtual IQueryable<udf_CertificadosInaebaZonaFiguraList_Result> udf_CertificadosInaebaZonaFiguraList(string p_idPeriodo, string p_Region, string p_Zona, string p_TipoActividad)
+        {
+            var p_idPeriodoParameter = p_idPeriodo != null ?
+                new ObjectParameter("p_idPeriodo", p_idPeriodo) :
+                new ObjectParameter("p_idPeriodo", typeof(string));
+    
+            var p_RegionParameter = p_Region != null ?
+                new ObjectParameter("p_Region", p_Region) :
+                new ObjectParameter("p_Region", typeof(string));
+    
+            var p_ZonaParameter = p_Zona != null ?
+                new ObjectParameter("p_Zona", p_Zona) :
+                new ObjectParameter("p_Zona", typeof(string));
+    
+            var p_TipoActividadParameter = p_TipoActividad != null ?
+                new ObjectParameter("p_TipoActividad", p_TipoActividad) :
+                new ObjectParameter("p_TipoActividad", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_CertificadosInaebaZonaFiguraList_Result>("[Entities].[udf_CertificadosInaebaZonaFiguraList](@p_idPeriodo, @p_Region, @p_Zona, @p_TipoActividad)", p_idPeriodoParameter, p_RegionParameter, p_ZonaParameter, p_TipoActividadParameter);
+        }
+    
+        [DbFunction("Entities", "udf_CertificadosInaebaZonaList")]
+        public virtual IQueryable<udf_CertificadosInaebaZonaList_Result> udf_CertificadosInaebaZonaList(string p_idPeriodo, string p_Region, string p_Zona, string p_TipoActividad)
+        {
+            var p_idPeriodoParameter = p_idPeriodo != null ?
+                new ObjectParameter("p_idPeriodo", p_idPeriodo) :
+                new ObjectParameter("p_idPeriodo", typeof(string));
+    
+            var p_RegionParameter = p_Region != null ?
+                new ObjectParameter("p_Region", p_Region) :
+                new ObjectParameter("p_Region", typeof(string));
+    
+            var p_ZonaParameter = p_Zona != null ?
+                new ObjectParameter("p_Zona", p_Zona) :
+                new ObjectParameter("p_Zona", typeof(string));
+    
+            var p_TipoActividadParameter = p_TipoActividad != null ?
+                new ObjectParameter("p_TipoActividad", p_TipoActividad) :
+                new ObjectParameter("p_TipoActividad", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<udf_CertificadosInaebaZonaList_Result>("[Entities].[udf_CertificadosInaebaZonaList](@p_idPeriodo, @p_Region, @p_Zona, @p_TipoActividad)", p_idPeriodoParameter, p_RegionParameter, p_ZonaParameter, p_TipoActividadParameter);
         }
     
         [DbFunction("Entities", "udf_IncumplimientoActividadesPeriodoList")]

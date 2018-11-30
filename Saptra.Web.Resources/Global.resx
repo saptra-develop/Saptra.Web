@@ -154,7 +154,7 @@
     <value>Consulta Plan Semanal</value>
   </data>
   <data name="menuEducandos" xml:space="preserve">
-    <value>Educandos Preregistrados vs Incorporados</value>
+    <value>Educandos Pre-registrados vs Registrados</value>
   </data>
   <data name="menuEspanol" xml:space="preserve">
     <value>Spanish</value>
@@ -166,10 +166,10 @@
     <value>Figuras</value>
   </data>
   <data name="menuFigurasConReincidencias" xml:space="preserve">
-    <value>Figuras con reincidencias negativas</value>
+    <value>Figuras con observaciones en la aprobación</value>
   </data>
   <data name="menuFigurasReincidentes" xml:space="preserve">
-    <value>Figuras reincidentes en rechazo de plan semanal</value>
+    <value>Actividades rechazadas de plan semanal (Validación)</value>
   </data>
   <data name="menuGrupoBiblioteca" xml:space="preserve">
     <value>Biblioteca</value>

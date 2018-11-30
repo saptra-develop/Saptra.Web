@@ -576,22 +576,40 @@ namespace Saptra.Web.Controllers
                 var cz = (from c in db.mCoordinacionZonaUsuario
                           where c.UsuarioId == idUsuarioCZ
                           && c.JefeCoordinacionZona == true
-                          select c).FirstOrDefault();
+                          select c).ToList();
+                if (cz.Count() > 0)
+                {
+                    int CoordinacionZonaId = cz.First().CoordinacionZonaId;
+                    var result = (from cat in db.mUsuarios
+                                  join c in db.mCoordinacionZonaUsuario on cat.UsuarioId equals c.UsuarioId
+                                  where cat.EstatusId == 5
+                                  && c.CoordinacionZonaId == CoordinacionZonaId
+                                  && c.JefeCoordinacionZona == false
+                                  select new
+                                  {
+                                      id = cat.UsuarioId,
+                                      nombre = cat.NombresUsuario + " " + cat.ApellidosUsuario,
+                                  })
+                                  .OrderBy(cat => cat.id)
+                                  .ToList();
 
-                var result = (from cat in db.mUsuarios
-                              join c in db.mCoordinacionZonaUsuario on cat.UsuarioId equals c.UsuarioId
-                              where cat.EstatusId == (idEstatus == null ? cat.EstatusId : idEstatus)
-                              && c.CoordinacionZonaId == cz.CoordinacionZonaId
-                              && c.JefeCoordinacionZona == false
-                              select new
-                              {
-                                  id = cat.UsuarioId,
-                                  nombre = cat.NombresUsuario + " " + cat.ApellidosUsuario,
-                              })
-                              .OrderBy(cat => cat.id)
-                              .ToList();
+                    return (Json(result, JsonRequestBehavior.AllowGet));
+                }
+                else
+                {
+                    var result = (from cat in db.mUsuarios
+                                  where cat.EstatusId == 5
+                                  && cat.TipoFiguraId != null
+                                  select new
+                                  {
+                                      id = cat.UsuarioId,
+                                      nombre = cat.NombresUsuario + " " + cat.ApellidosUsuario,
+                                  })
+                                  .OrderBy(cat => cat.id)
+                                  .ToList();
 
-                return (Json(result, JsonRequestBehavior.AllowGet));
+                    return (Json(result, JsonRequestBehavior.AllowGet));
+                }
 
             }
             catch (Exception exp)

@@ -1,0 +1,33 @@
+﻿<div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Certificados</h4>
+        </div>
+        <div class="modal-body">
+            <div class="clientAlertDlg"></div>
+            @using (Html.BeginForm("Nuevo", "Certificados", FormMethod.Post, new { id = "NuevoCertificadosForm", name = "NuevoCertificadosForm", @class = "form-horizontal", onsubmit = "return false" }))
+            {
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div id="bbGrid-Certificados" style="overflow-x: auto; overflow-y: auto; max-height:450px;">
+                            <div id="cargandoInfo">
+                                <div class='alert alert-warning'>
+                                    <button type='button' class='close' data-dismiss='alert'>x</button>
+                                    Sin Certificados
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+        </div>
+    </div><!-- /.modal-content -->
+</div>
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet'>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.css' rel='stylesheet' />
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.js'></script>

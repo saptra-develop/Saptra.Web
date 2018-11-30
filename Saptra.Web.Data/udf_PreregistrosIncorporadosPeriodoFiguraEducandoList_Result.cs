@@ -19,6 +19,7 @@ namespace Saptra.Web.Data
         public string DescripcionTipoFigura { get; set; }
         public string NombreUsuario { get; set; }
         public string NombrePreregistro { get; set; }
+        public string FechaPreregistro { get; set; }
         public string FechaRegistro { get; set; }
         public Nullable<int> prerregistradosTotal { get; set; }
         public Nullable<int> incorporadosTotal { get; set; }

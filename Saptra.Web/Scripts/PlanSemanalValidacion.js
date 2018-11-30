@@ -25,6 +25,7 @@ var PlanSemanal = {
         this.CargaTiposFigura();
         this.CargaNombresFigura();
         this.Eventos();
+        this.CargaGrid();
         if (localStorage.IdPlan != undefined) {
             localStorage.removeItem("IdPlan");
 
@@ -58,6 +59,8 @@ var PlanSemanal = {
         $(document).on("change", '#selPeriodos', that.onCambiarPeriodos);
         $(document).on("change", '#selTipoFigura', that.onCambiarTiposFigura);
         $(document).on("change", '#selNombreFigura', that.onCambiarNombresFigura);
+
+      
     },
     onCambiarPeriodos: function (ev) {
         var linea;
@@ -217,7 +220,7 @@ var PlanSemanal = {
     },
     CargaGridDetallesPackingList: function (id, $container) {
         var url = contextPath + "PlanSemanalSeguimiento/CargarDetallePlan?idPlanSemanal=" + id; // El url del controlador
-        $container.innerHTML = '<label > Loading...</label>';
+        $container.innerHTML = '<label > Cargando...</label>';
 
         PlanSemanal.detalleContainer = $container;
         $.getJSON(url, function (data) {
@@ -241,11 +244,14 @@ var PlanSemanal = {
                     return false;
                 }
             });
-
+            PlanSemanal.PintarFilasConHidden();
             if (PlanSemanal.colPlanDetalle.length < 1) {
                 PlanSemanal.gridPlanDetalle.toggleLoading(false);
             }
         });
+    },
+    PintarFilasConHidden: function () {
+        $('.hdnPintaFila').parent().parent().addClass('fobProtoActualizado');
     },
     CargaPeriodos: function () {
         if (PlanSemanal.colPeriodos.length < 1) {

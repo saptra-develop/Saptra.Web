@@ -31,6 +31,7 @@ namespace Sispro.Web.Controllers
     public class PlanSemanalSeguimientoController : Controller
     {
         private Inaeba_SaptraEntities db = new Inaeba_SaptraEntities();
+        private SipaeEntities dbSipae = new SipaeEntities();
 
         #region VALIDACION DE PLAN SEMANAL
         public ActionResult ValidacionPlan()
@@ -78,7 +79,7 @@ namespace Sispro.Web.Controllers
                 var lstDetalle = result.Select(cat => new
                 {
                     id = cat.DetallePlanId,
-                    actividad = cat.cTipoActividades.NombreActividad,
+                    actividad = cat.cTipoActividades.NombreActividad + (cat.ComentariosNoValidacion != null ? "<input type='hidden' class='hdnPintaFila' />" : ""),
                     descripcion = cat.DescripcionActividad,
                     lugar = cat.LugarActividad,
                     fecha = cat.FechaActividad.ToString("MM/dd/yyyy"),
@@ -88,7 +89,7 @@ namespace Sispro.Web.Controllers
                     comentariosNoValidacion = "<div class='row'>" +
                                             "<div class='col-md-2'><br><div class='material-switch'><input " + (cat.mPlanSemanal.EstatusId == 8 || cat.ComentariosNoValidacion != null ? "disabled" : "") + "  class='checkComents' " + (cat.ComentariosNoValidacion == null ? "" : "checked") + " id='checkComents_" + cat.DetallePlanId + "' type='checkbox' data-iddetalleplan='" + cat.DetallePlanId + "'/>" +
                                             "<label for='checkComents_" + cat.DetallePlanId + "' class='label-success'></label></div></div>" +
-                                            "<div class='col-md-10'><textarea maxlength='100' rows='2'  " + (cat.mPlanSemanal.EstatusId == 8 || cat.ComentariosNoValidacion != null ? "readonly" : "") + " class='form-control idComentariosCZ' id='idComentariosCZ_" + cat.DetallePlanId + "' data-idplan='" + cat.PlanSemanalId + "' data-iddetalleplan='" + cat.DetallePlanId + "'" + (cat.ComentariosNoValidacion == null ? "disabled" : "enabled") + ">" + cat.ComentariosNoValidacion + "</textarea></div>" + 
+                                            "<div class='col-md-10'><textarea maxlength='100' rows='2'  " + (cat.mPlanSemanal.EstatusId == 8 ? "readonly" : "") + " class='form-control idComentariosCZ' id='idComentariosCZ_" + cat.DetallePlanId + "' data-idplan='" + cat.PlanSemanalId + "' data-iddetalleplan='" + cat.DetallePlanId + "'" + (cat.ComentariosNoValidacion == null ? "disabled" : "enabled") + ">" + cat.ComentariosNoValidacion + "</textarea></div>" + 
                                             "</div>"
                 });
 
@@ -152,9 +153,15 @@ namespace Sispro.Web.Controllers
                 db.SaveChanges();
 
                 //Revisa coordinador de zona al que pertenece
-                var coordinador = (from co in db.mCoordinacionZonaUsuario
-                                   where co.UsuarioId == idUsuario
-                                   select co).FirstOrDefault();
+                //var coordinador = (from co in db.mCoordinacionZonaUsuario
+                //                   where co.UsuarioId == idUsuario
+                //                   select co).FirstOrDefault();
+
+
+                var coordinacionJefe = (from co in db.mCoordinacionZonaUsuario
+                                        where co.UsuarioId == result.UsuarioCreacionId
+                                        && co.JefeCoordinacionZona == false
+                                        select co).FirstOrDefault();
 
                 //Genera notificacion de con comentarios
                 mNotificaciones objNotificaciones = new mNotificaciones();
@@ -163,7 +170,7 @@ namespace Sispro.Web.Controllers
                 objNotificaciones.TipoNotificacionId = 3;
                 objNotificaciones.PlanSemanalId = idPlan;
                 objNotificaciones.UsuarioId = result.UsuarioCreacionId;
-                objNotificaciones.CoordinacionZonaUsuarioId = coordinador.CoordinacionZonaId;
+                objNotificaciones.CoordinacionZonaUsuarioId = coordinacionJefe.CordinacionZonaUsuarioId;
                 objNotificaciones.FechaCreacion = DateTime.Now;
                 db.mNotificaciones.Add(objNotificaciones);
                 db.SaveChanges();
@@ -186,10 +193,11 @@ namespace Sispro.Web.Controllers
                         var resultDetallePlan = (from ps in db.dDetallePlanSemanal
                                                  where ps.DetallePlanId == objComentarios.id
                                                  select ps).FirstOrDefault();
-
+                  
                         //Actualiza a estatus con comentarios
                         var dbTempDetalle = resultDetallePlan;
-                        dbTempDetalle.ComentariosNoValidacion = objComentarios.comentario;
+                        string comentarioAnt = (dbTempDetalle.ComentariosNoValidacion == null ? "" : dbTempDetalle.ComentariosNoValidacion + ", ");
+                        dbTempDetalle.ComentariosNoValidacion = comentarioAnt + objComentarios.comentario;
                         db.SaveChanges();
                     }
                 }
@@ -202,6 +210,18 @@ namespace Sispro.Web.Controllers
             {
                 return Json(new { Success = false, Message = "Error al guardar la información" });
             }
+        }
+
+        [HttpGet]
+        public ActionResult Mapas(int id)
+        {
+            var coordenadas = (from c in db.mCheckIn
+                               where c.DetallePlanId == id
+                               select c).FirstOrDefault();
+            
+            string[] coor = Regex.Split(coordenadas.Coordenadas, ",");
+            ViewBag.Coordenadas = coor[1] + "," + coor[0];
+            return PartialView("_Mapa");
         }
 
         #endregion
@@ -218,7 +238,7 @@ namespace Sispro.Web.Controllers
             try
             {
                 List<udf_PlanSemanalAprobarList_Result> result = (from u in db.udf_PlanSemanalAprobarList(idUsu, Periodos, TiposFigura, NombresFigura) select u).ToList();
-
+            
                 var lstPlanSemanal = result.Select(C => new
                 {
                     id = C.PlnSemanalId,
@@ -227,7 +247,7 @@ namespace Sispro.Web.Controllers
                     usuario = C.Usuario,
                     tipoFigura = C.TipoFigura,
                     acciones = "<div class='btn-group btn-group-sm' role='group'>" +
-                               "<button type='button' class='btn btn-success btnAprobar'" + (C.EstatusId == 9 ? "disabled" : "") + " id='btnAprobar_" + C.PlnSemanalId + "' data-idplan='" + C.PlnSemanalId + "'><i class='fa fa-check-circle fa-lg fa-fw'></i> " + (C.EstatusId == 9 ? " Aprobado" : " Aprobar") + "</button>" +
+                               "<button type='button' class='btn btn-success btnAprobar'" + (C.EstatusId == 9 || C.Aprobar == 0 ? "disabled" : "") + " id='btnAprobar_" + C.PlnSemanalId + "' data-idplan='" + C.PlnSemanalId + "'><i class='fa fa-check-circle fa-lg fa-fw'></i> " + (C.EstatusId == 9 ? " Aprobado" : " Aprobar") + "</button>" +
                                "<button type='button' class='btn btn-primary btnRptPlaneacion' id='btnRptPlaneacion_" + C.PlnSemanalId + "' data-idplan='" + C.PlnSemanalId + "' data-idusuarioplan='" + C.idUsuarioCreacion + "'><i class='fa fa-list fa-lg fa-fw'></i> Reporte Planeación</button>" +
                                "<button type='button' class='btn btn-warning btnRptActividades' id='btnRptActividades_" + C.PlnSemanalId + "' data-idplan='" + C.PlnSemanalId + "' data-idusuarioplan='" + C.idUsuarioCreacion + "'><i class='fa fa-list-alt fa-lg fa-fw'></i> Reporte Actividades</button>" +
                                "</div>"
@@ -249,23 +269,24 @@ namespace Sispro.Web.Controllers
                 var result = (from cat in db.dDetallePlanSemanal
                               where cat.PlanSemanalId == idPlanSemanal
                               select cat).ToList();
+                int Comparacion = db.Database.SqlQuery<int>("SELECT dbo.udf_ComparaFechas(@p0)", result.First().mPlanSemanal.PeriodoId).FirstOrDefault();
 
                 var lstDetalle = result.Select(cat => new
                 {
                     id = cat.DetallePlanId,
-                    actividad = cat.cTipoActividades.NombreActividad,
+                    actividad = cat.cTipoActividades.NombreActividad + (cat.TipoActividadId == 8 && cat.SinProspectos == 1 ? "<br><span style='color:green'><strong>Sin prospectos</strong></span>" : (cat.InaebaPreregistros.Count() > 0 ? "<br> <a href='javascript:;' class='hrefVerEducandos' data-iddetalleplan='" + cat.DetallePlanId + "'>Ver Pre-registros Asignados</a>" : "")),
                     descripcion = cat.DescripcionActividad,
                     lugar = cat.LugarActividad,
                     fecha = cat.FechaActividad.ToString("MM/dd/yyyy"),
                     hora = cat.HoraActividad.ToString("hh':'mm"),
                     horaFin = cat.HoraFin == null ? "" : cat.HoraFin.Value.ToString("hh':'mm"),
-                    checkin = (cat.cTipoActividades.RequiereCheckIn == true ? (cat.mCheckIn.Count() == 0 ? "No realizado" : "Realizado") : "Realizado"),
+                    checkin = (cat.cTipoActividades.RequiereCheckIn == true ? (cat.mCheckIn.Count() == 0 ? "No realizado" : "Realizado" + (cat.TipoActividadId  == 6 ? "<br><a href='javascript:;' class='btnCertificados' data-iddetalleplan='" + cat.DetallePlanId + "' style='text-decoration: none; color: #FC540A;'><strong>Ver Certificados</strong></a> " : ("<br> <button type='button' class='btn btn-xs btnCoordenadas' data-iddetalleplan='" + cat.DetallePlanId +"'><i class='fa fa-map-marker fa-lg fa-fw' style='color:red;'></i></button>" + (cat.mCheckIn.First().FotoIncidencia == null ? "" : "  <button type='button' class='btn btn-xs btnImagen' data-src='" + cat.mCheckIn.First().FotoIncidencia + "'><i class='fa fa-picture-o fa-lg fa-fw' style='color:green;'></i></button>")))) : "Realizado"),
                     incidencias = (cat.mCheckIn.Count() == 0 ? "" : cat.mCheckIn.FirstOrDefault().Incidencias),
-                    gps = (cat.mSolicitudesVehiculo.Count() == 0 ? "<button type='button' class='btn btn-xs btn-primary btnGpsVehiculo' id='btnGpsVehiculo_" + cat.DetallePlanId + "' data-iddetalleplan='" + cat.DetallePlanId + "'><i class='fa fa-car fa-md fa-fw'></i> Reporte GPS</button>" : ""),
+                    gps = (cat.mSolicitudesVehiculo.Count() > 0 ? "<button type='button' class='btn btn-xs btn-primary btnGpsVehiculo' id='btnGpsVehiculo_" + cat.DetallePlanId + "' data-iddetalleplan='" + cat.DetallePlanId + "'><i class='fa fa-car fa-md fa-fw'></i> Reporte GPS</button><br>"  + "Matricula: <strong>" + cat.mSolicitudesVehiculo.FirstOrDefault().PlacaVehiculo + "</strong>" : ""),
                     comentariosRechazo = "<div class='row'>" +
-                                            "<div class='col-md-2'><br><div class='material-switch'><input " + (cat.mPlanSemanal.EstatusId == 9 ? "disabled" : "") + " class='checkComents' " + (cat.ComentariosRechazo == null ? "" : "checked") + " id='checkComents_" + cat.DetallePlanId + "' type='checkbox' data-iddetalleplan='" + cat.DetallePlanId + "'/>" +
+                                            "<div class='col-md-2'><br><div class='material-switch'><input " + (cat.mPlanSemanal.EstatusId == 9 || Comparacion == 0 ? "disabled" : "") + " class='checkComents' " + (cat.ComentariosRechazo == null ? "" : "checked") + " id='checkComents_" + cat.DetallePlanId + "' type='checkbox' data-iddetalleplan='" + cat.DetallePlanId + "'/>" +
                                             "<label for='checkComents_" + cat.DetallePlanId + "' class='label-success'></label></div></div>" +
-                                            "<div class='col-md-10'><textarea maxlength='100' rows='2' class='form-control idComentariosCZ' id='idComentariosCZ_" + cat.DetallePlanId + "' data-idplan='" + cat.PlanSemanalId + "' data-iddetalleplan='" + cat.DetallePlanId + "'" + (cat.ComentariosRechazo == null ? "disabled" : "enabled") + ">" + cat.ComentariosRechazo + "</textarea></div>" +
+                                            "<div class='col-md-10'><textarea maxlength='100' rows='2' class='form-control idComentariosCZ' id='idComentariosCZ_" + cat.DetallePlanId + "' data-idplan='" + cat.PlanSemanalId + "' data-iddetalleplan='" + cat.DetallePlanId + "'" + (cat.ComentariosRechazo == null || cat.mPlanSemanal.EstatusId == 9 ? "disabled" : "enabled") + ">" + cat.ComentariosRechazo + "</textarea></div>" +
                                             "</div>"
                 });
 
@@ -305,6 +326,7 @@ namespace Sispro.Web.Controllers
                         //Actualiza a estatus con comentarios
                         var dbTempDetalle = resultDetallePlan;
                         dbTempDetalle.ComentariosRechazo = objComentarios.comentario;
+                        dbTempDetalle.ActividadRechazada = true;
                         db.SaveChanges();
                     }
                 }
@@ -461,7 +483,7 @@ namespace Sispro.Web.Controllers
                             checkin = (cat.cTipoActividades.RequiereCheckIn == true ? (cat.mCheckIn.Count() == 0 ? "No realizado" : "Realizado") : "Realizado"),
                             incidencias = (cat.mCheckIn.Count() == 0 ? "" : cat.mCheckIn.FirstOrDefault().Incidencias),
                             lugar = cat.LugarActividad,
-                            comentarios = (cat.ComentariosNoValidacion == null ? "" :  cat.ComentariosNoValidacion) + (cat.ComentariosRechazo == null ? "" : ", " + cat.ComentariosRechazo)
+                            comentarios = (cat.ComentariosNoValidacion == null ? "" :  "Validación: " + cat.ComentariosNoValidacion) + (cat.ComentariosRechazo == null ? "" : ", Aprobación: " + cat.ComentariosRechazo)
                         });
 
                         int i = 11;
@@ -604,7 +626,7 @@ namespace Sispro.Web.Controllers
                         ws.Cells["F6"].Value = "DESCRIPCIÓN ACTIVIDAD";
                         ws.Cells["F6"].Style.Font.Bold = true;
                         ws.Cells["F6"].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
-                        ws.Cells["G6"].Value = "INCIDENCIA";
+                        ws.Cells["G6"].Value = "OBSERVACIONES";
                         ws.Cells["G6"].Style.Font.Bold = true;
                         ws.Cells["G6"].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
                         ws.Cells["H6"].Value = "ESTATUS ACTIVIDAD";
@@ -682,6 +704,78 @@ namespace Sispro.Web.Controllers
 
         }
 
+        [HttpGet]
+        public JsonResult ObtenerVehiculo(int idDetallePlan)
+        {
+            try
+            {
+                var detalleV = (from dv in db.mSolicitudesVehiculo
+                              where dv.DetallePlanId == idDetallePlan
+                                select dv).ToList();
+
+                var detalleP = (from dp in db.dDetallePlanSemanal
+                                where dp.DetallePlanId == idDetallePlan
+                                select dp).FirstOrDefault();
+                int idVehiculo = detalleV.FirstOrDefault().VehiculoId;
+                if (detalleV.Count() > 0)
+                {
+                    var vehiculoSipae = (from v in dbSipae.Vehiculos
+                                         where v.VehiculoId == idVehiculo
+                                         select v).FirstOrDefault();
+                    return (Json(new
+                    {
+                        Success = true,
+                        placa = vehiculoSipae.Matricula,
+                        fecha = detalleV.FirstOrDefault().FechaUso.ToString("yyyy-MM-dd"),
+                        horaInicio = detalleP.HoraActividad.ToString(@"hh\:mm"),
+                        horaFin = detalleP.HoraFin.Value.ToString(@"hh\:mm")
+                    }, JsonRequestBehavior.AllowGet));
+                }
+                else
+                {
+                    return Json(new { Success = false, Message = "No contiene vehiculo asignado" }, JsonRequestBehavior.AllowGet);
+                }
+
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult Certificados()
+        {
+
+            return PartialView("_Certificados");
+        }
+
+        [HttpGet]
+        public JsonResult CargarCertificados(int id)
+        {
+            try
+            {
+                var result = (from v in db.mLecturaCertificados
+                              where v.mCheckIn.DetallePlanId == id
+                              select v).ToList();
+
+                var lstDetalle = result.Select(cat => new
+                {
+                    id = cat.LecturaCertificadoId,
+                    folio = cat.FolioCertificado,
+                    accion = ("<button type = 'button' class='btn btn-xs btnCoordenadas' data-iddetalleplan='" + cat.mCheckIn.DetallePlanId + "'><i class='fa fa-map-marker fa-lg fa-fw' style='color:red;'></i></button>" + (cat.mCheckIn.FotoIncidencia == null ? "" : "  <button type = 'button' class='btn btn-xs btnImagen' data-src='" + cat.mCheckIn.FotoIncidencia + "'><i class='fa fa-picture-o fa-lg fa-fw' style='color:green;'></i></button>"))
+                });
+
+
+
+                return Json(new { Success = true, datos = lstDetalle }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         #endregion
 
         protected override void Dispose(bool disposing)
@@ -689,6 +783,7 @@ namespace Sispro.Web.Controllers
             if (disposing)
             {
                 db.Dispose();
+                dbSipae.Dispose();
             }
             base.Dispose(disposing);
         }

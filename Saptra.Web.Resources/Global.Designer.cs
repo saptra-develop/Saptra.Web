@@ -169,7 +169,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Educandos Preregistrados vs Incorporados.
+        ///   Busca una cadena traducida similar a Educandos Pre-registrados vs Registrados.
         /// </summary>
         public static string menuEducandos {
             get {
@@ -205,7 +205,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Figuras con reincidencias negativas.
+        ///   Busca una cadena traducida similar a Figuras con observaciones en la aprobación.
         /// </summary>
         public static string menuFigurasConReincidencias {
             get {
@@ -214,7 +214,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Figuras reincidentes en rechazo de plan semanal.
+        ///   Busca una cadena traducida similar a Actividades rechazadas de plan semanal (Validación).
         /// </summary>
         public static string menuFigurasReincidentes {
             get {

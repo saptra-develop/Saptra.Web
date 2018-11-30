@@ -70,6 +70,9 @@
     <Compile Include="cCoordinacionesZona.cs">
       <DependentUpon>db.tt</DependentUpon>
     </Compile>
+    <Compile Include="CertificadosProgramados.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
     <Compile Include="cEstatus.cs">
       <DependentUpon>db.tt</DependentUpon>
     </Compile>
@@ -105,6 +108,21 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>db.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="dbSipae.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbSipae.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="dbSipae.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbSipae.tt</DependentUpon>
+    </Compile>
+    <Compile Include="dbSipae.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbSipae.edmx</DependentUpon>
     </Compile>
     <Compile Include="dDetallePlanSemanal.cs">
       <DependentUpon>db.tt</DependentUpon>
@@ -160,6 +178,21 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeguridadData.cs" />
     <Compile Include="Split_Result.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udf_CertificadosInaebaBaseList_Result.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udf_CertificadosInaebaFiguraEducandoList_Result.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udf_CertificadosInaebaRegionList_Result.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udf_CertificadosInaebaZonaFiguraList_Result.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="udf_CertificadosInaebaZonaList_Result.cs">
       <DependentUpon>db.tt</DependentUpon>
     </Compile>
     <Compile Include="udf_IncumplimientoActividadesPeriodoList_Result.cs">
@@ -234,15 +267,25 @@
     <Compile Include="udf_RechazoValidacionZonaList_Result.cs">
       <DependentUpon>db.tt</DependentUpon>
     </Compile>
+    <Compile Include="Vehiculos.cs">
+      <DependentUpon>dbSipae.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <EntityDeploy Include="dbSipae.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>dbSipae.Designer.cs</LastGenOutput>
+    </EntityDeploy>
     <EntityDeploy Include="db.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>db.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <None Include="db.edmx.diagram">
       <DependentUpon>db.edmx</DependentUpon>
+    </None>
+    <None Include="dbSipae.edmx.diagram">
+      <DependentUpon>dbSipae.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
@@ -265,6 +308,16 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>db.edmx</DependentUpon>
       <LastGenOutput>db.cs</LastGenOutput>
+    </Content>
+    <Content Include="dbSipae.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>dbSipae.edmx</DependentUpon>
+      <LastGenOutput>dbSipae.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="dbSipae.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>dbSipae.edmx</DependentUpon>
+      <LastGenOutput>dbSipae.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -44,6 +44,38 @@ var Indicador2 = {
         $(document).on("change", '#selPeriodos', that.onCambiarPeriodos);
         $(document).on("change", '#selRegiones', that.onCambiarRegiones);
         $(document).on("change", '#selZonas', that.onCambiarZonas);
+        $(document).on('click', '.btnExportar', function () {
+            Indicador2.onExportarFormato();
+        });
+        $(document).on('click', '.btnExportarExcel', function () {
+            Indicador2.onExportarExcel();
+        });
+        $(document).on('click', '.btnExportarPDF', function () {
+            Indicador2.onExportarPDF();
+        });
+    },
+    onExportarFormato: function () {
+        var htmlMessage = "<h4>Exportar</h4>";
+        htmlMessage += "<h5>Formato de reporte</h5>";
+        htmlMessage += "<div class='text-center'><div class='btn-group btn-group-md'>";
+        htmlMessage += "<button class='btn btn-success btnExportarExcel'><i class='fa fa-file-excel-o'></i> Excel</button>";
+        htmlMessage += "<button class='btn btn-danger btnExportarPDF' ><i class='fa fa-file-pdf-o'></i> PDF </button>";
+        htmlMessage += "</div></div>";
+
+        bootbox.alert({
+            message: htmlMessage,
+            size: 'small'
+        });
+    },
+    onExportarExcel: function () {
+        var url = contextPath + "Indicadores/ExportIndObservacionesExcel?idPeriodo=" + $('#selPeriodosMul').val() + "&Region=" + $('#selRegionesMul').val() + "&Zonas=" + $('#selZonasMul').val() + "&idUsuario=" + localStorage.idUser;  // El url del controlador
+
+        window.open(url, '_blank');
+    },
+    onExportarPDF: function () {
+        var url = contextPath + "Pdf/ExportIndicadorAprobacionPDF?idPeriodo=" + $('#selPeriodosMul').val() + "&Region=" + $('#selRegionesMul').val() + "&Zonas=" + $('#selZonasMul').val() + "&idUsuario=" + localStorage.idUser;  // El url del controlador
+
+        window.open(url, '_blank');
     },
     onCambiarPeriodos: function () {
         $('#selPeriodosMul').val($('#selPeriodos').val());

@@ -143,11 +143,12 @@ var Incidencias = {
                     collection: Incidencias.colPlanSemanal,
                     colModel: [//{ title: 'Id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
                         { title: 'Periodo', name: 'periodo', index: true },
-                        { title: 'Usuario', name: 'usuario', index: true },
+                        { title: 'Nombre Empleado', name: 'usuario', index: true },
                         { title: 'Actividad', name: 'actividad', index: true },
                         { title: 'Descripción', name: 'descripcion', index: true },
                         { title: 'Fecha', name: 'fecha' },
-                        { title: 'Comentarios CZ', name: 'comentarios' }]
+                        { title: 'Comentarios CZ', name: 'comentarios' },
+                        { title: 'Número Empleado', name: 'numeroEmp' }]
 
                 });
                 $('#cargandoInfo').hide();
