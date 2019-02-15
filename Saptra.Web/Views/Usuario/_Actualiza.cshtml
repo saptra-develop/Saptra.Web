@@ -70,6 +70,12 @@
                             <input type="hidden" id="selZonaId" value="@ViewBag.ZonaId" />
                         </div>
                     </div>
+                    <div>
+                        <div class="col-sm-2"><label class="control-label">Número empleado</label></div>
+                        <div class="col-sm-4">
+                            @Html.TextBoxFor(model => model.NumeroEmpleado, new { @class = "form-control", maxlength = 10, onkeypress = "return /[0-9]/i.test(event.key)" })
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-2"><label class="control-label">RFC</label></div>

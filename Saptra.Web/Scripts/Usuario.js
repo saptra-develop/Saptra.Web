@@ -75,9 +75,12 @@ var Usuario = {
                 Usuario.CargarColeccionZonas();
                 $(Usuario.activeForm + ' #divRegion').hide();
             }
-            else {
+            else if ($(Usuario.activeForm + ' #RolId').val() == "7" || $(Usuario.activeForm + ' #RolId').val() == "16" || $(Usuario.activeForm + ' #RolId').val() == "1") {
                 $(Usuario.activeForm + ' #divRegion').hide();
                 $(Usuario.activeForm + ' #divZona').hide();
+            } else {
+                $(Usuario.activeForm + ' #divZona').show();
+                Usuario.CargarColeccionZonas();
             }
         });
 
@@ -119,8 +122,8 @@ var Usuario = {
             }
         });
     },
-    onGuardaValidado: function () {
-        var btn = this;
+    onGuardaValidado: function (botn) {
+        var btn = botn;
         var atpos = $('#NuevoUsuarioForm #EmailUsuario').val().indexOf("@");
         var dotpos = $('#NuevoUsuarioForm #EmailUsuario').val().lastIndexOf(".")
 
@@ -133,7 +136,7 @@ var Usuario = {
                     if ($("form").valid()) {
                         //$("#imagenUsuario").val('Hola');
                         //Se hace el post para guardar la informacion
-                        $.post(contextPath + "Usuario/Nuevo?RegionId=" + $('#NuevoUsuarioForm #RegionId').val() + "&ZonaId=" + $('#NuevoUsuarioForm #ZonaId').val() + "&idUsuario=" + localStorage.idUser,
+                        $.post(contextPath + "Usuario/Nuevo?RegionId=" + ($('#NuevoUsuarioForm #RegionId').val() == 0 || $('#NuevoUsuarioForm #RegionId').val() == null ? 0 : $('#NuevoUsuarioForm #RegionId').val()) + "&ZonaId=" + ($('#NuevoUsuarioForm #ZonaId').val() == null || $('#NuevoUsuarioForm #ZonaId').val() == 0  ? 0 : $('#NuevoUsuarioForm #ZonaId').val()) + "&idUsuario=" + localStorage.idUser,
                             $("#NuevoUsuarioForm *").serialize(),
                             function (data) {
                                 if (data.Success === true) {
@@ -150,6 +153,7 @@ var Usuario = {
                                 }
                             }).fail(function () {
                                 FCH.DespliegaErrorDialogo("Error al guardar la información.");
+                                FCH.botonMensaje(false, btn, 'Guardar'); 
 
                             }).always(function () { FCH.botonMensaje(false, btn, 'Guardar'); });
 
@@ -198,8 +202,8 @@ var Usuario = {
     
         
     },
-    onGuardar: function (estado) {
-        var btn = this;
+    onGuardar: function (botn) {
+        var btn = botn;
         FCH.botonMensaje(true, btn, 'Guardar');
         var estado = 0;
         if ($(Usuario.activeForm + ' #RolId').val() == "6") {
@@ -226,7 +230,7 @@ var Usuario = {
             if ($(Usuario.activeForm + ' #RolId').val() == "6" && Usuario.validaRegion == 1) {
                 bootbox.confirm("¿Desea eliminar al jefe de la coordinación de región actual?", function (result) {
                     if (result) {
-                        Usuario.onGuardaValidado();
+                        Usuario.onGuardaValidado(btn);
                     } else {
                         valida= 1;
                     }
@@ -234,14 +238,14 @@ var Usuario = {
             } else if ($(Usuario.activeForm + ' #RolId').val() == "3" && Usuario.validaZona == 1) {
                 bootbox.confirm("¿Desea eliminar al jefe de la coordinación de zona actual?", function (result) {
                     if (result) {
-                        Usuario.onGuardaValidado();
+                        Usuario.onGuardaValidado(btn);
                     } else {
                         valida = 1;
                     }
                 });
             }
             else {
-                Usuario.onGuardaValidado();
+                Usuario.onGuardaValidado(btn);
             }
            
         } 

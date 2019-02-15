@@ -305,7 +305,7 @@ var PlanSemanal = {
                             { title: 'Fecha', name: 'fecha',  index: true },
                             { title: 'Hora Inicio', name: 'hora', index: true },
                             { title: 'Hora Fin', name: 'horaFin', index: true },
-                            { title: 'Check In', name: 'checkin', index: true },
+                            { title: 'Registro', name: 'checkin', index: true },
                             { title: 'Matricula automovil', name: 'placa', index: true },
                             { title: 'Comentarios CZ', name: 'comentariosNoValidacion',  index: true }],
                 onRowClick: function () {

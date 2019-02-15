@@ -105,6 +105,7 @@ namespace Saptra.Web.Controllers
                         pobjModelo.FechaCreacion = DateTime.Now;
                         pobjModelo.ImagenUsuario = pobjModelo.ImagenUsuario == null ? null : pobjModelo.ImagenUsuario;
                         pobjModelo.PasswordUsuario = contrasenaRec;
+                        pobjModelo.NumeroEmpleado = pobjModelo.NumeroEmpleado;
                         if (fig != 0)
                         {
                             pobjModelo.TipoFiguraId = fig;
@@ -145,6 +146,21 @@ namespace Saptra.Web.Controllers
                                 var temp = jZona.First();
                                 temp.UsuarioId = pobjModelo.UsuarioId;
                                 db.SaveChanges();
+                            }
+                            else
+                            {
+                                if (ZonaId != 0)
+                                {
+                                    mCoordinacionZonaUsuario objCoordinacionZona = new mCoordinacionZonaUsuario();
+
+                                    objCoordinacionZona.UsuarioId = pobjModelo.UsuarioId;
+                                    objCoordinacionZona.CoordinacionZonaId = ZonaId;
+                                    objCoordinacionZona.JefeCoordinacionZona = false;
+                                    objCoordinacionZona.UsuarioCreacionId = idUsuario;
+                                    objCoordinacionZona.FechaCreacion = DateTime.Now;
+                                    db.mCoordinacionZonaUsuario.Add(objCoordinacionZona);
+                                    db.SaveChanges();
+                                }
                             }
                         }
 
@@ -334,7 +350,6 @@ namespace Saptra.Web.Controllers
 
                     var usarioexisteZona= (from j in db.mCoordinacionZonaUsuario
                                            where j.UsuarioId == pobjModelo.UsuarioId
-                                           && j.JefeCoordinacionZona == true
                                            select j).ToList();
 
                     var result = from u in db.mUsuarios where (u.UsuarioId == pobjModelo.UsuarioId) select u;
@@ -371,6 +386,7 @@ namespace Saptra.Web.Controllers
                         dbUsu.EmailUsuario = pobjModelo.EmailUsuario;
                         dbUsu.RFCUsuario = pobjModelo.RFCUsuario;
                         dbUsu.RolId = pobjModelo.RolId;
+                        dbUsu.NumeroEmpleado = pobjModelo.NumeroEmpleado;
                         if (pobjModelo.ImagenUsuario != null)
                         {
                             dbUsu.ImagenUsuario = pobjModelo.ImagenUsuario;
@@ -383,7 +399,7 @@ namespace Saptra.Web.Controllers
 
                         if (jZona.Count() == 0 && pobjModelo.RolId == 3)
                         {
-                            if (usarioexisteZona.Count == 0)
+                            if (jZona.Count == 0)
                             {
                                 mCoordinacionZonaUsuario objCoordinacionZona = new mCoordinacionZonaUsuario();
 
@@ -410,6 +426,8 @@ namespace Saptra.Web.Controllers
                                 objCoordinacionZona.FechaCreacion = DateTime.Now;
                                 db.mCoordinacionZonaUsuario.Add(objCoordinacionZona);
                                 db.SaveChanges();
+
+                               
                             }
                         }
                         else if (pobjModelo.RolId != 6)
@@ -434,18 +452,21 @@ namespace Saptra.Web.Controllers
                                 }
                                 else
                                 {
-                                    var col = db.mCoordinacionZonaUsuario.Where(t => t.UsuarioId == pobjModelo.UsuarioId);
-                                    db.mCoordinacionZonaUsuario.RemoveRange(col);
-                                    db.SaveChanges();
+                                    //var col = db.mCoordinacionZonaUsuario.Where(t => t.UsuarioId == pobjModelo.UsuarioId);
+                                    //db.mCoordinacionZonaUsuario.RemoveRange(col);
+                                    //db.SaveChanges();
 
-                                    mCoordinacionZonaUsuario objCoordinacionZona = new mCoordinacionZonaUsuario();
+                                    //mCoordinacionZonaUsuario objCoordinacionZona = new mCoordinacionZonaUsuario();
 
-                                    objCoordinacionZona.UsuarioId = pobjModelo.UsuarioId;
-                                    objCoordinacionZona.CoordinacionZonaId = ZonaId;
-                                    objCoordinacionZona.JefeCoordinacionZona = false;
-                                    objCoordinacionZona.UsuarioCreacionId = idUsuario;
-                                    objCoordinacionZona.FechaCreacion = DateTime.Now;
-                                    db.mCoordinacionZonaUsuario.Add(objCoordinacionZona);
+                                    //objCoordinacionZona.UsuarioId = pobjModelo.UsuarioId;
+                                    //objCoordinacionZona.CoordinacionZonaId = ZonaId;
+                                    //objCoordinacionZona.JefeCoordinacionZona = false;
+                                    //objCoordinacionZona.UsuarioCreacionId = idUsuario;
+                                    //objCoordinacionZona.FechaCreacion = DateTime.Now;
+                                    //db.mCoordinacionZonaUsuario.Add(objCoordinacionZona);
+                                    //db.SaveChanges();
+                                    var dbTemp = usarioexisteZona.First();
+                                    dbTemp.CoordinacionZonaId = ZonaId;
                                     db.SaveChanges();
                                 }
 
@@ -456,6 +477,31 @@ namespace Saptra.Web.Controllers
                                 var temp = jZona.First();
                                 temp.UsuarioId = pobjModelo.UsuarioId;
                                 db.SaveChanges();
+                            }
+                            else
+                            {
+                                var usuarioZona = (from j in db.mCoordinacionZonaUsuario
+                                                   where j.UsuarioId == pobjModelo.UsuarioId
+                                                   select j).ToList();
+                                if (usuarioZona.Count() != 0)
+                                {
+                                    var col = db.mCoordinacionZonaUsuario.Where(t => t.UsuarioId == pobjModelo.UsuarioId);
+                                    db.mCoordinacionZonaUsuario.RemoveRange(col);
+                                    db.SaveChanges();
+                                }
+
+                                if (ZonaId != 0)
+                                {
+                                    mCoordinacionZonaUsuario objCoordinacionZona = new mCoordinacionZonaUsuario();
+
+                                    objCoordinacionZona.UsuarioId = pobjModelo.UsuarioId;
+                                    objCoordinacionZona.CoordinacionZonaId = ZonaId;
+                                    objCoordinacionZona.JefeCoordinacionZona = false;
+                                    objCoordinacionZona.UsuarioCreacionId = idUsuario;
+                                    objCoordinacionZona.FechaCreacion = DateTime.Now;
+                                    db.mCoordinacionZonaUsuario.Add(objCoordinacionZona);
+                                    db.SaveChanges();
+                                }
                             }
                         }
 
