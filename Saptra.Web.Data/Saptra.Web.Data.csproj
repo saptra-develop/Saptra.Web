@@ -82,6 +82,9 @@
     <Compile Include="cTipoActividades.cs">
       <DependentUpon>db.tt</DependentUpon>
     </Compile>
+    <Compile Include="cTipoCorreo.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
     <Compile Include="cTipoEstatus.cs">
       <DependentUpon>db.tt</DependentUpon>
     </Compile>
@@ -143,6 +146,9 @@
       <DependentUpon>db.tt</DependentUpon>
     </Compile>
     <Compile Include="mCoordinacionZonaUsuario.cs">
+      <DependentUpon>db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="mCorreo.cs">
       <DependentUpon>db.tt</DependentUpon>
     </Compile>
     <Compile Include="mEducandosCaptados.cs">

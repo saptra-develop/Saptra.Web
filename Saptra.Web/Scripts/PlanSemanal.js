@@ -76,6 +76,10 @@ var PlanSemanal = {
         });
         $(document).on("click", '.btn-ActualizaDetalle', that.onActualizarDetalle);
 
+        $(document).on('click', '.btnEliminarDetalle', function () {
+            PlanSemanal.EliminarDetalle($(this).data("iddetalleplan"));
+        });
+
         $(document).on('change', '#selPeriodo', function () {
             if ($('#selPeriodo').val() == "0") {
                 $('#selPeriodo').addClass("has-error");
@@ -152,6 +156,7 @@ var PlanSemanal = {
             PlanSemanal.IniciaDateControls();
             $(PlanSemanal.activeForm + ' #HoraActividad').select2();
             $(PlanSemanal.activeForm + ' #HoraFin').select2();
+            PlanSemanal.CargaGridDetallesModal(id);
         });
     },
     NuevoVehiculo: function (id) {
@@ -187,6 +192,29 @@ var PlanSemanal = {
             }
             PlanSemanal.CargaTipoActividad();
         });
+    },
+    EliminarDetalle: function (id) {
+        FCH.CierraMensajes();
+        bootbox.setDefaults({
+            locale: "es"
+        });
+        bootbox.confirm({
+            message: "¿Está seguro que desea borrar este registro?",
+
+            callback: function (result) {
+                if (result) {
+                    var url = contextPath + "PlanSemanal/EliminarDetalle"; // El url del controlador
+                    $.post(url, { id: id }, function (data) {
+                        if (data.Success === true) {
+                            PlanSemanal.colPlanDetalle.remove(id);
+                            FCH.DespliegaInformacion(data.Message + "  id:" + id);
+                        } else {
+                            FCH.DespliegaError(data.Message);
+                        }
+                    }).fail(function () { FCH.DespliegaError("No se pudo eliminar el registro"); });
+                }
+            }
+        })
     },
     onGuardar: function () {
         //Se hace el post para guardar la informacion
@@ -463,12 +491,12 @@ var PlanSemanal = {
                     detalle: false,
                     collection: PlanSemanal.colPlanSemanal,
                     colModel: [//{ title: 'Id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
-                        { title: 'Acciones', name: 'accion', textalign: true },
+                        { title: 'Agregar actividades', name: 'accion', textalign: true },
                         { title: 'Usuario', name: 'usuario', index: true },
                         { title: 'Descripción', name: 'descripcionPlan', index: true },
                         { title: 'Periodo', name: 'periodo', index: true },
-                        { title: 'Actividades registradas', name: 'actividades'}
-                        
+                        { title: 'Actividades registradas', name: 'actividades'},
+                        { title: 'Enviar', name: 'enviar', textalign: true }
                     ],
                     onRowExpanded: function ($el, rowid) {
                         PlanSemanal.idPlan = rowid;

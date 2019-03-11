@@ -48,8 +48,8 @@ namespace Sispro.Web.Controllers
                     descripcionPlan = C.DescripcionPlan,
                     periodo = C.Periodo.ToUpper(),
                     usuario = C.Usuario,
-                    accion = "<button class='btn btn-xs btn-info accrowProdDetalle' id='accrowProdDetalle_" + C.PlnSemanalId + "' data-idplan='" + C.PlnSemanalId + "' data-idestatus='" + C.EstatusId + "' " + (C.EstatusId == 10 ? "disabled" : "") + "><i class='fa fa-plus  fa-lg fa-fw'></i></button>" +
-                            " <button class='btn btn-xs " + (C.EstatusId == 10 ? "btn-success" : "btn-primary") + " btnEnvioValidacion' id='btnEnvioValidacion_" + C.PlnSemanalId + "' data-idplan='" + C.PlnSemanalId + "' data-idestatus='" + C.EstatusId + "' " + (C.TieneDetalle == 0 || C.EstatusId == 10 ? "disabled" : "") + "><i class='fa fa-paper-plane  fa-lg fa-fw'></i></button>",
+                    accion = "<button class='btn btn-xs btn-info accrowProdDetalle' id='accrowProdDetalle_" + C.PlnSemanalId + "' data-idplan='" + C.PlnSemanalId + "' data-idestatus='" + C.EstatusId + "' " + (C.EstatusId == 10 ? "disabled" : "") + "><i class='fa fa-plus  fa-lg fa-fw'></i></button>" ,
+                    enviar = " <button class='btn btn-xs " + (C.EstatusId == 10 ? "btn-success" : "btn-primary") + " btnEnvioValidacion' id='btnEnvioValidacion_" + C.PlnSemanalId + "' data-idplan='" + C.PlnSemanalId + "' data-idestatus='" + C.EstatusId + "' " + (C.TieneDetalle == 0 || C.EstatusId == 10 ? "disabled" : "") + "><i class='fa fa-paper-plane  fa-lg fa-fw'></i></button>",
                     actividades  = (C.TieneActividades == 0 ? "<i class='fa fa-times-circle-o fa-2x' style='color:#F74048;'></i> Sin actividades" : "<i class='fa fa-check-circle-o fa-2x' style='color:#2FFA5D;'></i> Actividades registradas")
                 });
 
@@ -68,7 +68,7 @@ namespace Sispro.Web.Controllers
             {
                 var result = (from cat in db.dDetallePlanSemanal
                               where cat.PlanSemanalId == idPlanSemanal
-                              select cat).ToList();
+                              select cat).OrderBy(x => new { x.FechaActividad, x.HoraActividad }).ToList();
 
                 var lstDetalle = result.Select(cat => new
                 {
@@ -82,8 +82,9 @@ namespace Sispro.Web.Controllers
                     checkin = (cat.CantidadCheckIn < 1 ? "N/A" : cat.CantidadCheckIn.ToString()),
                     comentariosNoValidacion = "<strong>" + cat.ComentariosNoValidacion + "</strong>",
                     placa = cat.mSolicitudesVehiculo.Count() > 0 ? cat.mSolicitudesVehiculo.FirstOrDefault().PlacaVehiculo : "",
-                    accion = "<button class='btn btn-xs btn-warning btnEditarDetalle' style='border-radius: 21px;' id='btnEditarDetalle_" + cat.DetallePlanId + "' data-iddetalleplan='" + cat.DetallePlanId + "' " + (cat.mPlanSemanal.EstatusId == 7 || cat.mPlanSemanal.EstatusId == 8 ? "" : "disabled") + ">Editar</button>" +
-                             (cat.cTipoActividades.RequiereCheckIn == true ? " <button class='btn btn-xs btn-primary btnVehiculo' id='btnVehiculo_" + cat.DetallePlanId + "' data-iddetalleplan='" + cat.DetallePlanId + "'" + (cat.mPlanSemanal.EstatusId == 7 || cat.mPlanSemanal.EstatusId == 8 ? "" : "disabled") + " ><i class='fa fa-car'></i></ button > " : "")
+                    accion = "<button class='btn btn-xs btn-warning btnEditarDetalle' style='margin-right:11px;' id='btnEditarDetalle_" + cat.DetallePlanId + "' data-iddetalleplan='" + cat.DetallePlanId + "' " + (cat.mPlanSemanal.EstatusId == 7 || (cat.mPlanSemanal.EstatusId == 8 && cat.ComentariosNoValidacion != null) ? "" : "disabled") + ">Editar</button>" +
+                            "<button class='btn btn-xs btn-danger btnEliminarDetalle' style='margin-right:11px;' id='btnEliminarDetalle_" + cat.DetallePlanId + "' data-iddetalleplan='" + cat.DetallePlanId + "' " + (cat.mPlanSemanal.EstatusId == 7 || (cat.mPlanSemanal.EstatusId == 8 && cat.ComentariosNoValidacion != null) ? "" : "disabled") + "><i class='fa fa-trash'></i></button>" +
+                            (cat.cTipoActividades.RequiereCheckIn == true ? " <button class='btn btn-xs btn-primary btnVehiculo' style='margin-right:11px;' id='btnVehiculo_" + cat.DetallePlanId + "' data-iddetalleplan='" + cat.DetallePlanId + "'" + (cat.mPlanSemanal.EstatusId == 7 || cat.mPlanSemanal.EstatusId == 8 ? "" : "disabled") + " ><i class='fa fa-car'></i></ button > " : "")
                 });
 
 
@@ -425,6 +426,22 @@ namespace Sispro.Web.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult EliminarDetalle(int id)
+        {
+            try
+            {
+                var detalle = db.dDetallePlanSemanal.Where(t => t.DetallePlanId == id);
+                db.dDetallePlanSemanal.RemoveRange(detalle);
+                db.SaveChanges();
+
+                return Json(new { Success = true, Message = "Se borro correctamente la Zona " });
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = "Error al eliminar la información" });
+            }
+        }
 
         [HttpGet]
         public JsonResult ValidarActividadFecha(int idPlan, DateTime fecha, TimeSpan hInicio, TimeSpan hFin)

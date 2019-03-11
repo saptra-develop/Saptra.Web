@@ -62,6 +62,14 @@
           <Property Name="ActividadEspecial" Type="bit" />
           <Property Name="Mensaje" Type="varchar" MaxLength="255" />
         </EntityType>
+        <EntityType Name="cTipoCorreo">
+          <Key>
+            <PropertyRef Name="TipoCorreoId" />
+          </Key>
+          <Property Name="TipoCorreoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="TipoCorreo" Type="varchar" MaxLength="150" Nullable="false" />
+        </EntityType>
         <EntityType Name="cTipoEstatus">
           <Key>
             <PropertyRef Name="TipoEstatusId" />
@@ -161,7 +169,7 @@
           <Property Name="mc_id" Type="int" Nullable="false" />
           <Property Name="mc_nombre" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="mc_curp" Type="varchar" MaxLength="50" />
-          <Property Name="mc_foliocert" Type="varchar" MaxLength="50" />
+          <Property Name="mc_foliocert" Type="varchar" MaxLength="255" />
           <Property Name="st_desc" Type="varchar" MaxLength="50" />
           <Property Name="mc_fconclusion" Type="varchar" MaxLength="50" />
           <Property Name="rfc_figura" Type="varchar" MaxLength="50" />
@@ -197,7 +205,7 @@
           <Property Name="HoraActividad" Type="time" Precision="7" Nullable="false" />
           <Property Name="HoraFin" Type="time" Precision="7" />
           <Property Name="CantidadCheckIn" Type="int" Nullable="false" />
-          <Property Name="DescripcionActividad" Type="varchar" MaxLength="255" />
+          <Property Name="DescripcionActividad" Type="varchar" MaxLength="1024" />
           <Property Name="LugarActividad" Type="varchar" MaxLength="100" />
           <Property Name="ComentariosNoValidacion" Type="varchar" MaxLength="255" />
           <Property Name="ComentariosRechazo" Type="varchar" MaxLength="255" />
@@ -254,6 +262,19 @@
           <Property Name="Reqdata" Type="varchar" MaxLength="1024" />
           <Property Name="Controller" Type="varchar" MaxLength="50" />
           <Property Name="Action" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="mCorreo">
+          <Key>
+            <PropertyRef Name="CorreoId" />
+          </Key>
+          <Property Name="CorreoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="EstatusId" Type="int" Nullable="false" />
+          <Property Name="Correo" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Contrasena" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Puerto" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Host" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="TipoCorreoId" Type="int" />
         </EntityType>
         <EntityType Name="mMenuGrupo">
           <Key>
@@ -413,6 +434,30 @@
             </Principal>
             <Dependent Role="cEstatus">
               <PropertyRef Name="UsuarioCreacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Correo_Estatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="1" />
+          <End Role="mCorreo" Type="Self.mCorreo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="mCorreo">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Correo_TipoCorreo">
+          <End Role="cTipoCorreo" Type="Self.cTipoCorreo" Multiplicity="0..1" />
+          <End Role="mCorreo" Type="Self.mCorreo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cTipoCorreo">
+              <PropertyRef Name="TipoCorreoId" />
+            </Principal>
+            <Dependent Role="mCorreo">
+              <PropertyRef Name="TipoCorreoId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1723,6 +1768,7 @@
           <EntitySet Name="cEstatus" EntityType="Self.cEstatus" Schema="CATALOGO" store:Type="Tables" />
           <EntitySet Name="cPeriodos" EntityType="Self.cPeriodos" Schema="CATALOGO" store:Type="Tables" />
           <EntitySet Name="cTipoActividades" EntityType="Self.cTipoActividades" Schema="CATALOGO" store:Type="Tables" />
+          <EntitySet Name="cTipoCorreo" EntityType="Self.cTipoCorreo" Schema="CATALOGO" store:Type="Tables" />
           <EntitySet Name="cTipoEstatus" EntityType="Self.cTipoEstatus" Schema="CATALOGO" store:Type="Tables" />
           <EntitySet Name="cTipoFiguras" EntityType="Self.cTipoFiguras" Schema="CATALOGO" store:Type="Tables" />
           <EntitySet Name="cTipoNotificaciones" EntityType="Self.cTipoNotificaciones" Schema="CATALOGO" store:Type="Tables" />
@@ -1738,6 +1784,7 @@
           <EntitySet Name="mPlanSemanal" EntityType="Self.mPlanSemanal" Schema="PLANSEMANAL" store:Type="Tables" />
           <EntitySet Name="dModulos" EntityType="Self.dModulos" Schema="SEGURIDAD" store:Type="Tables" />
           <EntitySet Name="mBitacora" EntityType="Self.mBitacora" Schema="SEGURIDAD" store:Type="Tables" />
+          <EntitySet Name="mCorreo" EntityType="Self.mCorreo" Schema="SEGURIDAD" store:Type="Tables" />
           <EntitySet Name="mMenuGrupo" EntityType="Self.mMenuGrupo" Schema="SEGURIDAD" store:Type="Tables" />
           <EntitySet Name="mPermisos" EntityType="Self.mPermisos" Schema="SEGURIDAD" store:Type="Tables" />
           <EntitySet Name="mRoles" EntityType="Self.mRoles" Schema="SEGURIDAD" store:Type="Tables" />
@@ -1768,6 +1815,14 @@
           <AssociationSet Name="FK_cEstatus_mUsuarios" Association="Self.FK_cEstatus_mUsuarios">
             <End Role="mUsuarios" EntitySet="mUsuarios" />
             <End Role="cEstatus" EntitySet="cEstatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Correo_Estatus" Association="Self.FK_Correo_Estatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="mCorreo" EntitySet="mCorreo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Correo_TipoCorreo" Association="Self.FK_Correo_TipoCorreo">
+            <End Role="cTipoCorreo" EntitySet="cTipoCorreo" />
+            <End Role="mCorreo" EntitySet="mCorreo" />
           </AssociationSet>
           <AssociationSet Name="FK_cPeriodos_mUsuarios" Association="Self.FK_cPeriodos_mUsuarios">
             <End Role="mUsuarios" EntitySet="mUsuarios" />
@@ -2427,6 +2482,7 @@
           <NavigationProperty Name="cCoordinacionesRegion" Relationship="Self.FK_cCoordinacionesRegion_cEstatus" FromRole="cEstatus" ToRole="cCoordinacionesRegion" />
           <NavigationProperty Name="cCoordinacionesZona" Relationship="Self.FK_cCoordinacionesZona_cEstatus" FromRole="cEstatus" ToRole="cCoordinacionesZona" />
           <NavigationProperty Name="mUsuarios" Relationship="Self.FK_cEstatus_mUsuarios" FromRole="cEstatus" ToRole="mUsuarios" />
+          <NavigationProperty Name="mCorreo" Relationship="Self.FK_Correo_Estatus" FromRole="cEstatus" ToRole="mCorreo" />
           <NavigationProperty Name="cTiposUsuario" Relationship="Self.FK_cTiposUsuario_cEstatus" FromRole="cEstatus" ToRole="cTiposUsuario" />
           <NavigationProperty Name="dDetallePlanSemanal" Relationship="Self.FK_DetallePlanSemanal_Estatus" FromRole="cEstatus" ToRole="dDetallePlanSemanal" />
           <NavigationProperty Name="dModulos" Relationship="Self.FK_dModulos_cEstatus" FromRole="cEstatus" ToRole="dModulos" />
@@ -2473,6 +2529,15 @@
           <NavigationProperty Name="cEstatus" Relationship="Self.FK_TipoActividades_Estatus" FromRole="cTipoActividades" ToRole="cEstatus" />
           <NavigationProperty Name="mUsuarios" Relationship="Self.FK_cTipoActividades_mUsuarios" FromRole="cTipoActividades" ToRole="mUsuarios" />
           <NavigationProperty Name="dDetallePlanSemanal" Relationship="Self.FK_DetallePlanSemanal_TipoActividades" FromRole="cTipoActividades" ToRole="dDetallePlanSemanal" />
+        </EntityType>
+        <EntityType Name="cTipoCorreo">
+          <Key>
+            <PropertyRef Name="TipoCorreoId" />
+          </Key>
+          <Property Name="TipoCorreoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TipoCorreo" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="mCorreo" Relationship="Self.FK_Correo_TipoCorreo" FromRole="cTipoCorreo" ToRole="mCorreo" />
         </EntityType>
         <EntityType Name="cTipoEstatus">
           <Key>
@@ -2593,7 +2658,7 @@
           <Property Name="mc_id" Type="Int32" Nullable="false" />
           <Property Name="mc_nombre" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="mc_curp" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="mc_foliocert" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="mc_foliocert" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="st_desc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="mc_fconclusion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="rfc_figura" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -2630,7 +2695,7 @@
           <Property Name="HoraActividad" Type="Time" Nullable="false" Precision="7" />
           <Property Name="HoraFin" Type="Time" Precision="7" />
           <Property Name="CantidadCheckIn" Type="Int32" Nullable="false" />
-          <Property Name="DescripcionActividad" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="DescripcionActividad" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
           <Property Name="LugarActividad" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ComentariosNoValidacion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="ComentariosRechazo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
@@ -2706,6 +2771,21 @@
           <Property Name="Reqdata" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
           <Property Name="Controller" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Action" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="mCorreo">
+          <Key>
+            <PropertyRef Name="CorreoId" />
+          </Key>
+          <Property Name="CorreoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EstatusId" Type="Int32" Nullable="false" />
+          <Property Name="Correo" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Contrasena" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Puerto" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Host" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TipoCorreoId" Type="Int32" />
+          <NavigationProperty Name="cEstatus" Relationship="Self.FK_Correo_Estatus" FromRole="mCorreo" ToRole="cEstatus" />
+          <NavigationProperty Name="cTipoCorreo" Relationship="Self.FK_Correo_TipoCorreo" FromRole="mCorreo" ToRole="cTipoCorreo" />
         </EntityType>
         <EntityType Name="mMenuGrupo">
           <Key>
@@ -2931,6 +3011,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Correo_Estatus">
+          <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="1" />
+          <End Role="mCorreo" Type="Self.mCorreo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cEstatus">
+              <PropertyRef Name="EstatusId" />
+            </Principal>
+            <Dependent Role="mCorreo">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_cTiposUsuario_cEstatus">
           <End Role="cEstatus" Type="Self.cEstatus" Multiplicity="1" />
           <End Role="cTiposUsuario" Type="Self.cTiposUsuario" Multiplicity="*" />
@@ -3144,6 +3236,18 @@
             </Principal>
             <Dependent Role="dDetallePlanSemanal">
               <PropertyRef Name="TipoActividadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Correo_TipoCorreo">
+          <End Role="cTipoCorreo" Type="Self.cTipoCorreo" Multiplicity="0..1" />
+          <End Role="mCorreo" Type="Self.mCorreo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cTipoCorreo">
+              <PropertyRef Name="TipoCorreoId" />
+            </Principal>
+            <Dependent Role="mCorreo">
+              <PropertyRef Name="TipoCorreoId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3501,6 +3605,7 @@
           <EntitySet Name="cEstatus" EntityType="Self.cEstatus" />
           <EntitySet Name="cPeriodos" EntityType="Self.cPeriodos" />
           <EntitySet Name="cTipoActividades" EntityType="Self.cTipoActividades" />
+          <EntitySet Name="cTipoCorreo" EntityType="Self.cTipoCorreo" />
           <EntitySet Name="cTipoEstatus" EntityType="Self.cTipoEstatus" />
           <EntitySet Name="cTipoFiguras" EntityType="Self.cTipoFiguras" />
           <EntitySet Name="cTipoNotificaciones" EntityType="Self.cTipoNotificaciones" />
@@ -3516,6 +3621,7 @@
           <EntitySet Name="mPlanSemanal" EntityType="Self.mPlanSemanal" />
           <EntitySet Name="dModulos" EntityType="Self.dModulos" />
           <EntitySet Name="mBitacora" EntityType="Self.mBitacora" />
+          <EntitySet Name="mCorreo" EntityType="Self.mCorreo" />
           <EntitySet Name="mMenuGrupo" EntityType="Self.mMenuGrupo" />
           <EntitySet Name="mPermisos" EntityType="Self.mPermisos" />
           <EntitySet Name="mRoles" EntityType="Self.mRoles" />
@@ -3554,6 +3660,10 @@
           <AssociationSet Name="FK_cEstatus_mUsuarios" Association="Self.FK_cEstatus_mUsuarios">
             <End Role="mUsuarios" EntitySet="mUsuarios" />
             <End Role="cEstatus" EntitySet="cEstatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Correo_Estatus" Association="Self.FK_Correo_Estatus">
+            <End Role="cEstatus" EntitySet="cEstatus" />
+            <End Role="mCorreo" EntitySet="mCorreo" />
           </AssociationSet>
           <AssociationSet Name="FK_cTiposUsuario_cEstatus" Association="Self.FK_cTiposUsuario_cEstatus">
             <End Role="cEstatus" EntitySet="cEstatus" />
@@ -3626,6 +3736,10 @@
           <AssociationSet Name="FK_DetallePlanSemanal_TipoActividades" Association="Self.FK_DetallePlanSemanal_TipoActividades">
             <End Role="cTipoActividades" EntitySet="cTipoActividades" />
             <End Role="dDetallePlanSemanal" EntitySet="dDetallePlanSemanal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Correo_TipoCorreo" Association="Self.FK_Correo_TipoCorreo">
+            <End Role="cTipoCorreo" EntitySet="cTipoCorreo" />
+            <End Role="mCorreo" EntitySet="mCorreo" />
           </AssociationSet>
           <AssociationSet Name="FK_cTipoEstatus_mUsuarios" Association="Self.FK_cTipoEstatus_mUsuarios">
             <End Role="mUsuarios" EntitySet="mUsuarios" />
@@ -3984,6 +4098,15 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="cTipoCorreo">
+            <EntityTypeMapping TypeName="Inaeba_GeorreferenciaModel.cTipoCorreo">
+              <MappingFragment StoreEntitySet="cTipoCorreo">
+                <ScalarProperty Name="TipoCorreoId" ColumnName="TipoCorreoId" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="TipoCorreo" ColumnName="TipoCorreo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="cTipoEstatus">
             <EntityTypeMapping TypeName="Inaeba_GeorreferenciaModel.cTipoEstatus">
               <MappingFragment StoreEntitySet="cTipoEstatus">
@@ -4189,6 +4312,20 @@
                 <ScalarProperty Name="Reqdata" ColumnName="Reqdata" />
                 <ScalarProperty Name="Controller" ColumnName="Controller" />
                 <ScalarProperty Name="Action" ColumnName="Action" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mCorreo">
+            <EntityTypeMapping TypeName="Inaeba_GeorreferenciaModel.mCorreo">
+              <MappingFragment StoreEntitySet="mCorreo">
+                <ScalarProperty Name="CorreoId" ColumnName="CorreoId" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="EstatusId" ColumnName="EstatusId" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="Contrasena" ColumnName="Contrasena" />
+                <ScalarProperty Name="Puerto" ColumnName="Puerto" />
+                <ScalarProperty Name="Host" ColumnName="Host" />
+                <ScalarProperty Name="TipoCorreoId" ColumnName="TipoCorreoId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

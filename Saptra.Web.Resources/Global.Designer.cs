@@ -160,6 +160,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Configuración de Correo.
+        /// </summary>
+        public static string menuConfiguracionCorreo {
+            get {
+                return ResourceManager.GetString("menuConfiguracionCorreo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Consulta Plan Semanal.
         /// </summary>
         public static string menuConsultaPlanes {

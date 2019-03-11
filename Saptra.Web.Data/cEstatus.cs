@@ -19,6 +19,7 @@ namespace Saptra.Web.Data
         {
             this.cCoordinacionesRegion = new HashSet<cCoordinacionesRegion>();
             this.cCoordinacionesZona = new HashSet<cCoordinacionesZona>();
+            this.mCorreo = new HashSet<mCorreo>();
             this.cTiposUsuario = new HashSet<cTiposUsuario>();
             this.dDetallePlanSemanal = new HashSet<dDetallePlanSemanal>();
             this.dModulos = new HashSet<dModulos>();
@@ -45,6 +46,8 @@ namespace Saptra.Web.Data
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cCoordinacionesZona> cCoordinacionesZona { get; set; }
         public virtual mUsuarios mUsuarios { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<mCorreo> mCorreo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cTiposUsuario> cTiposUsuario { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

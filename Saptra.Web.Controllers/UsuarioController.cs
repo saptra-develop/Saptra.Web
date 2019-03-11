@@ -13,6 +13,7 @@ using System.Web.Mvc;
 using System.IO;
 using System.Configuration;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 
 using Saptra.Web.Data;
@@ -94,9 +95,11 @@ namespace Saptra.Web.Controllers
                                  select z).ToList();
                
                     if (correoExistente(pobjModelo.EmailUsuario) == true)
-                        return Json(new { Success = false, Message = "The user's email is already in use" });
+                        return Json(new { Success = false, Message = "El correo electrónico del usuario ya está en uso." });
                     else if (loginExistente(pobjModelo.LoginUsuario))
-                        return Json(new { Success = false, Message = "The user's login is already in use" });
+                        return Json(new { Success = false, Message = "El usuario inicio de sesión ya está en uso." });
+                    else if (RFCExistente(pobjModelo.RFCUsuario))
+                        return Json(new { Success = false, Message = "El RFC ya esta registrado con otro usuario." });
                     else
                     {
                         string contrasenaRec;
@@ -379,6 +382,13 @@ namespace Saptra.Web.Controllers
                                 return Json(new { Success = false, Message = "El login del usuario ya está en uso." });
                         }
 
+                        if (dbUsu.RFCUsuario != pobjModelo.RFCUsuario)
+                        {
+                            if (RFCExistente(pobjModelo.RFCUsuario))
+                                return Json(new { Success = false, Message = "El RFC ya esta registrado con otro usuario." });
+                        }
+              
+
                         dbUsu.NombresUsuario = pobjModelo.NombresUsuario;
                         dbUsu.ApellidosUsuario = pobjModelo.ApellidosUsuario;
                         dbUsu.LoginUsuario = pobjModelo.LoginUsuario;
@@ -613,12 +623,26 @@ namespace Saptra.Web.Controllers
 
             return existe;
         }
+        private bool RFCExistente(string rfc)
+        {
+            bool existe = true;
+            var usuario = (from i in db.mUsuarios
+                           where i.RFCUsuario == rfc.Trim()
+                           select i);
+
+            if (usuario.ToList().Count == 0)
+                existe = false;
+
+            return existe;
+        }
 
         [HttpGet]
-        public JsonResult CargarNombresFiguraPorCZ(int? id, int? idEstatus, int idUsuarioCZ)
+        public JsonResult CargarNombresFiguraPorCZ(int? id, int? idEstatus, int idUsuarioCZ, string TiposFiguraIds)
         {
             try
             {
+                string[] relTipoFigura = Regex.Split(TiposFiguraIds, ",");
+
                 var cz = (from c in db.mCoordinacionZonaUsuario
                           where c.UsuarioId == idUsuarioCZ
                           && c.JefeCoordinacionZona == true
@@ -631,6 +655,7 @@ namespace Saptra.Web.Controllers
                                   where cat.EstatusId == 5
                                   && c.CoordinacionZonaId == CoordinacionZonaId
                                   && c.JefeCoordinacionZona == false
+                                  && (TiposFiguraIds == "0" ? 1 == 1 : relTipoFigura.Contains(cat.TipoFiguraId.ToString()))
                                   select new
                                   {
                                       id = cat.UsuarioId,
@@ -749,6 +774,155 @@ namespace Saptra.Web.Controllers
                 return Json(new { Success = false, Message = "No fue posible subir la imagen." });
             }
         }
+
+        #region Configuracion de Correo
+        public ActionResult ConfiguracionCorreo()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult NuevoCorreo()
+        {
+            var objCorreo = new mCorreo();
+            ViewBag.Titulo = "Nuevo";
+            return PartialView("_NuevoCorreo", objCorreo);
+        }
+
+        [HttpGet]
+        public JsonResult CargarCorreos()
+        {
+            try
+            {
+                var result = (from cat in db.mCorreo
+                              select new
+                              {
+                                  id = cat.CorreoId,
+                                  estatus = cat.cEstatus.NombreEstatus,
+                                  correo = cat.Correo,
+                                  contrasena = cat.Contrasena,
+                                  puerto = cat.Puerto,
+                                  host = cat.Host,
+                                  tipo = cat.cTipoCorreo.TipoCorreo
+                              }).ToList();
+
+
+
+                return Json(new { Success = true, datos = result }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = "Error al cargar la información." }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public JsonResult CargarTipoCorreo()
+        {
+            try
+            {
+                var result = (from cat in db.cTipoCorreo
+                              select new
+                              {
+                                  id = cat.TipoCorreoId,
+                                  tipoCorreo = cat.TipoCorreo
+                              }).ToList();
+
+
+                return (Json(result, JsonRequestBehavior.AllowGet));
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = "Error al cargar la información." }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public JsonResult NuevoCorreo(mCorreo pobjModelo)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var validaExisteTipo = (from c in db.mCorreo
+                                            where c.TipoCorreoId == pobjModelo.TipoCorreoId
+                                            select c).ToList();
+                    if (validaExisteTipo.Count() > 0)
+                    {
+                        return Json(new { Success = false, id = pobjModelo.CorreoId, Message = "Existe un correo registrado para el tipo seleccionado" });
+                    }
+                    else
+                    {
+                        pobjModelo.FechaCreacion = DateTime.Now;
+                        pobjModelo.EstatusId = pobjModelo.EstatusId;
+                        pobjModelo.Correo = pobjModelo.Correo;
+                        pobjModelo.Contrasena = pobjModelo.Contrasena;
+                        pobjModelo.Puerto = pobjModelo.Puerto;
+                        pobjModelo.Host = pobjModelo.Host;
+                        pobjModelo.TipoCorreoId = pobjModelo.TipoCorreoId;
+                        db.mCorreo.Add(pobjModelo);
+                        db.SaveChanges();
+
+                        return Json(new { Success = true, id = pobjModelo.CorreoId, Message = "guardado correctamente " });
+                    }
+                   
+                }
+                catch (Exception exp)
+                {
+                    return Json(new { Success = false, Message = "Error al guardar la información" });
+                }
+            }
+
+            return Json(new { Success = false, Message = "Informacion incompleta" });
+        }
+
+        [HttpGet]
+        public ActionResult ActualizarCorreo(int id)
+        {
+            var objCorreo = db.mCorreo.Find(id);
+            return PartialView("_ActualizaCorreo", objCorreo);
+        }
+
+        [HttpPost]
+        public JsonResult ActualizarCorreo(mCorreo pobjModelo)
+        {
+            try
+            {
+                var validaExisteTipo = (from c in db.mCorreo
+                                        where c.TipoCorreoId == pobjModelo.TipoCorreoId && c.CorreoId != pobjModelo.CorreoId
+                                        select c).ToList();
+
+                if (validaExisteTipo.Count() > 0)
+                {
+                    return Json(new { Success = false, id = pobjModelo.CorreoId, Message = "Existe un correo registrado para el tipo seleccionado" });
+                }
+                else
+                {
+                    var result = (from ps in db.mCorreo
+                                  where ps.CorreoId == pobjModelo.CorreoId
+                                  select ps).ToList();
+
+                    //Actualiza
+                    var dbTemp = result.First();
+                    dbTemp.Correo = pobjModelo.Correo;
+                    dbTemp.Contrasena = pobjModelo.Contrasena;
+                    dbTemp.Puerto = pobjModelo.Puerto;
+                    dbTemp.Host = pobjModelo.Host;
+                    dbTemp.TipoCorreoId = pobjModelo.TipoCorreoId;
+                    dbTemp.EstatusId = pobjModelo.EstatusId;
+                    db.SaveChanges();
+
+                    return Json(new { Success = true, id = pobjModelo.CorreoId, Message = "actualizado correctamente " });
+                }
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = "Error al guardar la información" });
+            }
+        }
+
+
+        #endregion
 
         protected override void Dispose(bool disposing)
         {

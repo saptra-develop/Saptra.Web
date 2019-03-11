@@ -1,0 +1,75 @@
+﻿@model Saptra.Web.Data.mCorreo
+
+<div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">@Resources.Usuarios.titleUpdate</h4>
+        </div>
+        <div class="modal-body">
+            <div class="clientAlertDlg"> </div>
+            @using (Html.BeginForm("Actualiza", "Correo", FormMethod.Post, new { id = "ActualizaCorreoForm", name = "ActualizaCorreoForm", @class = "form-horizontal", onsubmit = "return false" }))
+            {
+
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">Correo</div>
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(model => model.Correo, new { @class = "form-control", type = "email", maxlength = 150, required = "required" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">Contraseña</div>
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(model => model.Contrasena, new { @class = "form-control", maxlength = 150, required = "required", autocomplete = "off" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">Puerto</div>
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(model => model.Puerto, new { @class = "form-control", maxlength = 10, required = "required" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">Host</div>
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(model => model.Host, new { @class = "form-control", maxlength = 100, required = "required" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">Tipo Correo</div>
+                        <div class="col-sm-8">
+                            <select id="TipoCorreoId" name="TipoCorreoId" class="form-control" required="required"><option value="0">@Resources.Global.menuLoading</option></select>
+                            <input type="hidden" id="selTipoCorreoId" value="@Model.TipoCorreoId" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">Estatus</div>
+                        <div class="col-sm-8">
+                            @Html.DropDownListFor(model => model.EstatusId,
+                                                                              new SelectList(new[]{
+                                                                                              new SelectListItem{ Text="ACTIVO", Value="5"},
+                                                                                              new SelectListItem{ Text="INACTIVO", Value="6"}},
+                                                                      "Value", "Text"), new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                @Html.HiddenFor(model => model.CorreoId)
+            }
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default " data-dismiss="modal">@Resources.Global.btnCancel</button>
+            <button type="button" class="btn btn-primary btn-Actualizar">@Resources.Global.btnSave</button>
+        </div>
+    </div>
+</div>

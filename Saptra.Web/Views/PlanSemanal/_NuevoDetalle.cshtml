@@ -22,7 +22,7 @@
                     <div class="col-sm-12">
                         <div class="col-sm-4">Descripción</div>
                         <div class="col-sm-8">
-                            @Html.TextBoxFor(model => model.DescripcionActividad, new { @class = "form-control", maxlength = 100, required = "required" })
+                            @Html.TextAreaFor(model => model.DescripcionActividad, new { @class = "form-control", maxlength = 1024, required = "required" })
                         </div>
                     </div>
                 </div>

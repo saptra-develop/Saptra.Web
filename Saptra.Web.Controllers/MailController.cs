@@ -8,10 +8,12 @@ using System.Web.Mvc;
 using System.Net.Mail;
 using System.Net;
 
+using Saptra.Web.Data;
 namespace Saptra.Web.Controllers
 {
     class MailController : Controller
     {
+        private Inaeba_SaptraEntities db = new Inaeba_SaptraEntities();
         public void EnviarEmail(MailMessage message)
         {
             SmtpClient client = new SmtpClient();
@@ -29,8 +31,12 @@ namespace Saptra.Web.Controllers
 
         public string EnviarEmail(string from, List<string> addListTo, string Subject, bool isBodyHTML, string Body, List<string> addCc = null, List<string> addCco = null)
         {
+            var confCorreo = (from c in db.mCorreo
+                              where c.TipoCorreoId == 1 && c.EstatusId == 5
+                              select c).FirstOrDefault();
+
             MailMessage message = new MailMessage();
-            MailAddress From = new MailAddress(from);
+            MailAddress From = new MailAddress(confCorreo.Correo);
             message.From = From;
             foreach (string address in addListTo)
             {
@@ -59,12 +65,12 @@ namespace Saptra.Web.Controllers
             message.Body = Body;
 
             SmtpClient client = new SmtpClient();
-            client.Port = 587;
-            client.Host = "smtp.gmail.com";
+            client.Port = Convert.ToInt32(confCorreo.Puerto);
+            client.Host = confCorreo.Host;
             client.EnableSsl = true;
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
             client.UseDefaultCredentials = false;
-            client.Credentials = new System.Net.NetworkCredential("sieron.celula@gmail.com", "C123456c");
+            client.Credentials = new System.Net.NetworkCredential(confCorreo.Correo, confCorreo.Contrasena);
             //client.TargetName = "STARTTLS/smtp.gmail.com";
 
             // Mailtrap

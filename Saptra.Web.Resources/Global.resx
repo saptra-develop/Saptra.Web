@@ -150,6 +150,9 @@
   <data name="menuCertificados" xml:space="preserve">
     <value>Cantidad de certificados entregados VS programados</value>
   </data>
+  <data name="menuConfiguracionCorreo" xml:space="preserve">
+    <value>Configuración de Correo</value>
+  </data>
   <data name="menuConsultaPlanes" xml:space="preserve">
     <value>Consulta Plan Semanal</value>
   </data>

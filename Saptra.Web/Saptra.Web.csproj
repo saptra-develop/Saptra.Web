@@ -1447,6 +1447,7 @@
     <Content Include="Scripts\PlanSemanalConsulta.js" />
     <Content Include="Scripts\PlanSemanal.js" />
     <Content Include="Scripts\IndIncumplimientoAct.js" />
+    <Content Include="Scripts\ConfigurarCorreo.js" />
     <Content Include="Scripts\Zonas.js" />
     <Content Include="Scripts\Seguridad.js" />
     <Content Include="Scripts\Regiones.js" />
@@ -1523,6 +1524,9 @@
     <Content Include="Views\PlanSemanalConsulta\_Educandos.cshtml" />
     <Content Include="Views\PlanSemanalSeguimiento\_Certificados.cshtml" />
     <Content Include="Views\PlanSemanalConsulta\_VerEducandos.cshtml" />
+    <Content Include="Views\Usuario\ConfiguracionCorreo.cshtml" />
+    <Content Include="Views\Usuario\_NuevoCorreo.cshtml" />
+    <Content Include="Views\Usuario\_ActualizaCorreo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

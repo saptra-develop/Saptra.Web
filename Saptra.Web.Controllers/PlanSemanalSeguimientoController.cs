@@ -74,7 +74,7 @@ namespace Sispro.Web.Controllers
             {
                 var result = (from cat in db.dDetallePlanSemanal
                               where cat.PlanSemanalId == idPlanSemanal
-                              select cat).ToList();
+                              select cat).OrderBy(x => new { x.FechaActividad, x.HoraActividad }).ToList();
 
                 var lstDetalle = result.Select(cat => new
                 {
@@ -268,7 +268,7 @@ namespace Sispro.Web.Controllers
             {
                 var result = (from cat in db.dDetallePlanSemanal
                               where cat.PlanSemanalId == idPlanSemanal
-                              select cat).ToList();
+                              select cat).OrderBy(x => new { x.FechaActividad, x.HoraActividad }).ToList();
                 int Comparacion = db.Database.SqlQuery<int>("SELECT dbo.udf_ComparaFechas(@p0)", result.First().mPlanSemanal.PeriodoId).FirstOrDefault();
 
                 var lstDetalle = result.Select(cat => new
@@ -470,7 +470,7 @@ namespace Sispro.Web.Controllers
                         }
                         var resultDetalle = (from cat in db.dDetallePlanSemanal
                                       where cat.PlanSemanalId == idPlan
-                                      select cat).ToList();
+                                      select cat).OrderBy(x => new { x.FechaActividad, x.HoraActividad }).ToList();
 
                         var lstDetalle = resultDetalle.Select(cat => new
                         {
@@ -644,7 +644,7 @@ namespace Sispro.Web.Controllers
 
                         var resultDetalle = (from cat in db.dDetallePlanSemanal
                                              where cat.PlanSemanalId == idPlan
-                                             select cat).ToList();
+                                             select cat).OrderBy(x => new { x.FechaActividad, x.HoraActividad }).ToList();
 
                         var lstDetalle = resultDetalle.Select(cat => new
                         {

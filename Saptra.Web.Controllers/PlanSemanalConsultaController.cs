@@ -62,7 +62,7 @@ namespace Sispro.Web.Controllers
             {
                 var result = (from cat in db.dDetallePlanSemanal
                               where cat.PlanSemanalId == idPlanSemanal
-                              select cat).ToList();
+                              select cat).OrderBy(x => new { x.FechaActividad, x.HoraActividad }).ToList();
 
                 var lstDetalle = result.Select(cat => new
                 {

@@ -251,8 +251,8 @@ var Usuario = {
         } 
 
     },
-    onActualizar: function () {
-        var btn = this;
+    onActualizar: function (botn) {
+        var btn = botn;
         FCH.botonMensaje(true, btn, 'Guardar');
 
         var estado = 0;
@@ -277,7 +277,7 @@ var Usuario = {
             if ($(Usuario.activeForm + ' #RolId').val() == "6" && Usuario.validaRegion == 1) {
                 bootbox.confirm("¿Desea eliminar al jefe de la coordinación de región actual?", function (result) {
                     if (result) {
-                        Usuario.onActualizarValidado();
+                        Usuario.onActualizarValidado(botn);
                     } else {
                         valida = 1;
                     }
@@ -285,21 +285,21 @@ var Usuario = {
             } else if ($(Usuario.activeForm + ' #RolId').val() == "3" && Usuario.validaZona == 1) {
                 bootbox.confirm("¿Desea eliminar al jefe de la coordinación de zona actual?", function (result) {
                     if (result) {
-                        Usuario.onActualizarValidado();
+                        Usuario.onActualizarValidado(botn);
                     } else {
                         valida = 1;
                     }
                 });
             }
             else {
-                Usuario.onActualizarValidado();
+                Usuario.onActualizarValidado(botn);
             }
 
         } 
         
     },
-    onActualizarValidado: function () {
-        var btn = this;
+    onActualizarValidado: function (botn) {
+        var btn = botn;
 
         var atpos = $('#ActualizaUsuarioForm #EmailUsuario').val().indexOf("@");
         var dotpos = $('#ActualizaUsuarioForm #EmailUsuario').val().lastIndexOf(".");
@@ -320,6 +320,7 @@ var Usuario = {
                                 FCH.DespliegaInformacion("El Usuario fue Actualizado. Id: " + data.id);
                             } else {
                                 FCH.DespliegaErrorDialogo(data.Message);
+                                FCH.botonMensaje(false, btn, 'Guardar');
                             }
                         }).fail(function () {
                             FCH.DespliegaErrorDialogo("Error al actualizar la información");

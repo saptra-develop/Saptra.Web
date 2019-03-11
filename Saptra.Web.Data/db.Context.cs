@@ -32,6 +32,7 @@ namespace Saptra.Web.Data
         public virtual DbSet<cEstatus> cEstatus { get; set; }
         public virtual DbSet<cPeriodos> cPeriodos { get; set; }
         public virtual DbSet<cTipoActividades> cTipoActividades { get; set; }
+        public virtual DbSet<cTipoCorreo> cTipoCorreo { get; set; }
         public virtual DbSet<cTipoEstatus> cTipoEstatus { get; set; }
         public virtual DbSet<cTipoFiguras> cTipoFiguras { get; set; }
         public virtual DbSet<cTipoNotificaciones> cTipoNotificaciones { get; set; }
@@ -47,6 +48,7 @@ namespace Saptra.Web.Data
         public virtual DbSet<mPlanSemanal> mPlanSemanal { get; set; }
         public virtual DbSet<dModulos> dModulos { get; set; }
         public virtual DbSet<mBitacora> mBitacora { get; set; }
+        public virtual DbSet<mCorreo> mCorreo { get; set; }
         public virtual DbSet<mMenuGrupo> mMenuGrupo { get; set; }
         public virtual DbSet<mPermisos> mPermisos { get; set; }
         public virtual DbSet<mRoles> mRoles { get; set; }

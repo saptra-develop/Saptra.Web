@@ -362,7 +362,7 @@ var PlanSemanal = {
                 linea += values[i];
             }
             else {
-                linea = values[i];
+                linea = values[i];   PlanSemanal.CargaNombresFigura();
             }
         }
         $('#selecPeriodos').val(linea);
@@ -380,6 +380,7 @@ var PlanSemanal = {
             }
         }
         $('#selecTipoFigura').val(linea);
+        PlanSemanal.CargaNombresFigura();
     },
     onCambiarNombresFigura: function (ev) {
         var linea;
@@ -519,17 +520,18 @@ var PlanSemanal = {
         $(PlanSemanal.activeForm + " #selTipoFigura").select2({ allowClear: true, placeholder: "SELECCIONAR TIPO FIGURA" });
     },
     CargaNombresFigura: function () {
-        if (PlanSemanal.colNombreFigura.length < 1) {
-            var url = contextPath + "Usuario/CargarNombresFiguraPorCZ?idEstatus=5&idUsuarioCZ=" + localStorage.idUser;
-            $.getJSON(url, function (data) {
-                PlanSemanal.colNombreFigura = data;
-                PlanSemanal.CargaListaNombreFigura();
-            }).fail(function () {
-                FCH.DespliegaErrorDialogo("No se pudieron cargar los usuarios");
-            });
-        } else {
+        var idTipoFigura = $('#selTipoFigura').val() != null ? $('#selTipoFigura').val() : 0;
+        //if (PlanSemanal.colNombreFigura.length < 1) {
+        var url = contextPath + "Usuario/CargarNombresFiguraPorCZ?idEstatus=5&idUsuarioCZ=" + localStorage.idUser + "&TiposFiguraIds=" + idTipoFigura;
+        $.getJSON(url, function (data) {
+            PlanSemanal.colNombreFigura = data;
             PlanSemanal.CargaListaNombreFigura();
-        }
+        }).fail(function () {
+            FCH.DespliegaErrorDialogo("No se pudieron cargar los usuarios");
+        });
+        //} else {
+        //    PlanSemanal.CargaListaNombreFigura();
+        //}
     },
     CargaListaNombreFigura: function () {
         var select = $(PlanSemanal.activeForm + ' #selNombreFigura').empty();
