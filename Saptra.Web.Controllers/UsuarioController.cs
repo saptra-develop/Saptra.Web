@@ -397,6 +397,11 @@ namespace Saptra.Web.Controllers
                         dbUsu.RFCUsuario = pobjModelo.RFCUsuario;
                         dbUsu.RolId = pobjModelo.RolId;
                         dbUsu.NumeroEmpleado = pobjModelo.NumeroEmpleado;
+                        var fig = (pobjModelo.RolId == 2 ? 1 : (pobjModelo.RolId == 4 ? 2 : (pobjModelo.RolId == 5 ? 3 : 0)));
+                        if (fig != 0)
+                        {
+                            dbUsu.TipoFiguraId = fig;
+                        }
                         if (pobjModelo.ImagenUsuario != null)
                         {
                             dbUsu.ImagenUsuario = pobjModelo.ImagenUsuario;

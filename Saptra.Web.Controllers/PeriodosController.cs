@@ -106,8 +106,8 @@ namespace Sispro.Web.Controllers
             {
                 try
                 {
-                    DateTime feIni = DateTime.ParseExact(fIni, "MM/dd/yyyy", null);
-                    DateTime feFin = DateTime.ParseExact(fFin, "MM/dd/yyyy", null);
+                    DateTime feIni = DateTime.ParseExact(fIni, "dd/MM/yyyy", null);
+                    DateTime feFin = DateTime.ParseExact(fFin, "dd/MM/yyyy", null);
                     string diaInicio = feIni.ToString("dd");
                     string diaFin = feFin.ToString("dd");
                     string mesInicio = feIni.ToString("MMM", new CultureInfo("es-ES"));

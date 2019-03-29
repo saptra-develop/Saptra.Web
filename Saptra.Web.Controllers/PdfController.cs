@@ -43,7 +43,7 @@ namespace Sispro.Web.Controllers
                 usuario = C.Usuario,
                 actividad = C.NombreActividad,
                 descripcion = C.DescripcionActividad,
-                fecha = C.FechaActividad.Value.ToString("MM/dd/yyyy"),
+                fecha = C.FechaActividad.Value.ToString("dd/MM/yyyy"),
                 comentarios = C.ComentariosRechazo,
                 C.CoordinacionZona,
                 C.NumeroEmpleado
@@ -212,14 +212,14 @@ namespace Sispro.Web.Controllers
 
             var resultDetalle = (from cat in db.dDetallePlanSemanal
                                  where cat.PlanSemanalId == idPlan
-                                 select cat).ToList();
-
+                                 select cat).OrderBy(x => new { x.FechaActividad, x.HoraActividad }).ToList();
+            
             var lstDetalle = resultDetalle.Select(cat => new
             {
                 id = cat.DetallePlanId,
                 actividad = cat.cTipoActividades.NombreActividad,
                 descripcion = cat.DescripcionActividad,
-                fecha = cat.FechaActividad.ToString("MM/dd/yyyy"),
+                fecha = cat.FechaActividad.ToString("dd/MM/yyyy"),
                 hora = cat.HoraActividad.ToString("hh':'mm"),
                 horaFin = cat.HoraFin.Value.ToString("hh':'mm"),
                 checkin = (cat.cTipoActividades.RequiereCheckIn == true ? (cat.mCheckIn.Count() == 0 ? "No realizado" : "Realizado") : "Realizado"),
@@ -469,14 +469,14 @@ namespace Sispro.Web.Controllers
 
             var resultDetalle = (from cat in db.dDetallePlanSemanal
                                  where cat.PlanSemanalId == idPlan
-                                 select cat).ToList();
+                                 select cat).OrderBy(x => new { x.FechaActividad, x.HoraActividad }).ToList();
 
             var lstDetalle = resultDetalle.Select(cat => new
             {
                 id = cat.DetallePlanId,
                 actividad = cat.cTipoActividades.NombreActividad,
                 descripcion = cat.DescripcionActividad,
-                fecha = cat.FechaActividad.ToString("MM/dd/yyyy"),
+                fecha = cat.FechaActividad.ToString("dd/MM/yyyy"),
                 hora = cat.HoraActividad.ToString("hh':'mm"),
                 horaFin = cat.HoraFin.Value.ToString("hh':'mm"),
                 checkin = (cat.cTipoActividades.RequiereCheckIn == true ? (cat.mCheckIn.Count() == 0 ? "No realizado" : "Realizado") : "Realizado"),

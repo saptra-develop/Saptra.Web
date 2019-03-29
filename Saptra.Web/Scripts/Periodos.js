@@ -177,18 +177,18 @@ var Periodo = {
         var form = Periodo.activeForm;
         $(form + ' #dtpfechaInicio').datetimepicker({
             useCurrent: false,
-            format: 'MM/DD/YYYY'
+            format: 'DD/MM/YYYY'
         });
 
         var d = new Date();
-        var strDate = (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear();
+        var strDate = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear();
 
         $(form + ' #dtpfechaInicio').data("DateTimePicker").minDate(strDate);
 
 
         $(form + ' #dtpfechaFin').datetimepicker({
             useCurrent: false,
-            format: 'MM/DD/YYYY'
+            format: 'DD/MM/YYYY'
         });
 
         $(form + ' #dtpfechaFin').data("DateTimePicker").minDate(strDate);

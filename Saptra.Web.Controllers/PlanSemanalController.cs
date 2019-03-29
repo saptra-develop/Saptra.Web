@@ -76,7 +76,7 @@ namespace Sispro.Web.Controllers
                     actividad = cat.cTipoActividades.NombreActividad + (cat.ComentariosNoValidacion != null ? "<input type='hidden' class='hdnPintaFila' />" : ""),
                     descripcion = cat.DescripcionActividad,
                     lugar = cat.LugarActividad,
-                    fecha = cat.FechaActividad.ToString("MM/dd/yyyy"),
+                    fecha = cat.FechaActividad.ToString("dd/MM/yyyy"),
                     hora = cat.HoraActividad.ToString("hh':'mm"),
                     horaFin = cat.HoraFin == null ? "" : cat.HoraFin.Value.ToString("hh':'mm"),
                     checkin = (cat.CantidadCheckIn < 1 ? "N/A" : cat.CantidadCheckIn.ToString()),
@@ -208,8 +208,8 @@ namespace Sispro.Web.Controllers
             ViewBag.Titulo = "Nueva actividad";
             objDetallePlan.PlanSemanalId = id;
             objDetallePlan.CantidadCheckIn = 1;
-            ViewBag.FechaIni = planPeriodo.cPeriodos.FechaInicio.ToString("MM/dd/yyyy");
-            ViewBag.FechaFin = planPeriodo.cPeriodos.FechaFin.ToString("MM/dd/yyyy");
+            ViewBag.FechaIni = planPeriodo.cPeriodos.FechaInicio.ToString("dd/MM/yyyy");
+            ViewBag.FechaFin = planPeriodo.cPeriodos.FechaFin.ToString("dd/MM/yyyy");
             return PartialView("_NuevoDetalle", objDetallePlan);
         }
 
@@ -382,8 +382,8 @@ namespace Sispro.Web.Controllers
             objDetallePlan.HoraActividad = hInicio;
             objDetallePlan.HoraFin= hFin;
             ViewBag.Titulo = "Actualizar actividad";
-            ViewBag.FechaIni = planPeriodo.mPlanSemanal.cPeriodos.FechaInicio.ToString("MM/dd/yyyy");
-            ViewBag.FechaFin = planPeriodo.mPlanSemanal.cPeriodos.FechaFin.ToString("MM/dd/yyyy");
+            ViewBag.FechaIni = planPeriodo.mPlanSemanal.cPeriodos.FechaInicio.ToString("dd/MM/yyyy");
+            ViewBag.FechaFin = planPeriodo.mPlanSemanal.cPeriodos.FechaFin.ToString("dd/MM/yyyy");
             return PartialView("_ActualizaDetalle", objDetallePlan);
         }
 
@@ -435,7 +435,7 @@ namespace Sispro.Web.Controllers
                 db.dDetallePlanSemanal.RemoveRange(detalle);
                 db.SaveChanges();
 
-                return Json(new { Success = true, Message = "Se borro correctamente la Zona " });
+                return Json(new { Success = true, Message = "Se borro correctamente la actividad " });
             }
             catch (Exception exp)
             {
@@ -444,13 +444,15 @@ namespace Sispro.Web.Controllers
         }
 
         [HttpGet]
-        public JsonResult ValidarActividadFecha(int idPlan, DateTime fecha, TimeSpan hInicio, TimeSpan hFin)
+        public JsonResult ValidarActividadFecha(int idPlan, string fecha, TimeSpan hInicio, TimeSpan hFin)
         {
             try
             {
+                DateTime fec = DateTime.ParseExact(fecha, "dd/MM/yyyy", null);
+
                 var ActividadPlaneada = (from c in db.dDetallePlanSemanal
                                          where c.PlanSemanalId == idPlan
-                                         && c.FechaActividad == fecha
+                                         && c.FechaActividad == fec
                                          && (c.HoraActividad >=  hInicio && c.HoraFin <= hFin)
                                          select c).ToList();
 
@@ -480,13 +482,14 @@ namespace Sispro.Web.Controllers
         }
 
         [HttpGet]
-        public JsonResult ValidarActividadFechaActualizar(int idPlan, int idDetallePlan, int idActividad, DateTime fecha, TimeSpan hInicio, TimeSpan hFin)
+        public JsonResult ValidarActividadFechaActualizar(int idPlan, int idDetallePlan, int idActividad, string fecha, TimeSpan hInicio, TimeSpan hFin)
         {
             try
             {
+                DateTime fec = DateTime.ParseExact(fecha, "dd/MM/yyyy", null);
                 var ActividadPlaneada = (from c in db.dDetallePlanSemanal
                                          where c.PlanSemanalId == idPlan
-                                         && c.FechaActividad == fecha
+                                         && c.FechaActividad == fec
                                          && c.DetallePlanId != idDetallePlan
                                          && (c.HoraActividad >= hInicio && c.HoraFin <= hFin)
                                          select c).ToList();

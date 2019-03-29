@@ -70,7 +70,7 @@ namespace Sispro.Web.Controllers
                     actividad = cat.cTipoActividades.NombreActividad + (cat.TipoActividadId == 8 ? (cat.SinProspectos == 1 ? "<br><span style='color:green'><strong>Sin prospectos</strong></span>" : "<br><button type = 'button' class='btn btn-xs btn-primary btnAgregarEducandos' " + (cat.mCheckIn.Count() > 0 ? "" : "disabled")  +" id='btnAgregarEducandos_" + cat.DetallePlanId + "' data-iddetalleplan='" + cat.DetallePlanId + "' " + (cat.SinProspectos == 1 ? "disabled" : "") + "><i class='fa fa-address-card-o  fa-lg fa-fw'></i> Vincular pre-registros</button>") : "") + (cat.InaebaPreregistros.Count() > 0 ? "<br> <a href='javascript:;' class='hrefVerEducandos' data-iddetalleplan='" +cat.DetallePlanId + "'>Ver Pre-registros Asignados</a>" : ""),
                     descripcion = cat.DescripcionActividad,
                     lugar = cat.LugarActividad,
-                    fecha = cat.FechaActividad.ToString("MM/dd/yyyy"),
+                    fecha = cat.FechaActividad.ToString("dd/MM/yyyy"),
                     hora = cat.HoraActividad.ToString("hh':'mm"),
                     horaFin = cat.HoraFin == null ? "" : cat.HoraFin.Value.ToString("hh':'mm"),
                     checkin = (cat.CantidadCheckIn < 1 ? "N/A" : cat.CantidadCheckIn.ToString()),

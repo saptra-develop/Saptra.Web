@@ -694,7 +694,7 @@ var PlanSemanal = {
         var form = PlanSemanal.activeForm;
         $(form + ' #dtpfechaCompromiso').datetimepicker({
             useCurrent: false,
-            format: 'MM/DD/YYYY'
+            format: 'DD/MM/YYYY'
         });
         $(form + ' #dtpfechaCompromiso').data("DateTimePicker").minDate($(form + ' #dtpfechaCompromiso').attr('data-fini'));
         $(form + ' #dtpfechaCompromiso').data("DateTimePicker").maxDate($(form + ' #dtpfechaCompromiso').attr('data-ffin'));

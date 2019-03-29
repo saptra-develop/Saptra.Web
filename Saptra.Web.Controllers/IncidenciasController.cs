@@ -56,7 +56,7 @@ namespace Sispro.Web.Controllers
                     usuario = C.Usuario,
                     actividad = C.NombreActividad,
                     descripcion = C.DescripcionActividad,
-                    fecha = C.FechaActividad.Value.ToString("MM/dd/yyyy"),
+                    fecha = C.FechaActividad.Value.ToString("dd/MM/yyyy"),
                     comentarios = C.ComentariosRechazo,
                     numeroEmp = C.NumeroEmpleado
                 });
@@ -82,7 +82,7 @@ namespace Sispro.Web.Controllers
                     usuario = C.Usuario,
                     actividad = C.NombreActividad,
                     descripcion = C.DescripcionActividad,
-                    fecha = C.FechaActividad.Value.ToString("MM/dd/yyyy"),
+                    fecha = C.FechaActividad.Value.ToString("dd/MM/yyyy"),
                     comentarios = C.ComentariosRechazo,
                     C.CoordinacionZona,
                     C.NumeroEmpleado

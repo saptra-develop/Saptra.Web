@@ -40,7 +40,8 @@
                         <div class="col-sm-4">Fecha</div>
                         <div class="col-sm-8">
                             <div class='input-group date' id='dtpfechaCompromiso' data-fini="@ViewBag.FechaIni" data-ffin="@ViewBag.FechaFin">
-                                @Html.TextBoxFor(model => model.FechaActividad, new { @class = "form-control", maxlength = 10, required = "required" })
+                                <input type="text" id="FechaActividad" name="FechaActividad" class="form-control" value="@Model.FechaActividad" required />
+                                @*@Html.TextBoxFor(model => model.FechaActividad, new { @class = "form-control", maxlength = 10, required = "required", DataFormatString = "{{0:dd/MM/yyyy}}" })*@
                                 <span class="input-group-addon">
                                     <span class="fa fa-calendar"></span>
                                 </span>
