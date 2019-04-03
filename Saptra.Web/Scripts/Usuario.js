@@ -210,6 +210,7 @@ var Usuario = {
             if ($(Usuario.activeForm + ' #RolId').val() == "6" && $('#NuevoUsuarioForm #RegionId').val() == "0") {
                 estado = 1;
                 FCH.DespliegaErrorDialogo("Es necesario elegir una Región");
+                FCH.botonMensaje(false, btn, 'Guardar');
             } else {
                 estado = 0;
             }
@@ -220,6 +221,7 @@ var Usuario = {
             if (($(Usuario.activeForm + ' #RolId').val() == "3" || $(Usuario.activeForm + ' #RolId').val() == "2" || $(Usuario.activeForm + ' #RolId').val() == "4" || $(Usuario.activeForm + ' #RolId').val() == "5") && $('#NuevoUsuarioForm #ZonaId').val() == "0") {
                 estado = 1;
                 FCH.DespliegaErrorDialogo("Es necesario elegir una Zona");
+                FCH.botonMensaje(false, btn, 'Guardar');
             } else {
                 estado = 0;
             }
@@ -232,7 +234,8 @@ var Usuario = {
                     if (result) {
                         Usuario.onGuardaValidado(btn);
                     } else {
-                        valida= 1;
+                        valida = 1;
+                        FCH.botonMensaje(false, btn, 'Guardar');
                     }
                 });
             } else if ($(Usuario.activeForm + ' #RolId').val() == "3" && Usuario.validaZona == 1) {
@@ -241,6 +244,7 @@ var Usuario = {
                         Usuario.onGuardaValidado(btn);
                     } else {
                         valida = 1;
+                        FCH.botonMensaje(false, btn, 'Guardar');
                     }
                 });
             }
@@ -256,20 +260,25 @@ var Usuario = {
         FCH.botonMensaje(true, btn, 'Guardar');
 
         var estado = 0;
-        if ($(Usuario.activeForm + ' #RolId').val() == "6") {
-            if ($(Usuario.activeForm + ' #RolId').val() == "6" && $('#ActualizaUsuarioForm #RegionId').val() == "0") {
+        if ($(Usuario.activeForm + ' #EstatusId').val() == "5") {
+            if ($(Usuario.activeForm + ' #RolId').val() == "6") {
+                if ($(Usuario.activeForm + ' #RolId').val() == "6" && $('#ActualizaUsuarioForm #RegionId').val() == "0") {
+                    estado = 1;
+                    FCH.DespliegaErrorDialogo("Es necesario elegir una Región");
+                    FCH.botonMensaje(false, btn, 'Guardar');
+                } else {
+                    estado = 0;
+                }
+            }
+
+   
+            if (($(Usuario.activeForm + ' #RolId').val() == "3" || $(Usuario.activeForm + ' #RolId').val() == "2" || $(Usuario.activeForm + ' #RolId').val() == "4" || $(Usuario.activeForm + ' #RolId').val() == "5") && $('#ActualizaUsuarioForm #ZonaId').val() == "0") {
                 estado = 1;
-                FCH.DespliegaErrorDialogo("Es necesario elegir una Región");
+                FCH.DespliegaErrorDialogo("Es necesario elegir una Zona");
+                FCH.botonMensaje(false, btn, 'Guardar');
             } else {
                 estado = 0;
             }
-        }
-
-        if (($(Usuario.activeForm + ' #RolId').val() == "3" || $(Usuario.activeForm + ' #RolId').val() == "2" || $(Usuario.activeForm + ' #RolId').val() == "4" || $(Usuario.activeForm + ' #RolId').val() == "5") && $('#ActualizaUsuarioForm #ZonaId').val() == "0") {
-            estado = 1;
-            FCH.DespliegaErrorDialogo("Es necesario elegir una Zona");
-        } else {
-            estado = 0;
         }
 
         if (estado == 0) {
@@ -280,6 +289,7 @@ var Usuario = {
                         Usuario.onActualizarValidado(botn);
                     } else {
                         valida = 1;
+                        FCH.botonMensaje(false, btn, 'Guardar');
                     }
                 });
             } else if ($(Usuario.activeForm + ' #RolId').val() == "3" && Usuario.validaZona == 1) {
@@ -288,6 +298,7 @@ var Usuario = {
                         Usuario.onActualizarValidado(botn);
                     } else {
                         valida = 1;
+                        FCH.botonMensaje(false, btn, 'Guardar');
                     }
                 });
             }
@@ -668,6 +679,7 @@ var Usuario = {
             'nombreCompleto': $(form + ' #NombresUsuario').val().toUpperCase() + ' ' + $(form + ' #ApellidosUsuario').val().toUpperCase(),
             'email': $(form + ' #EmailUsuario').val(),
             'nombreRol': $(form + ' #RolId option:selected').text().toUpperCase(),
+            'NombreEstatus': $(form + ' #EstatusId option:selected').text().toUpperCase(),
             'id': id
         });
     },

@@ -337,129 +337,121 @@ namespace Saptra.Web.Controllers
             {
                 try
                 {
-                    var jRegion = (from j in db.mCoordinacionRegionZonaUsuario
-                                   where j.CoordinacionRegionId == RegionId
-                                   select j).ToList();
-
-                    var usarioexisteReg = (from j in db.mCoordinacionRegionZonaUsuario
-                                                         where j.UsuarioJefeRegionId == pobjModelo.UsuarioId
-                                                         select j).ToList();
-
-                    var jZona = (from z in db.mCoordinacionZonaUsuario
-                                 where z.CoordinacionZonaId == ZonaId
-                                 && z.JefeCoordinacionZona == true
-                                 select z).ToList();
-
-
-                    var usarioexisteZona= (from j in db.mCoordinacionZonaUsuario
-                                           where j.UsuarioId == pobjModelo.UsuarioId
-                                           select j).ToList();
-
-                    var result = from u in db.mUsuarios where (u.UsuarioId == pobjModelo.UsuarioId) select u;
-                    string contrasenaRec;
-                    if (result.First().PasswordUsuario != pobjModelo.PasswordUsuario)
+                    if (pobjModelo.EstatusId == 6)
                     {
-                        contrasenaRec = EncriptarController.GetMD5(pobjModelo.PasswordUsuario);
+
+                        var result = from u in db.mUsuarios where (u.UsuarioId == pobjModelo.UsuarioId) select u;
+                        var dbUsu = result.First();
+                        dbUsu.EstatusId = pobjModelo.EstatusId;
+                        db.SaveChanges();
+
+                        return Json(new { Success = true, id = pobjModelo.UsuarioId, Message = "Se actualizó correctamente el usuario " });
                     }
                     else
                     {
-                        contrasenaRec = result.First().PasswordUsuario;
-                    }
+                        var jRegion = (from j in db.mCoordinacionRegionZonaUsuario
+                                       where j.CoordinacionRegionId == RegionId
+                                       select j).ToList();
 
-                    if (result.Count() != 0)
-                    {
+                        var usarioexisteReg = (from j in db.mCoordinacionRegionZonaUsuario
+                                               where j.UsuarioJefeRegionId == pobjModelo.UsuarioId
+                                               select j).ToList();
 
-                        var dbUsu = result.First();
-                        if (dbUsu.EmailUsuario != pobjModelo.EmailUsuario)
+                        var jZona = (from z in db.mCoordinacionZonaUsuario
+                                     where z.CoordinacionZonaId == ZonaId
+                                     && z.JefeCoordinacionZona == true
+                                     select z).ToList();
+
+                        var jZonaActual = (from z in db.mCoordinacionZonaUsuario
+                                           where z.UsuarioId == pobjModelo.UsuarioId
+                                           && z.JefeCoordinacionZona == true
+                                           select z).ToList();
+
+                        if (jZonaActual.Count() != 0)
                         {
-                            if (correoExistente(pobjModelo.EmailUsuario))
-                                return Json(new { Success = false, Message = "El correo electrónico del usuario ya está en uso" });                          
+                            var czona = jZonaActual.First();
+
+                            var notificaciones = (from z in db.mNotificaciones
+                                                  where z.CoordinacionZonaUsuarioId == czona.CordinacionZonaUsuarioId
+                                                  select z).ToList();
+                            db.mNotificaciones.RemoveRange(notificaciones);
+                            db.SaveChanges();
+
+                            db.mCoordinacionZonaUsuario.RemoveRange(jZonaActual);
+                            db.SaveChanges();
+
                         }
 
-                        if (dbUsu.LoginUsuario != pobjModelo.LoginUsuario)
+                        var usarioexisteZona = (from j in db.mCoordinacionZonaUsuario
+                                                where j.UsuarioId == pobjModelo.UsuarioId
+                                                select j).ToList();
+
+                        var result = from u in db.mUsuarios where (u.UsuarioId == pobjModelo.UsuarioId) select u;
+                        string contrasenaRec;
+                        if (result.First().PasswordUsuario != pobjModelo.PasswordUsuario)
                         {
-                            if (loginExistente(pobjModelo.LoginUsuario))
-                                return Json(new { Success = false, Message = "El login del usuario ya está en uso." });
+                            contrasenaRec = EncriptarController.GetMD5(pobjModelo.PasswordUsuario);
+                        }
+                        else
+                        {
+                            contrasenaRec = result.First().PasswordUsuario;
                         }
 
-                        if (dbUsu.RFCUsuario != pobjModelo.RFCUsuario)
+                        if (result.Count() != 0)
                         {
-                            if (RFCExistente(pobjModelo.RFCUsuario))
-                                return Json(new { Success = false, Message = "El RFC ya esta registrado con otro usuario." });
-                        }
-              
 
-                        dbUsu.NombresUsuario = pobjModelo.NombresUsuario;
-                        dbUsu.ApellidosUsuario = pobjModelo.ApellidosUsuario;
-                        dbUsu.LoginUsuario = pobjModelo.LoginUsuario;
-                        dbUsu.PasswordUsuario = contrasenaRec;
-                        dbUsu.EmailUsuario = pobjModelo.EmailUsuario;
-                        dbUsu.RFCUsuario = pobjModelo.RFCUsuario;
-                        dbUsu.RolId = pobjModelo.RolId;
-                        dbUsu.NumeroEmpleado = pobjModelo.NumeroEmpleado;
-                        var fig = (pobjModelo.RolId == 2 ? 1 : (pobjModelo.RolId == 4 ? 2 : (pobjModelo.RolId == 5 ? 3 : 0)));
-                        if (fig != 0)
-                        {
-                            dbUsu.TipoFiguraId = fig;
-                        }
-                        if (pobjModelo.ImagenUsuario != null)
-                        {
-                            dbUsu.ImagenUsuario = pobjModelo.ImagenUsuario;
-                        }
-                        
-                        dbUsu.EstatusId = pobjModelo.EstatusId;
-
-
-                        db.SaveChanges();
-
-                        if (jZona.Count() == 0 && pobjModelo.RolId == 3)
-                        {
-                            if (jZona.Count == 0)
+                            var dbUsu = result.First();
+                            if (dbUsu.EmailUsuario != pobjModelo.EmailUsuario)
                             {
-                                mCoordinacionZonaUsuario objCoordinacionZona = new mCoordinacionZonaUsuario();
-
-                                objCoordinacionZona.UsuarioId = pobjModelo.UsuarioId;
-                                objCoordinacionZona.CoordinacionZonaId = ZonaId;
-                                objCoordinacionZona.JefeCoordinacionZona = true;
-                                objCoordinacionZona.UsuarioCreacionId = idUsuario;
-                                objCoordinacionZona.FechaCreacion = DateTime.Now;
-                                db.mCoordinacionZonaUsuario.Add(objCoordinacionZona);
-                                db.SaveChanges();
+                                if (correoExistente(pobjModelo.EmailUsuario))
+                                    return Json(new { Success = false, Message = "El correo electrónico del usuario ya está en uso" });
                             }
-                            else
+
+                            if (dbUsu.LoginUsuario != pobjModelo.LoginUsuario)
                             {
-                                var col = db.mCoordinacionZonaUsuario.Where(t => t.UsuarioId == pobjModelo.UsuarioId);
-                                db.mCoordinacionZonaUsuario.RemoveRange(col);
-                                db.SaveChanges();
-
-                                mCoordinacionZonaUsuario objCoordinacionZona = new mCoordinacionZonaUsuario();
-
-                                objCoordinacionZona.UsuarioId = pobjModelo.UsuarioId;
-                                objCoordinacionZona.CoordinacionZonaId = ZonaId;
-                                objCoordinacionZona.JefeCoordinacionZona = true;
-                                objCoordinacionZona.UsuarioCreacionId = idUsuario;
-                                objCoordinacionZona.FechaCreacion = DateTime.Now;
-                                db.mCoordinacionZonaUsuario.Add(objCoordinacionZona);
-                                db.SaveChanges();
-
-                               
+                                if (loginExistente(pobjModelo.LoginUsuario))
+                                    return Json(new { Success = false, Message = "El login del usuario ya está en uso." });
                             }
-                        }
-                        else if (pobjModelo.RolId != 6)
-                        {
 
-                            if (pobjModelo.RolId == 2 || pobjModelo.RolId == 4 || pobjModelo.RolId == 5)
+                            if (dbUsu.RFCUsuario != pobjModelo.RFCUsuario)
                             {
-                                var usuarioZona = (from j in db.mCoordinacionZonaUsuario
-                                                        where j.UsuarioId == pobjModelo.UsuarioId
-                                                        select j).ToList();
-                                if(usuarioZona.Count() == 0)
+                                if (RFCExistente(pobjModelo.RFCUsuario))
+                                    return Json(new { Success = false, Message = "El RFC ya esta registrado con otro usuario." });
+                            }
+
+
+                            dbUsu.NombresUsuario = pobjModelo.NombresUsuario;
+                            dbUsu.ApellidosUsuario = pobjModelo.ApellidosUsuario;
+                            dbUsu.LoginUsuario = pobjModelo.LoginUsuario;
+                            dbUsu.PasswordUsuario = contrasenaRec;
+                            dbUsu.EmailUsuario = pobjModelo.EmailUsuario;
+                            dbUsu.RFCUsuario = pobjModelo.RFCUsuario;
+                            dbUsu.RolId = pobjModelo.RolId;
+                            dbUsu.NumeroEmpleado = pobjModelo.NumeroEmpleado;
+                            var fig = (pobjModelo.RolId == 2 ? 1 : (pobjModelo.RolId == 4 ? 2 : (pobjModelo.RolId == 5 ? 3 : 0)));
+                            if (fig != 0)
+                            {
+                                dbUsu.TipoFiguraId = fig;
+                            }
+                            if (pobjModelo.ImagenUsuario != null)
+                            {
+                                dbUsu.ImagenUsuario = pobjModelo.ImagenUsuario;
+                            }
+
+                            dbUsu.EstatusId = pobjModelo.EstatusId;
+
+
+                            db.SaveChanges();
+
+                            if (jZona.Count() == 0 && pobjModelo.RolId == 3)
+                            {
+                                if (jZona.Count == 0)
                                 {
                                     mCoordinacionZonaUsuario objCoordinacionZona = new mCoordinacionZonaUsuario();
 
                                     objCoordinacionZona.UsuarioId = pobjModelo.UsuarioId;
                                     objCoordinacionZona.CoordinacionZonaId = ZonaId;
-                                    objCoordinacionZona.JefeCoordinacionZona = false;
+                                    objCoordinacionZona.JefeCoordinacionZona = true;
                                     objCoordinacionZona.UsuarioCreacionId = idUsuario;
                                     objCoordinacionZona.FechaCreacion = DateTime.Now;
                                     db.mCoordinacionZonaUsuario.Add(objCoordinacionZona);
@@ -467,100 +459,140 @@ namespace Saptra.Web.Controllers
                                 }
                                 else
                                 {
-                                    //var col = db.mCoordinacionZonaUsuario.Where(t => t.UsuarioId == pobjModelo.UsuarioId);
-                                    //db.mCoordinacionZonaUsuario.RemoveRange(col);
-                                    //db.SaveChanges();
-
-                                    //mCoordinacionZonaUsuario objCoordinacionZona = new mCoordinacionZonaUsuario();
-
-                                    //objCoordinacionZona.UsuarioId = pobjModelo.UsuarioId;
-                                    //objCoordinacionZona.CoordinacionZonaId = ZonaId;
-                                    //objCoordinacionZona.JefeCoordinacionZona = false;
-                                    //objCoordinacionZona.UsuarioCreacionId = idUsuario;
-                                    //objCoordinacionZona.FechaCreacion = DateTime.Now;
-                                    //db.mCoordinacionZonaUsuario.Add(objCoordinacionZona);
-                                    //db.SaveChanges();
-                                    var dbTemp = usarioexisteZona.First();
-                                    dbTemp.CoordinacionZonaId = ZonaId;
-                                    db.SaveChanges();
-                                }
-
-                                
-                            }
-                            else if (pobjModelo.RolId == 3)
-                            {
-                                var temp = jZona.First();
-                                temp.UsuarioId = pobjModelo.UsuarioId;
-                                db.SaveChanges();
-                            }
-                            else
-                            {
-                                var usuarioZona = (from j in db.mCoordinacionZonaUsuario
-                                                   where j.UsuarioId == pobjModelo.UsuarioId
-                                                   select j).ToList();
-                                if (usuarioZona.Count() != 0)
-                                {
                                     var col = db.mCoordinacionZonaUsuario.Where(t => t.UsuarioId == pobjModelo.UsuarioId);
                                     db.mCoordinacionZonaUsuario.RemoveRange(col);
                                     db.SaveChanges();
-                                }
 
-                                if (ZonaId != 0)
-                                {
                                     mCoordinacionZonaUsuario objCoordinacionZona = new mCoordinacionZonaUsuario();
 
                                     objCoordinacionZona.UsuarioId = pobjModelo.UsuarioId;
                                     objCoordinacionZona.CoordinacionZonaId = ZonaId;
-                                    objCoordinacionZona.JefeCoordinacionZona = false;
+                                    objCoordinacionZona.JefeCoordinacionZona = true;
                                     objCoordinacionZona.UsuarioCreacionId = idUsuario;
                                     objCoordinacionZona.FechaCreacion = DateTime.Now;
                                     db.mCoordinacionZonaUsuario.Add(objCoordinacionZona);
                                     db.SaveChanges();
+
+
                                 }
                             }
-                        }
-
-                        if (jRegion.Count() == 0 && pobjModelo.RolId == 6)
-                        {
-                            if (usarioexisteReg.Count() == 0)
+                            else if (pobjModelo.RolId != 6)
                             {
-                                mCoordinacionRegionZonaUsuario objCoordinacionZonaRegion = new mCoordinacionRegionZonaUsuario();
 
-                                objCoordinacionZonaRegion.UsuarioJefeRegionId = pobjModelo.UsuarioId;
-                                //objCoordinacionZonaRegion.CoordinacionZonaId = ZonaId;
-                                objCoordinacionZonaRegion.CoordinacionRegionId = RegionId;
-                                db.mCoordinacionRegionZonaUsuario.Add(objCoordinacionZonaRegion);
-                                db.SaveChanges();
+                                if (pobjModelo.RolId == 2 || pobjModelo.RolId == 4 || pobjModelo.RolId == 5)
+                                {
+                                    var usuarioZona = (from j in db.mCoordinacionZonaUsuario
+                                                       where j.UsuarioId == pobjModelo.UsuarioId
+                                                       select j).ToList();
+                                    if (usuarioZona.Count() == 0)
+                                    {
+                                        mCoordinacionZonaUsuario objCoordinacionZona = new mCoordinacionZonaUsuario();
+
+                                        objCoordinacionZona.UsuarioId = pobjModelo.UsuarioId;
+                                        objCoordinacionZona.CoordinacionZonaId = ZonaId;
+                                        objCoordinacionZona.JefeCoordinacionZona = false;
+                                        objCoordinacionZona.UsuarioCreacionId = idUsuario;
+                                        objCoordinacionZona.FechaCreacion = DateTime.Now;
+                                        db.mCoordinacionZonaUsuario.Add(objCoordinacionZona);
+                                        db.SaveChanges();
+                                    }
+                                    else
+                                    {
+                                        //var col = db.mCoordinacionZonaUsuario.Where(t => t.UsuarioId == pobjModelo.UsuarioId);
+                                        //db.mCoordinacionZonaUsuario.RemoveRange(col);
+                                        //db.SaveChanges();
+
+                                        //mCoordinacionZonaUsuario objCoordinacionZona = new mCoordinacionZonaUsuario();
+
+                                        //objCoordinacionZona.UsuarioId = pobjModelo.UsuarioId;
+                                        //objCoordinacionZona.CoordinacionZonaId = ZonaId;
+                                        //objCoordinacionZona.JefeCoordinacionZona = false;
+                                        //objCoordinacionZona.UsuarioCreacionId = idUsuario;
+                                        //objCoordinacionZona.FechaCreacion = DateTime.Now;
+                                        //db.mCoordinacionZonaUsuario.Add(objCoordinacionZona);
+                                        //db.SaveChanges();
+                                        var dbTemp = usarioexisteZona.First();
+                                        dbTemp.CoordinacionZonaId = ZonaId;
+                                        db.SaveChanges();
+                                    }
+
+
+                                }
+                                else if (pobjModelo.RolId == 3)
+                                {
+                                    var temp = jZona.First();
+                                    temp.UsuarioId = pobjModelo.UsuarioId;
+                                    db.SaveChanges();
+                                }
+                                else
+                                {
+                                    var usuarioZona = (from j in db.mCoordinacionZonaUsuario
+                                                       where j.UsuarioId == pobjModelo.UsuarioId
+                                                       select j).ToList();
+                                    if (usuarioZona.Count() != 0)
+                                    {
+                                        var col = db.mCoordinacionZonaUsuario.Where(t => t.UsuarioId == pobjModelo.UsuarioId);
+                                        db.mCoordinacionZonaUsuario.RemoveRange(col);
+                                        db.SaveChanges();
+                                    }
+
+                                    if (ZonaId != 0)
+                                    {
+                                        mCoordinacionZonaUsuario objCoordinacionZona = new mCoordinacionZonaUsuario();
+
+                                        objCoordinacionZona.UsuarioId = pobjModelo.UsuarioId;
+                                        objCoordinacionZona.CoordinacionZonaId = ZonaId;
+                                        objCoordinacionZona.JefeCoordinacionZona = false;
+                                        objCoordinacionZona.UsuarioCreacionId = idUsuario;
+                                        objCoordinacionZona.FechaCreacion = DateTime.Now;
+                                        db.mCoordinacionZonaUsuario.Add(objCoordinacionZona);
+                                        db.SaveChanges();
+                                    }
+                                }
+                            }
+
+                            if (jRegion.Count() == 0 && pobjModelo.RolId == 6)
+                            {
+                                if (usarioexisteReg.Count() == 0)
+                                {
+                                    mCoordinacionRegionZonaUsuario objCoordinacionZonaRegion = new mCoordinacionRegionZonaUsuario();
+
+                                    objCoordinacionZonaRegion.UsuarioJefeRegionId = pobjModelo.UsuarioId;
+                                    //objCoordinacionZonaRegion.CoordinacionZonaId = ZonaId;
+                                    objCoordinacionZonaRegion.CoordinacionRegionId = RegionId;
+                                    db.mCoordinacionRegionZonaUsuario.Add(objCoordinacionZonaRegion);
+                                    db.SaveChanges();
+                                }
+                                else
+                                {
+                                    var col = db.mCoordinacionRegionZonaUsuario.Where(t => t.UsuarioJefeRegionId == pobjModelo.UsuarioId);
+                                    db.mCoordinacionRegionZonaUsuario.RemoveRange(col);
+                                    db.SaveChanges();
+
+                                    mCoordinacionRegionZonaUsuario objCoordinacionZonaRegion = new mCoordinacionRegionZonaUsuario();
+
+                                    objCoordinacionZonaRegion.UsuarioJefeRegionId = pobjModelo.UsuarioId;
+                                    //objCoordinacionZonaRegion.CoordinacionZonaId = ZonaId;
+                                    objCoordinacionZonaRegion.CoordinacionRegionId = RegionId;
+                                    db.mCoordinacionRegionZonaUsuario.Add(objCoordinacionZonaRegion);
+                                    db.SaveChanges();
+                                }
                             }
                             else
                             {
-                                var col = db.mCoordinacionRegionZonaUsuario.Where(t => t.UsuarioJefeRegionId == pobjModelo.UsuarioId);
-                                db.mCoordinacionRegionZonaUsuario.RemoveRange(col);
-                                db.SaveChanges();
-
-                                mCoordinacionRegionZonaUsuario objCoordinacionZonaRegion = new mCoordinacionRegionZonaUsuario();
-
-                                objCoordinacionZonaRegion.UsuarioJefeRegionId = pobjModelo.UsuarioId;
-                                //objCoordinacionZonaRegion.CoordinacionZonaId = ZonaId;
-                                objCoordinacionZonaRegion.CoordinacionRegionId = RegionId;
-                                db.mCoordinacionRegionZonaUsuario.Add(objCoordinacionZonaRegion);
-                                db.SaveChanges();
+                                if (pobjModelo.RolId == 6)
+                                {
+                                    var dbjefe = jRegion.First();
+                                    dbjefe.UsuarioJefeRegionId = pobjModelo.UsuarioId;
+                                    db.SaveChanges();
+                                }
                             }
-                        }
-                        else
-                        {
-                            if (pobjModelo.RolId == 6)
-                            {
-                                var dbjefe = jRegion.First();
-                                dbjefe.UsuarioJefeRegionId = pobjModelo.UsuarioId;
-                                db.SaveChanges();
-                            }
-                        }
 
+
+                        }
+                        return Json(new { Success = true, id = pobjModelo.UsuarioId, Message = "Se actualizó correctamente el usuario " });
 
                     }
-                    return Json(new { Success = true, id = pobjModelo.UsuarioId, Message = "Se actualizó correctamente el usuario " });
-
                 }
                 catch (Exception exp)
                 {
