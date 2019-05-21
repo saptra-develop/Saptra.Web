@@ -352,7 +352,12 @@ var PlanSemanal = {
                                             FCH.DespliegaNotificacion('success', 'Actividad ', data.Message, 'glyphicon-ok', 3000);
                                             $("#btnEnvioValidacion_" + PlanSemanalId).prop("disabled", false);
                                         } else {
-                                            FCH.DespliegaErrorDialogo(data.Message);
+                                            if (data.Message == "Actividad duplicada") {
+
+                                            }
+                                            else {
+                                                FCH.DespliegaErrorDialogo(data.Message);
+                                            }
                                         }
                                     }).fail(function () {
                                         FCH.DespliegaErrorDialogo("Error al guardar la información");

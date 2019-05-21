@@ -286,17 +286,34 @@ namespace Sispro.Web.Controllers
             {
                 try
                 {
-                    var tipoAct = db.cTipoActividades.Find(pobjModelo.TipoActividadId);
-                    if (tipoAct.RequiereCheckIn == false)
+                    var validaActividad = (from dp in db.dDetallePlanSemanal
+                                           where dp.PlanSemanalId == pobjModelo.PlanSemanalId
+                                           && dp.TipoActividadId == pobjModelo.TipoActividadId
+                                           && dp.DescripcionActividad == pobjModelo.DescripcionActividad
+                                           && dp.UsuarioCreacionId == pobjModelo.UsuarioCreacionId
+                                           && dp.EstatusId == 11
+                                           && dp.HoraActividad == pobjModelo.HoraActividad
+                                           && dp.HoraFin == pobjModelo.HoraFin
+                                           && dp.FechaActividad == pobjModelo.FechaActividad
+                                           select dp).ToList();
+                    if (validaActividad.Count() == 0)
                     {
-                        pobjModelo.CantidadCheckIn = 0;
-                    }
-                    pobjModelo.FechaCreacion = DateTime.Now;
-                    pobjModelo.EstatusId = 11;
-                    db.dDetallePlanSemanal.Add(pobjModelo);
-                    db.SaveChanges();
+                        var tipoAct = db.cTipoActividades.Find(pobjModelo.TipoActividadId);
+                        if (tipoAct.RequiereCheckIn == false)
+                        {
+                            pobjModelo.CantidadCheckIn = 0;
+                        }
+                        pobjModelo.FechaCreacion = DateTime.Now;
+                        pobjModelo.EstatusId = 11;
+                        db.dDetallePlanSemanal.Add(pobjModelo);
+                        db.SaveChanges();
 
-                    return Json(new { Success = true, id = pobjModelo.DetallePlanId, Message = "registrada correctamente " });
+                        return Json(new { Success = true, id = pobjModelo.DetallePlanId, Message = "registrada correctamente " });
+                    }
+                    else
+                    {
+                        return Json(new { Success = false, Message = "Actividad duplicada" });
+                    }
                 }
                 catch (Exception exp)
                 {
