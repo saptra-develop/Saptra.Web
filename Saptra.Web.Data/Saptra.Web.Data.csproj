@@ -279,10 +279,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <EntityDeploy Include="dbSipae.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>dbSipae.Designer.cs</LastGenOutput>
-    </EntityDeploy>
     <EntityDeploy Include="db.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>db.Designer.cs</LastGenOutput>
@@ -290,6 +286,10 @@
     <None Include="db.edmx.diagram">
       <DependentUpon>db.edmx</DependentUpon>
     </None>
+    <EntityDeploy Include="dbSipae.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>dbSipae.Designer.cs</LastGenOutput>
+    </EntityDeploy>
     <None Include="dbSipae.edmx.diagram">
       <DependentUpon>dbSipae.edmx</DependentUpon>
     </None>

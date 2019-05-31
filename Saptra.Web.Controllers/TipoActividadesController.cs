@@ -164,16 +164,17 @@ namespace Sispro.Web.Controllers
             }
         }
 
-        public JsonResult CargarVehiculosSipae()
+        public JsonResult CargarVehiculosSipae(int idUsuario)
         {
             try
             {
+                var usuarioZona = (from z in db.mCoordinacionZonaUsuario where z.UsuarioId == idUsuario select z).First();
                 var result = (from v in dbSipae.Vehiculos
-                              where v.Estatus == true
+                              where v.CoordinacionZonaId == usuarioZona.cCoordinacionesZona.CZonaSauId
                               select new
                               {
                                   id = v.VehiculoId,
-                                  nombre = v.Marca + " " + v.Modelo + " " + v.Anio + " " + v.Color + " (" + v.Matricula + ")"
+                                  nombre = v.Modelo + " " + v.Anio + " " + v.Color + " (" + v.Matricula + ")"
                               })
                           .OrderBy(cat => cat.id)
                           .ToList();

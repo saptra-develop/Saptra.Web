@@ -705,7 +705,7 @@ var Usuario = {
                     colModel: [//{ title: 'Id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
                                 { title: 'Usuario', name: 'nombreCompleto', filter: true, filterType: 'input', index: true },
                                 { title: 'Correo', name: 'email', filter: true, filterType: 'input', index: true },
-                                { title: 'Rol', name: 'nombreRol', filter: true, filterType: 'input', index: true },
+                                { title: 'Rol', name: 'nombreRol', filter: true, index: true },
                                 { title: 'Estatus', name: 'NombreEstatus', filter: true, filterType: 'input', index: true }]
 
                 });

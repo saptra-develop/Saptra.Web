@@ -16,12 +16,16 @@ namespace Saptra.Web.Data
     {
         public int VehiculoId { get; set; }
         public string Matricula { get; set; }
-        public string Marca { get; set; }
         public string Modelo { get; set; }
         public int Anio { get; set; }
         public string Color { get; set; }
-        public byte EstadoVehiculoId { get; set; }
-        public string CriterioAsignacion { get; set; }
-        public Nullable<bool> Estatus { get; set; }
+        public Nullable<byte> EstatusVehiculoId { get; set; }
+        public Nullable<byte> VehiculoMarcaId { get; set; }
+        public Nullable<byte> CoordinacionZonaId { get; set; }
+        public Nullable<System.DateTime> FechaCreacion { get; set; }
+        public Nullable<System.DateTime> FechaActualizacion { get; set; }
+        public Nullable<int> UsuarioModificoId { get; set; }
+        public Nullable<int> UsuarioCreoId { get; set; }
+        public Nullable<int> UsuarioId { get; set; }
     }
 }

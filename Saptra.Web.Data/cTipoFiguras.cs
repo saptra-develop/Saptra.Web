@@ -25,6 +25,7 @@ namespace Saptra.Web.Data
         public int UsuarioCreacionId { get; set; }
         public int EstatusId { get; set; }
         public string DescripcionTipoFigura { get; set; }
+        public Nullable<int> IdentificadorSauId { get; set; }
     
         public virtual cEstatus cEstatus { get; set; }
         public virtual mUsuarios mUsuarios { get; set; }

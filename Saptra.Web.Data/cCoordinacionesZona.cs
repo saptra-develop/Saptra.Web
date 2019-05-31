@@ -26,6 +26,7 @@ namespace Saptra.Web.Data
         public string DescripcionCoordinacionZona { get; set; }
         public int EstatusId { get; set; }
         public Nullable<int> CoordinacionRegionId { get; set; }
+        public Nullable<int> CZonaSauId { get; set; }
     
         public virtual cCoordinacionesRegion cCoordinacionesRegion { get; set; }
         public virtual cEstatus cEstatus { get; set; }

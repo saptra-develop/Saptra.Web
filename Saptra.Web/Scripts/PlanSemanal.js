@@ -626,7 +626,7 @@ var PlanSemanal = {
     },
     CargaVehiculosSipae: function () {
         //if (PlanSemanal.colVehiculos.length < 1) {
-        var url = contextPath + "TipoActividades/CargarVehiculosSipae";
+        var url = contextPath + "TipoActividades/CargarVehiculosSipae?idUsuario=" + localStorage.idUser;
         $.getJSON(url, function (data) {
             PlanSemanal.colVehiculos = data;
             PlanSemanal.CargaListaVehiculos();

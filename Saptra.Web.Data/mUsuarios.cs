@@ -53,6 +53,7 @@ namespace Saptra.Web.Data
         public string RFCUsuario { get; set; }
         public Nullable<bool> LoggedUsuario { get; set; }
         public Nullable<int> NumeroEmpleado { get; set; }
+        public Nullable<int> UsuarioSauId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cCoordinacionesRegion> cCoordinacionesRegion { get; set; }

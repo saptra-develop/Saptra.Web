@@ -80,9 +80,9 @@
                                 <div class="container-login100-form-btn m-t-32">
                                     <button type="submit" class="login100-form-btn">Iniciar sesión</button>
                                 </div>
-                                <div style="text-align:center">
+                                @*<div style="text-align:center">
                                     <button class="btn btn-link" style="padding: 5px 10px 0px 0px" type="button" id="btn-olvido-password">¿Has olvidado tu contraseña?</button>
-                                </div>
+                                </div>*@
                             }
                             @using (Html.BeginForm("EnviarEmail", "Autentificacion", FormMethod.Post, new { id = "frmEnviarEmail", @role = "form", @style = "display:none;", onsubmit = "return false", @class = "login100-form validate-form p-b-33 p-t-5" }))
                             {
@@ -117,7 +117,7 @@
                 <div style="position: absolute; float:right; right: 30px; bottom: 73px; z-index:11; background-color: rgba(0, 255, 0, 0.3);">
                     <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nueva versión: 1.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong>
                 </div>
-                <div style="position: absolute; float:right; right: 30px; bottom: 93px; z-index:10;"><a href="http://200.33.114.167/saptra/saptraMovil/app-debug.apk" target="_blank"><img src="~/Content/images/saptraApp.png" width="170" /></a></div>
+                <div style="position: absolute; float:right; right: 30px; bottom: 93px; z-index:10;"><a href="http://200.33.114.167/saptra_prd/saptraMovil/app-debug.apk" target="_blank"><img src="~/Content/images/saptraApp.png" width="170" /></a></div>
             </div>
 
         </div>
