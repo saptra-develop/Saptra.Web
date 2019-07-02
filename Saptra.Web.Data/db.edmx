@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SAPTRAModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Inaeba_GeorrefenciaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="cCoordinacionesRegion">
           <Key>
             <PropertyRef Name="CoordinacionRegionId" />
@@ -278,6 +278,14 @@
           <Property Name="Puerto" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="Host" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="TipoCorreoId" Type="int" />
+        </EntityType>
+        <EntityType Name="mLogApp">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FechaIngreso" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="mMenuGrupo">
           <Key>
@@ -1399,6 +1407,7 @@
                 <Property Name="Usuario" Type="varchar" MaxLength="255" />
                 <Property Name="TieneDetalle" Type="int" />
                 <Property Name="EstatusId" Type="int" />
+                <Property Name="RevisaPlanAnterior" Type="int" />
               </RowType>
             </CollectionType>
           </ReturnType>
@@ -1766,7 +1775,11 @@
             </CollectionType>
           </ReturnType>
         </Function>
-        <EntityContainer Name="SAPTRAModelStoreContainer">
+        <Function Name="udf_RevisaPlanAnterior" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
+          <Parameter Name="p_UsuarioId" Type="int" Mode="In" />
+          <Parameter Name="p_PeriodoId" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="Inaeba_GeorrefenciaModelStoreContainer">
           <EntitySet Name="cCoordinacionesRegion" EntityType="Self.cCoordinacionesRegion" Schema="CATALOGO" store:Type="Tables" />
           <EntitySet Name="cCoordinacionesZona" EntityType="Self.cCoordinacionesZona" Schema="CATALOGO" store:Type="Tables" />
           <EntitySet Name="cEstatus" EntityType="Self.cEstatus" Schema="CATALOGO" store:Type="Tables" />
@@ -1789,6 +1802,7 @@
           <EntitySet Name="dModulos" EntityType="Self.dModulos" Schema="SEGURIDAD" store:Type="Tables" />
           <EntitySet Name="mBitacora" EntityType="Self.mBitacora" Schema="SEGURIDAD" store:Type="Tables" />
           <EntitySet Name="mCorreo" EntityType="Self.mCorreo" Schema="SEGURIDAD" store:Type="Tables" />
+          <EntitySet Name="mLogApp" EntityType="Self.mLogApp" Schema="SEGURIDAD" store:Type="Tables" />
           <EntitySet Name="mMenuGrupo" EntityType="Self.mMenuGrupo" Schema="SEGURIDAD" store:Type="Tables" />
           <EntitySet Name="mPermisos" EntityType="Self.mPermisos" Schema="SEGURIDAD" store:Type="Tables" />
           <EntitySet Name="mRoles" EntityType="Self.mRoles" Schema="SEGURIDAD" store:Type="Tables" />
@@ -2029,7 +2043,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="SAPTRAModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="Inaeba_GeorrefenciaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <ComplexType Name="Split_Result">
           <Property Name="Value" Type="Int64" />
         </ComplexType>
@@ -2231,6 +2245,7 @@
           <Property Name="Usuario" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="TieneDetalle" Type="Int32" />
           <Property Name="EstatusId" Type="Int32" />
+          <Property Name="RevisaPlanAnterior" Type="Int32" />
         </ComplexType>
         <ComplexType Name="udf_PreregistrosIncorporadosBaseList_Result">
           <Property Name="PlnSemanalId" Type="Int32" />
@@ -2793,6 +2808,14 @@
           <Property Name="TipoCorreoId" Type="Int32" />
           <NavigationProperty Name="cEstatus" Relationship="Self.FK_Correo_Estatus" FromRole="mCorreo" ToRole="cEstatus" />
           <NavigationProperty Name="cTipoCorreo" Relationship="Self.FK_Correo_TipoCorreo" FromRole="mCorreo" ToRole="cTipoCorreo" />
+        </EntityType>
+        <EntityType Name="mLogApp">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaIngreso" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="mMenuGrupo">
           <Key>
@@ -3630,6 +3653,7 @@
           <EntitySet Name="dModulos" EntityType="Self.dModulos" />
           <EntitySet Name="mBitacora" EntityType="Self.mBitacora" />
           <EntitySet Name="mCorreo" EntityType="Self.mCorreo" />
+          <EntitySet Name="mLogApp" EntityType="Self.mLogApp" />
           <EntitySet Name="mMenuGrupo" EntityType="Self.mMenuGrupo" />
           <EntitySet Name="mPermisos" EntityType="Self.mPermisos" />
           <EntitySet Name="mRoles" EntityType="Self.mRoles" />
@@ -3865,173 +3889,173 @@
             <End Role="mUsuarios" EntitySet="mUsuarios" />
             <End Role="mSolicitudesVehiculo" EntitySet="mSolicitudesVehiculo" />
           </AssociationSet>
-          <FunctionImport Name="Split" IsComposable="true" ReturnType="Collection(SAPTRAModel.Split_Result)">
+          <FunctionImport Name="Split" IsComposable="true" ReturnType="Collection(Inaeba_GeorrefenciaModel.Split_Result)">
             <Parameter Name="strString" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="udf_CertificadosInaebaBaseList" IsComposable="true" ReturnType="Collection(SAPTRAModel.udf_CertificadosInaebaBaseList_Result)">
+          <FunctionImport Name="udf_CertificadosInaebaBaseList" IsComposable="true" ReturnType="Collection(Inaeba_GeorrefenciaModel.udf_CertificadosInaebaBaseList_Result)">
             <Parameter Name="p_idPeriodo" Mode="In" Type="String" />
             <Parameter Name="p_Region" Mode="In" Type="String" />
             <Parameter Name="p_Zona" Mode="In" Type="String" />
             <Parameter Name="p_TipoActividad" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="udf_CertificadosInaebaFiguraEducandoList" IsComposable="true" ReturnType="Collection(SAPTRAModel.udf_CertificadosInaebaFiguraEducandoList_Result)">
+          <FunctionImport Name="udf_CertificadosInaebaFiguraEducandoList" IsComposable="true" ReturnType="Collection(Inaeba_GeorrefenciaModel.udf_CertificadosInaebaFiguraEducandoList_Result)">
             <Parameter Name="p_idPeriodo" Mode="In" Type="String" />
             <Parameter Name="p_Region" Mode="In" Type="String" />
             <Parameter Name="p_Zona" Mode="In" Type="String" />
             <Parameter Name="p_TipoActividad" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="udf_CertificadosInaebaRegionList" IsComposable="true" ReturnType="Collection(SAPTRAModel.udf_CertificadosInaebaRegionList_Result)">
+          <FunctionImport Name="udf_CertificadosInaebaRegionList" IsComposable="true" ReturnType="Collection(Inaeba_GeorrefenciaModel.udf_CertificadosInaebaRegionList_Result)">
             <Parameter Name="p_idPeriodo" Mode="In" Type="String" />
             <Parameter Name="p_Region" Mode="In" Type="String" />
             <Parameter Name="p_Zona" Mode="In" Type="String" />
             <Parameter Name="p_TipoActividad" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="udf_CertificadosInaebaZonaFiguraList" IsComposable="true" ReturnType="Collection(SAPTRAModel.udf_CertificadosInaebaZonaFiguraList_Result)">
+          <FunctionImport Name="udf_CertificadosInaebaZonaFiguraList" IsComposable="true" ReturnType="Collection(Inaeba_GeorrefenciaModel.udf_CertificadosInaebaZonaFiguraList_Result)">
             <Parameter Name="p_idPeriodo" Mode="In" Type="String" />
             <Parameter Name="p_Region" Mode="In" Type="String" />
             <Parameter Name="p_Zona" Mode="In" Type="String" />
             <Parameter Name="p_TipoActividad" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="udf_CertificadosInaebaZonaList" IsComposable="true" ReturnType="Collection(SAPTRAModel.udf_CertificadosInaebaZonaList_Result)">
+          <FunctionImport Name="udf_CertificadosInaebaZonaList" IsComposable="true" ReturnType="Collection(Inaeba_GeorrefenciaModel.udf_CertificadosInaebaZonaList_Result)">
             <Parameter Name="p_idPeriodo" Mode="In" Type="String" />
             <Parameter Name="p_Region" Mode="In" Type="String" />
             <Parameter Name="p_Zona" Mode="In" Type="String" />
             <Parameter Name="p_TipoActividad" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="udf_IncumplimientoActividadesPeriodoList" IsComposable="true" ReturnType="Collection(SAPTRAModel.udf_IncumplimientoActividadesPeriodoList_Result)">
+          <FunctionImport Name="udf_IncumplimientoActividadesPeriodoList" IsComposable="true" ReturnType="Collection(Inaeba_GeorrefenciaModel.udf_IncumplimientoActividadesPeriodoList_Result)">
             <Parameter Name="p_idPeriodo" Mode="In" Type="String" />
             <Parameter Name="p_Region" Mode="In" Type="String" />
             <Parameter Name="p_Zona" Mode="In" Type="String" />
             <Parameter Name="p_TipoActividad" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="udf_IncumplimientoActividadesPeriodoRegionList" IsComposable="true" ReturnType="Collection(SAPTRAModel.udf_IncumplimientoActividadesPeriodoRegionList_Result)">
+          <FunctionImport Name="udf_IncumplimientoActividadesPeriodoRegionList" IsComposable="true" ReturnType="Collection(Inaeba_GeorrefenciaModel.udf_IncumplimientoActividadesPeriodoRegionList_Result)">
             <Parameter Name="p_idPeriodo" Mode="In" Type="String" />
             <Parameter Name="p_Region" Mode="In" Type="String" />
             <Parameter Name="p_Zona" Mode="In" Type="String" />
             <Parameter Name="p_TipoActividad" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="udf_IncumplimientoActividadesPeriodoRegionZonaList" IsComposable="true" ReturnType="Collection(SAPTRAModel.udf_IncumplimientoActividadesPeriodoRegionZonaList_Result)">
+          <FunctionImport Name="udf_IncumplimientoActividadesPeriodoRegionZonaList" IsComposable="true" ReturnType="Collection(Inaeba_GeorrefenciaModel.udf_IncumplimientoActividadesPeriodoRegionZonaList_Result)">
             <Parameter Name="p_idPeriodo" Mode="In" Type="String" />
             <Parameter Name="p_Region" Mode="In" Type="String" />
             <Parameter Name="p_Zona" Mode="In" Type="String" />
             <Parameter Name="p_TipoActividad" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="udf_IncumplimientoActividadesPeriodoZonaActividadList" IsComposable="true" ReturnType="Collection(SAPTRAModel.udf_IncumplimientoActividadesPeriodoZonaActividadList_Result)">
+          <FunctionImport Name="udf_IncumplimientoActividadesPeriodoZonaActividadList" IsComposable="true" ReturnType="Collection(Inaeba_GeorrefenciaModel.udf_IncumplimientoActividadesPeriodoZonaActividadList_Result)">
             <Parameter Name="p_idPeriodo" Mode="In" Type="String" />
             <Parameter Name="p_Region" Mode="In" Type="String" />
             <Parameter Name="p_Zona" Mode="In" Type="String" />
             <Parameter Name="p_TipoActividad" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="udf_ModulosSeguridadxRol" IsComposable="true" ReturnType="Collection(SAPTRAModel.udf_ModulosSeguridadxRol_Result)">
+          <FunctionImport Name="udf_ModulosSeguridadxRol" IsComposable="true" ReturnType="Collection(Inaeba_GeorrefenciaModel.udf_ModulosSeguridadxRol_Result)">
             <Parameter Name="Rol" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="udf_PlanSemanalAprobarList" IsComposable="true" ReturnType="Collection(SAPTRAModel.udf_PlanSemanalAprobarList_Result)">
+          <FunctionImport Name="udf_PlanSemanalAprobarList" IsComposable="true" ReturnType="Collection(Inaeba_GeorrefenciaModel.udf_PlanSemanalAprobarList_Result)">
             <Parameter Name="p_UsuarioId" Mode="In" Type="Int32" />
             <Parameter Name="p_Periodos" Mode="In" Type="String" />
             <Parameter Name="p_TiposFigura" Mode="In" Type="String" />
             <Parameter Name="p_NombresFigura" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="udf_PlanSemanalIncidenciasList" IsComposable="true" ReturnType="Collection(SAPTRAModel.udf_PlanSemanalIncidenciasList_Result)">
+          <FunctionImport Name="udf_PlanSemanalIncidenciasList" IsComposable="true" ReturnType="Collection(Inaeba_GeorrefenciaModel.udf_PlanSemanalIncidenciasList_Result)">
             <Parameter Name="p_UsuarioId" Mode="In" Type="Int32" />
             <Parameter Name="p_Periodos" Mode="In" Type="String" />
             <Parameter Name="p_TiposFigura" Mode="In" Type="String" />
             <Parameter Name="p_NombresFigura" Mode="In" Type="String" />
             <Parameter Name="p_TipoActvidades" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="udf_PlanSemanalList" IsComposable="true" ReturnType="Collection(SAPTRAModel.udf_PlanSemanalList_Result)">
+          <FunctionImport Name="udf_PlanSemanalList" IsComposable="true" ReturnType="Collection(Inaeba_GeorrefenciaModel.udf_PlanSemanalList_Result)">
             <Parameter Name="p_UsuarioId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="udf_PlanSemanalValidarList" IsComposable="true" ReturnType="Collection(SAPTRAModel.udf_PlanSemanalValidarList_Result)">
+          <FunctionImport Name="udf_PlanSemanalValidarList" IsComposable="true" ReturnType="Collection(Inaeba_GeorrefenciaModel.udf_PlanSemanalValidarList_Result)">
             <Parameter Name="p_UsuarioId" Mode="In" Type="Int32" />
             <Parameter Name="p_Periodos" Mode="In" Type="String" />
             <Parameter Name="p_TiposFigura" Mode="In" Type="String" />
             <Parameter Name="p_NombresFigura" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="udf_PreregistrosIncorporadosBaseList" IsComposable="true" ReturnType="Collection(SAPTRAModel.udf_PreregistrosIncorporadosBaseList_Result)">
+          <FunctionImport Name="udf_PreregistrosIncorporadosBaseList" IsComposable="true" ReturnType="Collection(Inaeba_GeorrefenciaModel.udf_PreregistrosIncorporadosBaseList_Result)">
             <Parameter Name="p_idPeriodo" Mode="In" Type="String" />
             <Parameter Name="p_Region" Mode="In" Type="String" />
             <Parameter Name="p_Zona" Mode="In" Type="String" />
             <Parameter Name="p_TipoActividad" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="udf_PreregistrosIncorporadosBaseRegionList" IsComposable="true" ReturnType="Collection(SAPTRAModel.udf_PreregistrosIncorporadosBaseRegionList_Result)">
+          <FunctionImport Name="udf_PreregistrosIncorporadosBaseRegionList" IsComposable="true" ReturnType="Collection(Inaeba_GeorrefenciaModel.udf_PreregistrosIncorporadosBaseRegionList_Result)">
             <Parameter Name="p_idPeriodo" Mode="In" Type="String" />
             <Parameter Name="p_Region" Mode="In" Type="String" />
             <Parameter Name="p_Zona" Mode="In" Type="String" />
             <Parameter Name="p_TipoActividad" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="udf_PreregistrosIncorporadosPeriodoFiguraEducandoList" IsComposable="true" ReturnType="Collection(SAPTRAModel.udf_PreregistrosIncorporadosPeriodoFiguraEducandoList_Result)">
+          <FunctionImport Name="udf_PreregistrosIncorporadosPeriodoFiguraEducandoList" IsComposable="true" ReturnType="Collection(Inaeba_GeorrefenciaModel.udf_PreregistrosIncorporadosPeriodoFiguraEducandoList_Result)">
             <Parameter Name="p_idPeriodo" Mode="In" Type="String" />
             <Parameter Name="p_Region" Mode="In" Type="String" />
             <Parameter Name="p_Zona" Mode="In" Type="String" />
             <Parameter Name="p_TipoActividad" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="udf_PreregistrosIncorporadosPeriodoFiguraList" IsComposable="true" ReturnType="Collection(SAPTRAModel.udf_PreregistrosIncorporadosPeriodoFiguraList_Result)">
+          <FunctionImport Name="udf_PreregistrosIncorporadosPeriodoFiguraList" IsComposable="true" ReturnType="Collection(Inaeba_GeorrefenciaModel.udf_PreregistrosIncorporadosPeriodoFiguraList_Result)">
             <Parameter Name="p_idPeriodo" Mode="In" Type="String" />
             <Parameter Name="p_Region" Mode="In" Type="String" />
             <Parameter Name="p_Zona" Mode="In" Type="String" />
             <Parameter Name="p_TipoActividad" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="udf_PreregistrosIncorporadosZonaList" IsComposable="true" ReturnType="Collection(SAPTRAModel.udf_PreregistrosIncorporadosZonaList_Result)">
+          <FunctionImport Name="udf_PreregistrosIncorporadosZonaList" IsComposable="true" ReturnType="Collection(Inaeba_GeorrefenciaModel.udf_PreregistrosIncorporadosZonaList_Result)">
             <Parameter Name="p_idPeriodo" Mode="In" Type="String" />
             <Parameter Name="p_Region" Mode="In" Type="String" />
             <Parameter Name="p_Zona" Mode="In" Type="String" />
             <Parameter Name="p_TipoActividad" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="udf_RechazoAprobacionBaseList" IsComposable="true" ReturnType="Collection(SAPTRAModel.udf_RechazoAprobacionBaseList_Result)">
+          <FunctionImport Name="udf_RechazoAprobacionBaseList" IsComposable="true" ReturnType="Collection(Inaeba_GeorrefenciaModel.udf_RechazoAprobacionBaseList_Result)">
             <Parameter Name="p_idPeriodo" Mode="In" Type="String" />
             <Parameter Name="p_Region" Mode="In" Type="String" />
             <Parameter Name="p_Zona" Mode="In" Type="String" />
             <Parameter Name="p_TipoActividad" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="udf_RechazoAprobacionRegionList" IsComposable="true" ReturnType="Collection(SAPTRAModel.udf_RechazoAprobacionRegionList_Result)">
+          <FunctionImport Name="udf_RechazoAprobacionRegionList" IsComposable="true" ReturnType="Collection(Inaeba_GeorrefenciaModel.udf_RechazoAprobacionRegionList_Result)">
             <Parameter Name="p_idPeriodo" Mode="In" Type="String" />
             <Parameter Name="p_Region" Mode="In" Type="String" />
             <Parameter Name="p_Zona" Mode="In" Type="String" />
             <Parameter Name="p_TipoActividad" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="udf_RechazoAprobacionZonaFiguraNombreAprobacionAct" IsComposable="true" ReturnType="Collection(SAPTRAModel.udf_RechazoAprobacionZonaFiguraNombreAprobacionAct_Result)">
+          <FunctionImport Name="udf_RechazoAprobacionZonaFiguraNombreAprobacionAct" IsComposable="true" ReturnType="Collection(Inaeba_GeorrefenciaModel.udf_RechazoAprobacionZonaFiguraNombreAprobacionAct_Result)">
             <Parameter Name="p_idPeriodo" Mode="In" Type="String" />
             <Parameter Name="p_Region" Mode="In" Type="String" />
             <Parameter Name="p_Zona" Mode="In" Type="String" />
             <Parameter Name="p_TipoActividad" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="udf_RechazoAprobacionZonaFiguraNombreAprobacionList" IsComposable="true" ReturnType="Collection(SAPTRAModel.udf_RechazoAprobacionZonaFiguraNombreAprobacionList_Result)">
+          <FunctionImport Name="udf_RechazoAprobacionZonaFiguraNombreAprobacionList" IsComposable="true" ReturnType="Collection(Inaeba_GeorrefenciaModel.udf_RechazoAprobacionZonaFiguraNombreAprobacionList_Result)">
             <Parameter Name="p_idPeriodo" Mode="In" Type="String" />
             <Parameter Name="p_Region" Mode="In" Type="String" />
             <Parameter Name="p_Zona" Mode="In" Type="String" />
             <Parameter Name="p_TipoActividad" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="udf_RechazoAprobacionZonaList" IsComposable="true" ReturnType="Collection(SAPTRAModel.udf_RechazoAprobacionZonaList_Result)">
+          <FunctionImport Name="udf_RechazoAprobacionZonaList" IsComposable="true" ReturnType="Collection(Inaeba_GeorrefenciaModel.udf_RechazoAprobacionZonaList_Result)">
             <Parameter Name="p_idPeriodo" Mode="In" Type="String" />
             <Parameter Name="p_Region" Mode="In" Type="String" />
             <Parameter Name="p_Zona" Mode="In" Type="String" />
             <Parameter Name="p_TipoActividad" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="udf_RechazoValidacionBaseList" IsComposable="true" ReturnType="Collection(SAPTRAModel.udf_RechazoValidacionBaseList_Result)">
+          <FunctionImport Name="udf_RechazoValidacionBaseList" IsComposable="true" ReturnType="Collection(Inaeba_GeorrefenciaModel.udf_RechazoValidacionBaseList_Result)">
             <Parameter Name="p_idPeriodo" Mode="In" Type="String" />
             <Parameter Name="p_Region" Mode="In" Type="String" />
             <Parameter Name="p_Zona" Mode="In" Type="String" />
             <Parameter Name="p_TipoActividad" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="udf_RechazoValidacionRegionList" IsComposable="true" ReturnType="Collection(SAPTRAModel.udf_RechazoValidacionRegionList_Result)">
+          <FunctionImport Name="udf_RechazoValidacionRegionList" IsComposable="true" ReturnType="Collection(Inaeba_GeorrefenciaModel.udf_RechazoValidacionRegionList_Result)">
             <Parameter Name="p_idPeriodo" Mode="In" Type="String" />
             <Parameter Name="p_Region" Mode="In" Type="String" />
             <Parameter Name="p_Zona" Mode="In" Type="String" />
             <Parameter Name="p_TipoActividad" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="udf_RechazoValidacionZonaFiguraNombreValidacion" IsComposable="true" ReturnType="Collection(SAPTRAModel.udf_RechazoValidacionZonaFiguraNombreValidacion_Result)">
+          <FunctionImport Name="udf_RechazoValidacionZonaFiguraNombreValidacion" IsComposable="true" ReturnType="Collection(Inaeba_GeorrefenciaModel.udf_RechazoValidacionZonaFiguraNombreValidacion_Result)">
             <Parameter Name="p_idPeriodo" Mode="In" Type="String" />
             <Parameter Name="p_Region" Mode="In" Type="String" />
             <Parameter Name="p_Zona" Mode="In" Type="String" />
             <Parameter Name="p_TipoActividad" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="udf_RechazoValidacionZonaFiguraNombreValidacionAct" IsComposable="true" ReturnType="Collection(SAPTRAModel.udf_RechazoValidacionZonaFiguraNombreValidacionAct_Result)">
+          <FunctionImport Name="udf_RechazoValidacionZonaFiguraNombreValidacionAct" IsComposable="true" ReturnType="Collection(Inaeba_GeorrefenciaModel.udf_RechazoValidacionZonaFiguraNombreValidacionAct_Result)">
             <Parameter Name="p_idPeriodo" Mode="In" Type="String" />
             <Parameter Name="p_Region" Mode="In" Type="String" />
             <Parameter Name="p_Zona" Mode="In" Type="String" />
             <Parameter Name="p_TipoActividad" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="udf_RechazoValidacionZonaList" IsComposable="true" ReturnType="Collection(SAPTRAModel.udf_RechazoValidacionZonaList_Result)">
+          <FunctionImport Name="udf_RechazoValidacionZonaList" IsComposable="true" ReturnType="Collection(Inaeba_GeorrefenciaModel.udf_RechazoValidacionZonaList_Result)">
             <Parameter Name="p_idPeriodo" Mode="In" Type="String" />
             <Parameter Name="p_Region" Mode="In" Type="String" />
             <Parameter Name="p_Zona" Mode="In" Type="String" />
@@ -4043,9 +4067,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="SAPTRAModelStoreContainer" CdmEntityContainer="Entities">
+        <EntityContainerMapping StorageEntityContainer="Inaeba_GeorrefenciaModelStoreContainer" CdmEntityContainer="Entities">
           <EntitySetMapping Name="cCoordinacionesRegion">
-            <EntityTypeMapping TypeName="SAPTRAModel.cCoordinacionesRegion">
+            <EntityTypeMapping TypeName="Inaeba_GeorrefenciaModel.cCoordinacionesRegion">
               <MappingFragment StoreEntitySet="cCoordinacionesRegion">
                 <ScalarProperty Name="CoordinacionRegionId" ColumnName="CoordinacionRegionId" />
                 <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
@@ -4057,7 +4081,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="cCoordinacionesZona">
-            <EntityTypeMapping TypeName="SAPTRAModel.cCoordinacionesZona">
+            <EntityTypeMapping TypeName="Inaeba_GeorrefenciaModel.cCoordinacionesZona">
               <MappingFragment StoreEntitySet="cCoordinacionesZona">
                 <ScalarProperty Name="CoordinacionZonaId" ColumnName="CoordinacionZonaId" />
                 <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
@@ -4070,7 +4094,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="cEstatus">
-            <EntityTypeMapping TypeName="SAPTRAModel.cEstatus">
+            <EntityTypeMapping TypeName="Inaeba_GeorrefenciaModel.cEstatus">
               <MappingFragment StoreEntitySet="cEstatus">
                 <ScalarProperty Name="EstatusId" ColumnName="EstatusId" />
                 <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
@@ -4081,7 +4105,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="cPeriodos">
-            <EntityTypeMapping TypeName="SAPTRAModel.cPeriodos">
+            <EntityTypeMapping TypeName="Inaeba_GeorrefenciaModel.cPeriodos">
               <MappingFragment StoreEntitySet="cPeriodos">
                 <ScalarProperty Name="PeriodoId" ColumnName="PeriodoId" />
                 <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
@@ -4094,7 +4118,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="cTipoActividades">
-            <EntityTypeMapping TypeName="SAPTRAModel.cTipoActividades">
+            <EntityTypeMapping TypeName="Inaeba_GeorrefenciaModel.cTipoActividades">
               <MappingFragment StoreEntitySet="cTipoActividades">
                 <ScalarProperty Name="TipoActividadId" ColumnName="TipoActividadId" />
                 <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
@@ -4109,7 +4133,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="cTipoCorreo">
-            <EntityTypeMapping TypeName="SAPTRAModel.cTipoCorreo">
+            <EntityTypeMapping TypeName="Inaeba_GeorrefenciaModel.cTipoCorreo">
               <MappingFragment StoreEntitySet="cTipoCorreo">
                 <ScalarProperty Name="TipoCorreoId" ColumnName="TipoCorreoId" />
                 <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
@@ -4118,7 +4142,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="cTipoEstatus">
-            <EntityTypeMapping TypeName="SAPTRAModel.cTipoEstatus">
+            <EntityTypeMapping TypeName="Inaeba_GeorrefenciaModel.cTipoEstatus">
               <MappingFragment StoreEntitySet="cTipoEstatus">
                 <ScalarProperty Name="TipoEstatusId" ColumnName="TipoEstatusId" />
                 <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
@@ -4128,7 +4152,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="cTipoFiguras">
-            <EntityTypeMapping TypeName="SAPTRAModel.cTipoFiguras">
+            <EntityTypeMapping TypeName="Inaeba_GeorrefenciaModel.cTipoFiguras">
               <MappingFragment StoreEntitySet="cTipoFiguras">
                 <ScalarProperty Name="TipoFiguraId" ColumnName="TipoFiguraId" />
                 <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
@@ -4140,7 +4164,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="cTipoNotificaciones">
-            <EntityTypeMapping TypeName="SAPTRAModel.cTipoNotificaciones">
+            <EntityTypeMapping TypeName="Inaeba_GeorrefenciaModel.cTipoNotificaciones">
               <MappingFragment StoreEntitySet="cTipoNotificaciones">
                 <ScalarProperty Name="TipoNotificacionId" ColumnName="TipoNotificacionId" />
                 <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
@@ -4150,7 +4174,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="cTiposUsuario">
-            <EntityTypeMapping TypeName="SAPTRAModel.cTiposUsuario">
+            <EntityTypeMapping TypeName="Inaeba_GeorrefenciaModel.cTiposUsuario">
               <MappingFragment StoreEntitySet="cTiposUsuario">
                 <ScalarProperty Name="TipoUsuarioId" ColumnName="TipoUsuarioId" />
                 <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
@@ -4161,7 +4185,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="mLecturaCertificados">
-            <EntityTypeMapping TypeName="SAPTRAModel.mLecturaCertificados">
+            <EntityTypeMapping TypeName="Inaeba_GeorrefenciaModel.mLecturaCertificados">
               <MappingFragment StoreEntitySet="mLecturaCertificados">
                 <ScalarProperty Name="LecturaCertificadoId" ColumnName="LecturaCertificadoId" />
                 <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
@@ -4175,7 +4199,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="mCoordinacionRegionZonaUsuario">
-            <EntityTypeMapping TypeName="SAPTRAModel.mCoordinacionRegionZonaUsuario">
+            <EntityTypeMapping TypeName="Inaeba_GeorrefenciaModel.mCoordinacionRegionZonaUsuario">
               <MappingFragment StoreEntitySet="mCoordinacionRegionZonaUsuario">
                 <ScalarProperty Name="CoordinacionRegionZonaId" ColumnName="CoordinacionRegionZonaId" />
                 <ScalarProperty Name="CoordinacionRegionId" ColumnName="CoordinacionRegionId" />
@@ -4184,7 +4208,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="mCoordinacionZonaUsuario">
-            <EntityTypeMapping TypeName="SAPTRAModel.mCoordinacionZonaUsuario">
+            <EntityTypeMapping TypeName="Inaeba_GeorrefenciaModel.mCoordinacionZonaUsuario">
               <MappingFragment StoreEntitySet="mCoordinacionZonaUsuario">
                 <ScalarProperty Name="CordinacionZonaUsuarioId" ColumnName="CordinacionZonaUsuarioId" />
                 <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
@@ -4196,7 +4220,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="mEducandosCaptados">
-            <EntityTypeMapping TypeName="SAPTRAModel.mEducandosCaptados">
+            <EntityTypeMapping TypeName="Inaeba_GeorrefenciaModel.mEducandosCaptados">
               <MappingFragment StoreEntitySet="mEducandosCaptados">
                 <ScalarProperty Name="EducandoCaptadoId" ColumnName="EducandoCaptadoId" />
                 <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
@@ -4218,7 +4242,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CertificadosProgramados">
-            <EntityTypeMapping TypeName="SAPTRAModel.CertificadosProgramados">
+            <EntityTypeMapping TypeName="Inaeba_GeorrefenciaModel.CertificadosProgramados">
               <MappingFragment StoreEntitySet="CertificadosProgramados">
                 <ScalarProperty Name="CertificadosId" ColumnName="CertificadosId" />
                 <ScalarProperty Name="mc_id" ColumnName="mc_id" />
@@ -4233,7 +4257,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="InaebaPreregistros">
-            <EntityTypeMapping TypeName="SAPTRAModel.InaebaPreregistros">
+            <EntityTypeMapping TypeName="Inaeba_GeorrefenciaModel.InaebaPreregistros">
               <MappingFragment StoreEntitySet="InaebaPreregistros">
                 <ScalarProperty Name="PreregistroId" ColumnName="PreregistroId" />
                 <ScalarProperty Name="ben_nom" ColumnName="ben_nom" />
@@ -4250,7 +4274,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="dDetallePlanSemanal">
-            <EntityTypeMapping TypeName="SAPTRAModel.dDetallePlanSemanal">
+            <EntityTypeMapping TypeName="Inaeba_GeorrefenciaModel.dDetallePlanSemanal">
               <MappingFragment StoreEntitySet="dDetallePlanSemanal">
                 <ScalarProperty Name="DetallePlanId" ColumnName="DetallePlanId" />
                 <ScalarProperty Name="PlanSemanalId" ColumnName="PlanSemanalId" />
@@ -4272,7 +4296,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="mCheckIn">
-            <EntityTypeMapping TypeName="SAPTRAModel.mCheckIn">
+            <EntityTypeMapping TypeName="Inaeba_GeorrefenciaModel.mCheckIn">
               <MappingFragment StoreEntitySet="mCheckIn">
                 <ScalarProperty Name="CheckInId" ColumnName="CheckInId" />
                 <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
@@ -4287,7 +4311,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="mPlanSemanal">
-            <EntityTypeMapping TypeName="SAPTRAModel.mPlanSemanal">
+            <EntityTypeMapping TypeName="Inaeba_GeorrefenciaModel.mPlanSemanal">
               <MappingFragment StoreEntitySet="mPlanSemanal">
                 <ScalarProperty Name="PlanSemanalId" ColumnName="PlanSemanalId" />
                 <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
@@ -4299,7 +4323,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="dModulos">
-            <EntityTypeMapping TypeName="SAPTRAModel.dModulos">
+            <EntityTypeMapping TypeName="Inaeba_GeorrefenciaModel.dModulos">
               <MappingFragment StoreEntitySet="dModulos">
                 <ScalarProperty Name="ModuloId" ColumnName="ModuloId" />
                 <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
@@ -4313,7 +4337,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="mBitacora">
-            <EntityTypeMapping TypeName="SAPTRAModel.mBitacora">
+            <EntityTypeMapping TypeName="Inaeba_GeorrefenciaModel.mBitacora">
               <MappingFragment StoreEntitySet="mBitacora">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ExecuteDate" ColumnName="ExecuteDate" />
@@ -4327,7 +4351,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="mCorreo">
-            <EntityTypeMapping TypeName="SAPTRAModel.mCorreo">
+            <EntityTypeMapping TypeName="Inaeba_GeorrefenciaModel.mCorreo">
               <MappingFragment StoreEntitySet="mCorreo">
                 <ScalarProperty Name="CorreoId" ColumnName="CorreoId" />
                 <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
@@ -4340,8 +4364,17 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="mLogApp">
+            <EntityTypeMapping TypeName="Inaeba_GeorrefenciaModel.mLogApp">
+              <MappingFragment StoreEntitySet="mLogApp">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FechaIngreso" ColumnName="FechaIngreso" />
+                <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="mMenuGrupo">
-            <EntityTypeMapping TypeName="SAPTRAModel.mMenuGrupo">
+            <EntityTypeMapping TypeName="Inaeba_GeorrefenciaModel.mMenuGrupo">
               <MappingFragment StoreEntitySet="mMenuGrupo">
                 <ScalarProperty Name="MenuGrupoId" ColumnName="MenuGrupoId" />
                 <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
@@ -4353,7 +4386,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="mPermisos">
-            <EntityTypeMapping TypeName="SAPTRAModel.mPermisos">
+            <EntityTypeMapping TypeName="Inaeba_GeorrefenciaModel.mPermisos">
               <MappingFragment StoreEntitySet="mPermisos">
                 <ScalarProperty Name="ModuloId" ColumnName="ModuloId" />
                 <ScalarProperty Name="RolId" ColumnName="RolId" />
@@ -4368,7 +4401,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="mRoles">
-            <EntityTypeMapping TypeName="SAPTRAModel.mRoles">
+            <EntityTypeMapping TypeName="Inaeba_GeorrefenciaModel.mRoles">
               <MappingFragment StoreEntitySet="mRoles">
                 <ScalarProperty Name="RolId" ColumnName="RolId" />
                 <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
@@ -4378,7 +4411,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="mNotificaciones">
-            <EntityTypeMapping TypeName="SAPTRAModel.mNotificaciones">
+            <EntityTypeMapping TypeName="Inaeba_GeorrefenciaModel.mNotificaciones">
               <MappingFragment StoreEntitySet="mNotificaciones">
                 <ScalarProperty Name="NotificacionId" ColumnName="NotificacionId" />
                 <ScalarProperty Name="EstatusId" ColumnName="EstatusId" />
@@ -4391,7 +4424,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="mResetPassword">
-            <EntityTypeMapping TypeName="SAPTRAModel.mResetPassword">
+            <EntityTypeMapping TypeName="Inaeba_GeorrefenciaModel.mResetPassword">
               <MappingFragment StoreEntitySet="mResetPassword">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
@@ -4402,7 +4435,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="mUsuarios">
-            <EntityTypeMapping TypeName="SAPTRAModel.mUsuarios">
+            <EntityTypeMapping TypeName="Inaeba_GeorrefenciaModel.mUsuarios">
               <MappingFragment StoreEntitySet="mUsuarios">
                 <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
                 <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
@@ -4423,7 +4456,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="mSolicitudesVehiculo">
-            <EntityTypeMapping TypeName="SAPTRAModel.mSolicitudesVehiculo">
+            <EntityTypeMapping TypeName="Inaeba_GeorrefenciaModel.mSolicitudesVehiculo">
               <MappingFragment StoreEntitySet="mSolicitudesVehiculo">
                 <ScalarProperty Name="SolicitudVehiculoId" ColumnName="SolicitudVehiculoId" />
                 <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
@@ -4436,16 +4469,16 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionName="SAPTRAModel.Store.Split" FunctionImportName="Split">
+          <FunctionImportMapping FunctionName="Inaeba_GeorrefenciaModel.Store.Split" FunctionImportName="Split">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SAPTRAModel.Split_Result">
+              <ComplexTypeMapping TypeName="Inaeba_GeorrefenciaModel.Split_Result">
                 <ScalarProperty Name="Value" ColumnName="Value" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionName="SAPTRAModel.Store.udf_CertificadosInaebaBaseList" FunctionImportName="udf_CertificadosInaebaBaseList">
+          <FunctionImportMapping FunctionName="Inaeba_GeorrefenciaModel.Store.udf_CertificadosInaebaBaseList" FunctionImportName="udf_CertificadosInaebaBaseList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SAPTRAModel.udf_CertificadosInaebaBaseList_Result">
+              <ComplexTypeMapping TypeName="Inaeba_GeorrefenciaModel.udf_CertificadosInaebaBaseList_Result">
                 <ScalarProperty Name="CheckInId" ColumnName="CheckInId" />
                 <ScalarProperty Name="PlnSemanalId" ColumnName="PlnSemanalId" />
                 <ScalarProperty Name="DetallePlanId" ColumnName="DetallePlanId" />
@@ -4472,9 +4505,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionName="SAPTRAModel.Store.udf_CertificadosInaebaFiguraEducandoList" FunctionImportName="udf_CertificadosInaebaFiguraEducandoList">
+          <FunctionImportMapping FunctionName="Inaeba_GeorrefenciaModel.Store.udf_CertificadosInaebaFiguraEducandoList" FunctionImportName="udf_CertificadosInaebaFiguraEducandoList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SAPTRAModel.udf_CertificadosInaebaFiguraEducandoList_Result">
+              <ComplexTypeMapping TypeName="Inaeba_GeorrefenciaModel.udf_CertificadosInaebaFiguraEducandoList_Result">
                 <ScalarProperty Name="Periodo" ColumnName="Periodo" />
                 <ScalarProperty Name="Region" ColumnName="Region" />
                 <ScalarProperty Name="Zona" ColumnName="Zona" />
@@ -4491,9 +4524,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionName="SAPTRAModel.Store.udf_CertificadosInaebaRegionList" FunctionImportName="udf_CertificadosInaebaRegionList">
+          <FunctionImportMapping FunctionName="Inaeba_GeorrefenciaModel.Store.udf_CertificadosInaebaRegionList" FunctionImportName="udf_CertificadosInaebaRegionList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SAPTRAModel.udf_CertificadosInaebaRegionList_Result">
+              <ComplexTypeMapping TypeName="Inaeba_GeorrefenciaModel.udf_CertificadosInaebaRegionList_Result">
                 <ScalarProperty Name="Region" ColumnName="Region" />
                 <ScalarProperty Name="certificadosProgramados" ColumnName="certificadosProgramados" />
                 <ScalarProperty Name="certificadosEntregados" ColumnName="certificadosEntregados" />
@@ -4506,9 +4539,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionName="SAPTRAModel.Store.udf_CertificadosInaebaZonaFiguraList" FunctionImportName="udf_CertificadosInaebaZonaFiguraList">
+          <FunctionImportMapping FunctionName="Inaeba_GeorrefenciaModel.Store.udf_CertificadosInaebaZonaFiguraList" FunctionImportName="udf_CertificadosInaebaZonaFiguraList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SAPTRAModel.udf_CertificadosInaebaZonaFiguraList_Result">
+              <ComplexTypeMapping TypeName="Inaeba_GeorrefenciaModel.udf_CertificadosInaebaZonaFiguraList_Result">
                 <ScalarProperty Name="Periodo" ColumnName="Periodo" />
                 <ScalarProperty Name="Region" ColumnName="Region" />
                 <ScalarProperty Name="Zona" ColumnName="Zona" />
@@ -4519,9 +4552,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionName="SAPTRAModel.Store.udf_CertificadosInaebaZonaList" FunctionImportName="udf_CertificadosInaebaZonaList">
+          <FunctionImportMapping FunctionName="Inaeba_GeorrefenciaModel.Store.udf_CertificadosInaebaZonaList" FunctionImportName="udf_CertificadosInaebaZonaList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SAPTRAModel.udf_CertificadosInaebaZonaList_Result">
+              <ComplexTypeMapping TypeName="Inaeba_GeorrefenciaModel.udf_CertificadosInaebaZonaList_Result">
                 <ScalarProperty Name="Region" ColumnName="Region" />
                 <ScalarProperty Name="Zona" ColumnName="Zona" />
                 <ScalarProperty Name="certificadosProgramados" ColumnName="certificadosProgramados" />
@@ -4535,9 +4568,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionName="SAPTRAModel.Store.udf_IncumplimientoActividadesPeriodoList" FunctionImportName="udf_IncumplimientoActividadesPeriodoList">
+          <FunctionImportMapping FunctionName="Inaeba_GeorrefenciaModel.Store.udf_IncumplimientoActividadesPeriodoList" FunctionImportName="udf_IncumplimientoActividadesPeriodoList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SAPTRAModel.udf_IncumplimientoActividadesPeriodoList_Result">
+              <ComplexTypeMapping TypeName="Inaeba_GeorrefenciaModel.udf_IncumplimientoActividadesPeriodoList_Result">
                 <ScalarProperty Name="PlnSemanalId" ColumnName="PlnSemanalId" />
                 <ScalarProperty Name="DetallePlanId" ColumnName="DetallePlanId" />
                 <ScalarProperty Name="CoordinacionRegionId" ColumnName="CoordinacionRegionId" />
@@ -4555,9 +4588,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionName="SAPTRAModel.Store.udf_IncumplimientoActividadesPeriodoRegionList" FunctionImportName="udf_IncumplimientoActividadesPeriodoRegionList">
+          <FunctionImportMapping FunctionName="Inaeba_GeorrefenciaModel.Store.udf_IncumplimientoActividadesPeriodoRegionList" FunctionImportName="udf_IncumplimientoActividadesPeriodoRegionList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SAPTRAModel.udf_IncumplimientoActividadesPeriodoRegionList_Result">
+              <ComplexTypeMapping TypeName="Inaeba_GeorrefenciaModel.udf_IncumplimientoActividadesPeriodoRegionList_Result">
                 <ScalarProperty Name="PeriodoId" ColumnName="PeriodoId" />
                 <ScalarProperty Name="DecripcionPeriodo" ColumnName="DecripcionPeriodo" />
                 <ScalarProperty Name="CoordinacionRegionId" ColumnName="CoordinacionRegionId" />
@@ -4573,9 +4606,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionName="SAPTRAModel.Store.udf_IncumplimientoActividadesPeriodoRegionZonaList" FunctionImportName="udf_IncumplimientoActividadesPeriodoRegionZonaList">
+          <FunctionImportMapping FunctionName="Inaeba_GeorrefenciaModel.Store.udf_IncumplimientoActividadesPeriodoRegionZonaList" FunctionImportName="udf_IncumplimientoActividadesPeriodoRegionZonaList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SAPTRAModel.udf_IncumplimientoActividadesPeriodoRegionZonaList_Result">
+              <ComplexTypeMapping TypeName="Inaeba_GeorrefenciaModel.udf_IncumplimientoActividadesPeriodoRegionZonaList_Result">
                 <ScalarProperty Name="PeriodoId" ColumnName="PeriodoId" />
                 <ScalarProperty Name="DecripcionPeriodo" ColumnName="DecripcionPeriodo" />
                 <ScalarProperty Name="CoordinacionRegionId" ColumnName="CoordinacionRegionId" />
@@ -4593,9 +4626,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionName="SAPTRAModel.Store.udf_IncumplimientoActividadesPeriodoZonaActividadList" FunctionImportName="udf_IncumplimientoActividadesPeriodoZonaActividadList">
+          <FunctionImportMapping FunctionName="Inaeba_GeorrefenciaModel.Store.udf_IncumplimientoActividadesPeriodoZonaActividadList" FunctionImportName="udf_IncumplimientoActividadesPeriodoZonaActividadList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SAPTRAModel.udf_IncumplimientoActividadesPeriodoZonaActividadList_Result">
+              <ComplexTypeMapping TypeName="Inaeba_GeorrefenciaModel.udf_IncumplimientoActividadesPeriodoZonaActividadList_Result">
                 <ScalarProperty Name="PeriodoId" ColumnName="PeriodoId" />
                 <ScalarProperty Name="DecripcionPeriodo" ColumnName="DecripcionPeriodo" />
                 <ScalarProperty Name="CoordinacionRegionId" ColumnName="CoordinacionRegionId" />
@@ -4615,9 +4648,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionName="SAPTRAModel.Store.udf_ModulosSeguridadxRol" FunctionImportName="udf_ModulosSeguridadxRol">
+          <FunctionImportMapping FunctionName="Inaeba_GeorrefenciaModel.Store.udf_ModulosSeguridadxRol" FunctionImportName="udf_ModulosSeguridadxRol">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SAPTRAModel.udf_ModulosSeguridadxRol_Result">
+              <ComplexTypeMapping TypeName="Inaeba_GeorrefenciaModel.udf_ModulosSeguridadxRol_Result">
                 <ScalarProperty Name="ModuloId" ColumnName="ModuloId" />
                 <ScalarProperty Name="EstatusId" ColumnName="EstatusId" />
                 <ScalarProperty Name="NombreMenuGrupo" ColumnName="NombreMenuGrupo" />
@@ -4632,9 +4665,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionName="SAPTRAModel.Store.udf_PlanSemanalAprobarList" FunctionImportName="udf_PlanSemanalAprobarList">
+          <FunctionImportMapping FunctionName="Inaeba_GeorrefenciaModel.Store.udf_PlanSemanalAprobarList" FunctionImportName="udf_PlanSemanalAprobarList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SAPTRAModel.udf_PlanSemanalAprobarList_Result">
+              <ComplexTypeMapping TypeName="Inaeba_GeorrefenciaModel.udf_PlanSemanalAprobarList_Result">
                 <ScalarProperty Name="PlnSemanalId" ColumnName="PlnSemanalId" />
                 <ScalarProperty Name="TipoFigura" ColumnName="TipoFigura" />
                 <ScalarProperty Name="DescripcionPlan" ColumnName="DescripcionPlan" />
@@ -4653,9 +4686,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionName="SAPTRAModel.Store.udf_PlanSemanalIncidenciasList" FunctionImportName="udf_PlanSemanalIncidenciasList">
+          <FunctionImportMapping FunctionName="Inaeba_GeorrefenciaModel.Store.udf_PlanSemanalIncidenciasList" FunctionImportName="udf_PlanSemanalIncidenciasList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SAPTRAModel.udf_PlanSemanalIncidenciasList_Result">
+              <ComplexTypeMapping TypeName="Inaeba_GeorrefenciaModel.udf_PlanSemanalIncidenciasList_Result">
                 <ScalarProperty Name="PlnSemanalId" ColumnName="PlnSemanalId" />
                 <ScalarProperty Name="DetallePlanId" ColumnName="DetallePlanId" />
                 <ScalarProperty Name="idUsuarioCreacion" ColumnName="idUsuarioCreacion" />
@@ -4670,9 +4703,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionName="SAPTRAModel.Store.udf_PlanSemanalList" FunctionImportName="udf_PlanSemanalList">
+          <FunctionImportMapping FunctionName="Inaeba_GeorrefenciaModel.Store.udf_PlanSemanalList" FunctionImportName="udf_PlanSemanalList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SAPTRAModel.udf_PlanSemanalList_Result">
+              <ComplexTypeMapping TypeName="Inaeba_GeorrefenciaModel.udf_PlanSemanalList_Result">
                 <ScalarProperty Name="PlnSemanalId" ColumnName="PlnSemanalId" />
                 <ScalarProperty Name="DescripcionPlan" ColumnName="DescripcionPlan" />
                 <ScalarProperty Name="PeriodoId" ColumnName="PeriodoId" />
@@ -4684,9 +4717,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionName="SAPTRAModel.Store.udf_PlanSemanalValidarList" FunctionImportName="udf_PlanSemanalValidarList">
+          <FunctionImportMapping FunctionName="Inaeba_GeorrefenciaModel.Store.udf_PlanSemanalValidarList" FunctionImportName="udf_PlanSemanalValidarList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SAPTRAModel.udf_PlanSemanalValidarList_Result">
+              <ComplexTypeMapping TypeName="Inaeba_GeorrefenciaModel.udf_PlanSemanalValidarList_Result">
                 <ScalarProperty Name="PlnSemanalId" ColumnName="PlnSemanalId" />
                 <ScalarProperty Name="TipoFigura" ColumnName="TipoFigura" />
                 <ScalarProperty Name="DescripcionPlan" ColumnName="DescripcionPlan" />
@@ -4695,12 +4728,13 @@
                 <ScalarProperty Name="Usuario" ColumnName="Usuario" />
                 <ScalarProperty Name="TieneDetalle" ColumnName="TieneDetalle" />
                 <ScalarProperty Name="EstatusId" ColumnName="EstatusId" />
+                <ScalarProperty Name="RevisaPlanAnterior" ColumnName="RevisaPlanAnterior" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionName="SAPTRAModel.Store.udf_PreregistrosIncorporadosBaseList" FunctionImportName="udf_PreregistrosIncorporadosBaseList">
+          <FunctionImportMapping FunctionName="Inaeba_GeorrefenciaModel.Store.udf_PreregistrosIncorporadosBaseList" FunctionImportName="udf_PreregistrosIncorporadosBaseList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SAPTRAModel.udf_PreregistrosIncorporadosBaseList_Result">
+              <ComplexTypeMapping TypeName="Inaeba_GeorrefenciaModel.udf_PreregistrosIncorporadosBaseList_Result">
                 <ScalarProperty Name="PlnSemanalId" ColumnName="PlnSemanalId" />
                 <ScalarProperty Name="DetallePlanId" ColumnName="DetallePlanId" />
                 <ScalarProperty Name="PreregistroId" ColumnName="PreregistroId" />
@@ -4724,9 +4758,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionName="SAPTRAModel.Store.udf_PreregistrosIncorporadosBaseRegionList" FunctionImportName="udf_PreregistrosIncorporadosBaseRegionList">
+          <FunctionImportMapping FunctionName="Inaeba_GeorrefenciaModel.Store.udf_PreregistrosIncorporadosBaseRegionList" FunctionImportName="udf_PreregistrosIncorporadosBaseRegionList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SAPTRAModel.udf_PreregistrosIncorporadosBaseRegionList_Result">
+              <ComplexTypeMapping TypeName="Inaeba_GeorrefenciaModel.udf_PreregistrosIncorporadosBaseRegionList_Result">
                 <ScalarProperty Name="Region" ColumnName="Region" />
                 <ScalarProperty Name="prerregistradosTotal" ColumnName="prerregistradosTotal" />
                 <ScalarProperty Name="incorporadosTotal" ColumnName="incorporadosTotal" />
@@ -4739,9 +4773,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionName="SAPTRAModel.Store.udf_PreregistrosIncorporadosPeriodoFiguraEducandoList" FunctionImportName="udf_PreregistrosIncorporadosPeriodoFiguraEducandoList">
+          <FunctionImportMapping FunctionName="Inaeba_GeorrefenciaModel.Store.udf_PreregistrosIncorporadosPeriodoFiguraEducandoList" FunctionImportName="udf_PreregistrosIncorporadosPeriodoFiguraEducandoList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SAPTRAModel.udf_PreregistrosIncorporadosPeriodoFiguraEducandoList_Result">
+              <ComplexTypeMapping TypeName="Inaeba_GeorrefenciaModel.udf_PreregistrosIncorporadosPeriodoFiguraEducandoList_Result">
                 <ScalarProperty Name="Periodo" ColumnName="Periodo" />
                 <ScalarProperty Name="Region" ColumnName="Region" />
                 <ScalarProperty Name="Zona" ColumnName="Zona" />
@@ -4761,9 +4795,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionName="SAPTRAModel.Store.udf_PreregistrosIncorporadosPeriodoFiguraList" FunctionImportName="udf_PreregistrosIncorporadosPeriodoFiguraList">
+          <FunctionImportMapping FunctionName="Inaeba_GeorrefenciaModel.Store.udf_PreregistrosIncorporadosPeriodoFiguraList" FunctionImportName="udf_PreregistrosIncorporadosPeriodoFiguraList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SAPTRAModel.udf_PreregistrosIncorporadosPeriodoFiguraList_Result">
+              <ComplexTypeMapping TypeName="Inaeba_GeorrefenciaModel.udf_PreregistrosIncorporadosPeriodoFiguraList_Result">
                 <ScalarProperty Name="Periodo" ColumnName="Periodo" />
                 <ScalarProperty Name="Region" ColumnName="Region" />
                 <ScalarProperty Name="Zona" ColumnName="Zona" />
@@ -4780,9 +4814,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionName="SAPTRAModel.Store.udf_PreregistrosIncorporadosZonaList" FunctionImportName="udf_PreregistrosIncorporadosZonaList">
+          <FunctionImportMapping FunctionName="Inaeba_GeorrefenciaModel.Store.udf_PreregistrosIncorporadosZonaList" FunctionImportName="udf_PreregistrosIncorporadosZonaList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SAPTRAModel.udf_PreregistrosIncorporadosZonaList_Result">
+              <ComplexTypeMapping TypeName="Inaeba_GeorrefenciaModel.udf_PreregistrosIncorporadosZonaList_Result">
                 <ScalarProperty Name="Region" ColumnName="Region" />
                 <ScalarProperty Name="Zona" ColumnName="Zona" />
                 <ScalarProperty Name="prerregistradosTotal" ColumnName="prerregistradosTotal" />
@@ -4796,9 +4830,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionName="SAPTRAModel.Store.udf_RechazoAprobacionBaseList" FunctionImportName="udf_RechazoAprobacionBaseList">
+          <FunctionImportMapping FunctionName="Inaeba_GeorrefenciaModel.Store.udf_RechazoAprobacionBaseList" FunctionImportName="udf_RechazoAprobacionBaseList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SAPTRAModel.udf_RechazoAprobacionBaseList_Result">
+              <ComplexTypeMapping TypeName="Inaeba_GeorrefenciaModel.udf_RechazoAprobacionBaseList_Result">
                 <ScalarProperty Name="PlnSemanalId" ColumnName="PlnSemanalId" />
                 <ScalarProperty Name="DetallePlanId" ColumnName="DetallePlanId" />
                 <ScalarProperty Name="CoordinacionRegionId" ColumnName="CoordinacionRegionId" />
@@ -4818,9 +4852,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionName="SAPTRAModel.Store.udf_RechazoAprobacionRegionList" FunctionImportName="udf_RechazoAprobacionRegionList">
+          <FunctionImportMapping FunctionName="Inaeba_GeorrefenciaModel.Store.udf_RechazoAprobacionRegionList" FunctionImportName="udf_RechazoAprobacionRegionList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SAPTRAModel.udf_RechazoAprobacionRegionList_Result">
+              <ComplexTypeMapping TypeName="Inaeba_GeorrefenciaModel.udf_RechazoAprobacionRegionList_Result">
                 <ScalarProperty Name="Region" ColumnName="Region" />
                 <ScalarProperty Name="capturadasTotal" ColumnName="capturadasTotal" />
                 <ScalarProperty Name="rechazadasTotal" ColumnName="rechazadasTotal" />
@@ -4833,9 +4867,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionName="SAPTRAModel.Store.udf_RechazoAprobacionZonaFiguraNombreAprobacionAct" FunctionImportName="udf_RechazoAprobacionZonaFiguraNombreAprobacionAct">
+          <FunctionImportMapping FunctionName="Inaeba_GeorrefenciaModel.Store.udf_RechazoAprobacionZonaFiguraNombreAprobacionAct" FunctionImportName="udf_RechazoAprobacionZonaFiguraNombreAprobacionAct">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SAPTRAModel.udf_RechazoAprobacionZonaFiguraNombreAprobacionAct_Result">
+              <ComplexTypeMapping TypeName="Inaeba_GeorrefenciaModel.udf_RechazoAprobacionZonaFiguraNombreAprobacionAct_Result">
                 <ScalarProperty Name="Periodo" ColumnName="Periodo" />
                 <ScalarProperty Name="Region" ColumnName="Region" />
                 <ScalarProperty Name="Zona" ColumnName="Zona" />
@@ -4846,9 +4880,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionName="SAPTRAModel.Store.udf_RechazoAprobacionZonaFiguraNombreAprobacionList" FunctionImportName="udf_RechazoAprobacionZonaFiguraNombreAprobacionList">
+          <FunctionImportMapping FunctionName="Inaeba_GeorrefenciaModel.Store.udf_RechazoAprobacionZonaFiguraNombreAprobacionList" FunctionImportName="udf_RechazoAprobacionZonaFiguraNombreAprobacionList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SAPTRAModel.udf_RechazoAprobacionZonaFiguraNombreAprobacionList_Result">
+              <ComplexTypeMapping TypeName="Inaeba_GeorrefenciaModel.udf_RechazoAprobacionZonaFiguraNombreAprobacionList_Result">
                 <ScalarProperty Name="PeriodoId" ColumnName="PeriodoId" />
                 <ScalarProperty Name="Periodo" ColumnName="Periodo" />
                 <ScalarProperty Name="Region" ColumnName="Region" />
@@ -4868,9 +4902,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionName="SAPTRAModel.Store.udf_RechazoAprobacionZonaList" FunctionImportName="udf_RechazoAprobacionZonaList">
+          <FunctionImportMapping FunctionName="Inaeba_GeorrefenciaModel.Store.udf_RechazoAprobacionZonaList" FunctionImportName="udf_RechazoAprobacionZonaList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SAPTRAModel.udf_RechazoAprobacionZonaList_Result">
+              <ComplexTypeMapping TypeName="Inaeba_GeorrefenciaModel.udf_RechazoAprobacionZonaList_Result">
                 <ScalarProperty Name="Region" ColumnName="Region" />
                 <ScalarProperty Name="Zona" ColumnName="Zona" />
                 <ScalarProperty Name="capturadasTotal" ColumnName="capturadasTotal" />
@@ -4884,9 +4918,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionName="SAPTRAModel.Store.udf_RechazoValidacionBaseList" FunctionImportName="udf_RechazoValidacionBaseList">
+          <FunctionImportMapping FunctionName="Inaeba_GeorrefenciaModel.Store.udf_RechazoValidacionBaseList" FunctionImportName="udf_RechazoValidacionBaseList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SAPTRAModel.udf_RechazoValidacionBaseList_Result">
+              <ComplexTypeMapping TypeName="Inaeba_GeorrefenciaModel.udf_RechazoValidacionBaseList_Result">
                 <ScalarProperty Name="PlnSemanalId" ColumnName="PlnSemanalId" />
                 <ScalarProperty Name="DetallePlanId" ColumnName="DetallePlanId" />
                 <ScalarProperty Name="CoordinacionRegionId" ColumnName="CoordinacionRegionId" />
@@ -4905,9 +4939,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionName="SAPTRAModel.Store.udf_RechazoValidacionRegionList" FunctionImportName="udf_RechazoValidacionRegionList">
+          <FunctionImportMapping FunctionName="Inaeba_GeorrefenciaModel.Store.udf_RechazoValidacionRegionList" FunctionImportName="udf_RechazoValidacionRegionList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SAPTRAModel.udf_RechazoValidacionRegionList_Result">
+              <ComplexTypeMapping TypeName="Inaeba_GeorrefenciaModel.udf_RechazoValidacionRegionList_Result">
                 <ScalarProperty Name="Region" ColumnName="Region" />
                 <ScalarProperty Name="capturadasTotal" ColumnName="capturadasTotal" />
                 <ScalarProperty Name="rechazadasTotal" ColumnName="rechazadasTotal" />
@@ -4920,9 +4954,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionName="SAPTRAModel.Store.udf_RechazoValidacionZonaFiguraNombreValidacion" FunctionImportName="udf_RechazoValidacionZonaFiguraNombreValidacion">
+          <FunctionImportMapping FunctionName="Inaeba_GeorrefenciaModel.Store.udf_RechazoValidacionZonaFiguraNombreValidacion" FunctionImportName="udf_RechazoValidacionZonaFiguraNombreValidacion">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SAPTRAModel.udf_RechazoValidacionZonaFiguraNombreValidacion_Result">
+              <ComplexTypeMapping TypeName="Inaeba_GeorrefenciaModel.udf_RechazoValidacionZonaFiguraNombreValidacion_Result">
                 <ScalarProperty Name="PeriodoId" ColumnName="PeriodoId" />
                 <ScalarProperty Name="Periodo" ColumnName="Periodo" />
                 <ScalarProperty Name="Region" ColumnName="Region" />
@@ -4942,9 +4976,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionName="SAPTRAModel.Store.udf_RechazoValidacionZonaFiguraNombreValidacionAct" FunctionImportName="udf_RechazoValidacionZonaFiguraNombreValidacionAct">
+          <FunctionImportMapping FunctionName="Inaeba_GeorrefenciaModel.Store.udf_RechazoValidacionZonaFiguraNombreValidacionAct" FunctionImportName="udf_RechazoValidacionZonaFiguraNombreValidacionAct">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SAPTRAModel.udf_RechazoValidacionZonaFiguraNombreValidacionAct_Result">
+              <ComplexTypeMapping TypeName="Inaeba_GeorrefenciaModel.udf_RechazoValidacionZonaFiguraNombreValidacionAct_Result">
                 <ScalarProperty Name="Periodo" ColumnName="Periodo" />
                 <ScalarProperty Name="Region" ColumnName="Region" />
                 <ScalarProperty Name="Zona" ColumnName="Zona" />
@@ -4955,9 +4989,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionName="SAPTRAModel.Store.udf_RechazoValidacionZonaList" FunctionImportName="udf_RechazoValidacionZonaList">
+          <FunctionImportMapping FunctionName="Inaeba_GeorrefenciaModel.Store.udf_RechazoValidacionZonaList" FunctionImportName="udf_RechazoValidacionZonaList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SAPTRAModel.udf_RechazoValidacionZonaList_Result">
+              <ComplexTypeMapping TypeName="Inaeba_GeorrefenciaModel.udf_RechazoValidacionZonaList_Result">
                 <ScalarProperty Name="Region" ColumnName="Region" />
                 <ScalarProperty Name="Zona" ColumnName="Zona" />
                 <ScalarProperty Name="capturadasTotal" ColumnName="capturadasTotal" />

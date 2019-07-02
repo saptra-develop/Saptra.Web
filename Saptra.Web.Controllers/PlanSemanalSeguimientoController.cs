@@ -54,8 +54,8 @@ namespace Sispro.Web.Controllers
                     usuario = C.Usuario,
                     tipoFigura = C.TipoFigura,
                     acciones = "<div class='btn-group btn-group-sm' role='group'>" +
-                               "<button type='button' " + (C.EstatusId == 8 ? "disabled" : "") + " class='btn btn-success btnValidar' id='btnValidar_" + C.PlnSemanalId + "' data-idplan='" + C.PlnSemanalId + "'><i class='fa fa-check-circle fa-lg fa-fw'></i> Validar</button>" +
-                               "<button type='button' " + (C.EstatusId == 8 ? "disabled" : "") + " class='btn btn-warning btnFeedback' id='btnFeedback_" + C.PlnSemanalId + "' data-idplan='" + C.PlnSemanalId + "'><i class='fa fa-comment fa-lg fa-fw'></i> Observaciones</button>" +
+                               "<button type='button' " + (C.EstatusId == 8 || C.RevisaPlanAnterior == 1 ? "disabled" : "") + " class='btn btn-success btnValidar' id='btnValidar_" + C.PlnSemanalId + "' data-idplan='" + C.PlnSemanalId + "'><i class='fa fa-check-circle fa-lg fa-fw'></i> Validar</button>" +
+                               "<button type='button' " + (C.EstatusId == 8 || C.RevisaPlanAnterior == 1 ? "disabled" : "") + " class='btn btn-warning btnFeedback' id='btnFeedback_" + C.PlnSemanalId + "' data-idplan='" + C.PlnSemanalId + "'><i class='fa fa-comment fa-lg fa-fw'></i> Observaciones</button>" +
                                "</div>"
                 });
 

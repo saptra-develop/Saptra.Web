@@ -121,42 +121,102 @@ namespace Sispro.Web.Controllers
                                   {
                                       id = cat.PeriodoId,
                                       nombre = cat.DecripcionPeriodo,
+                                      fechaFin = cat.FechaFin,
                                   }).ToList();
 
                     int idPeriodoNew = result.FirstOrDefault().id;
-                    var PeriodoValidaPromo = (from cat in db.cPeriodos
-                                              where cat.PeriodoId < idPeriodoNew && cat.EstatusId == 5
-                                              select cat).ToList();
 
-                    var maxPeriodoId = PeriodoValidaPromo.Max(x => x.PeriodoId);
+                    //Valida Plan existente
+                    var existePlan = (from p in db.mPlanSemanal
+                                      where p.PeriodoId == idPeriodoNew
+                                      && p.UsuarioCreacionId == idUsuario
+                                      select p).ToList();
 
-                    var planExistePromoSinAsignar = (from a in db.dDetallePlanSemanal
-                                                     join b in db.mPlanSemanal on a.PlanSemanalId equals b.PlanSemanalId
-                                                     where a.TipoActividadId == 8
-                                                     && a.UsuarioCreacionId == idUsuario
-                                                     && b.PeriodoId == maxPeriodoId
-                                                     select a).ToList();
-                    int countSinAsig = 0;
-                    foreach (dDetallePlanSemanal tc in planExistePromoSinAsignar)
+                    if (existePlan.Count() > 0)
                     {
-                        if (tc.InaebaPreregistros.Count() == 0)
+                        DateTime fechaFin = result.FirstOrDefault().fechaFin.AddDays(1);
+
+                        var periodoSiguiente = (from cat in db.cPeriodos
+                                                where cat.EstatusId == 5
+                                                && cat.FechaInicio == fechaFin
+                                                select new
+                                                {
+                                                    id = cat.PeriodoId,
+                                                    nombre = cat.DecripcionPeriodo,
+                                                }).ToList();
+                       
+
+                     
+                        if (periodoSiguiente.Count > 0)
                         {
-                            if (tc.SinProspectos == null)
+                            int idPeriodoSiguiente = periodoSiguiente.FirstOrDefault().id;
+
+                            var existePlanSiguiente = (from p in db.mPlanSemanal
+                                                       where p.PeriodoId == idPeriodoSiguiente
+                                                       && p.UsuarioCreacionId == idUsuario
+                                                       select p).ToList();
+
+                            if (existePlanSiguiente.Count() == 0)
                             {
-                                countSinAsig += 1;
+                                var periodo = (from p in db.cPeriodos
+                                               where p.PeriodoId == idPeriodoSiguiente
+                                               select p).FirstOrDefault();
+                                mPlanSemanal plan = new mPlanSemanal();
+                                plan.FechaCreacion = DateTime.Now;
+                                plan.DescripcionPlaneacion = "Plan Semanal del " + periodo.DecripcionPeriodo;
+                                plan.EstatusId = 7;
+                                plan.PeriodoId = idPeriodoSiguiente;
+                                plan.UsuarioCreacionId = idUsuario;
+                                db.mPlanSemanal.Add(plan);
+                                db.SaveChanges();
+
+                                return Json(new { Success = true, id = plan.PlanSemanalId, Message = "guardado correctamente " });
                             }
-                        } 
+                            else
+                            {
+                                return Json(new { Success = false, Message = " No es posible crear mas de un plan por periodo." });
+                            }
+                        }
+                        else
+                        {
+                            return Json(new { Success = false, Message = " No es posible crear el plan, no se encuentra periodo registrado para la semana en curso." });
+                        }
                     }
-                    if (countSinAsig == 0)
+                    else
                     {
+                        //var PeriodoValidaPromo = (from cat in db.cPeriodos
+                        //                          where cat.PeriodoId < idPeriodoNew && cat.EstatusId == 5
+                        //                          select cat).ToList();
+
+                        //var maxPeriodoId = PeriodoValidaPromo.Max(x => x.PeriodoId);
+
+                        //var planExistePromoSinAsignar = (from a in db.dDetallePlanSemanal
+                        //                                 join b in db.mPlanSemanal on a.PlanSemanalId equals b.PlanSemanalId
+                        //                                 where a.TipoActividadId == 8
+                        //                                 && a.UsuarioCreacionId == idUsuario
+                        //                                 && b.PeriodoId == maxPeriodoId
+                        //                                 select a).ToList();
+                        //int countSinAsig = 0;
+                        //foreach (dDetallePlanSemanal tc in planExistePromoSinAsignar)
+                        //{
+                        //    if (tc.InaebaPreregistros.Count() == 0)
+                        //    {
+                        //        if (tc.SinProspectos == null)
+                        //        {
+                        //            countSinAsig += 1;
+                        //        }
+                        //    } 
+                        //}
+                        //if (countSinAsig == 0)
+                        //{
                         if (result.Count() > 0)
                         {
                             int idPeriodo = result.FirstOrDefault().id;
 
-                            var existePlan = (from ps in db.mPlanSemanal
-                                              where ps.PeriodoId == idPeriodo
-                                              && ps.UsuarioCreacionId == idUsuario
-                                              select ps).ToList();
+                            //var existePlan = (from ps in db.mPlanSemanal
+                            //                  where ps.PeriodoId == idPeriodo
+                            //                  && ps.UsuarioCreacionId == idUsuario
+                            //                  select ps).ToList();
                             if (existePlan.Count() == 0)
                             {
                                 var periodo = (from p in db.cPeriodos
@@ -180,12 +240,13 @@ namespace Sispro.Web.Controllers
                         }
                         else
                         {
-                            return Json(new { Success = false, Message = " No es posible crear el plan, no se encuentra periodo registtrado para la semana en curso." });
+                            return Json(new { Success = false, Message = " No es posible crear el plan, no se encuentra periodo registrado para la semana en curso." });
                         }
-                    }
-                    else
-                    {
-                        return Json(new { Success = false, Message = " No es posible crear el plan semanal, existen actividades de Promoción y difusión del plan anterior abiertas" });
+                        //}
+                        //else
+                        //{
+                        //    return Json(new { Success = false, Message = " No es posible crear el plan semanal, existen actividades de Promoción y difusión del plan anterior abiertas" });
+                        //}
                     }
                 }
                 catch (Exception exp)
@@ -196,6 +257,99 @@ namespace Sispro.Web.Controllers
 
             return Json(new { Success = false, Message = "Informacion incompleta" });
         }
+
+        //[HttpPost]
+        //public JsonResult Nuevo(int idUsuario)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            DateTime fecha = Convert.ToDateTime(DateTime.Now.ToShortDateString());
+
+        //            var result = (from cat in db.cPeriodos
+        //                          where cat.EstatusId == 5
+        //                          && (fecha >= cat.FechaInicio && fecha <= cat.FechaFin)
+        //                          select new
+        //                          {
+        //                              id = cat.PeriodoId,
+        //                              nombre = cat.DecripcionPeriodo,
+        //                          }).ToList();
+
+        //            int idPeriodoNew = result.FirstOrDefault().id;
+        //            var PeriodoValidaPromo = (from cat in db.cPeriodos
+        //                                      where cat.PeriodoId < idPeriodoNew && cat.EstatusId == 5
+        //                                      select cat).ToList();
+
+        //            var maxPeriodoId = PeriodoValidaPromo.Max(x => x.PeriodoId);
+
+        //            var planExistePromoSinAsignar = (from a in db.dDetallePlanSemanal
+        //                                             join b in db.mPlanSemanal on a.PlanSemanalId equals b.PlanSemanalId
+        //                                             where a.TipoActividadId == 8
+        //                                             && a.UsuarioCreacionId == idUsuario
+        //                                             && b.PeriodoId == maxPeriodoId
+        //                                             select a).ToList();
+        //            int countSinAsig = 0;
+        //            foreach (dDetallePlanSemanal tc in planExistePromoSinAsignar)
+        //            {
+        //                if (tc.InaebaPreregistros.Count() == 0)
+        //                {
+        //                    if (tc.SinProspectos == null)
+        //                    {
+        //                        countSinAsig += 1;
+        //                    }
+        //                }
+        //            }
+        //            if (countSinAsig == 0)
+        //            {
+        //                if (result.Count() > 0)
+        //                {
+        //                    int idPeriodo = result.FirstOrDefault().id;
+
+        //                    var existePlan = (from ps in db.mPlanSemanal
+        //                                      where ps.PeriodoId == idPeriodo
+        //                                      && ps.UsuarioCreacionId == idUsuario
+        //                                      select ps).ToList();
+        //                    if (existePlan.Count() == 0)
+        //                    {
+        //                        var periodo = (from p in db.cPeriodos
+        //                                       where p.PeriodoId == idPeriodo
+        //                                       select p).FirstOrDefault();
+        //                        mPlanSemanal plan = new mPlanSemanal();
+        //                        plan.FechaCreacion = DateTime.Now;
+        //                        plan.DescripcionPlaneacion = "Plan Semanal del " + periodo.DecripcionPeriodo;
+        //                        plan.EstatusId = 7;
+        //                        plan.PeriodoId = idPeriodo;
+        //                        plan.UsuarioCreacionId = idUsuario;
+        //                        db.mPlanSemanal.Add(plan);
+        //                        db.SaveChanges();
+
+        //                        return Json(new { Success = true, id = plan.PlanSemanalId, Message = "guardado correctamente " });
+        //                    }
+        //                    else
+        //                    {
+        //                        return Json(new { Success = false, Message = " No es posible crear mas de un plan por periodo." });
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    return Json(new { Success = false, Message = " No es posible crear el plan, no se encuentra periodo registtrado para la semana en curso." });
+        //                }
+        //            }
+        //            else
+        //            {
+        //                return Json(new { Success = false, Message = " No es posible crear el plan semanal, existen actividades de Promoción y difusión del plan anterior abiertas" });
+        //            }
+        //        }
+        //        catch (Exception exp)
+        //        {
+        //            return Json(new { Success = false, Message = "Error al guardar la información" });
+        //        }
+        //    }
+
+        //    return Json(new { Success = false, Message = "Informacion incompleta" });
+        //}
+
 
         [HttpGet]
         public ActionResult NuevoDetalle(int id)

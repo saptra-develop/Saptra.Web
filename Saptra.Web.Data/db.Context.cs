@@ -20,8 +20,9 @@ namespace Saptra.Web.Data
         public Inaeba_SaptraEntities()
             : base("name=Inaeba_SaptraEntities")
         {
+            ((IObjectContextAdapter)this).ObjectContext.CommandTimeout = 300;
         }
-    
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
@@ -49,6 +50,7 @@ namespace Saptra.Web.Data
         public virtual DbSet<dModulos> dModulos { get; set; }
         public virtual DbSet<mBitacora> mBitacora { get; set; }
         public virtual DbSet<mCorreo> mCorreo { get; set; }
+        public virtual DbSet<mLogApp> mLogApp { get; set; }
         public virtual DbSet<mMenuGrupo> mMenuGrupo { get; set; }
         public virtual DbSet<mPermisos> mPermisos { get; set; }
         public virtual DbSet<mRoles> mRoles { get; set; }

@@ -10,17 +10,12 @@
 namespace Saptra.Web.Data
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class udf_PlanSemanalValidarList_Result
+    public partial class mLogApp
     {
-        public Nullable<int> PlnSemanalId { get; set; }
-        public string TipoFigura { get; set; }
-        public string DescripcionPlan { get; set; }
-        public Nullable<int> PeriodoId { get; set; }
-        public string Periodo { get; set; }
-        public string Usuario { get; set; }
-        public Nullable<int> TieneDetalle { get; set; }
-        public Nullable<int> EstatusId { get; set; }
-        public Nullable<int> RevisaPlanAnterior { get; set; }
+        public long Id { get; set; }
+        public System.DateTime FechaIngreso { get; set; }
+        public int UsuarioId { get; set; }
     }
 }

@@ -4,93 +4,94 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="6064a33ae92244eb82da9d77a03ff2b1" Name="Diagram1">
-        <EntityTypeShape EntityType="SAPTRAModel.cCoordinacionesRegion" Width="1.5" PointX="8.25" PointY="33.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAPTRAModel.cCoordinacionesZona" Width="1.5" PointX="12.75" PointY="33.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAPTRAModel.cEstatus" Width="1.5" PointX="10.5" PointY="33.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAPTRAModel.cPeriodos" Width="1.5" PointX="15.75" PointY="33.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAPTRAModel.cTipoActividades" Width="1.5" PointX="12.75" PointY="37.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAPTRAModel.cTipoCorreo" Width="1.5" PointX="13.5" PointY="26.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAPTRAModel.cTipoEstatus" Width="1.5" PointX="8.25" PointY="40.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAPTRAModel.cTipoFiguras" Width="1.5" PointX="12.75" PointY="29.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAPTRAModel.cTipoNotificaciones" Width="1.5" PointX="8.25" PointY="43.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAPTRAModel.cTiposUsuario" Width="1.5" PointX="15.75" PointY="37.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAPTRAModel.mLecturaCertificados" Width="1.5" PointX="25.5" PointY="30.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAPTRAModel.mCoordinacionRegionZonaUsuario" Width="1.5" PointX="10.5" PointY="30.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAPTRAModel.mCoordinacionZonaUsuario" Width="1.5" PointX="18" PointY="28.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAPTRAModel.mEducandosCaptados" Width="1.5" PointX="23.25" PointY="32.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAPTRAModel.CertificadosProgramados" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAPTRAModel.InaebaPreregistros" Width="1.5" PointX="20.25" PointY="39" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAPTRAModel.dDetallePlanSemanal" Width="1.5" PointX="18" PointY="32.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAPTRAModel.mCheckIn" Width="1.5" PointX="20.25" PointY="29" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAPTRAModel.mPlanSemanal" Width="1.5" PointX="21" PointY="33.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAPTRAModel.dModulos" Width="1.5" PointX="15" PointY="48.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAPTRAModel.mBitacora" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAPTRAModel.mCorreo" Width="1.5" PointX="15.75" PointY="29.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAPTRAModel.mMenuGrupo" Width="1.5" PointX="12.75" PointY="63.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAPTRAModel.mPermisos" Width="1.5" PointX="3" PointY="33" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAPTRAModel.mRoles" Width="1.5" PointX="0.75" PointY="33.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAPTRAModel.mNotificaciones" Width="1.5" PointX="26.25" PointY="35.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAPTRAModel.mResetPassword" Width="1.5" PointX="8.25" PointY="46.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAPTRAModel.mUsuarios" Width="1.5" PointX="6" PointY="30.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SAPTRAModel.mSolicitudesVehiculo" Width="1.5" PointX="23.25" PointY="38.125" IsExpanded="true" />
-        <AssociationConnector Association="SAPTRAModel.FK_cCoordinacionesRegion_cEstatus" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_cCoordinacionesRegion_mUsuarios" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_cCoordinacionesZona_cCoordinacionesRegion" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_mCoordinacionRegionZonaUsuario_cCoordinacionesRegion" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_cCoordinacionesZona_cEstatus" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_cCoordinacionesZona_mUsuarios" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_mCoordinacionZonaUsuario_cCoordinacionesZona" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_cEstatus_mUsuarios" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_Correo_Estatus" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_cTiposUsuario_cEstatus" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_DetallePlanSemanal_Estatus" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_dModulos_cEstatus" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_Estatus_TipoEstatus" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_mLecturaCertificados_cEstatus" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_mMenuGrupo_Estatus" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_mNotificaciones_cEstatus" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_mPermisos_cEstatus" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_mUsuarios_cEstatus" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_Periodos_Estatus" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_PlanSemanal_Estatus" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_Roles_Estatus" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_TipoActividades_Estatus" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_TipoFiguras_Estatus" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_cPeriodos_mUsuarios" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_mPlanSemanal_cPeriodos" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_cTipoActividades_mUsuarios" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_DetallePlanSemanal_TipoActividades" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_Correo_TipoCorreo" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_cTipoEstatus_mUsuarios" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_cTipoFiguras_mUsuarios" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_Usuarios_TipoFiguras" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_cTipoNotificaciones_mUsuarios" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_mNotificaciones_cTipoNotificaciones" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_cTiposUsuario_mUsuarios" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_mLecturaCertificados_mCheckIn" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_mLecturaCertificados_mUsuarios" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_mCoordinacionRegionZonaUsuario_mUsuarios" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_mCoordinacionZonaUsuario_mUsuarios" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_mCoordinacionZonaUsuario_mUsuarios1" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_mNotificaciones_mCoordinacionZonaUsuario" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_mEducandosCaptados_dDetallePlanSemanal" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_mEducandosCaptados_mUsuarios" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_InaebaPreregistros_dDetallePlanSemanal" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_dDetallePlanSemanal_mPlanSemanal" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_dDetallePlanSemanal_mUsuarios" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_mCheckIn_dDetallePlanSemanal" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_mSolicitudesVehiculo_dDetallePlanSemanal" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_mCheckIn_mUsuarios" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_mNotificaciones_mPlanSemanal" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_mPlanSemanal_mUsuarios" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_dModulos_mMenuGrupo" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_mPermisos_dModulo" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_mPermisos_mRol" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_Usuarios_Rolesl" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_mNotificaciones_mUsuarios" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_mResetPassword_mUsuarios" ManuallyRouted="false" />
-        <AssociationConnector Association="SAPTRAModel.FK_mSolicitudesVehiculo_mUsuarios" ManuallyRouted="false" />
+      <Diagram DiagramId="e79c25c4e58c453ca8e237d746cda05b" Name="Diagram1">
+        <EntityTypeShape EntityType="Inaeba_GeorrefenciaModel.cCoordinacionesRegion" Width="1.5" PointX="8.25" PointY="33.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorrefenciaModel.cCoordinacionesZona" Width="1.5" PointX="12.75" PointY="33.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorrefenciaModel.cEstatus" Width="1.5" PointX="10.5" PointY="33.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorrefenciaModel.cPeriodos" Width="1.5" PointX="15.75" PointY="33.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorrefenciaModel.cTipoActividades" Width="1.5" PointX="12.75" PointY="37.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorrefenciaModel.cTipoCorreo" Width="1.5" PointX="13.5" PointY="26.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorrefenciaModel.cTipoEstatus" Width="1.5" PointX="8.25" PointY="40.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorrefenciaModel.cTipoFiguras" Width="1.5" PointX="12.75" PointY="29.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorrefenciaModel.cTipoNotificaciones" Width="1.5" PointX="8.25" PointY="43.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorrefenciaModel.cTiposUsuario" Width="1.5" PointX="15.75" PointY="37.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorrefenciaModel.mLecturaCertificados" Width="1.5" PointX="25.5" PointY="30.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorrefenciaModel.mCoordinacionRegionZonaUsuario" Width="1.5" PointX="10.5" PointY="30.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorrefenciaModel.mCoordinacionZonaUsuario" Width="1.5" PointX="18" PointY="28.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorrefenciaModel.mEducandosCaptados" Width="1.5" PointX="23.25" PointY="32.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorrefenciaModel.CertificadosProgramados" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorrefenciaModel.InaebaPreregistros" Width="1.5" PointX="20.25" PointY="39" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorrefenciaModel.dDetallePlanSemanal" Width="1.5" PointX="18" PointY="32.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorrefenciaModel.mCheckIn" Width="1.5" PointX="20.25" PointY="29" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorrefenciaModel.mPlanSemanal" Width="1.5" PointX="21" PointY="33.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorrefenciaModel.dModulos" Width="1.5" PointX="15" PointY="48.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorrefenciaModel.mBitacora" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorrefenciaModel.mCorreo" Width="1.5" PointX="15.75" PointY="29.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorrefenciaModel.mLogApp" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorrefenciaModel.mMenuGrupo" Width="1.5" PointX="12.75" PointY="63.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorrefenciaModel.mPermisos" Width="1.5" PointX="3" PointY="33" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorrefenciaModel.mRoles" Width="1.5" PointX="0.75" PointY="33.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorrefenciaModel.mNotificaciones" Width="1.5" PointX="26.25" PointY="35.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorrefenciaModel.mResetPassword" Width="1.5" PointX="8.25" PointY="46.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorrefenciaModel.mUsuarios" Width="1.5" PointX="6" PointY="30.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Inaeba_GeorrefenciaModel.mSolicitudesVehiculo" Width="1.5" PointX="23.25" PointY="38.125" IsExpanded="true" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_cCoordinacionesRegion_cEstatus" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_cCoordinacionesRegion_mUsuarios" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_cCoordinacionesZona_cCoordinacionesRegion" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_mCoordinacionRegionZonaUsuario_cCoordinacionesRegion" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_cCoordinacionesZona_cEstatus" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_cCoordinacionesZona_mUsuarios" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_mCoordinacionZonaUsuario_cCoordinacionesZona" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_cEstatus_mUsuarios" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_Correo_Estatus" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_cTiposUsuario_cEstatus" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_DetallePlanSemanal_Estatus" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_dModulos_cEstatus" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_Estatus_TipoEstatus" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_mLecturaCertificados_cEstatus" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_mMenuGrupo_Estatus" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_mNotificaciones_cEstatus" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_mPermisos_cEstatus" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_mUsuarios_cEstatus" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_Periodos_Estatus" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_PlanSemanal_Estatus" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_Roles_Estatus" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_TipoActividades_Estatus" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_TipoFiguras_Estatus" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_cPeriodos_mUsuarios" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_mPlanSemanal_cPeriodos" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_cTipoActividades_mUsuarios" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_DetallePlanSemanal_TipoActividades" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_Correo_TipoCorreo" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_cTipoEstatus_mUsuarios" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_cTipoFiguras_mUsuarios" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_Usuarios_TipoFiguras" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_cTipoNotificaciones_mUsuarios" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_mNotificaciones_cTipoNotificaciones" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_cTiposUsuario_mUsuarios" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_mLecturaCertificados_mCheckIn" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_mLecturaCertificados_mUsuarios" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_mCoordinacionRegionZonaUsuario_mUsuarios" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_mCoordinacionZonaUsuario_mUsuarios" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_mCoordinacionZonaUsuario_mUsuarios1" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_mNotificaciones_mCoordinacionZonaUsuario" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_mEducandosCaptados_dDetallePlanSemanal" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_mEducandosCaptados_mUsuarios" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_InaebaPreregistros_dDetallePlanSemanal" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_dDetallePlanSemanal_mPlanSemanal" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_dDetallePlanSemanal_mUsuarios" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_mCheckIn_dDetallePlanSemanal" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_mSolicitudesVehiculo_dDetallePlanSemanal" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_mCheckIn_mUsuarios" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_mNotificaciones_mPlanSemanal" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_mPlanSemanal_mUsuarios" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_dModulos_mMenuGrupo" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_mPermisos_dModulo" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_mPermisos_mRol" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_Usuarios_Rolesl" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_mNotificaciones_mUsuarios" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_mResetPassword_mUsuarios" ManuallyRouted="false" />
+        <AssociationConnector Association="Inaeba_GeorrefenciaModel.FK_mSolicitudesVehiculo_mUsuarios" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

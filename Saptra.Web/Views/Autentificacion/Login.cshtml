@@ -56,7 +56,8 @@
                                 </div>
 
                                 <div class="wrap-input100 validate-input" data-validate="Ingresar contraseña">
-                                    @Html.PasswordFor(m => m.Contrasena, new { @class = "input100", placeholder = Resources.Autentificacion.password, autocomplete = "off" })
+                                    @*@Html.PasswordFor(m => m.Contrasena, new { @class = "input100", placeholder = Resources.Autentificacion.password, autocomplete = "off" })*@
+                                    @Html.TextBoxFor(m => m.Contrasena, new { @class = "input100", autofocus = "true", type= "password", placeholder = Resources.Autentificacion.password, autocomplete = "off" })
                                     <span class="focus-input100" data-placeholder="&#xe80f;"></span>
                                 </div>
                                 <div>
@@ -115,9 +116,9 @@
                     </div>
                 </div>
                 <div style="position: absolute; float:right; right: 30px; bottom: 73px; z-index:11; background-color: rgba(0, 255, 0, 0.3);">
-                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nueva versión: 1.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong>
+                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nueva versión: 1.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong>
                 </div>
-                <div style="position: absolute; float:right; right: 30px; bottom: 93px; z-index:10;"><a href="http://200.33.114.167/saptra_prd/saptraMovil/app-debug.apk" target="_blank"><img src="~/Content/images/saptraApp.png" width="170" /></a></div>
+                <div style="position: absolute; float:right; right: 30px; bottom: 93px; z-index:10;"><a href="http://200.33.114.167/saptra/saptraMovil/app-debug.apk" target="_blank"><img src="~/Content/images/saptraApp.png" width="170" /></a></div>
             </div>
 
         </div>
