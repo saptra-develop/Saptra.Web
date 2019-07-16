@@ -28,8 +28,15 @@ namespace Saptra.Web.Controllers
     {
          public static string GetMD5(string str)
         {
+            //Encoding iso = Encoding.GetEncoding("ISO-8859-1");
+            //Encoding utf8 = Encoding.UTF8;
+            //byte[] utfBytes = utf8.GetBytes(str);
+            //byte[] isoBytes = Encoding.Convert(utf8, iso, utfBytes);
+            //string pas = iso.GetString(isoBytes);
+
             MD5 md5 = MD5CryptoServiceProvider.Create();
-            ASCIIEncoding encoding = new ASCIIEncoding();
+            //ASCIIEncoding encoding = new ASCIIEncoding();
+            Encoding encoding = Encoding.GetEncoding("ISO-8859-1");
             byte[] stream = null;
             StringBuilder sb = new StringBuilder();
             stream = md5.ComputeHash(encoding.GetBytes(str));

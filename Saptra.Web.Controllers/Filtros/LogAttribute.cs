@@ -24,7 +24,9 @@ namespace Saptra.Web.Controllers
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+#pragma warning disable CS4014 // Como esta llamada no es 'awaited', la ejecución del método actual continuará antes de que se complete la llamada. Puede aplicar el operador 'await' al resultado de la llamada.
             Log(filterContext.RouteData, filterContext.HttpContext);
+#pragma warning restore CS4014 // Como esta llamada no es 'awaited', la ejecución del método actual continuará antes de que se complete la llamada. Puede aplicar el operador 'await' al resultado de la llamada.
 
             base.OnActionExecuting(filterContext);
         }

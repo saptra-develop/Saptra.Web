@@ -1,8 +1,50 @@
 ﻿<!DOCTYPE html>
-<html>
+<style>
+    .quantity {
+        position: absolute;
+        display: inline-block;
+        top: -15px;
+        right: 1px;
+        height: 15px;
+        width: 15px;
+        /*line-height: 15px;*/
+        text-align: center;
+        background: #ef5350;
+        color: #fff;
+        -webkit-border-radius: 30px;
+        -moz-border-radius: 30px;
+        border-radius: 30px;
+        font-size: 12px;
+    }
+
+    .notify {
+        position: relative;
+        top: -22px;
+        right: -9px;
+    }
+
+        .notify .heartbit {
+            position: absolute;
+            top: -20px;
+            right: -4px;
+            height: 25px;
+            width: 25px;
+            z-index: 10;
+            border: 5px solid #ef5350;
+            border-radius: 70px;
+            -moz-animation: heartbit 1s ease-out;
+            -moz-animation-iteration-count: infinite;
+            -o-animation: heartbit 1s ease-out;
+            -o-animation-iteration-count: infinite;
+            -webkit-animation: heartbit 1s ease-out;
+            -webkit-animation-iteration-count: infinite;
+            animation-iteration-count: infinite;
+        }
+</style>
+<html lang="en">
 
 <head>
-    <meta charset="utf-8" />
+    <meta charset="iso-8859-1" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="~/favicon.ico">
     <title>@ViewBag.Title - SAPTRA</title>
@@ -11,50 +53,7 @@
 
     @{ string scope = System.Configuration.ConfigurationManager.AppSettings["CCService"]; }
 </head>
-<style>
-        .quantity {
-            position: absolute;
-            display: inline-block;
-            top: -15px;
-            right: 1px;
-            height: 15px;
-            width: 15px;
-            /*line-height: 15px;*/
-            text-align: center;
-            background: #ef5350;
-            color: #fff;
-            -webkit-border-radius: 30px;
-            -moz-border-radius: 30px;
-            border-radius: 30px;
-            font-size: 12px;
 
-        }
-        .notify {
-            position: relative;
-            top: -22px;
-            right: -9px;
-        }
-
-            .notify .heartbit {
-                position: absolute;
-                top: -20px;
-                right: -4px;
-                height: 25px;
-                width: 25px;
-                z-index: 10;
-                border: 5px solid #ef5350;
-                border-radius: 70px;
-                -moz-animation: heartbit 1s ease-out;
-                -moz-animation-iteration-count: infinite;
-                -o-animation: heartbit 1s ease-out;
-                -o-animation-iteration-count: infinite;
-                -webkit-animation: heartbit 1s ease-out;
-                -webkit-animation-iteration-count: infinite;
-                animation-iteration-count: infinite;
-            }
-       
-
-</style>
 <body>
     <div id="wrapper" style="background-color:#E6E6E6;">
         <!-- Navigation for full screen -->

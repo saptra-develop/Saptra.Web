@@ -4,6 +4,7 @@
 
 <div class="row">
     <img src="~/Content/images/Logo_SAPTRA.jpg" class="img-responsive center-block" />
+    <input type="hidden" id="nombreUsu" value="@ViewBag.UserName"/>
 </div>
 
 
@@ -16,7 +17,8 @@
             var Inicio = {
                 CargarLocalStorage: function () {
                     if (localStorage.idUser === undefined || localStorage.idUser === '') {
-                        FCH.ReiniciaLocalStorage('@ViewBag.IdUsuario', '@ViewBag.UserName');
+                        var nombre = "@ViewBag.UserName";
+                        FCH.ReiniciaLocalStorage('@ViewBag.IdUsuario', nombre);
                         FCH.AsignarAvatarLocalStorage('@ViewBag.UserAvatar');
                     }
                 }

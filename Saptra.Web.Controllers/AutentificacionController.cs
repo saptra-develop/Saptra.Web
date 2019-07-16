@@ -77,7 +77,9 @@ namespace Saptra.Web.Controllers
                     ViewBag.error = Resources.Autentificacion.msg1;
                 ViewBag.successChangePassword = string.Empty;
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 ViewBag.error = "Login:" + "Error al obtener la información";
                 ViewBag.successChangePassword = string.Empty;
@@ -317,7 +319,9 @@ namespace Saptra.Web.Controllers
                     return Json(new { Success = false, Message = "No existe correo configurado del emisor." });
                 }
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "Error al obtener la información" });
             }
@@ -386,7 +390,9 @@ namespace Saptra.Web.Controllers
                     return View();
                 }
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 ViewBag.error = "Login:" + "Error al guardar la información";
             }

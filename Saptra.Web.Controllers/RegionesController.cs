@@ -49,7 +49,9 @@ namespace Sispro.Web.Controllers
                 return (Json(result, JsonRequestBehavior.AllowGet));
 
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
@@ -114,7 +116,9 @@ namespace Sispro.Web.Controllers
                 }
 
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
@@ -182,7 +186,9 @@ namespace Sispro.Web.Controllers
 
                     return Json(new { Success = true, id = pobjModelo.CoordinacionRegionId, Message = "guardado correctamente " });
                 }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
                 catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
                 {
                     return Json(new { Success = false, Message = "Error al guardar la información" });
                 }
@@ -218,7 +224,9 @@ namespace Sispro.Web.Controllers
                 return Json(new { Success = true, id = pobjModelo.CoordinacionRegionId, Message = "actualizada correctamente " });
 
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "Error al guardar la información" });
             }
@@ -238,7 +246,9 @@ namespace Sispro.Web.Controllers
 
                 return Json(new { Success = true, Message = "Se borro correctamente la Región " });
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "Error al eliminar la información" });
             }

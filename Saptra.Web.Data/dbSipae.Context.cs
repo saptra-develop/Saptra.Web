@@ -26,5 +26,10 @@ namespace Saptra.Web.Data
         }
     
         public virtual DbSet<Vehiculos> Vehiculos { get; set; }
+        public virtual DbSet<VehiculosCondiciones> VehiculosCondiciones { get; set; }
+        public virtual DbSet<VehiculosCondicionesDetalles> VehiculosCondicionesDetalles { get; set; }
+        public virtual DbSet<VehiculosCondicionesTipos> VehiculosCondicionesTipos { get; set; }
+        public virtual DbSet<VehiculosMarcas> VehiculosMarcas { get; set; }
+        public virtual DbSet<VehiculosSolicitudes> VehiculosSolicitudes { get; set; }
     }
 }

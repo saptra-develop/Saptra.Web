@@ -333,10 +333,10 @@ var FCH = {
             FCH.SeleccionaOpcionMenu();
         });
     },
-    ReiniciaLocalStorage: function (pUsuario, pNombre, pProveedor) {
+    ReiniciaLocalStorage: function (pUsuario, pNombre) {
         localStorage.setItem("idUser", pUsuario);
-        localStorage.setItem("UserName", pNombre);
-        if ($('#idProveedorAsignadoEnLogin').length) localStorage.setItem("idProveedor", pProveedor);
+        var nombre = $('#nombreUsu').val();
+        localStorage.setItem("UserName", nombre);
     },
     AsignarAvatarLocalStorage: function (pAvatar) {
         localStorage.setItem("UserAvatar", pAvatar);

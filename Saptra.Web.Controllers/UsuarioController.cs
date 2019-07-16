@@ -63,7 +63,9 @@ namespace Saptra.Web.Controllers
 
                 return Json(new { Success = true, datos = result }, JsonRequestBehavior.AllowGet);
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "Error al cargar la información."}, JsonRequestBehavior.AllowGet);
             }
@@ -191,7 +193,9 @@ namespace Saptra.Web.Controllers
                         return Json(new { Success = true, id = pobjModelo.UsuarioId, Message = "Se guardó correctamente el usuario " });
                     }
                 }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
                 catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
                 {
                     return Json(new { Success = false, Message = "No fue posible guardar la información" });
                 }
@@ -261,7 +265,9 @@ namespace Saptra.Web.Controllers
 
                     return Json(new { Success = true, UsuarioPerfil, Message = "Se actualizo correctamente el usuario " });
                 }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
                 catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
                 {
                     return Json(new { Success = false, Message = "No fue posible guardar la información." });
                 }
@@ -323,7 +329,9 @@ namespace Saptra.Web.Controllers
                 //    return Json(new { Success = false, id = idUser, Message = "Error : " + resultados[1] });
                 //}
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "No fue posible guardar la información." });
             }
@@ -594,7 +602,9 @@ namespace Saptra.Web.Controllers
 
                     }
                 }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
                 catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
                 {
                     return Json(new { Success = false, Message = "No fue posible guardar la información." });
                 }
@@ -629,7 +639,9 @@ namespace Saptra.Web.Controllers
 
                 return Json(new { Success = true, Message = "Se borro correctamente el usuario " });
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "No fue posible eliminar la información." });
             }
@@ -720,7 +732,9 @@ namespace Saptra.Web.Controllers
                 }
 
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "No fue posible cargar la información." }, JsonRequestBehavior.AllowGet);
             }
@@ -741,7 +755,9 @@ namespace Saptra.Web.Controllers
                 }, JsonRequestBehavior.AllowGet));
 
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "No fue posible validar la información." }, JsonRequestBehavior.AllowGet);
             }
@@ -763,7 +779,9 @@ namespace Saptra.Web.Controllers
                 }, JsonRequestBehavior.AllowGet));
 
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "No fue posible validar la información." }, JsonRequestBehavior.AllowGet);
             }
@@ -777,11 +795,15 @@ namespace Saptra.Web.Controllers
         public JsonResult SubirArchivo(mUsuarios pobjModelo)
         {
             string filePath = "";
+#pragma warning disable CS0219 // La variable 'nombreArchivo' está asignada pero su valor nunca se usa
             string nombreArchivo = "";
+#pragma warning restore CS0219 // La variable 'nombreArchivo' está asignada pero su valor nunca se usa
             string nombre = "";
             try
             {
+#pragma warning disable CS0219 // La variable 'urlImagen' está asignada pero su valor nunca se usa
                 string urlImagen = "prueba";
+#pragma warning restore CS0219 // La variable 'urlImagen' está asignada pero su valor nunca se usa
                 if (Request.Files.Count > 0)
                 {
 
@@ -806,7 +828,9 @@ namespace Saptra.Web.Controllers
 
                 return Json(new { Success = true, Archivo = filePath });
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "No fue posible subir la imagen." });
             }
@@ -847,7 +871,9 @@ namespace Saptra.Web.Controllers
 
                 return Json(new { Success = true, datos = result }, JsonRequestBehavior.AllowGet);
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "Error al cargar la información." }, JsonRequestBehavior.AllowGet);
             }
@@ -868,7 +894,9 @@ namespace Saptra.Web.Controllers
 
                 return (Json(result, JsonRequestBehavior.AllowGet));
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "Error al cargar la información." }, JsonRequestBehavior.AllowGet);
             }
@@ -904,7 +932,9 @@ namespace Saptra.Web.Controllers
                     }
                    
                 }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
                 catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
                 {
                     return Json(new { Success = false, Message = "Error al guardar la información" });
                 }
@@ -952,7 +982,9 @@ namespace Saptra.Web.Controllers
                     return Json(new { Success = true, id = pobjModelo.CorreoId, Message = "actualizado correctamente " });
                 }
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "Error al guardar la información" });
             }

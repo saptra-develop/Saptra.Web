@@ -4,8 +4,18 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="acf92b1ab6394d19b41974346697d314" Name="Diagram1">
-        <EntityTypeShape EntityType="SIPAEModel.Vehiculos" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+      <Diagram DiagramId="053206deeeca4717995c72efb345d9ef" Name="Diagram1">
+        <EntityTypeShape EntityType="DB_SIPAEModel.Vehiculos" Width="1.5" PointX="3" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_SIPAEModel.VehiculosCondiciones" Width="1.5" PointX="5.25" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_SIPAEModel.VehiculosCondicionesDetalles" Width="1.5" PointX="7.5" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_SIPAEModel.VehiculosCondicionesTipos" Width="1.5" PointX="5.25" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_SIPAEModel.VehiculosMarcas" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_SIPAEModel.VehiculosSolicitudes" Width="1.5" PointX="5.25" PointY="4.875" IsExpanded="true" />
+        <AssociationConnector Association="DB_SIPAEModel.R_219" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_SIPAEModel.R_222" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_SIPAEModel.R_227" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_SIPAEModel.R_223" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_SIPAEModel.R_226" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

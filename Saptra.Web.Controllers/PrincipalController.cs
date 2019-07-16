@@ -13,6 +13,7 @@ using System.Web.Mvc;
 using System.Web.UI;
 using System.IO;
 using Saptra.Web.Data;
+using System.Text;
 using Saptra.Web.Models;
 using Saptra.Web.Utils;
 
@@ -48,7 +49,16 @@ namespace Saptra.Web.Controllers
                 //{
                 //    ViewBag.IdProveedor = result.idProveedor;
                 //}
-                ViewBag.UserName = result.NombresUsuario + " " + result.ApellidosUsuario;
+
+
+                string nombre = result.NombresUsuario + " " + result.ApellidosUsuario;
+                Encoding encoding = Encoding.GetEncoding("ISO-8859-1");
+                byte[] stream = null;
+                stream = encoding.GetBytes(nombre);
+
+                //byte[] bytes = Encoding.Default.GetBytes(nombre);
+                nombre = Encoding.Default.GetString(stream);
+                ViewBag.UserName = nombre;
                 ViewBag.UserAvatar = result.ImagenUsuario == null ? "../Content/images/avatar.jpg" : result.ImagenUsuario;
 
                 Response.Cookies.Add(cookie);

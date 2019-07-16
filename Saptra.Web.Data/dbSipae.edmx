@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SIPAEModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="DB_SIPAEModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Vehiculos">
           <Key>
             <PropertyRef Name="VehiculoId" />
@@ -23,14 +23,170 @@
           <Property Name="UsuarioCreoId" Type="int" />
           <Property Name="UsuarioId" Type="int" />
         </EntityType>
-        <EntityContainer Name="SIPAEModelStoreContainer">
+        <EntityType Name="VehiculosCondiciones">
+          <Key>
+            <PropertyRef Name="VehiculoCondicionId" />
+          </Key>
+          <Property Name="VehiculoCondicionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Fecha" Type="datetime" />
+          <Property Name="VehiculoId" Type="int" />
+          <Property Name="FechaCreacion" Type="datetime" />
+          <Property Name="FechaActualizacion" Type="datetime" />
+          <Property Name="UsuarioModificoId" Type="int" />
+          <Property Name="UsuarioCreoId" Type="int" />
+          <Property Name="UsuarioId" Type="int" />
+        </EntityType>
+        <EntityType Name="VehiculosCondicionesDetalles">
+          <Key>
+            <PropertyRef Name="VehiculoCondicionDetalleId" />
+          </Key>
+          <Property Name="VehiculoCondicionDetalleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Diagnostico" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="VehiculoCondicionId" Type="int" />
+          <Property Name="VehiculoCondicionTipoId" Type="tinyint" />
+          <Property Name="FechaCreacion" Type="datetime" />
+          <Property Name="FechaActualizacion" Type="datetime" />
+          <Property Name="UsuarioModificoId" Type="int" />
+          <Property Name="UsuarioCreoId" Type="int" />
+        </EntityType>
+        <EntityType Name="VehiculosCondicionesTipos">
+          <Key>
+            <PropertyRef Name="VehiculoCondicionTipoId" />
+          </Key>
+          <Property Name="VehiculoCondicionTipoId" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" />
+          <Property Name="FechaActualizacion" Type="datetime" />
+          <Property Name="UsuarioModificoId" Type="int" />
+          <Property Name="UsuarioCreoId" Type="int" />
+        </EntityType>
+        <EntityType Name="VehiculosMarcas">
+          <Key>
+            <PropertyRef Name="VehiculoMarcaId" />
+          </Key>
+          <Property Name="VehiculoMarcaId" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EstatusVehiculoId" Type="tinyint" />
+          <Property Name="FechaCreacion" Type="datetime" />
+          <Property Name="FechaActualizacion" Type="datetime" />
+          <Property Name="UsuarioModificoId" Type="int" />
+          <Property Name="UsuarioCreoId" Type="int" />
+        </EntityType>
+        <EntityType Name="VehiculosSolicitudes">
+          <Key>
+            <PropertyRef Name="SolicitudVehiculoId" />
+          </Key>
+          <Property Name="SolicitudVehiculoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VehiculoId" Type="int" Nullable="false" />
+          <Property Name="FechaSolicitud" Type="datetime" Nullable="false" />
+          <Property Name="FechaModificacion" Type="datetime" />
+          <Property Name="FechaAutorizacion" Type="datetime" />
+          <Property Name="FechaUsoInicio" Type="datetime" />
+          <Property Name="KilometrajeInicio" Type="varchar" MaxLength="50" />
+          <Property Name="KilometrajeFin" Type="varchar" MaxLength="50" />
+          <Property Name="FechaUsoFin" Type="datetime" />
+          <Property Name="DescripcionActividad" Type="varchar" MaxLength="250" />
+          <Property Name="CirculoEstudioId" Type="int" />
+          <Property Name="Origen" Type="varchar" MaxLength="250" />
+          <Property Name="Destino" Type="varchar" MaxLength="250" />
+          <Property Name="EstatusSolicitudVehiculoId" Type="tinyint" />
+          <Property Name="MotivoAsignacion" Type="char" MaxLength="18" />
+          <Property Name="AutorizadoPorId" Type="int" />
+          <Property Name="SolicitadoPorId" Type="int" />
+        </EntityType>
+        <Association Name="R_219">
+          <End Role="VehiculosMarcas" Type="Self.VehiculosMarcas" Multiplicity="0..1" />
+          <End Role="Vehiculos" Type="Self.Vehiculos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VehiculosMarcas">
+              <PropertyRef Name="VehiculoMarcaId" />
+            </Principal>
+            <Dependent Role="Vehiculos">
+              <PropertyRef Name="VehiculoMarcaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_222">
+          <End Role="Vehiculos" Type="Self.Vehiculos" Multiplicity="0..1" />
+          <End Role="VehiculosCondiciones" Type="Self.VehiculosCondiciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehiculos">
+              <PropertyRef Name="VehiculoId" />
+            </Principal>
+            <Dependent Role="VehiculosCondiciones">
+              <PropertyRef Name="VehiculoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_223">
+          <End Role="VehiculosCondiciones" Type="Self.VehiculosCondiciones" Multiplicity="0..1" />
+          <End Role="VehiculosCondicionesDetalles" Type="Self.VehiculosCondicionesDetalles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VehiculosCondiciones">
+              <PropertyRef Name="VehiculoCondicionId" />
+            </Principal>
+            <Dependent Role="VehiculosCondicionesDetalles">
+              <PropertyRef Name="VehiculoCondicionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_226">
+          <End Role="VehiculosCondicionesTipos" Type="Self.VehiculosCondicionesTipos" Multiplicity="0..1" />
+          <End Role="VehiculosCondicionesDetalles" Type="Self.VehiculosCondicionesDetalles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VehiculosCondicionesTipos">
+              <PropertyRef Name="VehiculoCondicionTipoId" />
+            </Principal>
+            <Dependent Role="VehiculosCondicionesDetalles">
+              <PropertyRef Name="VehiculoCondicionTipoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_227">
+          <End Role="Vehiculos" Type="Self.Vehiculos" Multiplicity="1" />
+          <End Role="VehiculosSolicitudes" Type="Self.VehiculosSolicitudes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehiculos">
+              <PropertyRef Name="VehiculoId" />
+            </Principal>
+            <Dependent Role="VehiculosSolicitudes">
+              <PropertyRef Name="VehiculoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DB_SIPAEModelStoreContainer">
           <EntitySet Name="Vehiculos" EntityType="Self.Vehiculos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VehiculosCondiciones" EntityType="Self.VehiculosCondiciones" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VehiculosCondicionesDetalles" EntityType="Self.VehiculosCondicionesDetalles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VehiculosCondicionesTipos" EntityType="Self.VehiculosCondicionesTipos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VehiculosMarcas" EntityType="Self.VehiculosMarcas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VehiculosSolicitudes" EntityType="Self.VehiculosSolicitudes" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="R_219" Association="Self.R_219">
+            <End Role="VehiculosMarcas" EntitySet="VehiculosMarcas" />
+            <End Role="Vehiculos" EntitySet="Vehiculos" />
+          </AssociationSet>
+          <AssociationSet Name="R_222" Association="Self.R_222">
+            <End Role="Vehiculos" EntitySet="Vehiculos" />
+            <End Role="VehiculosCondiciones" EntitySet="VehiculosCondiciones" />
+          </AssociationSet>
+          <AssociationSet Name="R_223" Association="Self.R_223">
+            <End Role="VehiculosCondiciones" EntitySet="VehiculosCondiciones" />
+            <End Role="VehiculosCondicionesDetalles" EntitySet="VehiculosCondicionesDetalles" />
+          </AssociationSet>
+          <AssociationSet Name="R_226" Association="Self.R_226">
+            <End Role="VehiculosCondicionesTipos" EntitySet="VehiculosCondicionesTipos" />
+            <End Role="VehiculosCondicionesDetalles" EntitySet="VehiculosCondicionesDetalles" />
+          </AssociationSet>
+          <AssociationSet Name="R_227" Association="Self.R_227">
+            <End Role="Vehiculos" EntitySet="Vehiculos" />
+            <End Role="VehiculosSolicitudes" EntitySet="VehiculosSolicitudes" />
+          </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="SIPAEModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="DB_SIPAEModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Vehiculos">
           <Key>
             <PropertyRef Name="VehiculoId" />
@@ -48,18 +204,184 @@
           <Property Name="UsuarioModificoId" Type="Int32" />
           <Property Name="UsuarioCreoId" Type="Int32" />
           <Property Name="UsuarioId" Type="Int32" />
+          <NavigationProperty Name="VehiculosMarcas" Relationship="Self.R_219" FromRole="Vehiculos" ToRole="VehiculosMarcas" />
+          <NavigationProperty Name="VehiculosCondiciones" Relationship="Self.R_222" FromRole="Vehiculos" ToRole="VehiculosCondiciones" />
+          <NavigationProperty Name="VehiculosSolicitudes" Relationship="Self.R_227" FromRole="Vehiculos" ToRole="VehiculosSolicitudes" />
         </EntityType>
+        <EntityType Name="VehiculosCondiciones">
+          <Key>
+            <PropertyRef Name="VehiculoCondicionId" />
+          </Key>
+          <Property Name="VehiculoCondicionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Fecha" Type="DateTime" Precision="3" />
+          <Property Name="VehiculoId" Type="Int32" />
+          <Property Name="FechaCreacion" Type="DateTime" Precision="3" />
+          <Property Name="FechaActualizacion" Type="DateTime" Precision="3" />
+          <Property Name="UsuarioModificoId" Type="Int32" />
+          <Property Name="UsuarioCreoId" Type="Int32" />
+          <Property Name="UsuarioId" Type="Int32" />
+          <NavigationProperty Name="Vehiculos" Relationship="Self.R_222" FromRole="VehiculosCondiciones" ToRole="Vehiculos" />
+          <NavigationProperty Name="VehiculosCondicionesDetalles" Relationship="Self.R_223" FromRole="VehiculosCondiciones" ToRole="VehiculosCondicionesDetalles" />
+        </EntityType>
+        <EntityType Name="VehiculosCondicionesDetalles">
+          <Key>
+            <PropertyRef Name="VehiculoCondicionDetalleId" />
+          </Key>
+          <Property Name="VehiculoCondicionDetalleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Diagnostico" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="VehiculoCondicionId" Type="Int32" />
+          <Property Name="VehiculoCondicionTipoId" Type="Byte" />
+          <Property Name="FechaCreacion" Type="DateTime" Precision="3" />
+          <Property Name="FechaActualizacion" Type="DateTime" Precision="3" />
+          <Property Name="UsuarioModificoId" Type="Int32" />
+          <Property Name="UsuarioCreoId" Type="Int32" />
+          <NavigationProperty Name="VehiculosCondiciones" Relationship="Self.R_223" FromRole="VehiculosCondicionesDetalles" ToRole="VehiculosCondiciones" />
+          <NavigationProperty Name="VehiculosCondicionesTipos" Relationship="Self.R_226" FromRole="VehiculosCondicionesDetalles" ToRole="VehiculosCondicionesTipos" />
+        </EntityType>
+        <EntityType Name="VehiculosCondicionesTipos">
+          <Key>
+            <PropertyRef Name="VehiculoCondicionTipoId" />
+          </Key>
+          <Property Name="VehiculoCondicionTipoId" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Precision="3" />
+          <Property Name="FechaActualizacion" Type="DateTime" Precision="3" />
+          <Property Name="UsuarioModificoId" Type="Int32" />
+          <Property Name="UsuarioCreoId" Type="Int32" />
+          <NavigationProperty Name="VehiculosCondicionesDetalles" Relationship="Self.R_226" FromRole="VehiculosCondicionesTipos" ToRole="VehiculosCondicionesDetalles" />
+        </EntityType>
+        <EntityType Name="VehiculosMarcas">
+          <Key>
+            <PropertyRef Name="VehiculoMarcaId" />
+          </Key>
+          <Property Name="VehiculoMarcaId" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EstatusVehiculoId" Type="Byte" />
+          <Property Name="FechaCreacion" Type="DateTime" Precision="3" />
+          <Property Name="FechaActualizacion" Type="DateTime" Precision="3" />
+          <Property Name="UsuarioModificoId" Type="Int32" />
+          <Property Name="UsuarioCreoId" Type="Int32" />
+          <NavigationProperty Name="Vehiculos" Relationship="Self.R_219" FromRole="VehiculosMarcas" ToRole="Vehiculos" />
+        </EntityType>
+        <EntityType Name="VehiculosSolicitudes">
+          <Key>
+            <PropertyRef Name="SolicitudVehiculoId" />
+          </Key>
+          <Property Name="SolicitudVehiculoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VehiculoId" Type="Int32" Nullable="false" />
+          <Property Name="FechaSolicitud" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FechaModificacion" Type="DateTime" Precision="3" />
+          <Property Name="FechaAutorizacion" Type="DateTime" Precision="3" />
+          <Property Name="FechaUsoInicio" Type="DateTime" Precision="3" />
+          <Property Name="KilometrajeInicio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="KilometrajeFin" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FechaUsoFin" Type="DateTime" Precision="3" />
+          <Property Name="DescripcionActividad" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="CirculoEstudioId" Type="Int32" />
+          <Property Name="Origen" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Destino" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="EstatusSolicitudVehiculoId" Type="Byte" />
+          <Property Name="MotivoAsignacion" Type="String" MaxLength="18" FixedLength="true" Unicode="false" />
+          <Property Name="AutorizadoPorId" Type="Int32" />
+          <Property Name="SolicitadoPorId" Type="Int32" />
+          <NavigationProperty Name="Vehiculos" Relationship="Self.R_227" FromRole="VehiculosSolicitudes" ToRole="Vehiculos" />
+        </EntityType>
+        <Association Name="R_219">
+          <End Role="VehiculosMarcas" Type="Self.VehiculosMarcas" Multiplicity="0..1" />
+          <End Role="Vehiculos" Type="Self.Vehiculos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VehiculosMarcas">
+              <PropertyRef Name="VehiculoMarcaId" />
+            </Principal>
+            <Dependent Role="Vehiculos">
+              <PropertyRef Name="VehiculoMarcaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_222">
+          <End Role="Vehiculos" Type="Self.Vehiculos" Multiplicity="0..1" />
+          <End Role="VehiculosCondiciones" Type="Self.VehiculosCondiciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehiculos">
+              <PropertyRef Name="VehiculoId" />
+            </Principal>
+            <Dependent Role="VehiculosCondiciones">
+              <PropertyRef Name="VehiculoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_227">
+          <End Role="Vehiculos" Type="Self.Vehiculos" Multiplicity="1" />
+          <End Role="VehiculosSolicitudes" Type="Self.VehiculosSolicitudes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehiculos">
+              <PropertyRef Name="VehiculoId" />
+            </Principal>
+            <Dependent Role="VehiculosSolicitudes">
+              <PropertyRef Name="VehiculoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_223">
+          <End Role="VehiculosCondiciones" Type="Self.VehiculosCondiciones" Multiplicity="0..1" />
+          <End Role="VehiculosCondicionesDetalles" Type="Self.VehiculosCondicionesDetalles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VehiculosCondiciones">
+              <PropertyRef Name="VehiculoCondicionId" />
+            </Principal>
+            <Dependent Role="VehiculosCondicionesDetalles">
+              <PropertyRef Name="VehiculoCondicionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_226">
+          <End Role="VehiculosCondicionesTipos" Type="Self.VehiculosCondicionesTipos" Multiplicity="0..1" />
+          <End Role="VehiculosCondicionesDetalles" Type="Self.VehiculosCondicionesDetalles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VehiculosCondicionesTipos">
+              <PropertyRef Name="VehiculoCondicionTipoId" />
+            </Principal>
+            <Dependent Role="VehiculosCondicionesDetalles">
+              <PropertyRef Name="VehiculoCondicionTipoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Vehiculos" EntityType="Self.Vehiculos" />
+          <EntitySet Name="VehiculosCondiciones" EntityType="Self.VehiculosCondiciones" />
+          <EntitySet Name="VehiculosCondicionesDetalles" EntityType="Self.VehiculosCondicionesDetalles" />
+          <EntitySet Name="VehiculosCondicionesTipos" EntityType="Self.VehiculosCondicionesTipos" />
+          <EntitySet Name="VehiculosMarcas" EntityType="Self.VehiculosMarcas" />
+          <EntitySet Name="VehiculosSolicitudes" EntityType="Self.VehiculosSolicitudes" />
+          <AssociationSet Name="R_219" Association="Self.R_219">
+            <End Role="VehiculosMarcas" EntitySet="VehiculosMarcas" />
+            <End Role="Vehiculos" EntitySet="Vehiculos" />
+          </AssociationSet>
+          <AssociationSet Name="R_222" Association="Self.R_222">
+            <End Role="Vehiculos" EntitySet="Vehiculos" />
+            <End Role="VehiculosCondiciones" EntitySet="VehiculosCondiciones" />
+          </AssociationSet>
+          <AssociationSet Name="R_227" Association="Self.R_227">
+            <End Role="Vehiculos" EntitySet="Vehiculos" />
+            <End Role="VehiculosSolicitudes" EntitySet="VehiculosSolicitudes" />
+          </AssociationSet>
+          <AssociationSet Name="R_223" Association="Self.R_223">
+            <End Role="VehiculosCondiciones" EntitySet="VehiculosCondiciones" />
+            <End Role="VehiculosCondicionesDetalles" EntitySet="VehiculosCondicionesDetalles" />
+          </AssociationSet>
+          <AssociationSet Name="R_226" Association="Self.R_226">
+            <End Role="VehiculosCondicionesTipos" EntitySet="VehiculosCondicionesTipos" />
+            <End Role="VehiculosCondicionesDetalles" EntitySet="VehiculosCondicionesDetalles" />
+          </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="SIPAEModelStoreContainer" CdmEntityContainer="Entities">
+        <EntityContainerMapping StorageEntityContainer="DB_SIPAEModelStoreContainer" CdmEntityContainer="Entities">
           <EntitySetMapping Name="Vehiculos">
-            <EntityTypeMapping TypeName="SIPAEModel.Vehiculos">
+            <EntityTypeMapping TypeName="DB_SIPAEModel.Vehiculos">
               <MappingFragment StoreEntitySet="Vehiculos">
                 <ScalarProperty Name="VehiculoId" ColumnName="VehiculoId" />
                 <ScalarProperty Name="Matricula" ColumnName="Matricula" />
@@ -74,6 +396,82 @@
                 <ScalarProperty Name="UsuarioModificoId" ColumnName="UsuarioModificoId" />
                 <ScalarProperty Name="UsuarioCreoId" ColumnName="UsuarioCreoId" />
                 <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VehiculosCondiciones">
+            <EntityTypeMapping TypeName="DB_SIPAEModel.VehiculosCondiciones">
+              <MappingFragment StoreEntitySet="VehiculosCondiciones">
+                <ScalarProperty Name="VehiculoCondicionId" ColumnName="VehiculoCondicionId" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="VehiculoId" ColumnName="VehiculoId" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="FechaActualizacion" ColumnName="FechaActualizacion" />
+                <ScalarProperty Name="UsuarioModificoId" ColumnName="UsuarioModificoId" />
+                <ScalarProperty Name="UsuarioCreoId" ColumnName="UsuarioCreoId" />
+                <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VehiculosCondicionesDetalles">
+            <EntityTypeMapping TypeName="DB_SIPAEModel.VehiculosCondicionesDetalles">
+              <MappingFragment StoreEntitySet="VehiculosCondicionesDetalles">
+                <ScalarProperty Name="VehiculoCondicionDetalleId" ColumnName="VehiculoCondicionDetalleId" />
+                <ScalarProperty Name="Diagnostico" ColumnName="Diagnostico" />
+                <ScalarProperty Name="VehiculoCondicionId" ColumnName="VehiculoCondicionId" />
+                <ScalarProperty Name="VehiculoCondicionTipoId" ColumnName="VehiculoCondicionTipoId" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="FechaActualizacion" ColumnName="FechaActualizacion" />
+                <ScalarProperty Name="UsuarioModificoId" ColumnName="UsuarioModificoId" />
+                <ScalarProperty Name="UsuarioCreoId" ColumnName="UsuarioCreoId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VehiculosCondicionesTipos">
+            <EntityTypeMapping TypeName="DB_SIPAEModel.VehiculosCondicionesTipos">
+              <MappingFragment StoreEntitySet="VehiculosCondicionesTipos">
+                <ScalarProperty Name="VehiculoCondicionTipoId" ColumnName="VehiculoCondicionTipoId" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="FechaActualizacion" ColumnName="FechaActualizacion" />
+                <ScalarProperty Name="UsuarioModificoId" ColumnName="UsuarioModificoId" />
+                <ScalarProperty Name="UsuarioCreoId" ColumnName="UsuarioCreoId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VehiculosMarcas">
+            <EntityTypeMapping TypeName="DB_SIPAEModel.VehiculosMarcas">
+              <MappingFragment StoreEntitySet="VehiculosMarcas">
+                <ScalarProperty Name="VehiculoMarcaId" ColumnName="VehiculoMarcaId" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="EstatusVehiculoId" ColumnName="EstatusVehiculoId" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="FechaActualizacion" ColumnName="FechaActualizacion" />
+                <ScalarProperty Name="UsuarioModificoId" ColumnName="UsuarioModificoId" />
+                <ScalarProperty Name="UsuarioCreoId" ColumnName="UsuarioCreoId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VehiculosSolicitudes">
+            <EntityTypeMapping TypeName="DB_SIPAEModel.VehiculosSolicitudes">
+              <MappingFragment StoreEntitySet="VehiculosSolicitudes">
+                <ScalarProperty Name="SolicitudVehiculoId" ColumnName="SolicitudVehiculoId" />
+                <ScalarProperty Name="VehiculoId" ColumnName="VehiculoId" />
+                <ScalarProperty Name="FechaSolicitud" ColumnName="FechaSolicitud" />
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+                <ScalarProperty Name="FechaAutorizacion" ColumnName="FechaAutorizacion" />
+                <ScalarProperty Name="FechaUsoInicio" ColumnName="FechaUsoInicio" />
+                <ScalarProperty Name="KilometrajeInicio" ColumnName="KilometrajeInicio" />
+                <ScalarProperty Name="KilometrajeFin" ColumnName="KilometrajeFin" />
+                <ScalarProperty Name="FechaUsoFin" ColumnName="FechaUsoFin" />
+                <ScalarProperty Name="DescripcionActividad" ColumnName="DescripcionActividad" />
+                <ScalarProperty Name="CirculoEstudioId" ColumnName="CirculoEstudioId" />
+                <ScalarProperty Name="Origen" ColumnName="Origen" />
+                <ScalarProperty Name="Destino" ColumnName="Destino" />
+                <ScalarProperty Name="EstatusSolicitudVehiculoId" ColumnName="EstatusSolicitudVehiculoId" />
+                <ScalarProperty Name="MotivoAsignacion" ColumnName="MotivoAsignacion" />
+                <ScalarProperty Name="AutorizadoPorId" ColumnName="AutorizadoPorId" />
+                <ScalarProperty Name="SolicitadoPorId" ColumnName="SolicitadoPorId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

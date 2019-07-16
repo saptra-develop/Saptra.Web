@@ -12,7 +12,7 @@
 <html class="no-js" lang="en">
 <!--<![endif]-->
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="shortcut icon" href="~/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -57,7 +57,7 @@
 
                                 <div class="wrap-input100 validate-input" data-validate="Ingresar contraseña">
                                     @*@Html.PasswordFor(m => m.Contrasena, new { @class = "input100", placeholder = Resources.Autentificacion.password, autocomplete = "off" })*@
-                                    @Html.TextBoxFor(m => m.Contrasena, new { @class = "input100", autofocus = "true", type= "password", placeholder = Resources.Autentificacion.password, autocomplete = "off" })
+                                    @Html.TextBoxFor(m => m.Contrasena, new { @class = "input100", maxlength = 20, autofocus = "true", type= "password", placeholder = Resources.Autentificacion.password, autocomplete = "off" })
                                     <span class="focus-input100" data-placeholder="&#xe80f;"></span>
                                 </div>
                                 <div>

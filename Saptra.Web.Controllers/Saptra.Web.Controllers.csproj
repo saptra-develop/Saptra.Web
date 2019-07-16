@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework">
-      <HintPath>..\..\Saptra.WebApi\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\..\..\Users\davidjasso.CHARLY\Source\repos\Saptra.WebApi\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EPPlus">
       <HintPath>..\packages\EPPlus.4.1.0\lib\net40\EPPlus.dll</HintPath>
@@ -83,6 +83,7 @@
     <Compile Include="AutentificacionController.cs" />
     <Compile Include="Filtros\AutorizarLogin.cs" />
     <Compile Include="Filtros\LogAttribute.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IndicadoresController.cs" />
     <Compile Include="IncidenciasController.cs" />
     <Compile Include="MailController.cs" />

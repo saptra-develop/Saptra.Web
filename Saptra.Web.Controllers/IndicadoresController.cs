@@ -90,7 +90,9 @@ namespace Sispro.Web.Controllers
 
                 return Json(new { Success = true, datos = lstPlanSemanal }, JsonRequestBehavior.AllowGet);
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
@@ -143,7 +145,9 @@ namespace Sispro.Web.Controllers
 
                 return Json(new { Success = true, datos = lstPlanSemanal }, JsonRequestBehavior.AllowGet);
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
@@ -231,7 +235,9 @@ namespace Sispro.Web.Controllers
 
                 return Json(new { Success = true, datos = JSONString, header = header, hearderText = headerT }, JsonRequestBehavior.AllowGet);
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
@@ -280,7 +286,9 @@ namespace Sispro.Web.Controllers
 
                 return Json(new { Success = true, datos = lstPlanSemanal }, JsonRequestBehavior.AllowGet);
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
@@ -812,7 +820,9 @@ namespace Sispro.Web.Controllers
                 }
 
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 //return  exp.Message;
             }
@@ -858,7 +868,9 @@ namespace Sispro.Web.Controllers
 
                 return Json(new { Success = true, datos = lstPlanSemanal }, JsonRequestBehavior.AllowGet);
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
@@ -896,7 +908,9 @@ namespace Sispro.Web.Controllers
 
                 return Json(new { Success = true, datos = lstPlanSemanal }, JsonRequestBehavior.AllowGet);
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
@@ -933,7 +947,9 @@ namespace Sispro.Web.Controllers
 
                 return Json(new { Success = true, datos = lstPlanSemanal }, JsonRequestBehavior.AllowGet);
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
@@ -969,7 +985,9 @@ namespace Sispro.Web.Controllers
 
                 return Json(new { Success = true, datos = lstPlanSemanal }, JsonRequestBehavior.AllowGet);
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
@@ -1447,7 +1465,9 @@ namespace Sispro.Web.Controllers
                 }
 
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 //return  exp.Message;
             }
@@ -1492,7 +1512,9 @@ namespace Sispro.Web.Controllers
 
                 return Json(new { Success = true, datos = lstPlanSemanal }, JsonRequestBehavior.AllowGet);
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
@@ -1530,7 +1552,9 @@ namespace Sispro.Web.Controllers
 
                 return Json(new { Success = true, datos = lstPlanSemanal }, JsonRequestBehavior.AllowGet);
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
@@ -1570,7 +1594,9 @@ namespace Sispro.Web.Controllers
 
                 return Json(new { Success = true, datos = lstPlanSemanal }, JsonRequestBehavior.AllowGet);
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
@@ -1606,7 +1632,9 @@ namespace Sispro.Web.Controllers
 
                 return Json(new { Success = true, datos = lstPlanSemanal }, JsonRequestBehavior.AllowGet);
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
@@ -2087,7 +2115,9 @@ namespace Sispro.Web.Controllers
                 }
 
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 //return  exp.Message;
             }
@@ -2133,7 +2163,9 @@ namespace Sispro.Web.Controllers
 
                 return Json(new { Success = true, datos = lstPlanSemanal }, JsonRequestBehavior.AllowGet);
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
@@ -2243,7 +2275,9 @@ namespace Sispro.Web.Controllers
 
                 return Json(new { Success = true, datos = lstPlanSemanal }, JsonRequestBehavior.AllowGet);
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
@@ -2352,7 +2386,9 @@ namespace Sispro.Web.Controllers
 
                 return Json(new { Success = true, datos = lstPlanSemanal }, JsonRequestBehavior.AllowGet);
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
@@ -2390,7 +2426,9 @@ namespace Sispro.Web.Controllers
 
                 return Json(new { Success = true, datos = lstPlanSemanal }, JsonRequestBehavior.AllowGet);
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
@@ -2716,7 +2754,9 @@ namespace Sispro.Web.Controllers
                 }
 
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 //return  exp.Message;
             }
@@ -2762,7 +2802,9 @@ namespace Sispro.Web.Controllers
 
                 return Json(new { Success = true, datos = lstPlanSemanal }, JsonRequestBehavior.AllowGet);
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
@@ -2872,7 +2914,9 @@ namespace Sispro.Web.Controllers
 
                 return Json(new { Success = true, datos = lstPlanSemanal }, JsonRequestBehavior.AllowGet);
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
@@ -2981,7 +3025,9 @@ namespace Sispro.Web.Controllers
 
                 return Json(new { Success = true, datos = lstPlanSemanal }, JsonRequestBehavior.AllowGet);
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
@@ -3024,7 +3070,9 @@ namespace Sispro.Web.Controllers
 
                 return Json(new { Success = true, datos = lstPlanSemanal }, JsonRequestBehavior.AllowGet);
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 return Json(new { Success = false, Message = "Error al obtener la información" }, JsonRequestBehavior.AllowGet);
             }
@@ -3380,7 +3428,9 @@ namespace Sispro.Web.Controllers
                 }
 
             }
+#pragma warning disable CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             catch (Exception exp)
+#pragma warning restore CS0168 // La variable 'exp' se ha declarado pero nunca se usa
             {
                 //return  exp.Message;
             }
