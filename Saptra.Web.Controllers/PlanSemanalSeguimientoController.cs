@@ -92,7 +92,8 @@ namespace Sispro.Web.Controllers
                                             "<div class='col-md-2'><br><div class='material-switch'><input " + (cat.mPlanSemanal.EstatusId == 8 || cat.ComentariosNoValidacion != null ? "disabled" : "") + "  class='checkComents' " + (cat.ComentariosNoValidacion == null ? "" : "checked") + " id='checkComents_" + cat.DetallePlanId + "' type='checkbox' data-iddetalleplan='" + cat.DetallePlanId + "'/>" +
                                             "<label for='checkComents_" + cat.DetallePlanId + "' class='label-success'></label></div></div>" +
                                             "<div class='col-md-10'><textarea maxlength='100' rows='2'  " + (cat.mPlanSemanal.EstatusId == 8 ? "readonly" : "") + " class='form-control idComentariosCZ' id='idComentariosCZ_" + cat.DetallePlanId + "' data-idplan='" + cat.PlanSemanalId + "' data-iddetalleplan='" + cat.DetallePlanId + "'" + (cat.ComentariosNoValidacion == null ? "disabled" : "enabled") + ">" + cat.ComentariosNoValidacion + "</textarea></div>" + 
-                                            "</div>"
+                                            "</div>",
+                    vehiculo = (cat.mSolicitudesVehiculo.Count() > 0 ? "<strong> Vehiculo: </strong>" + cat.mSolicitudesVehiculo.FirstOrDefault().PlacaVehiculo : "")
                 });
 
 
